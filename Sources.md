@@ -2,20 +2,20 @@
 A running list of sources, tutorials, and other links that may be of great use during project development.
 
 ## Table of Contents
-- [Angular](##Angular)
-  * [Set-up and CLI usage](###Set-up-and-CLI-usage)
-  * [General tutorials](###General-tutorials)
-  * [Using Angular with Firebase](###Using-Angular-with-Firebase)
-- [Express JS](##Express-JS)
-  * [Routing](###Routing)
-  * [NPM packages](###NPM-packages)
-    + [Session packages](####Session-packages)
-  * [Miscellaneous tutorials](###Miscellaneous-tutorials)
-  * [Miscellaneous](###Miscellaneous)
-- [Firebase](##Firebase)
-  * [Using Firebase with Node.js](###Using-Firebase-with-Node.js)
-  * [Using Firebase with Angular](###Using-Firebase-with-Angular)
-  * [NPM packages](###NPM-packages-1)
+- [Angular](#angular)
+  * [Set-up and CLI usage](#set-up-and-cli-usage)
+  * [General tutorials](#general-tutorials)
+  * [Using Angular with Firebase](#using-angular-with-firebase)
+- [Express JS](#express-js)
+  * [Routing](#routing)
+  * [NPM packages](#npm-packages)
+    + [Session packages](#session-packages)
+  * [Miscellaneous tutorials](#miscellaneous-tutorials)
+  * [Miscellaneous](#miscellaneous)
+- [Firebase](#firebase)
+  * [Using Firebase with Node.js](#using-firebase-with-nodejs)
+  * [Using Firebase with Angular](#using-firebase-with-angular)
+  * [NPM packages](#npm-packages-1)
 
 -----
 ## Angular
