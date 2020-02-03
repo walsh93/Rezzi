@@ -5,6 +5,7 @@ A running list of sources, tutorials, and other links that may be of great use d
 - [Angular](#angular)
   * [Set-up and CLI usage](#set-up-and-cli-usage)
   * [General tutorials](#general-tutorials)
+  * [Using Angular with Node.js](#using-angular-with-nodejs)
   * [Using Angular with Firebase](#using-angular-with-firebase)
 - [Express JS](#express-js)
   * [Routing](#routing)
@@ -40,10 +41,22 @@ Note: For `ng serve` and `ng build`, we can configure the commands so we just ha
   * This is a good starting point for how we can use data from the backend and load it into Angular HTML pages on the frontend.
 - [HTTP](https://angular.io/tutorial/toh-pt6)
   * This is a page from the tutorial, but I think this may be a really helpful page for when we are sendng data from Angular to the backend. Kai overcomplicated it during 307, so the methods described here may make it a little more manageable.
+- [HttpClient](https://angular.io/guide/http)
+  * A little more about what the HTTP feature (in the Heroes tutorial) is and what it can be used for.
+- [Services](https://angular.io/tutorial/toh-pt4)
+  * These are good for passing data between unrelated classes. Because apparently components should fetch/save data directly (?). The fetching and such should be done through a service, and that service can pass the data on to the desired component(s).
+
+### Using Angular with Node.js
+- [MEAN App with Angular 2 and the Angular CLI](https://scotch.io/tutorials/mean-app-with-angular-2-and-the-angular-cli)
+  * A simple step-by-step tutorial showing how Angular can work with a Node.js backend. This example doesn't use Firebase.
 
 ### Using Angular with Firebase
+- [angularfire Installation and Setup](https://github.com/angular/angularfire/blob/master/docs/install-and-setup.md)
+- [Documents in AngularFirestore](https://github.com/angular/angularfire/blob/master/docs/firestore/documents.md)
 - [Angular + Firebase + Typescript — Step by step tutorial](https://medium.com/factory-mind/angular-firebase-typescript-step-by-step-tutorial-2ef887fc7d71)
   * A simple step-by-step tutorial showing how Firebase and Angular can be incorporated within the same application. This example uses the *real-time* database.
+- [Firebase Firestore and Angular TODO List Application](https://medium.com/@coderonfleek/firebase-firestore-and-angular-todo-list-application-d0fe760f6bca)
+  * Another simple tutorial showing how Firebase and Angular can be used together.
 
 -----
 ## Express JS
