@@ -10,19 +10,23 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { environment } from '../environments/environment';
+import { HttpClientModule } from '@angular/common/http';
+import { SignInComponent } from './sign-in/sign-in.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignUpComponent,
     SignUpHdComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    SignInComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase, 'rezzi'),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

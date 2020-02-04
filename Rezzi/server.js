@@ -1,30 +1,23 @@
-//Dependencies
-const express = require('express');
+//Express Setup
+const express = require('express'),
+    app = express();
 const path = require('path');
-const bodyParser = require('body-parser');
+
+// JSON Request Parser
+const bodyParser = require('body-parser'),
+    jsonParser = bodyParser.json();
+
+//Sessions
 const sessions = require('client-sessions');
 
-//Firebase
-const admin = require('firebase-admin');
-const serviceAccount = require('./rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://rezzi-33137.firebaseio.com"
-  });
-const db = admin.firestore();
-const settings = { timestampsInSnapshots: true };
-db.settings(settings);
+// Firebase Admin Client
+var firebase = require('./server/database.js');
 
-
-const http = require('http');
-
-const app = express();
-
-app.use(bodyParser.json());
+app.use(jsonParser);
 app.use(bodyParser.urlencoded({extended: false}));
-//sessions here
 
+
+// Server Express App
 const port = process.env.PORT || 4100;
-
-app.listen(port);
+app.listen(port,);
 console.log("Server started on port " + port);
