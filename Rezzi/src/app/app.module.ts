@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { LoginComponent } from './login/login.component';
+import { CreateChannelComponent } from './create-channel/create-channel.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { LoginComponent } from './login/login.component';
     SignUpHdComponent,
     WelcomeComponent,
     SignInComponent,
-    LoginComponent
+    LoginComponent,
+    CreateChannelComponent
   ],
   imports: [
     BrowserModule,
