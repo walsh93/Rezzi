@@ -12,6 +12,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
     SignUpComponent,
     SignUpHdComponent,
     WelcomeComponent,
-    SignInComponent
+    SignInComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

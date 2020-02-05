@@ -6,12 +6,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { LoginComponent } from './login/login.component';
 
 // Routes
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-up-hd', component: SignUpHdComponent },
+  { path: 'login', component: LoginComponent },
 ];
 
 @NgModule({
