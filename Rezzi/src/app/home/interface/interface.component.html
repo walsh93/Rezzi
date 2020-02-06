@@ -1,0 +1,15 @@
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <p>Interface.component.html</p>
+    <app-side-panel></app-side-panel>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
+      SideNav
+    </button>
+      <app-channel-messages [messages]="storedMessages"]></app-channel-messages>
+      <app-new-message (messageCreated) = 'onMessageAdded($event)'></app-new-message>
+  </div>
+
+</mat-drawer-container>
