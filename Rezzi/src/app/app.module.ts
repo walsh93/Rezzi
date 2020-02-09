@@ -26,7 +26,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { SignInComponent } from './sign-in/sign-in.component';
-import { LoginComponent } from './login/login.component';
 
 // Index Component (will likely change)
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -55,7 +54,6 @@ import { HeaderComponent } from './header/header.component';
     SignUpHdComponent,
     WelcomeComponent,
     SignInComponent,
-    LoginComponent,
     CreateChannelComponent,
     LogoutButtonComponent,
     PageNotFoundComponent,
