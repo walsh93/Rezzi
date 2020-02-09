@@ -14,6 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { LoginComponent } from './login/login.component';
 import { CreateChannelComponent } from './create-channel/create-channel.component';
+import { LogoutButtonComponent } from './subcomponents/logout-button/logout-button.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { CreateChannelComponent } from './create-channel/create-channel.componen
     WelcomeComponent,
     SignInComponent,
     LoginComponent,
-    CreateChannelComponent
+    CreateChannelComponent,
+    LogoutButtonComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
