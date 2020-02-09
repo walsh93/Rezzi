@@ -3,6 +3,12 @@
 ## `ng serve` dynamic page edits
 If you run `ng serve`, you can open up local host at the specified port and see live changes you make to components.
 
+## Running the project
+If you are working with HTML and want to see the dynamic changes, you can use `ng serve`. If you want to see the update HTML stuff work with the server, you can use `npm start`. If you just edited stuff on the server and want to make sure it works and you DIDN'T update the Angular/HTML stuff, you can use `node server.js`.
+
+## NPM dependencies
+If you add any, be sure to use the `--save` tag so it gets saved to package.json. That way, everyone else can get those packages by running `npm install`.
+
 ## Routing
 Components are automatically added to app.module.ts, but you may have to manually add them to app-routing.module.ts. That is where all of our paths and such will be defined.
 
