@@ -45,6 +45,8 @@ Note: For `ng serve` and `ng build`, we can configure the commands so we just ha
   * A little more about what the HTTP feature (in the Heroes tutorial) is and what it can be used for.
 - [Services](https://angular.io/tutorial/toh-pt4)
   * These are good for passing data between unrelated classes. Because apparently components should fetch/save data directly (?). The fetching and such should be done through a service, and that service can pass the data on to the desired component(s).
+- [User Input](https://angular.io/guide/user-input)
+  * This is a good source for linking HTML elements to user actions in Angular. Ie. on a button click/key stroke, perform a certain action.
 
 ### Using Angular with Node.js
 - [MEAN App with Angular 2 and the Angular CLI](https://scotch.io/tutorials/mean-app-with-angular-2-and-the-angular-cli)
