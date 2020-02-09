@@ -5,7 +5,7 @@ const codes = require('./constants')
 const admin = require('firebase-admin');
 
 // Initialize firebase admin client
-const serviceAccount = require('./rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json');
+const serviceAccount = require('../rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json');
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://rezzi-33137.firebaseio.com"
