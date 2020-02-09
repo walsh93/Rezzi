@@ -7,7 +7,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { HomeComponent } from './home/home.component';
-import { CreateChannelComponent } from './create-channel/create-channel.component';
+import { CreateChannelComponent } from './dashboard/create-channel/create-channel.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 // Routes
