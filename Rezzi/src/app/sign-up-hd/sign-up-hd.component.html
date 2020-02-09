@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <div class="example-form">
+    <mat-card color="primary">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Email" [(ngModel)]="newUser.email" required>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" [(ngModel)]="newUser.password" required>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Confirm Password" [type]="hide ? 'password' : 'text'" [(ngModel)]="newUser.confirmPassword" required>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="First Name" [(ngModel)]="newUser.firstName" required>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Last Name" [(ngModel)]="newUser.lastName" required>
+      </mat-form-field>
+        <button mat-raised-button color="accent" (click)="onSignUpHD()">Signup</button>
+    </mat-card >
+  </div>
+</div>
