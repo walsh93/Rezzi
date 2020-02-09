@@ -25,8 +25,8 @@ app.use(express.static(__dirname));
 app.use(express.static(__dirname + '/dist/Rezzi'));
 
 // Routers, links to URLs
-const logout = require('./server/routes/logout')  // Get the router that's written in ./server/routes/logout.js
-app.use('/logout', logout)  // Link this router to respond to the link .../logout
+const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
+app.use('/sign-out', signout)  // Link this router to respond to the link .../sign-out
 
 // Server Express App
 const port = process.env.PORT || 4100;
