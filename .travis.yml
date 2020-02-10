@@ -6,6 +6,7 @@ node_js:
   - "10"
 
 addons:
+  chrome: stable
   apt:
     sources:
       - google-chrome
