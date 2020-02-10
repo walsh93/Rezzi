@@ -46,6 +46,8 @@ import { NewMessageComponent } from './home/interface/messages/new-message/new-m
 
 // Header Component
 import { HeaderComponent } from './header/header.component';
+import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.component';
+import { InfoBlockComponent } from './sign-in/info-block/info-block.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,9 @@ import { HeaderComponent } from './header/header.component';
     ChannelMessagesComponent,
     HomeComponent,
     NewMessageComponent,
-    SignOutButtonComponent
+    SignOutButtonComponent,
+    SignInFormComponent,
+    InfoBlockComponent
   ],
   imports: [
     BrowserModule,

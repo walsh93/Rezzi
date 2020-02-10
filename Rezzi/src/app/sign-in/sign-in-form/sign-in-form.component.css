@@ -1,0 +1,12 @@
+#sign-in-form {
+  background-color: coral;
+  padding: 2em;
+
+  /* Dimensions */
+  height: 100%;
+  width: 100%;
+}
+
+.vspace {
+  padding-bottom: 2em;
+}

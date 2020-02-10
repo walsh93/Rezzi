@@ -1,0 +1,20 @@
+.container {
+  background-color: #2BB5A8;
+  padding: 1em;
+
+  /* Dimensions */
+  height: 100%;
+  max-width: 100%;  /* Needed to override max-width of .container class */
+}
+
+#inner-component {
+  background-color: #85D75B;
+  height: inherit;  /* Needed to span screen height wrt parent */
+  width: inherit;  /* Needed to span screen width wrt parent */
+}
+
+.component-column {
+  display: flex;
+  justify-content: center;
+  padding: 3em;
+}
