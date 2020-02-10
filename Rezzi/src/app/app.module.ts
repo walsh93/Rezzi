@@ -46,6 +46,15 @@ import { NewMessageComponent } from './home/interface/messages/new-message/new-m
 
 // Header Component
 import { HeaderComponent } from './header/header.component';
+import { SignUpFormComponent } from './sign-up-form/sign-up-form.component';
+import { CreateRezziComponent } from './create-rezzi/create-rezzi.component';
+import { InviteUsersComponent } from './invite-users/invite-users.component';
+import { EditProfileFormComponent } from './edit-profile-form/edit-profile-form.component';
+import { SignInFormComponent } from './sign-in-form/sign-in-form.component';
+import { ChannelNavBarComponent } from './channel-nav-bar/channel-nav-bar.component';
+import { JoinChannelComponent } from './join-channel/join-channel.component';
+import { RaAdminComponent } from './ra-admin/ra-admin.component';
+import { RaCreateChannelComponent } from './ra-create-channel/ra-create-channel.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +73,16 @@ import { HeaderComponent } from './header/header.component';
     ChannelMessagesComponent,
     HomeComponent,
     NewMessageComponent,
-    SignOutButtonComponent
+    SignOutButtonComponent,
+    SignUpFormComponent,
+    CreateRezziComponent,
+    InviteUsersComponent,
+    EditProfileFormComponent,
+    SignInFormComponent,
+    ChannelNavBarComponent,
+    JoinChannelComponent,
+    RaAdminComponent,
+    RaCreateChannelComponent
   ],
   imports: [
     BrowserModule,

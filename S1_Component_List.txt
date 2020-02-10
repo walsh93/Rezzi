@@ -1,0 +1,16 @@
+COMPONENT LIST:
+- sign-up-hd
+- sign-up component has sign-up form component
+- dashboard-page component has HAAdmin which has createRezzi component
+- dashboard-page component has HAAdmin component which has invitation component
+- dashboard-page component has edit-profile component which has edit profile form component
+- edit profile form component has: first name, last name, password, reenter password, personal info,
+- sign-up component
+- sign-up form: first name, last name, password, reenter password, personal info,
+- sign-in component has sign-in form component (and link to reset password page)
+- home-page component has interface component has rezzi-nav-bar component which has join-channel component
+- home-page component has side-panel component (which is the channel viewing component)
+- side-panel component has join-channel component (button which shows join-channel component)
+- dashboard-page component has RAAdmin component which has create-channel component
+
+
