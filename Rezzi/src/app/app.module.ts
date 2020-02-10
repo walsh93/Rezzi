@@ -30,7 +30,6 @@ import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button
 
 // Index Component (will likely change)
 import { WelcomeComponent } from './welcome/welcome.component';
-import { CreateChannelComponent } from './dashboard/create-channel/create-channel.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 // Dashboard Components
@@ -48,6 +47,14 @@ import { NewMessageComponent } from './home/interface/messages/new-message/new-m
 import { HeaderComponent } from './header/header.component';
 import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.component';
 import { InfoBlockComponent } from './sign-in/info-block/info-block.component';
+import { SignUpFormComponent } from './sign-up/sign-up-form/sign-up-form.component';
+import { CreateRezziComponent } from './dashboard/ha-admin/create-rezzi/create-rezzi.component';
+import { InviteUsersComponent } from './dashboard/ha-admin/invite-users/invite-users.component';
+import { EditProfileFormComponent } from './dashboard/edit-profile/edit-profile-form/edit-profile-form.component';
+import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel-nav-bar.component';
+import { JoinChannelComponent } from './home/interface/side-panel/join-channel/join-channel.component';
+import { RaAdminComponent } from './dashboard/ra-admin/ra-admin.component';
+import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +63,6 @@ import { InfoBlockComponent } from './sign-in/info-block/info-block.component';
     SignUpHdComponent,
     WelcomeComponent,
     SignInComponent,
-    CreateChannelComponent,
     PageNotFoundComponent,
     EditProfileComponent,
     HeaderComponent,
@@ -68,7 +74,16 @@ import { InfoBlockComponent } from './sign-in/info-block/info-block.component';
     NewMessageComponent,
     SignOutButtonComponent,
     SignInFormComponent,
-    InfoBlockComponent
+    InfoBlockComponent,
+    SignUpFormComponent,
+    CreateRezziComponent,
+    InviteUsersComponent,
+    EditProfileFormComponent,
+    SignInFormComponent,
+    ChannelNavBarComponent,
+    JoinChannelComponent,
+    RaAdminComponent,
+    RaCreateChannelComponent
   ],
   imports: [
     BrowserModule,

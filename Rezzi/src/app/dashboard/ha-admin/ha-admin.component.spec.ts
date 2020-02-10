@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateChannelComponent } from './create-channel.component';
+import { HaAdminComponent } from './ha-admin.component';
 
-describe('CreateChannelComponent', () => {
-  let component: CreateChannelComponent;
-  let fixture: ComponentFixture<CreateChannelComponent>;
+describe('HaAdminComponent', () => {
+  let component: HaAdminComponent;
+  let fixture: ComponentFixture<HaAdminComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateChannelComponent ]
+      declarations: [ HaAdminComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateChannelComponent);
+    fixture = TestBed.createComponent(HaAdminComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
