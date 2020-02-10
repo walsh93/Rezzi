@@ -24,7 +24,11 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + '/dist/Rezzi'));
 
+// Routers for the rezzi.service
+
 // Routers, links to URLs
+const signin = require('./server/routes/sign-in')
+app.use('/sign-in', signin)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use('/sign-out', signout)  // Link this router to respond to the link .../sign-out
 
