@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { Message, User } from '../../../../classes.model';
+import { MessagesService } from '../messages.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-new-message',
@@ -10,20 +12,22 @@ import { Message, User } from '../../../../classes.model';
 export class NewMessageComponent implements OnInit {
   tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true);
   enteredMessage = '';
-  @Output() messageCreated = new EventEmitter<Message>();
 
-  onAddMessage() {
+  constructor(public messagesService: MessagesService) { }
+
+  onAddMessage(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
     const message: Message = {
-      content: this.enteredMessage,
+      content: form.value.enteredMessage,
       owner: this.tempuser,
       time: new Date(),
       visible: true
-    }
-    this.messageCreated.emit(message);
-    this.enteredMessage='';
+    };
+    this.messagesService.addMessage(message);
+    form.resetForm();
   }
-
-  constructor() { }
 
   ngOnInit() {
   }

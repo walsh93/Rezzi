@@ -12,7 +12,7 @@ export class SignUpFormComponent implements OnInit {
   constructor() { }
 
   onSignUp(form: NgForm) {
-    if(form.invalid){
+    if (form.invalid) {
       return;
     }
     // if(form.value.age)
@@ -27,7 +27,7 @@ export class SignUpFormComponent implements OnInit {
       form.value.nickName,
       form.value.bio,
       true
-    )
+    );
     console.log(user);
     /*
     console.log(this.newUser);

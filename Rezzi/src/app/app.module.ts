@@ -66,6 +66,7 @@ import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel
 // Header Component
 import { HeaderComponent } from './header/header.component';
 import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button.component';
+import { MessagesService } from './home/interface/messages/messages.service';
 
 
 
@@ -115,7 +116,7 @@ import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button
     MatExpansionModule,
     MatSidenavModule
   ],
-  providers: [],
+  providers: [MessagesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
