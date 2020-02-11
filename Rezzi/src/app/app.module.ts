@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import {
@@ -9,6 +10,8 @@ import {
   MatToolbarModule,
   MatExpansionModule,
   MatSidenavModule,
+  MatDialogModule,
+  MatTableModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -30,8 +33,6 @@ import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.component';
 import { InfoBlockComponent } from './sign-in/info-block/info-block.component';
-
-
 
 // Index Component (will likely change)
 import { WelcomeComponent } from './welcome/welcome.component';
@@ -62,14 +63,9 @@ import { NewMessageComponent } from './home/interface/messages/new-message/new-m
 
 import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel-nav-bar.component';
 
-
 // Header Component
 import { HeaderComponent } from './header/header.component';
 import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button.component';
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -113,7 +109,13 @@ import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatDialogModule,
+    MatTableModule,
+    NgbModule
+  ],
+  entryComponents: [
+    JoinChannelComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
