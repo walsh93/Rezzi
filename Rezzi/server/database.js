@@ -27,8 +27,12 @@ module.exports.addUser = function addUser(data) {
       if (doc.exists && doc.data().verified == true) {
         //checks to see if account is verified per Megan's implementation
         reject(c.EMAIL_ALREADY_REGISTERED)
-      } else {
+      } else if (doc.exists) {
         dbstore.collection('users').doc(data.email).update(data)
+        resolve(c.HTTP_CREATED)
+      } else {
+        //Should NEVER get here. Only for SignUpHD
+        dbstore.collection('users').doc(data.email).set(data)
         resolve(c.HTTP_CREATED)
       }
     }).catch(err => {
