@@ -20,6 +20,7 @@ export class NewMessageComponent implements OnInit {
       visible: true
     }
     this.messageCreated.emit(message);
+    this.enteredMessage='';
   }
 
   constructor() { }

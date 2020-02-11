@@ -1,7 +1,7 @@
 <p>channel-messages works!</p>
 <div *ngFor="let message of messages">
+  {{ message.owner.firstName }}:
   {{ message.content }}
-  {{ message.owner.firstName }}
 </div>
 
 <!-- this is the component that displays the previous messages -->
