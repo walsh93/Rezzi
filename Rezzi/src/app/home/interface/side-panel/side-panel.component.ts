@@ -10,9 +10,9 @@ import { JoinChannelComponent } from './join-channel/join-channel.component';
 export class SidePanelComponent implements OnInit {
   // Sample object
   channels = [
-    {channel: "Gaming", users: 45},
-    {channel: "weplifjweif", users: 112},
-    {channel: "qiwiqwfhwqf", users: 12412}
+    {id: 6, channel: "Gaming", users: 45},
+    {id: 7, channel: "weplifjweif", users: 112},
+    {id: 8, channel: "qiwiqwfhwqf", users: 12412}
   ];
 
   constructor(public dialog: MatDialog) {}

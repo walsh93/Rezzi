@@ -22,4 +22,7 @@
 
 .join-channel-button {
   width: 100%;
+  position: absolute;
+  bottom: 80px;
+  right: 0px;
 }

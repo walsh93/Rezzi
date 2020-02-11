@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatTableDataSource } from '@angular/material/table';
 
 export interface ChannelData {
+  id: number,
   channel: string,
   users: number
 }
@@ -14,13 +15,13 @@ export interface ChannelData {
 })
 
 export class JoinChannelComponent implements OnInit {
-	dataSource: MatTableDataSource<ChannelData>;
-	columnsToDisplay = ['channel', 'user-count', 'join-channel'];
+  dataSource: MatTableDataSource<ChannelData>;
+  columnsToDisplay = ['channel', 'user-count', 'join-channel'];
 
-	constructor(public dialogRef: MatDialogRef<JoinChannelComponent>,
-    	@Inject(MAT_DIALOG_DATA) public data) {
-		this.dataSource = new MatTableDataSource(data);
-	}
+  constructor(public dialogRef: MatDialogRef<JoinChannelComponent>,
+      @Inject(MAT_DIALOG_DATA) public data) {
+    this.dataSource = new MatTableDataSource(data);
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
