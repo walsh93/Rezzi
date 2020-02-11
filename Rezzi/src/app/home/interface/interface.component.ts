@@ -6,11 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./interface.component.css']
 })
 export class InterfaceComponent implements OnInit {
-  storedMessages = [];
-
-  onMessageAdded(message) {
-    this.storedMessages.push(message);
-  }
 
   constructor() { }
 
