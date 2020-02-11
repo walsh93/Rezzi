@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in-form',
@@ -7,9 +9,43 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignInFormComponent implements OnInit {
 
-  constructor() { }
+  // Class variables
+  errorMsg: string;
+
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
+    // Initialize class variables
+    this.errorMsg = '';
+  }
+
+  signIn() {
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+
+    // Body of the HTTP request (param names MUST match input field form names expected in login.js)
+    const body = {
+      email: `${email}`,
+      password: `${password}`
+    };
+
+    /**
+     * Send POST request
+     * Regardless of whether there was an error or not, the return object can be cast to an HttpErrorResponse
+     * If login succeeded (got a 2XX response status from sign-in.js), the then() will execute
+     * If login failed (got a 4XX response status from sign-in.js), the catch() will execute
+     * Sometimes there is a parsing error in the browser, so a successful login is still "caught"
+     */
+    this.http.post('/sign-in', body).toPromise().then((response) => {
+      this.router.navigate(['/home']);
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status === 200) {
+        this.router.navigate(['/home']);
+      } else {
+        this.errorMsg = `${res.error}`;
+      }
+    });
   }
 
 }

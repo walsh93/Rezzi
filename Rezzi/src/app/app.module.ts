@@ -66,6 +66,7 @@ import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel
 // Header Component
 import { HeaderComponent } from './header/header.component';
 import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button.component';
+import { MessagesService } from './home/interface/messages/messages.service';
 
 @NgModule({
   declarations: [
@@ -117,7 +118,7 @@ import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button
   entryComponents: [
     JoinChannelComponent
   ],
-  providers: [],
+  providers: [MessagesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

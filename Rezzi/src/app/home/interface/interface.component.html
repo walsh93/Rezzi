@@ -7,9 +7,12 @@
   <div class="example-sidenav-content"> <!-- Stuff in rest of interface -->
     <app-channel-nav-bar class="channelnavbar"></app-channel-nav-bar>
     <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
-      SideNav
+      ≡
     </button>
     <app-channel-messages [messages]="storedMessages"></app-channel-messages>
     <app-new-message (messageCreated) = 'onMessageAdded($event)'></app-new-message>
+    <div>
+      <app-channel-nav-bar></app-channel-nav-bar>
+    </div>
   </div>
 </mat-drawer-container>

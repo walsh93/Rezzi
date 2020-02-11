@@ -1,5 +1,5 @@
 <div class="container" id="sign-in-form-container">
-  <form id="sign-in-form" method="POST">
+  <div id="sign-in-form">
     <div class="form-row vspace">
       <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required>
     </div>
@@ -7,10 +7,13 @@
       <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
     </div>
     <div class="form-row vspace">
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button class="btn btn-primary" (click)="signIn()">Submit</button>
     </div>
     <div class="form-row">
       <a href="/nerp">Forgot password</a>
     </div>
-  </form>
+    <div class="form-row" id="error-msg">
+      <p>{{ errorMsg }}</p>
+    </div>
+  </div>
 </div>

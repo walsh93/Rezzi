@@ -10,3 +10,7 @@
 .vspace {
   padding-bottom: 2em;
 }
+
+#error-msg {
+  color: white;
+}
