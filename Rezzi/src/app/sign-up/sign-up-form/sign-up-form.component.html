@@ -84,16 +84,18 @@
           name="major"
           required>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="example-full-width" hintLabel="Max 100 characters">
         <textarea
           matInput
           rows="2"
-          placeholder="Bio - Max 100 chars"
+          placeholder="Bio"
           ngModel
           name="bio"
+          #bio
+          maxlength="100"
           required>
         </textarea>
-
+        <mat-hint>{{bio.value?.length || 0}}/100</mat-hint>
       </mat-form-field>
         <button
           mat-raised-button

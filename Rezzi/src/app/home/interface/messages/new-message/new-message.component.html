@@ -3,7 +3,7 @@
   <mat-card color="primary">
     <form>
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Enter your message..." [(ngModel)]="enteredMessage">
+        <input matInput placeholder="Enter your message..." [(ngModel)]="enteredMessage" [ngModelOptions]="{standalone: true}">
       </mat-form-field>
         <button mat-raised-button color="accent" (click)="onAddMessage()">Send</button>
     </form>
