@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { User } from 'src/app/classes.model';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-sign-up-form',
@@ -9,7 +10,7 @@ import { User } from 'src/app/classes.model';
 })
 export class SignUpFormComponent implements OnInit {
   hide = true;
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   onSignUp(form: NgForm) {
     if (form.invalid) {
@@ -17,6 +18,7 @@ export class SignUpFormComponent implements OnInit {
     }
     // if(form.value.age)
     // return;
+    console.log(form);
     const user = new User(
       form.value.email,
       form.value.password,
@@ -28,7 +30,10 @@ export class SignUpFormComponent implements OnInit {
       form.value.bio,
       true
     );
+
     console.log(user);
+
+    this.addUser(user);
     /*
     console.log(this.newUser);
     // check that email doesn't exist in database
@@ -41,6 +46,13 @@ export class SignUpFormComponent implements OnInit {
        // send data to backend
        // account created successfully
     }*/
+}
+
+addUser(user: User) {
+  this.http.post<{notification: string}>('http://localhost:4100/api/sign-up', user)
+    .subscribe(responseData => {
+      console.log(responseData.notification);
+    });
 }
 
   ngOnInit(): void {

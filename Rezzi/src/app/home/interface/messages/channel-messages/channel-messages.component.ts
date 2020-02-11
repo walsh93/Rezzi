@@ -16,7 +16,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   constructor(public messagesService: MessagesService) { }
 
   ngOnInit() {
-    this.messages = this.messagesService.getMessages();
+    this.messagesService.getMessages();
     this.messagesSub = this.messagesService.getMessageUpdateListener()
       .subscribe((messages: Message[]) => {
         this.messages = messages;

@@ -21,9 +21,10 @@ export class NewMessageComponent implements OnInit {
     }
     const message: Message = {
       content: form.value.enteredMessage,
-      owner: this.tempuser,
-      time: new Date(),
-      visible: true
+      // owner: this.tempuser,
+      // time: new Date(),
+      // visible: true,
+      id: null //TODO Need to change the ID
     };
     this.messagesService.addMessage(message);
     form.resetForm();

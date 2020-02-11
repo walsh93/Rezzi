@@ -1,7 +1,13 @@
+const constants = require('./server/constants')
+
+const debug = require('debug')('node-angular');
+
+const http = require('http');
 //Express Setup
 const express = require('express'),
     app = express();
 const path = require('path');
+
 
 // JSON Request Parser
 const bodyParser = require('body-parser'),
@@ -55,7 +61,73 @@ app.use(url.home, home)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
 
+// Testing
+app.use((request,response,next)=>{
+  response.setHeader('Access-Control-Allow-Origin','*');
+  response.setHeader('Access-Control-Allow-Headers',
+  'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  response.setHeader('Access-Control-Allow-Methods','GET, POST, DELETE, OPTIONS');
+  next();
+})
+
+app.post('/api/messages', (request, response, next) => {
+  const message = request.body;
+  console.log(message);
+  response.status(201).json({
+    notification: 'Message added successfully'
+  });
+});
+
+app.use('/api/messages',(request,response,next) => {
+  const messages = [
+    { id: '123456',
+    content: 'First message'},
+    { id: '123457',
+    content: 'Second message'}
+  ];
+  response.status(200).json({
+    message: 'Messages fetched successfully!',
+    messages: messages
+  });
+});
+
+app.post('/api/sign-up',(request,response,next) => {
+  const rb = request.body
+  console.log(rb);
+  firebase.addUser(rb)
+  response.status(201).json({
+    notification: 'User may be signed up?'
+  })
+  //add user here
+})
+
+
+
+// Error has occured
+const onError = error => {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+  const bind = typeof port === "string" ? "pipe " + port : "port " + port;
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
+
 // Server Express App
 const port = process.env.PORT || 4100;
-app.listen(port);
+app.set('port',port);
+const server = http.createServer(app);
+server.on('error',onError);
+server.listen(port);
 console.log("Server started on port " + port);

@@ -34,8 +34,9 @@ export class User {
 }
 
 export interface Message {
-  owner: User;
+  id: string;
+  // owner: User;
   content: string;
-  time: Date;
-  visible: boolean;
+  // time: Date;
+  // visible: boolean;
 }
