@@ -27,5 +27,9 @@ export class JoinChannelComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  joinChannel(id: number) {
+    console.log("Would send a request to database to join channel " + id);
+  }
+
   ngOnInit() {}
 }

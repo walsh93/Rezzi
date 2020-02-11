@@ -11,7 +11,7 @@
     </ng-container>
     <ng-container matColumnDef="join-channel">
       <th mat-header-cell *matHeaderCellDef>Join</th>
-      <td mat-cell *matCellDef="let element"><button>Join Channel!</button></td>
+      <td mat-cell *matCellDef="let element"><button mat-button (click)="joinChannel(element.id)">Join Channel!</button></td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
