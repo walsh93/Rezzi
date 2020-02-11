@@ -1,2 +1,12 @@
 <p>new-message works!</p>
+<div class="bottombar">
+  <mat-card color="primary">
+    <form>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Enter your message....." [(ngModel)]="enteredMessage" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
+        <button class= "send-button" mat-raised-button color="accent" (click)="onAddMessage()">Send</button>
+    </form>
+  </mat-card >
+</div>
 <!-- this is the text box with the "Send" button component -->

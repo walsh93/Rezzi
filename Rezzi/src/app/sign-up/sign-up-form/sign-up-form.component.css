@@ -1,0 +1,10 @@
+mat-card {
+  width: 80%;
+  margin: auto;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 400px;
+  width: 100%;
+}
