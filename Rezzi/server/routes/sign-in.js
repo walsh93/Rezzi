@@ -3,22 +3,26 @@ const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
+const checkCookie = require('../permissions').userNeedsToBeLoggedOut
 const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 const sign_in = require('../constants').sign_in
 
-router.get('/', function(request, response) {
+router.get('/', checkCookie, function(request, response) {
   response.sendFile(indexFile)
 }).post('/', function(request, response) {
   const req = request.body
-  console.log(request.body)
   db.collection(keys.users).where(keys.email, '==', req.email).get().then((snapshot) => {
     if (snapshot.empty) {
       response.status(http.bad_request).send(sign_in.email_error)
     } else if (snapshot.docs.length == 1) {
       const data = snapshot.docs[0].data()
       if (req.password == data.password) {
+        // Set session cookie before sending the response
+        request.__session = {
+          email: req.email
+        }
         response.sendStatus(http.ok)
       } else {
         response.status(http.bad_request).send(sign_in.password_error)

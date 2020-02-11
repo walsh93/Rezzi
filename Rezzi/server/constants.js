@@ -5,7 +5,8 @@ module.exports = {
 
   // Service URLs
   service: {
-    getUserByEmail: "/get-user-by-email",
+    get_session: "/get-session",
+    get_user_by_email: "/get-user-by-email",
   },
 
   // Firebase constants
@@ -14,11 +15,14 @@ module.exports = {
     email: 'email'
   },
 
-  // Pages
-  signinPage: "/sign-in",
-  signupPage: "/sign-up",
-  signupHDPage: "/sign-up-hd",
-  homePage: "/home",
+  // URLs
+  url: {
+    sign_in: "/sign-in",
+    sign_up: "/sign-up",
+    sign_up_hd: "/sign-up-hd",
+    home: "/home",
+    sign_out: "/sign-out",
+  },
 
   http_status: {
     ok: 200,

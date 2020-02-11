@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { RezziService } from '../../rezzi.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -13,13 +12,11 @@ export class SignInFormComponent implements OnInit {
   // Class variables
   errorMsg: string;
 
-  constructor(private rezziService: RezziService, private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     // Initialize class variables
     this.errorMsg = '';
-
-    /* TODO check session data */
   }
 
   signIn() {
