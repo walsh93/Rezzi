@@ -8,6 +8,7 @@ import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { EditProfileComponent } from './dashboard/edit-profile/edit-profile.component';
 
 // Routes
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'sign-up-hd', component: SignUpHdComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'edit-profile', component: EditProfileComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 

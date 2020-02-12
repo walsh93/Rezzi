@@ -58,6 +58,8 @@ const signin = require('./server/routes/sign-in')
 app.use(url.sign_in, signin)
 const home = require('./server/routes/home')
 app.use(url.home, home)
+const editprofile = require('./server/routes/edit-profile')
+app.use(url.edit_profile,editprofile)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
 

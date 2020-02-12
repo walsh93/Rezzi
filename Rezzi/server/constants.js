@@ -21,6 +21,7 @@ module.exports = {
     sign_up: "/sign-up",
     sign_up_hd: "/sign-up-hd",
     home: "/home",
+    edit_profile: "/edit-profile",
     sign_out: "/sign-out",
   },
 
