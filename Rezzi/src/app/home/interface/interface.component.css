@@ -5,12 +5,7 @@
   margin: auto;
 }
 
-.example-sidenav-content {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-}
+
 
 .example-sidenav {
   padding: 20px;
@@ -19,7 +14,7 @@
 
 .hambutton{
   position: absolute;
-  top: 8px;
-  left: 16px;
-  font-size: 18px;
+  top: 12px;
+  left: 8px;
+  font-size: 25px;
 }
