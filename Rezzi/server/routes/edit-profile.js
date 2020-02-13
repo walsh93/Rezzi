@@ -11,6 +11,13 @@ const edit_profile = require('../constants').edit_profile
 
 router.get('/', checkCookie, function(request, response) {
   response.sendFile(indexFile)
+}).post('/', function(request, response){
+  const req= request.body;
+  db.collection(keys.users).where(keys.email, '==', data.email).get().then((snapshot)=>{
+    if (snapshot.docs.length == 1) {
+      const data = snapshot.docs[0].data()
+    }
+  })
 })
 
 
