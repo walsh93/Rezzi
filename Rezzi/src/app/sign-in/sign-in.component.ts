@@ -18,9 +18,13 @@ export class SignInComponent implements OnInit {
    */
   ngOnInit() {
     this.rezziService.getSession().then((response) => {
-      if (response.email != null) {
-        this.router.navigate(['/home']);
-      }
+      if (response.email != null) {  // already signed in
+        if (response.verified === true) {  // already registered
+          this.router.navigate(['/home']);
+        } else {  // not yet registered
+          this.router.navigate(['/sign-up']);
+        }
+      }  // else you are not yet signed in
     });
   }
 
