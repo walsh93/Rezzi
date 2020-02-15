@@ -22,6 +22,7 @@ module.exports = {
     sign_up_hd: "/sign-up-hd",
     home: "/home",
     sign_out: "/sign-out",
+    invite_users: "/invite-users"
   },
 
   http_status: {
@@ -60,6 +61,10 @@ module.exports = {
   NOT_RAADMIN_MSG: 'You are not an RA Admin, you do not have permission to view this',
   NOT_HDADMIN: -530,
   NOT_HDADMIN_MSG: 'You are not an HD Admin, you do not have permission to view this',
+
+  //Invite codes
+  USER_ALREADY_EXISTS: -540,
+  USER_ALREADY_EXISTS_MSG: 'This user is alreaday a member of your Rezzi',
 
   // Email codes
   SENDING_EMAIL_ERR: 'Email could not be sent',
