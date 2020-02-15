@@ -67,6 +67,7 @@ import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel
 import { HeaderComponent } from './header/header.component';
 import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button.component';
 import { MessagesService } from './home/interface/messages/messages.service';
+import { ErrorComponent } from './error/error.component';
 
 
 
@@ -99,7 +100,8 @@ import { MessagesService } from './home/interface/messages/messages.service';
     ChannelNavBarComponent,
     JoinChannelComponent,
     RaAdminComponent,
-    RaCreateChannelComponent
+    RaCreateChannelComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

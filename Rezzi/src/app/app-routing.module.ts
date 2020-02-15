@@ -7,6 +7,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { HomeComponent } from './home/home.component';
+import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
+import { ErrorComponent } from './error/error.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 // Routes
@@ -16,6 +18,12 @@ const routes: Routes = [
   { path: 'sign-up-hd', component: SignUpHdComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'create-channel', component: RaCreateChannelComponent },
+
+  // Error routes
+  { path: 'err/:accountType/unauthorized', component: ErrorComponent },
+
+  // MUST BE LAST
   { path: '**', component: PageNotFoundComponent },
 ];
 
