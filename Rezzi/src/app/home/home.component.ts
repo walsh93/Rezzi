@@ -18,9 +18,11 @@ export class HomeComponent implements OnInit {
    */
   ngOnInit() {
     this.rezziService.getSession().then((response) => {
-      if (response.email == null) {
+      if (response.email == null) {  // not signed in
         this.router.navigate(['/sign-in']);
-      }
+      } else if (response.verified === false) {  // signed in but not verified
+        this.router.navigate(['/sign-up']);
+      }  // else signed in and verified
     });
   }
 
