@@ -37,6 +37,9 @@ Note: For `ng serve` and `ng build`, we can configure the commands so we just ha
   * Video tutorial showing how to create and use Angular components
 - [Routing](https://angular.io/start/routing)
   * Routing in Angular is separate from routing in Node.js, so we have to make sure that the Angular routes corresponding to our Node routes.
+  * [Angular 6 Url Parameters](https://medium.com/better-programming/angular-6-url-parameters-860db789db85)
+  * [Activated Route](https://angular.io/guide/router#activated-route)
+    + These are good references if you need URL parameters in Angular
 - [Managing Data](https://angular.io/start/data)
   * This is a good starting point for how we can use data from the backend and load it into Angular HTML pages on the frontend.
 - [HTTP](https://angular.io/tutorial/toh-pt6)
