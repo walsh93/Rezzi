@@ -22,6 +22,8 @@ module.exports = {
     sign_up_hd: "/sign-up-hd",
     home: "/home",
     sign_out: "/sign-out",
+    join_channel: "/join-channel",
+    get_channels: "/get-channels",
   },
 
   http_status: {
