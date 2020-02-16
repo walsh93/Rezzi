@@ -107,16 +107,16 @@ export class CreateChannelFormComponent implements OnInit {
      * Sometimes there is a parsing error in the browser, so a successful login is still "caught"
      * NOTE: Anything returned from create-channel.js will be accessible in res.error
      */
-    // this.http.post('/create-channel', body).toPromise().then((response) => {
-    //   this.router.navigate(['/home']);  // TODO change this to route to channel?
-    // }).catch((error) => {
-    //   const res = error as HttpErrorResponse;
-    //   if (res.status === 200) {
-    //     this.router.navigate(['/home']);  // TODO change this to route to channel?
-    //   } else {
-    //     this.errorMsg = `${res.error}`;
-    //   }
-    // });
+    this.http.post('/create-channel', body).toPromise().then((response) => {
+      this.router.navigate(['/home']);  // TODO change this to route to channel?
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status === 200) {
+        this.router.navigate(['/home']);  // TODO change this to route to channel?
+      } else {
+        this.errorMsg = `${res.error}`;
+      }
+    });
   }
 
 }
