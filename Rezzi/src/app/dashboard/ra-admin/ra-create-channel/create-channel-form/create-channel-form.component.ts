@@ -84,7 +84,10 @@ export class CreateChannelFormComponent implements OnInit {
     const memberInputs = document.getElementsByName('member');
     const members = new Array<string>();
     memberInputs.forEach((element) => {
-      members.push((element as HTMLInputElement).value);  // Validation happens on the form itself
+      const memberEmail = (element as HTMLInputElement).value;
+      if (memberEmail.length > 1) {
+        members.push(memberEmail);  // Validation happens on the form itself
+      }
     });
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)
