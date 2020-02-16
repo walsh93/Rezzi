@@ -85,7 +85,7 @@ export class CreateChannelFormComponent implements OnInit {
     const members = new Array<string>();
     memberInputs.forEach((element) => {
       const memberEmail = (element as HTMLInputElement).value;
-      if (memberEmail.length > 1) {
+      if (memberEmail.length > 1 && !members.includes(memberEmail)) {
         members.push(memberEmail);  // Validation happens on the form itself
       }
     });
@@ -98,8 +98,6 @@ export class CreateChannelFormComponent implements OnInit {
       description: `${this.description}`,
       memberEmails: members,
     };
-
-    console.log(body);
 
     /**
      * Send POST request
