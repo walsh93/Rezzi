@@ -7,6 +7,7 @@ A running list of sources, tutorials, and other links that may be of great use d
   * [General tutorials](#general-tutorials)
   * [Using Angular with Node.js](#using-angular-with-nodejs)
   * [Using Angular with Firebase](#using-angular-with-firebase)
+  * [Forms](#forms)
   * [Other HTML and Typescript stuff](#other-html-and-ts-stuff)
 - [Express JS](#express-js)
   * [Routing](#routing)
@@ -65,6 +66,14 @@ Note: For `ng serve` and `ng build`, we can configure the commands so we just ha
   * A simple step-by-step tutorial showing how Firebase and Angular can be incorporated within the same application. This example uses the *real-time* database.
 - [Firebase Firestore and Angular TODO List Application](https://medium.com/@coderonfleek/firebase-firestore-and-angular-todo-list-application-d0fe760f6bca)
   * Another simple tutorial showing how Firebase and Angular can be used together.
+
+### Forms
+- [Form validation](https://angular.io/guide/form-validation)
+- [NgForm](https://angular.io/api/forms/NgForm)
+- [NgModel](https://angular.io/api/forms/NgModel)
+- [NgModelGroup](https://angular.io/api/forms/NgModelGroup)
+- [EmailValidator](https://angular.io/api/forms/EmailValidator)
+- [How to use the “required” attribute with a “radio” input field](https://stackoverflow.com/questions/8287779/how-to-use-the-required-attribute-with-a-radio-input-field)
 
 ### Other HTML and TS stuff
 - [Function.prototype.bind()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind)
