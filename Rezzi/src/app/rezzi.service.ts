@@ -6,6 +6,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class RezziService {
 
+  userUrl = "/get-user";
+
   constructor(private http: HttpClient) { }
 
   private getSessionUrl = '/get-session';
@@ -15,4 +17,13 @@ export class RezziService {
       return response;
     });  // No error codes in getSession.js, so no need for a catch statement
   }
+
+  // getUser(userId): Promise<any> {
+  //   return this.http.get(`${this.userUrl}/${userId}`).toPromise().then((response) => {
+  //     return response;
+  //   }).catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
+
 }

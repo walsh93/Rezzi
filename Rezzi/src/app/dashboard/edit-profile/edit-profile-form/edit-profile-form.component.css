@@ -1,0 +1,16 @@
+mat-form-field {
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.edit-profile-form{
+  display: block;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+table{
+  display: block;
+  width: 100%;
+}

@@ -1,4 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { User } from 'src/app/classes.model';
+// import {RezziService} from '../../rezzi.service';
+// import { Router } from '@angular/router';
 
 @Component({
   selector: "app-edit-profile-form",
@@ -6,7 +9,12 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./edit-profile-form.component.css"]
 })
 export class EditProfileFormComponent implements OnInit {
-  constructor() {}
+  constructor(){}
 
-  ngOnInit(): void {}
+
+
+  ngOnInit(){
+
+
+  }
 }

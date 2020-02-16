@@ -104,6 +104,12 @@ app.post('/api/sign-up',(request,response,next) => {
   //add user here
 })
 
+// app.post('api/edit-profile', (request, response, next) => {
+//   const rb = request.body;
+//   console.log(rb);
+//   firebase.getUser();
+// })
+
 
 
 // Error has occured

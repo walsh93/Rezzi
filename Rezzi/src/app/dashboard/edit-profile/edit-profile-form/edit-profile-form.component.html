@@ -1,52 +1,55 @@
-<mat-drawer-container class="edit-profile-form-container" autosize>
-  <form class="edit-profile-form">
+<!-- <mat-drawer-container class="edit-profile-form-container" autosize> -->
+<form class="edit-profile-form">
 
-    <table class="full-width" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field class="full-width">
-            <mat-label>First Name</mat-label>
-            <input matInput required>
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="full-width">
-            <mat-label>Last Name</mat-label>
-            <input matInput required>
-          </mat-form-field>
-        </td>
-      </tr>
-    </table>
+  <table class="full-width" cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="full-width">
+          <mat-label>First Name</mat-label>
+          <input matInput required>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+          <mat-label>Last Name</mat-label>
+          <input matInput required>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+          <mat-label>Nickname</mat-label>
+          <input matInput>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
 
-    <p>
+  <table class="full-width" cellspacing="0">
       <mat-form-field class="full-width">
-        <mat-label>Email</mat-label>
+        <mat-label></mat-label>
         <textarea matInput required>example@me</textarea>
       </mat-form-field>
-      <mat-form-field class="full-width">
-        <mat-label required>Nickname</mat-label>
-        <textarea matInput>MyNickname</textarea>
-      </mat-form-field>
-    </p>
+  </table>
 
-    <table class="full-width" cellspacing="0">
-      <tr>
-        <td>
-          <mat-form-field class="full-width">
-            <mat-label>Password</mat-label>
-            <input matInput placeholder="Password" required>
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field class="full-width">
-            <mat-label>Confirm Password</mat-label>
-            <input matInput placeholder="Re-type password" required>
-          </mat-form-field>
-        </td>
-      </tr>
-    </table>
-  </form>
-</mat-drawer-container>
+
+  <table class="full-width" cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput placeholder="Password" required>
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="full-width">
+          <mat-label>Confirm Password</mat-label>
+          <input matInput placeholder="Re-type password" required>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+</form>
+<!-- </mat-drawer-container> -->
 
 <!-- First Name: <input id="first_name" type="text" name="first_name" placeholder="First name" required>
 Last Name: <input id="last_name" type="text" name="last_name" [value]="'Test'" required>

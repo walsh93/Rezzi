@@ -37,6 +37,10 @@ module.exports.addUser = function addUser(data) {
     })
 }
 
-// module.exports.editUser = function editUser(data){
-//   dbstore.collection('users')
-// }
+// module.exports.getUser = function getUser(data){
+//   let query = firestore.collection('users').where('email', '==', data.email)
+//   console.log(query)
+// //   dbstore.collection('users').doc(data.email.get().then(doc => {
+// //     dbstore.collection('users').doc(data.email).get
+// //   }))
+//  }
