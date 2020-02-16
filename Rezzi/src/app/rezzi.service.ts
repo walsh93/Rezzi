@@ -18,7 +18,7 @@ export class RezziService {
     });  // No error codes in getSession.js, so no need for a catch statement
   }
 
-  // getUser(userId): Promise<any> {
+  // getUserData(userId): Promise<any> {
   //   return this.http.get(`${this.userUrl}/${userId}`).toPromise().then((response) => {
   //     return response;
   //   }).catch((error) => {

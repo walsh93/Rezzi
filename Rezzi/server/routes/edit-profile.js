@@ -3,11 +3,12 @@ const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
-const checkCookie = require('../permissions').userNeedsToBeLoggedIn
 const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 const edit_profile = require('../constants').edit_profile
+
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 
 // router.get('/', checkCookie, function(request, response) {
 //   response.sendFile(indexFile)
