@@ -18,4 +18,9 @@ fieldset {
 #create {
   border-color: transparent;
   padding-top: 2em;
+  padding-left: 0;
+}
+
+#create-btn {
+  margin-left: 0;
 }
