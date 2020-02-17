@@ -73,8 +73,7 @@ module.exports.userNeedsToBeLoggedInHD = function untblihd(request, response, ne
   if (!request.__session.email) {  // not signed in
     response.redirect('/sign-in')
   } else if (request.__session.accountType != 0){
-    //TO DO: change this to an "invalid users" page once it is created
-    response.redirect('/home') //doesn't have HD access
+    response.redirect('/err/0/unauthorized') //doesn't have HD access
   } else {
     next() //Propogate to next handler
   }
