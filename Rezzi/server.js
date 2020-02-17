@@ -63,6 +63,8 @@ const createchannel = require('./server/routes/create-channel')
 app.use(url.create_channel, createchannel)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
+const joinchannel = require('./server/routes/join-channel')
+app.use(url.join_channel, joinchannel)
 
 // Testing
 app.use((request,response,next)=>{
@@ -101,16 +103,15 @@ app.post('/api/sign-up',(request,response,next) => {
   firebase.addUser(rb)
   response.status(201).json({
     notification: 'User may be signed up?'
-  })
+  });
   //add user here
-})
+});
 
 
 // All routes fall to here if they didn't match any of the previous routes
 app.get('*', function (request, response) {
   response.sendFile(indexFile)
 })
-
 
 // Error has occured
 const onError = error => {

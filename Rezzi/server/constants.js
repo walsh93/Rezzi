@@ -42,6 +42,8 @@ module.exports = {
       not_hdadmin: "/err/0/unauthorized",
       not_hdadmin_ext: "/0/unauthorized",
     },
+    join_channel: "/join-channel",
+    get_channels: "/get-channels",
   },
 
   http_status: {
