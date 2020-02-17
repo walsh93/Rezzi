@@ -22,7 +22,9 @@ module.exports = {
     sign_up_hd: "/sign-up-hd",
     home: "/home",
     sign_out: "/sign-out",
-    invite_users: "/invite-users"
+    invite_users: "/invite-users",
+    join_channel: "/join-channel",
+    get_channels: "/get-channels",
   },
 
   http_status: {

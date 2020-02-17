@@ -1,7 +1,6 @@
 <!-- This component shows the floors/channels the user is in -->
-
 <mat-expansion-panel>
-  <mat-expansion-panel-header>
+  <mat-expansion-panel-header >
     <mat-panel-title>
       REZZI NAME (in interface.html)
     </mat-panel-title>
@@ -26,7 +25,8 @@
     </mat-expansion-panel>
 
   </mat-expansion-panel>
-</div>
+  </div>
   <p class="no-rezzi" *ngIf="channels.length < 1"> There are currently no channels in this Rezzi</p>
 
 </mat-expansion-panel>
+<button mat-button (click)="openDialog()" class="join-channel-button">Join Channel</button>
