@@ -8,13 +8,12 @@ const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 const sign_in = require('../constants').sign_in
-const url = require('../constains').url
+const url = require('../constants').url
 
-router.get('/', checkCookie, function(request, response) {
-  response.sendFile(indexFile)
-}).post(url.join_channel, function(request, response) {
-  const req = request.body
-  console.log(req)
+router.post('/', checkCookie, function(request, response) {
+  const req = request.body;
+  console.log("b");
+  console.log(req);
   // db.collection(keys.channels).where
 })
 
