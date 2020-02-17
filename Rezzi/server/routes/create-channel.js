@@ -18,21 +18,26 @@ router.get('/', checkCookie, function(request, response) {
     const data = doc.data()
 
     // Create channel object to save in the database
-    // TODO - add messages and calendars? Or dynamically add once they actually exist?
     const channel = {
       owner: req.owner,
       approvalStatus: true,
       title: req.title,
       level: req.level,
       description: req.description,
-      members: req.memberEmails,
+      members: req.memberEmails,  // messages and calendars can be added as they're created
     }
 
     const errorMsg = 'There was an error creating your channel'
 
-    // TODO - check that the keys are consistent with the database!!!!!!!!
+    /**
+     * TODO @aaronlynn
+     * Not currently sure where the user's floor is being stored or what the key(s) for the user's
+     * floor and rezzi are. Need those keys to correctly query the database
+     * Also, once we know where to reroute to (what the link is), use the currently commented-out
+     * `response.status().redirect()` statement instead
+     */
     if (req.level == keys.ra) {
-      db.collection(keys.residence_halls).doc(data.rezzi)
+      db.collection(keys.residence_halls).doc(/* get user's rezzi from data or __session once implemented? */)
           .collection(keys.ra).doc(channel.title).set(channel).then((write_result) => {
         response.status(http.ok).send('Your RA channel has been successfully created!')
 //        response.status(http.ok).redirect('wherever the view-channel link is')
@@ -41,7 +46,7 @@ router.get('/', checkCookie, function(request, response) {
         response.status(http.bad_request).send(errorMsg)
       })
     } else if (req.level == keys.hallwide) {
-      db.collection(keys.residence_halls).doc(data.rezzi)
+      db.collection(keys.residence_halls).doc(/* get user's rezzi from data or __session once implemented? */)
           .collection(keys.hallwide).doc(channel.title).set(channel).then((write_result) => {
         response.status(http.ok).send('Your hallwide channel has been successfully created!')
 //        response.status(http.ok).redirect('wherever the view-channel link is')
@@ -50,8 +55,8 @@ router.get('/', checkCookie, function(request, response) {
         response.status(http.bad_request).send(errorMsg)
       })
     } else {
-      db.collection(keys.residence_halls).doc(data.rezzi)
-          .collection(keys.floors).doc(data.floor)
+      db.collection(keys.residence_halls).doc(/* get user's rezzi from data or __session once implemented? */)
+          .collection(keys.floors).doc(/* get user's floor; not currently sure where that's being stored */)
           .collection('channels').doc(channel.title).set(channel).then((write_result) => {
         response.status(http.ok).send('Your floor interest channel has been successfully created!')
 //        response.status(http.ok).redirect('wherever the view-channel link is')
@@ -61,8 +66,6 @@ router.get('/', checkCookie, function(request, response) {
       })
     }
   })
-
-  // TODO @Aaron Lynn
 })
 
 module.exports = router
