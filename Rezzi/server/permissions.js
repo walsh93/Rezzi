@@ -60,3 +60,22 @@ module.exports.userNeedsToBeLoggedInAndUnverified = function untbliau(request, r
     next()  // Propogate to the next handler
   }
 }
+
+/**
+ * Check that user is logged in, verified and a HD. This condition is needed for inviting users.
+ * 
+ * @param {Request<Dictionary<string>>} request Request that contains the session
+ * @param {Response} response HTTP response
+ * @param {*} next Function that passes handling to next handler
+ */
+module.exports.userNeedsToBeLoggedInHD = function untblihd(request, response, next) {
+  console.log('userNeedsToBeLoggedInHD', request.__session)
+  if (!request.__session.email) {  // not signed in
+    response.redirect('/sign-in')
+  } else if (request.__session.accountType != 0){
+    //TO DO: change this to an "invalid users" page once it is created
+    response.redirect('/home') //doesn't have HD access
+  } else {
+    next() //Propogate to next handler
+  }
+}
