@@ -2,12 +2,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
+import { ChannelData } from '../side-panel.service';
 
-export interface ChannelData {
-  id: number,
-  channel: string,
-  users: number
-}
+// export interface ChannelData {
+//   id: number,
+//   channel: string,
+//   users: number
+// }
 
 @Component({
   selector: 'app-join-channel',
