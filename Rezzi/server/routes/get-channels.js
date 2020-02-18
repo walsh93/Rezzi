@@ -22,25 +22,35 @@ router.get('/', checkCookie, function(request, response) {
   var floor = '';
   db.collection(keys.users).doc(email).get().then(doc => {
   	if (doc.exists) {
-	  belongs_to = doc.data().channels;
-	  rezzi = doc.data().rezzi;
-	  user_type = doc.data().accountType;
-	  floor = doc.data().floor;
-	}
-  });
-
-  // Get rezzis they can belong to
-  var can_belong_to = [];
-  let rezzi_collection = db.collection(keys.rezzis).collection(rezzi);
-
-  rezzi_collection.collection('floors').doc().get().then(doc => {
-  	if (doc.exists) {
-  	  doc.collection('floors').doc(floor).get().then(floor_doc => {
-  	  	if (floor_doc.exists) {
-	  	  can_belong_to.concat(floor_doc.data().channels)
-	  	}
-  	  });
+  	  belongs_to = doc.data().channels;
+  	  rezzi = doc.data().rezzi;
+  	  user_type = doc.data().accountType;
+  	  floor = doc.data().floor;
   	}
+
+    // Get rezzis they can belong to
+    var can_belong_to = [];
+    const prefix = keys.rezzis + '/' + rezzi + '/';
+    db.collection(prefix + 'hallwide').get().then(function(querySnapshotHall) {  // Get hallwide channels
+      console.log("Hallwide:")
+      querySnapshotHall.forEach(function(doc) {
+        console.log('\t', doc.id, '=>', doc.data());
+      })
+      db.collection(prefix + 'floors/' + floor + '/channels').get().then(function(querySnapshotFloor) {  // Get floor channels
+        console.log("Floor:")
+        querySnapshotFloor.forEach(function(doc) {
+          console.log('\t', doc.id, '=>', doc.data());
+        })
+        if (user_type == 1 || user_type == 2) {
+          db.collection(prefix + 'RA').get().then(function(querySnapshotRA) {  // Get RA channels if applicable
+            console.log("RA:")
+            querySnapshotRA.forEach(function(doc) {
+              console.log('\t', doc.id, '=>', doc.data());
+            })
+          });
+        }
+      });
+    });
   });
 })
 
