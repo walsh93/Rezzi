@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { JoinChannelComponent } from './join-channel/join-channel.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-panel',
@@ -15,7 +16,7 @@ export class SidePanelComponent implements OnInit {
     {id: 8, channel: "qiwiqwfhwqf", users: 12412}
   ];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private router: Router) {}
 
   openDialog(): void {
     const dialogRef = this.dialog.open(JoinChannelComponent, {
@@ -30,6 +31,10 @@ export class SidePanelComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  goToCreateChannel() {
+    this.router.navigate(['/create-channel']);
   }
 
 }
