@@ -1,5 +1,7 @@
-.button {
+.add-channel-button {
   margin-top: 10px;
+  transition: none;
+  box-shadow: none;
 }
 
 .example-container {
@@ -25,13 +27,16 @@
 }
 
 .no-rezzi {
+  padding: 180px 0;
   text-align: center;
+  color: #808080;
+  font-size: 11pt;
 }
 
 .join-channel-button {
   width: 100%;
   position: absolute;
-  bottom: 80px;
+  bottom: 65px;
   right: 0px;
   padding: 5px;
 }
