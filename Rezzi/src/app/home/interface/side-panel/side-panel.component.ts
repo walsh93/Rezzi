@@ -12,7 +12,7 @@ export class SidePanelComponent implements OnInit {
   channels = [
     {id: 6,
       channel: "Floor 2E",
-      subchannels: [{id: 9, channel: "gamerz", users: 12}],
+      subchannels: [{id: 9, channel: "gamerz", users: 12}, {id: 10, channel: "best friends", users: 1}],
       users: 45},
     {id: 7, channel: "Hallwide", users: 112},
     {id: 8, channel: "RAs", users: 12412}
@@ -35,4 +35,7 @@ export class SidePanelComponent implements OnInit {
   ngOnInit() {
   }
 
+  doTheThing() {
+    console.log('help');
+  }
 }
