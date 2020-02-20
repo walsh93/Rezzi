@@ -31,26 +31,42 @@ router.get('/', checkCookie, function(request, response) {
     // Get rezzis they can belong to
     var can_belong_to = [];
     const prefix = keys.rezzis + '/' + rezzi + '/';
-    db.collection(prefix + 'hallwide').get().then(function(querySnapshotHall) {  // Get hallwide channels
-      console.log("Hallwide:")
-      querySnapshotHall.forEach(function(doc) {
-        console.log('\t', doc.id, '=>', doc.data());
+
+    function queryDb(collection) {
+      to_add = [];
+      var should_return = false;
+      db.collection(collection).select('members').get().then(function(snapshot) {
+        console.log(collection);  // Debugging
+        snapshot.forEach(function(doc) {
+          temp = {
+            channel: doc.id
+          }
+          if (doc.data().hasOwnProperty('members')) {
+            temp.users = doc.data().members.length;
+          }
+          else {
+            temp.users = 0;
+          }
+          to_add.push(temp);
+        });
+        console.log(to_add);
+        should_return = true;
+      }).catch(function(rejection) {
+        console.log(collection + " --- ERROR:", rejection);  // Debugging output
+        should_return = true;
       })
-      db.collection(prefix + 'floors/' + floor + '/channels').get().then(function(querySnapshotFloor) {  // Get floor channels
-        console.log("Floor:")
-        querySnapshotFloor.forEach(function(doc) {
-          console.log('\t', doc.id, '=>', doc.data());
-        })
-        if (user_type == 1 || user_type == 2) {
-          db.collection(prefix + 'RA').get().then(function(querySnapshotRA) {  // Get RA channels if applicable
-            console.log("RA:")
-            querySnapshotRA.forEach(function(doc) {
-              console.log('\t', doc.id, '=>', doc.data());
-            })
-          });
-        }
-      });
-    });
+      while (should_return == false) {}
+      return to_add;
+    }
+
+    can_belong_to.concat(queryDb(prefix + 'hallwide'));
+    can_belong_to.concat(queryDb(prefix + 'floors/' + floor + '/channels'));
+    if (user_type < 2) {
+      can_belong_to.concat(queryDb(prefix + 'RA'))
+    }
+    console.log("All queries completed");
+    console.log(can_belong_to);
+
   });
 })
 

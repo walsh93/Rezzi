@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 export interface ChannelData {
-  id: number,
   channel: string,
-  users: number
+  users: number,
+  belongs: boolean,
 }
 
 @Injectable()
