@@ -68,6 +68,12 @@ import { HeaderComponent } from './header/header.component';
 import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button.component';
 import { MessagesService } from './home/interface/messages/messages.service';
 
+//Reset password components
+import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
+import { PwordresetRequestComponent } from './resetpassword/pwordreset-request/pwordreset-request.component';
+import { PwordresetSentComponent } from './resetpassword/pwordreset-sent/pwordreset-sent.component';
+import { PwordresetChangeComponent } from './resetpassword/pwordreset-change/pwordreset-change.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -95,7 +101,11 @@ import { MessagesService } from './home/interface/messages/messages.service';
     ChannelNavBarComponent,
     JoinChannelComponent,
     RaAdminComponent,
-    RaCreateChannelComponent
+    RaCreateChannelComponent,
+    ResetpasswordComponent,
+    PwordresetRequestComponent,
+    PwordresetSentComponent,
+    PwordresetChangeComponent
   ],
   imports: [
     BrowserModule,
