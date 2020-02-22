@@ -64,6 +64,12 @@ const getchannels = require('./server/routes/get-channels')
 app.use(url.get_channels, getchannels)
 const joinchannel = require('./server/routes/join-channel')
 app.use(url.join_channel, joinchannel)
+const pwordResetRequest = require('./server/routes/pword-reset-change')
+app.use(url.pword_reset_request, pwordResetRequest)
+const pwordResetSent = require('./server/routes/pword-reset-sent')
+app.use(url.pword_reset_sent, pwordResetSent)
+const pwordResetChange = require('./server/routes/pword-reset-change')
+
 
 // Testing
 app.use((request,response,next)=>{

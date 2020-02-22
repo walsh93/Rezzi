@@ -25,6 +25,9 @@ module.exports = {
     sign_out: "/sign-out",
     join_channel: "/join-channel",
     get_channels: "/get-channels",
+    pword_reset_request: "/pword-reset-request",
+    pword_reset_sent: "/pword-reset-sent",
+    pword_reset_change: "/pword-reset-change",
   },
 
   http_status: {
