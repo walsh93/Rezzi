@@ -35,13 +35,24 @@ export class SignInFormComponent implements OnInit {
      * If login succeeded (got a 2XX response status from sign-in.js), the then() will execute
      * If login failed (got a 4XX response status from sign-in.js), the catch() will execute
      * Sometimes there is a parsing error in the browser, so a successful login is still "caught"
+     * NOTE: Anything returned from sign-in.js will be accessible in res.error
      */
     this.http.post('/sign-in', body).toPromise().then((response) => {
-      this.router.navigate(['/home']);
+      const res = response as any;
+      if (res.verified === false) {
+        this.router.navigate(['/sign-up']);
+      } else {
+        this.router.navigate(['/home']);
+      }
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
-        this.router.navigate(['/home']);
+        const res2 = error as any;
+        if (res2.error.verified === false) {
+          this.router.navigate(['/sign-up']);
+        } else {
+          this.router.navigate(['/home']);
+        }
       } else {
         this.errorMsg = `${res.error}`;
       }

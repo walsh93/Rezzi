@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const checkCookie = require('../permissions').userNeedsToBeLoggedIn
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 const indexFile = require('../constants').indexFile
 
 router.get('/', checkCookie, function(request, response) {

@@ -20,10 +20,12 @@ router.get('/', checkCookie, function(request, response) {
       const data = snapshot.docs[0].data()
       if (req.password == data.password) {
         // Set session cookie before sending the response
+        // TODO add other fields that need to be saved in the session
         request.__session = {
-          email: req.email
+          email: req.email,
+          verified: data.verified,
         }
-        response.sendStatus(http.ok)
+        response.status(http.ok).json({ verified: data.verified })
       } else {
         response.status(http.bad_request).send(sign_in.password_error)
       }
