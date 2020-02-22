@@ -12,9 +12,8 @@ const url = require('../constants').url
 
 router.post('/', checkCookie, function(request, response) {
   const req = request.body;
-  console.log("b");
-  console.log(req);
-  // db.collection(keys.channels).where
+  const email = request.__session.email;
+  // db.collection(keys.users).where
 })
 
 module.exports = router
