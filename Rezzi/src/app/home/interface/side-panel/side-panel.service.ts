@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-export interface ChannelData {
-  channel: string,
-  users: number,
-  belongs: boolean,
-}
-
 @Injectable()
 export class SidePanelService {
   constructor(private http: HttpClient) {}
 
   getChannels() {
-    return this.http.get<ChannelData>('/get-channels');
+    return this.http.get('/get-channels');
   }
 }

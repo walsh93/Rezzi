@@ -3,7 +3,7 @@ const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
-const checkCookie = require('../permissions').userNeedsToBeLoggedIn
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
@@ -12,7 +12,6 @@ const url = require('../constants').url
 
 router.get('/', checkCookie, function(request, response) {
   const req = request.body;
-  // console.log("Request: " + request.__session);
   const email = request.__session.email;
   
   // Get rezzis the user belongs to
@@ -38,10 +37,10 @@ router.get('/', checkCookie, function(request, response) {
           channels: {}
         };
         db.collection(collection).select('members').get().then(function(snapshot) {
-          console.log(collection);  // Debugging
+          // console.log(collection);  // Debugging
           snapshot.forEach(function(doc) {
             temp = {
-              belongs: false
+              belongs: false,
             }
             if (doc.data().hasOwnProperty('members')) {
               temp.users = doc.data().members.length;
@@ -51,14 +50,15 @@ router.get('/', checkCookie, function(request, response) {
             }
             to_add.channels[doc.id] = temp;
           });
-          console.log(to_add);
+          // console.log(to_add);
           resolve(to_add);
         }).catch(function(rejection) {
-          console.log(collection + " --- ERROR:", rejection);  // Debugging output
+          // console.log(collection + " --- ERROR:", rejection);  // Debugging output
           resolve(to_add);
         })
       })
     }
+
     var promises = [queryDb(prefix + 'hallwide', 'hallwide'), queryDb(prefix + 'floors/' + floor + '/channels', 'floors-' + floor)];
     if (user_type < 2) {
       promises.push(queryDb(prefix + 'RA', 'RA'));
@@ -68,7 +68,7 @@ router.get('/', checkCookie, function(request, response) {
       responses.forEach((response) => {
         to_return[response.parent] = response.channels;
       });
-      console.log(to_return);
+      // console.log(to_return);
 
       // Check for channels they belong to and set flags accordingly
       belongs_to.forEach((channel) => {
