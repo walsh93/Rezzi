@@ -15,4 +15,13 @@ export class RezziService {
       return response;
     });  // No error codes in getSession.js, so no need for a catch statement
   }
+
+  getFloors(): Promise<any> {
+    return this.http.get('/get-floors').toPromise().then((list_of_floors) => {
+      return list_of_floors;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+  
 }

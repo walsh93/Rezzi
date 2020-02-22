@@ -48,6 +48,8 @@ const url = require('./server/constants').url
 // Routers for the rezzi.service
 const getSession = require('./server/service/getSession')
 app.use(service.get_session, getSession)
+const getFloors = require('./server/service/getFloors')
+app.use(service.get_floors, getFloors)
 
 // Routers, links to URLs
 const signup = require('./server/routes/sign-up')

@@ -12,18 +12,15 @@ const invite_users = require('../constants').invite_users
 const randomstring = require('randomstring');
 const nodemailer = require('nodemailer');
 
-//TODO: user needs to be logged in as admin
 router.get('/', checkCookie, function(request, response) {
     response.sendFile(indexFile)
   }).post('/', function(request, response){
       console.log(request.body)
-    
+    //TO DO: figure out how to add users to channels
 
-    //not sure what things I need to make sure are happening here
     //for each email in the array, need to save to the db a new user with email, role, floor, rezzi, verified = 0, and pword code
 
-    //loop through array (how do I get that??)
-    for(var i = 0, i < request.body.emailarr.length; i++){
+    for(var i = 0; i < request.body.emailarr.length; i++){
         //if(email isn't already in the database)
         const tempPword = randomstring.generate();
         var currentEmail = request.body.emailarr[i]
@@ -32,10 +29,9 @@ router.get('/', checkCookie, function(request, response) {
             email: currentEmail,
             password: tempPword,
             verified: 'false',
-            //accountType: request.body.rezzi,
-            //floor: request.body.floor,
-            //rezzi: request.body.rezzi,
-            //channels: request.body.channels,
+            accountType: request.body.accountType,
+            floor: request.body.floor,
+            rezzi: request.body.rezzi
         }).then(() =>{
             response.status(http.ok).send('Add user sucessful') 
         })

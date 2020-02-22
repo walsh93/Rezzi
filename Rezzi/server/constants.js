@@ -7,6 +7,7 @@ module.exports = {
   service: {
     get_session: "/get-session",
     get_user_by_email: "/get-user-by-email",
+    get_floors: "/get-floors",
   },
 
   // Firebase constants
