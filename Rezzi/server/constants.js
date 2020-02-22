@@ -12,7 +12,8 @@ module.exports = {
   // Firebase constants
   db_keys: {
     users: 'users',
-    email: 'email'
+    email: 'email',
+    rezzis: 'residence-halls'
   },
 
   // URLs
