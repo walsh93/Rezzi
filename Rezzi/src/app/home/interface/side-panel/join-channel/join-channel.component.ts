@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
-import { ChannelData } from '../side-panel.service';
+import { ChannelData } from '../../../../classes.model';
 
 // export interface ChannelData {
 //   id: number,
@@ -23,14 +23,23 @@ export class JoinChannelComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<JoinChannelComponent>, 
         @Inject(MAT_DIALOG_DATA) public data,
         private http: HttpClient) {
-    this.dataSource = new MatTableDataSource(data);
+    let can_join: ChannelData[] = [];
+    console.log(data);
+    data.forEach(hall => {
+      hall.subchannels.forEach(subchannel => {
+        if (!subchannel.belongs) {  // if the user doesn't belong
+          can_join.push(subchannel);
+        }
+      })
+    });
+    this.dataSource = new MatTableDataSource(can_join);
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  joinChannel(id: number) {
+  joinChannel(id: string) {
     console.log("Would send a request to database to join channel " + id);
     this.http.post<{notification: string}>('http://localhost:4100/join-channel', {"channel_id": id})
     .subscribe(responseData => {

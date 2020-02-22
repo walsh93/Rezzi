@@ -40,3 +40,11 @@ export interface Message {
   // time: Date;
   // visible: boolean;
 }
+
+export interface ChannelData {
+  id: string,
+  channel: string,
+  users: number,
+  belongs: boolean,
+  subchannels: ChannelData[],
+}
