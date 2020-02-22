@@ -4,29 +4,42 @@ var router = express.Router();
 const admin = require('firebase-admin');
 const db = admin.firestore();
 
-const c = require('../../constants');
+const checkCookie = require('../permissions').userNeedsToBeLoggedIn
+const indexFile = require('../constants').indexFile
+const http = require('../constants').http_status
+const keys = require('../constants').db_keys
+const sign_in = require('../constants').sign_in
+const url = require('../constants').url
 
 router.get('/', checkCookie, function(request, response) {
-    db.collection('residence-halls').get().then((snapshot) => {
-      /**
-       * You may not want to send the entire Firestore document object, you may just
-       * want to extract a few fields from each user document. That is what I'm
-       * doing in this example, but you can keep as many or as few fields as you would
-       * like. If you want to send everything in the document, then you can just send
-       * the entire variable `snapshot` back to the frontend. 
-       */
+  const req = request.body;
+  const email = request.__session.email;
 
-       //need to get list from residence-hall.{rezzi}.floors
+  //get the rezzi the user belongs to
+  var userrezzi = '';
+  db.collection(keys.users).doc(email).get().then(doc => {
+    //get name of rezzi
+    if(doc.exists){
+      userrezzi = doc.data().rezzi;
+    }
+
+  });
+
+  // {rezzi}.floors
+  const prefix = '/' + userrezzi + '/' + 'floors';
+  //TO DO: Here is where I gave up Help needed
+    db.collection('residence-halls').get(prefix).then((snapshot) => {
+      
   
-      let floors = []
-      snapshot.forEach((floor) => {
-        const data = user.data()
-        const user = {
-          fname: data.firstName,
-          lname: data.lastName
-        }
-        users.push(user)
-      })
+      // let floors = []
+      // snapshot.forEach((floor) => {
+      //   const data = user.data()
+      //   const user = {
+      //     fname: data.firstName,
+      //     lname: data.lastName
+      //   }
+      //   users.push(user)
+      // })
       response.status(http.ok).json({ users: users })  // will be accessed as data_from_backend in prev code blocks
     }).catch((error) => {
       console.log('Error getting documents', error)

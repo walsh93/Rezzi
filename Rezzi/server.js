@@ -62,13 +62,10 @@ const home = require('./server/routes/home')
 app.use(url.home, home)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
-<<<<<<< HEAD
 const inviteusers = require('./server/routes/invite-users')
 app.use(url.invite_users, inviteusers)
-=======
 const getchannels = require('./server/routes/get-channels')
 app.use(url.get_channels, getchannels)
->>>>>>> 69a2219c403fe545505e8d4d477431d1ee02417e
 const joinchannel = require('./server/routes/join-channel')
 app.use(url.join_channel, joinchannel)
 
