@@ -29,44 +29,59 @@ router.get('/', checkCookie, function(request, response) {
   	}
 
     // Get rezzis they can belong to
-    var can_belong_to = [];
     const prefix = keys.rezzis + '/' + rezzi + '/';
 
-    function queryDb(collection) {
-      to_add = [];
-      var should_return = false;
-      db.collection(collection).select('members').get().then(function(snapshot) {
-        console.log(collection);  // Debugging
-        snapshot.forEach(function(doc) {
-          temp = {
-            channel: doc.id
-          }
-          if (doc.data().hasOwnProperty('members')) {
-            temp.users = doc.data().members.length;
-          }
-          else {
-            temp.users = 0;
-          }
-          to_add.push(temp);
-        });
-        console.log(to_add);
-        should_return = true;
-      }).catch(function(rejection) {
-        console.log(collection + " --- ERROR:", rejection);  // Debugging output
-        should_return = true;
+    function queryDb(collection, name) {
+      return new Promise((resolve, reject) => {
+        var to_add = {
+          parent: name,
+          channels: {}
+        };
+        db.collection(collection).select('members').get().then(function(snapshot) {
+          console.log(collection);  // Debugging
+          snapshot.forEach(function(doc) {
+            temp = {
+              belongs: false
+            }
+            if (doc.data().hasOwnProperty('members')) {
+              temp.users = doc.data().members.length;
+            }
+            else {
+              temp.users = 0;
+            }
+            to_add.channels[doc.id] = temp;
+          });
+          console.log(to_add);
+          resolve(to_add);
+        }).catch(function(rejection) {
+          console.log(collection + " --- ERROR:", rejection);  // Debugging output
+          resolve(to_add);
+        })
       })
-      while (should_return == false) {}
-      return to_add;
     }
-
-    can_belong_to.concat(queryDb(prefix + 'hallwide'));
-    can_belong_to.concat(queryDb(prefix + 'floors/' + floor + '/channels'));
+    var promises = [queryDb(prefix + 'hallwide', 'hallwide'), queryDb(prefix + 'floors/' + floor + '/channels', 'floors-' + floor)];
     if (user_type < 2) {
-      can_belong_to.concat(queryDb(prefix + 'RA'))
+      promises.push(queryDb(prefix + 'RA', 'RA'));
     }
-    console.log("All queries completed");
-    console.log(can_belong_to);
+    Promise.all(promises).then(responses => {
+      var to_return = {};
+      responses.forEach((response) => {
+        to_return[response.parent] = response.channels;
+      });
+      console.log(to_return);
 
+      // Check for channels they belong to and set flags accordingly
+      belongs_to.forEach((channel) => {
+        var parent = channel.split('-')[0];
+        var name = channel.split('-')[1];
+        if (channel.includes('floors')) {
+          parent = 'floors-' + name;
+          name = channel.replace(parent + '-', '');
+        }
+        to_return[parent][name].belongs = true;
+      })
+      response.status(200).json(to_return);
+    })
   });
 })
 
