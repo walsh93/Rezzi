@@ -12,7 +12,8 @@ module.exports = {
   // Firebase constants
   db_keys: {
     users: 'users',
-    email: 'email'
+    email: 'email',
+    rezzis: 'residence-halls'
   },
 
   // URLs
@@ -23,6 +24,8 @@ module.exports = {
     home: "/home",
     edit_profile: "/edit-profile",
     sign_out: "/sign-out",
+    join_channel: "/join-channel",
+    get_channels: "/get-channels",
   },
 
   http_status: {

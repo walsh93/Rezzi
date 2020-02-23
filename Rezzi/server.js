@@ -62,6 +62,10 @@ const editprofile = require('./server/routes/edit-profile')
 app.use(url.edit_profile,editprofile)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
+const getchannels = require('./server/routes/get-channels')
+app.use(url.get_channels, getchannels)
+const joinchannel = require('./server/routes/join-channel')
+app.use(url.join_channel, joinchannel)
 
 // Testing
 app.use((request,response,next)=>{
@@ -100,7 +104,7 @@ app.post('/api/sign-up',(request,response,next) => {
   firebase.addUser(rb)
   response.status(201).json({
     notification: 'User may be signed up?'
-  })
+  });
   //add user here
 })
 
