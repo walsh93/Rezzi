@@ -70,6 +70,9 @@ module.exports = {
   // Email codes
   SENDING_EMAIL_ERR: 'Email could not be sent',
 
+  //Password Reset Codes
+  EMAIL_NOT_REGISTERED: 'Email does not belong to a Rezzi account',
+
   // MISC.
   RESPONSE_NOT_YET_IMPLEMENTED: 'This response type has not yet been implemented.',
 

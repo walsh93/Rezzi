@@ -8,9 +8,9 @@ import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { PwordresetRequestComponent } from './resetpassword/pwordreset-request/pwordreset-request.component';
-import { PwordresetSentComponent } from './resetpassword/pwordreset-sent/pwordreset-sent.component';
-import { PwordresetChangeComponent } from './resetpassword/pwordreset-change/pwordreset-change.component';
+import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
+import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
+import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
 
 // Routes
 const routes: Routes = [
@@ -19,10 +19,11 @@ const routes: Routes = [
   { path: 'sign-up-hd', component: SignUpHdComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'pword-reset-request', component: PwordresetRequestComponent},
+  { path: 'pword-reset-sent', component: PwordresetSentComponent},
+  { path: 'pword-reset-change', component: PwordresetChangeComponent},
+  //put new paths above this one
   { path: '**', component: PageNotFoundComponent },
-  { path: 'pwordreset-request', component: PwordresetRequestComponent},
-  { path: 'pwordreset-sent', component: PwordresetSentComponent},
-  { path: 'pwordreset-change', component: PwordresetChangeComponent},
 ];
 
 @NgModule({

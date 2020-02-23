@@ -69,10 +69,9 @@ import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button
 import { MessagesService } from './home/interface/messages/messages.service';
 
 //Reset password components
-import { ResetpasswordComponent } from './resetpassword/resetpassword.component';
-import { PwordresetRequestComponent } from './resetpassword/pwordreset-request/pwordreset-request.component';
-import { PwordresetSentComponent } from './resetpassword/pwordreset-sent/pwordreset-sent.component';
-import { PwordresetChangeComponent } from './resetpassword/pwordreset-change/pwordreset-change.component';
+import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
+import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
+import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +101,6 @@ import { PwordresetChangeComponent } from './resetpassword/pwordreset-change/pwo
     JoinChannelComponent,
     RaAdminComponent,
     RaCreateChannelComponent,
-    ResetpasswordComponent,
     PwordresetRequestComponent,
     PwordresetSentComponent,
     PwordresetChangeComponent
