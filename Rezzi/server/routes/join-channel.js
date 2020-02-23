@@ -3,7 +3,7 @@ const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
-const checkCookie = require('../permissions').userNeedsToBeLoggedIn
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
@@ -15,7 +15,11 @@ router.get('/', checkCookie, function(request, response) {
 }).post('/', checkCookie, function(request, response) {
   const req = request.body;
   const email = request.__session.email;
-  // db.collection(keys.users).where
+  console.log(req);
+  db.collection(keys.users).doc(email).update({
+    channels: admin.firestore.FieldValue.arrayUnion(req.channel_id)
+  });
+  response.status(http.ok)
 })
 
 module.exports = router
