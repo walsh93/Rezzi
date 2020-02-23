@@ -47,9 +47,9 @@ router.get('/', checkCookie, function(request, response) {
                 from: ' "Rezzi" <rezzi407@gmail.com>',
                 subject: 'Rezzi Password Reset',
                 text: 'A password reset has been requested for your Rezzi account.\n\n' +
-                'Your temporary password is: ' + token +
+                'Your temporary password is: ' + token + '\n\n' +
                 'Please click on the following link to sign into Rezzi using your temporary passsword:\n\n' +
-                'http://localhost:4100/confirmresetpassword/ \n\n' +
+                'http://localhost:4100/pword-reset-change/ \n\n' +
                 'You will be prompted to reset your password after sign in\n'
               };
 
