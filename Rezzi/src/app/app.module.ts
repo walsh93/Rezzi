@@ -10,20 +10,16 @@ import {
   MatToolbarModule,
   MatExpansionModule,
   MatSidenavModule,
-<<<<<<< HEAD
   MatFormFieldModule,
   MatMenuModule,
   MatIconModule,
   MatSelectModule,
   MatListModule,
   MatGridListModule,
-  MatCheckboxModule
-} from '@angular/material';
-=======
+  MatCheckboxModule,
   MatDialogModule,
   MatTableModule,
  } from '@angular/material';
->>>>>>> 816f2bf713b8b8bf016aae02c16b72153501fc67
 
 // Firebase Imports
 import { AngularFireModule } from '@angular/fire';
@@ -121,22 +117,19 @@ import { MessagesService } from './home/interface/messages/messages.service';
     MatToolbarModule,
     MatExpansionModule,
     MatSidenavModule,
-<<<<<<< HEAD
     MatFormFieldModule,
     MatMenuModule,
     MatIconModule,
     MatSelectModule,
     MatListModule,
     MatGridListModule,
-    MatCheckboxModule
-=======
+    MatCheckboxModule,
     MatDialogModule,
     MatTableModule,
     NgbModule
   ],
   entryComponents: [
     JoinChannelComponent
->>>>>>> 816f2bf713b8b8bf016aae02c16b72153501fc67
   ],
   providers: [MessagesService],
   bootstrap: [AppComponent]
