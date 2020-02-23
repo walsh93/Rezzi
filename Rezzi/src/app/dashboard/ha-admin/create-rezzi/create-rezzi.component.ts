@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CreateRezziService } from './create-rezzi.service';
 
 @Component({
   selector: 'app-create-rezzi',
@@ -7,7 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateRezziComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient, private router: Router) { }
+
+  createRezzi() {
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+    var body = {};
+
+    this.http.post('/create-rezzi', body).toPromise().then((response) => {
+
+    }).catch((error) => {
+
+    });
+  }
 
   ngOnInit(): void {
   }
