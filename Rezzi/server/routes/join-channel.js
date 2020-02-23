@@ -12,9 +12,12 @@ const url = require('../constants').url
 
 router.post('/', checkCookie, function(request, response) {
   const req = request.body;
-  console.log("b");
+  const email = request.__session.email;
   console.log(req);
-  // db.collection(keys.channels).where
+  db.collection(keys.users).doc(email).update({
+    channels: admin.firestore.FieldValue.arrayUnion(req.channel_id)
+  });
+  response.status(http.ok)
 })
 
 module.exports = router

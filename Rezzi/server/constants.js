@@ -17,7 +17,8 @@ module.exports = {
     floors: 'floors',
     hallwide: 'hallwide',
     ra: 'RA',
-    channels: 'channels'
+    channels: 'channels',
+    rezzis: 'residence-halls'
   },
 
   // User types
