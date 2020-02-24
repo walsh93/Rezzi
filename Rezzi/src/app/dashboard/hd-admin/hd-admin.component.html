@@ -1,1 +1,13 @@
 <p>hd-admin works!</p>
+<div>
+  <button (click)="showInviteUsers = false; showCreateRezzi = true;" mat-raised-button>
+    Create Rezzi
+  </button>
+</div>
+<div>
+  <button (click)="showInviteUsers = true; showCreateRezzi = false;" mat-raised-button>
+    Invite Users
+  </button>
+  <p *ngIf="showCreateRezzi"><app-create-rezzi></app-create-rezzi></p>
+  <p *ngIf="showInviteUsers"><app-invite-users></app-invite-users></p>
+</div>

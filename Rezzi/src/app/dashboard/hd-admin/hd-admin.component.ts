@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./hd-admin.component.css']
 })
 export class HdAdminComponent implements OnInit {
-
+  showCreateRezzi = false;
+  showInviteUsers = false;
   constructor() { }
 
   ngOnInit(): void {

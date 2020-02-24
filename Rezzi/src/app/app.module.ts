@@ -99,7 +99,8 @@ import { MessagesService } from './home/interface/messages/messages.service';
     ChannelNavBarComponent,
     JoinChannelComponent,
     RaAdminComponent,
-    RaCreateChannelComponent
+    RaCreateChannelComponent,
+    HdAdminComponent
   ],
   imports: [
     BrowserModule,
