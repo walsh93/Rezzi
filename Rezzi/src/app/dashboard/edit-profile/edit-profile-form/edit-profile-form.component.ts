@@ -38,13 +38,13 @@ export class EditProfileFormComponent implements OnInit {
     */
 
     this.editUser(userInfo);
-*/
+
   }
 
   constructor(private http: HttpClient) { }
 
   editUser(data) {
-    this.http.post<{notification: string}>('http://localhost:4100/api/sign-up', data)
+    this.http.post<{notification: string}>('http://localhost:4100/dashboard/api/edit-profile', data)
       .subscribe(responseData => {
         console.log(responseData.notification);
       });

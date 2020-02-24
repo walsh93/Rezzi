@@ -2,7 +2,6 @@ const path = require('path')
 
 module.exports = {
   indexFile: `${path.join(__dirname, '../dist/Rezzi/index.html')}`,
-
   // Service URLs
   service: {
     get_session: "/get-session",
