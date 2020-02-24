@@ -8,9 +8,18 @@ const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 const sign_in = require('../constants').sign_in
+const firebase = require('../database')
 
 router.get('/', checkCookie, function(request, response) {
   response.sendFile(indexFile)
+}).post('/api/sign-up',(request,response,next) => {
+  const rb = request.body
+  console.log(rb);
+  firebase.addUser(rb);
+  response.status(201).json({
+    notification: 'User may be signed up?'
+  })
+  //add user here
 })
 
 module.exports = router

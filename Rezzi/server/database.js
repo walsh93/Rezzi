@@ -25,18 +25,19 @@ module.exports = {
 module.exports.addUser = function addUser(data) {
     dbstore.collection('users').doc(data.email).get().then(doc => {
       if (doc.exists && doc.data().verified == true) {
+        //Do something about the error here
         //checks to see if account is verified per Megan's implementation
-        reject(c.EMAIL_ALREADY_REGISTERED)
       } else if (doc.exists) {
         dbstore.collection('users').doc(data.email).update(data)
-        resolve(c.HTTP_CREATED)
       } else {
         //Should NEVER get here. Only for SignUpHD
         dbstore.collection('users').doc(data.email).set(data)
-        resolve(c.HTTP_CREATED)
       }
     }).catch(err => {
       //reject(err)
+      console.log(err)
       console.log("Error creating account");
     })
 }
+
+
