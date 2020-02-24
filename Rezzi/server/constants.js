@@ -25,6 +25,7 @@ module.exports = {
     sign_out: "/sign-out",
     join_channel: "/join-channel",
     get_channels: "/get-channels",
+    create_rezzi: "/create-rezzi",
   },
 
   http_status: {
@@ -36,6 +37,7 @@ module.exports = {
     forbidden: 403,
     not_found: 404,
     conflict: 409,
+    error: 500,
   },
 
   // Signup codes

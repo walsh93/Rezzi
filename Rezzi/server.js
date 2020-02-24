@@ -64,6 +64,8 @@ const getchannels = require('./server/routes/get-channels')
 app.use(url.get_channels, getchannels)
 const joinchannel = require('./server/routes/join-channel')
 app.use(url.join_channel, joinchannel)
+const createrezzi = require('./server/routes/create-rezzi') // Exact route will be specified in step 3*
+app.use(url.create_rezzi, createrezzi)
 
 // Testing
 app.use((request,response,next)=>{
