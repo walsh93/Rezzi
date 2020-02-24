@@ -1,1 +1,41 @@
-<p>pwordreset-change works!</p>
+<div class="container-fluid">
+    <div class="example-form">
+      <mat-card color="primary">
+        <form (submit)="onReset()" #resetForm="ngForm">
+        <h1>Change your password to something you will remember</h1>
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            placeholder="Enter your password"
+            [type]="hide ? 'password' : 'text'"
+            name="password"
+            ngModel
+            minlength="8"
+            #password = "ngModel"
+            required>
+            <mat-error *ngIf="password.invalid">Your password must be 8 characters long</mat-error>
+        </mat-form-field>
+        <br><br>
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            placeholder="Confirm Password"
+            [type]="hide ? 'password' : 'text'"
+            name="confirmPassword"
+            ngModel
+            minlength="8"
+            required
+            #confirmPassword = "ngModel">
+            <mat-error *ngIf="password !== confirmPassword">Your passwords must match!</mat-error>
+        </mat-form-field>
+        <br><br>
+          <button
+            mat-raised-button
+            color="accent"
+            type="submit"
+            >Reset Password</button>
+          </form>
+      </mat-card >
+    </div>
+  </div>
+  

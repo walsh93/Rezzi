@@ -68,8 +68,8 @@ const pwordResetRequest = require('./server/routes/pwordResetRequest')
 app.use(url.pword_reset_request, pwordResetRequest)
 const pwordResetSent = require('./server/routes/pwordResetSent')
 app.use(url.pword_reset_sent, pwordResetSent)
-// const pwordResetChange = require('./server/routes/pwordResetChange')
-// app.use(url.pword_reset_change, pwordResetChange)
+const pwordResetChange = require('./server/routes/pwordResetChange')
+app.use(url.pword_reset_change, pwordResetChange)
 
 
 // Testing

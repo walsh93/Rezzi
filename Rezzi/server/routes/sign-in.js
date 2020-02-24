@@ -18,12 +18,15 @@ router.get('/', checkCookie, function(request, response) {
       response.status(http.bad_request).send(sign_in.email_error)
     } else if (snapshot.docs.length == 1) {
       const data = snapshot.docs[0].data()
+      console.log(data)
       if (req.password == data.password) {
         // Set session cookie before sending the response
         // TODO add other fields that need to be saved in the session
+        console.log(data.tempPword)
         request.__session = {
           email: req.email,
           verified: data.verified,
+          tempPword: data.tempPword,
         }
         response.status(http.ok).json({ verified: data.verified })
       } else {
