@@ -1,1 +1,51 @@
-<p>create-rezzi works!</p>
+<form class="create-rezzi-form">
+  <mat-form-field class="rezzi-name">
+    <mat-label>Rezzi Name</mat-label>
+    <input matInput value="">
+  </mat-form-field>
+</form>
+<mat-accordion>
+  <!-- Floor Panel -->
+  <mat-expansion-panel> 
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Floors
+      </mat-panel-title>
+      <mat-panel-description>
+        Add floors to your Rezzi
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-accordion>
+      <div *ngFor="let floor of floors">
+        <app-floor-drawer [name]="floor.name" [channels]="floor.channels"></app-floor-drawer>
+      </div>
+    </mat-accordion>
+    <button mat-icon-button aria-label="Add Floor" (click)="addFloor()">
+      <mat-icon>control_point</mat-icon>
+    </button>
+  </mat-expansion-panel>
+  
+  <!-- Hallwide Panel -->
+  <mat-expansion-panel> 
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Hallwide
+      </mat-panel-title>
+      <mat-panel-description>
+        Add default channels to your Rezzi
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
+
+  <!-- RA Panel -->
+  <mat-expansion-panel> 
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        RA
+      </mat-panel-title>
+      <mat-panel-description>
+        Add default channels for your RAs
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
+</mat-accordion>

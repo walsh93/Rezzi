@@ -66,6 +66,8 @@ import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel
 import { HeaderComponent } from './header/header.component';
 import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button.component';
 import { MessagesService } from './home/interface/messages/messages.service';
+import { ChannelPanelComponent } from './dashboard/ha-admin/create-rezzi/channel-panel/channel-panel.component';
+import { FloorDrawerComponent } from './dashboard/ha-admin/create-rezzi/floor-drawer/floor-drawer.component';
 
 @NgModule({
   declarations: [
@@ -94,7 +96,9 @@ import { MessagesService } from './home/interface/messages/messages.service';
     ChannelNavBarComponent,
     JoinChannelComponent,
     RaAdminComponent,
-    RaCreateChannelComponent
+    RaCreateChannelComponent,
+    ChannelPanelComponent,
+    FloorDrawerComponent
   ],
   imports: [
     BrowserModule,
