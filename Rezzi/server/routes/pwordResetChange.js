@@ -15,14 +15,11 @@ router.get('/', checkCookie, function(request, response) {
   }).post('/', function(request, response) {
     const email = request.__session.email
     const password = request.body.password
-    console.log(email + " " + password)
-    console.log("hi we are in the js file")
     db.collection('users').doc(email).get().then(doc => {
         if(!doc.exists){
             console.log("hi so the doc doesnt exist")
             response.send(c.EMAIL_NOT_REGISTERED)
         } else {
-            console.log("so the doc exists but nothing is working?")
             db.collection('users').doc(email).update({
                 password: password,
                 tempPword: false,

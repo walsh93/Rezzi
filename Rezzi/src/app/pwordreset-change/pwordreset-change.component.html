@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="example-form">
       <mat-card color="primary">
-        <form (submit)="onReset()" #resetForm="ngForm">
+        <form (submit)="onReset(resetForm)" #resetForm="ngForm">
         <h1>Change your password to something you will remember</h1>
         <mat-form-field class="example-full-width">
           <input

@@ -105,13 +105,10 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
     JoinChannelComponent,
     RaAdminComponent,
     RaCreateChannelComponent,
-<<<<<<< HEAD
     PwordresetRequestComponent,
     PwordresetSentComponent,
-    PwordresetChangeComponent
-=======
+    PwordresetChangeComponent,
     HdAdminComponent
->>>>>>> 207c720e50affd6c89880bde7f819ffc20dce8ca
   ],
   imports: [
     BrowserModule,

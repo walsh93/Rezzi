@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { User } from 'src/app/classes.model';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-pwordreset-change',
@@ -7,15 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PwordresetChangeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
   }
 
-  onReset(){
+  onReset(form: NgForm){
     //Source: CS307 project https://github.com/kbaihoff/CheckedIn
     // Get value of input fields (https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement)
-    const password = (<HTMLInputElement>document.getElementById("password")).value; 
+    const password = form.value.password;
 
 
     // Body of the HTTP request (param names MUST match input field form names expected in addRepresentative.js)
