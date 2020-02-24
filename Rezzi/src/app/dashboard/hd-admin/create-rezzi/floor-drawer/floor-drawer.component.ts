@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-floor-drawer',
@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./floor-drawer.component.css']
 })
 export class FloorDrawerComponent implements OnInit {
-  name: string;
-  channels: { name: string, default: boolean }[];
+  @Input() public name: string;
+  @Input() public channels: { name: string, default: boolean }[];
 
   constructor() { }
 

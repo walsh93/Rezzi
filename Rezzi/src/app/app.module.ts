@@ -13,6 +13,8 @@ import {
   MatDialogModule,
   MatTableModule,
   MatTabsModule,
+  MatIconModule,
+  MatSlideToggleModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -52,6 +54,8 @@ import { RaAdminComponent } from './dashboard/ra-admin/ra-admin.component';
 import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
 
 import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-rezzi.component';
+import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
+import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
 import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
 
 // Home Page Components
@@ -70,8 +74,6 @@ import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel
 import { HeaderComponent } from './header/header.component';
 import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button.component';
 import { MessagesService } from './home/interface/messages/messages.service';
-import { ChannelPanelComponent } from './dashboard/ha-admin/create-rezzi/channel-panel/channel-panel.component';
-import { FloorDrawerComponent } from './dashboard/ha-admin/create-rezzi/floor-drawer/floor-drawer.component';
 
 @NgModule({
   declarations: [
@@ -121,6 +123,8 @@ import { FloorDrawerComponent } from './dashboard/ha-admin/create-rezzi/floor-dr
     MatSidenavModule,
     MatDialogModule,
     MatTableModule,
+    MatIconModule,
+    MatSlideToggleModule,
     NgbModule,
     MatTabsModule
   ],

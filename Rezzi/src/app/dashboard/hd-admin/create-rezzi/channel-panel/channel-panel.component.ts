@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-channel-panel',
@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./channel-panel.component.css']
 })
 export class ChannelPanelComponent implements OnInit {
-  name: string;
-  default: boolean;
+  @Input() public name: string;
+  @Input() public default: boolean;
 
   constructor() { }
 
