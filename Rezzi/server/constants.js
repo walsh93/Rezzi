@@ -6,7 +6,7 @@ module.exports = {
   // Service URLs
   service: {
     get_session: "/get-session",
-    get_user_by_email: "/get-user-by-email",
+    get_user: "/get-user",
   },
 
   // Firebase constants
@@ -22,6 +22,7 @@ module.exports = {
     sign_up: "/sign-up",
     sign_up_hd: "/sign-up-hd",
     home: "/home",
+    user_url: "/get-user",
     edit_profile: "/edit-profile",
     sign_out: "/sign-out",
     join_channel: "/join-channel",

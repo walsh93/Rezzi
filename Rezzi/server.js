@@ -48,6 +48,8 @@ const url = require('./server/constants').url
 // Routers for the rezzi.service
 const getSession = require('./server/service/getSession')
 app.use(service.get_session, getSession)
+const getUser = require('./server/service/getUser')
+app.use(service.get_user, getUser)
 
 // Routers, links to URLs
 const signup = require('./server/routes/sign-up')
@@ -66,6 +68,7 @@ const getchannels = require('./server/routes/get-channels')
 app.use(url.get_channels, getchannels)
 const joinchannel = require('./server/routes/join-channel')
 app.use(url.join_channel, joinchannel)
+
 
 // Testing
 app.use((request,response,next)=>{

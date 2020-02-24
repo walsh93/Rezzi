@@ -9,6 +9,8 @@ import { Router } from "@angular/router";
   styleUrls: ["./edit-profile-form.component.css"]
 })
 export class EditProfileFormComponent implements OnInit {
+  user;
+  //user: User;
   constructor(private rezziService: RezziService, private router: Router) {}
 
   ngOnInit() {
@@ -20,6 +22,11 @@ export class EditProfileFormComponent implements OnInit {
         // signed in but not verified
         this.router.navigate(["/sign-up"]);
       } // else signed in and verified
+      this.user = this.rezziService
+        .getUserData(response.email)
+        .then(response => {
+          console.log('userdata: ' + this.user + " " + this.user.lastName )
+        });
     });
   }
 }
