@@ -1,1 +1,39 @@
-<p>dashboard works!</p>
+<div class>
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <p>Auto-resizing sidenav</p>
+    <div>
+    <button (click)="showEdit = !showEdit" mat-raised-button>
+      Edit Profile
+    </button>
+  </div>
+  <div>
+    <button (click)="showPM = !showPM" mat-raised-button>
+      Private Messages
+    </button>
+  </div>
+  <div>
+    <button (click)="showRA = !showRA" mat-raised-button>
+      RA Admin
+    </button>
+  </div>
+  <div>
+    <button (click)="showHD = !showHD" mat-raised-button>
+      HD Admin
+    </button>
+  </div>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <p *ngIf="showEdit"><app-edit-profile></app-edit-profile></p>
+    <p *ngIf="showPM">PM Info</p>
+    <p *ngIf="showRA"><app-ra-admin></app-ra-admin></p>
+    <p *ngIf="showHD"><app-hd</p>
+
+    <button type="button" mat-button (click)="drawer.toggle()">
+      Toggle sidenav
+    </button>
+  </div>
+
+</mat-drawer-container>
+</div>

@@ -64,6 +64,8 @@ const getchannels = require('./server/routes/get-channels')
 app.use(url.get_channels, getchannels)
 const joinchannel = require('./server/routes/join-channel')
 app.use(url.join_channel, joinchannel)
+const dashboard = require('./server/routes/dashboard')
+app.use(url.dashboard, dashboard)
 
 // Testing
 app.use((request,response,next)=>{

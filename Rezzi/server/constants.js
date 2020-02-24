@@ -25,6 +25,7 @@ module.exports = {
     sign_out: "/sign-out",
     join_channel: "/join-channel",
     get_channels: "/get-channels",
+    dashboard: "/dashboard",
   },
 
   http_status: {
