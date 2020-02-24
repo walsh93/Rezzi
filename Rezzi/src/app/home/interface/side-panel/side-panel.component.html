@@ -1,32 +1,27 @@
 <!-- This component shows the floors/channels the user is in -->
+<div>
+<div class="rezzi" *ngIf="channels.length > 0"> <!-- TODO make sure expanded channels don't appear over 'Join' button -->
 
-<mat-expansion-panel>
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      REZZI NAME (in interface.html)
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-  <div *ngIf="channels.length > 0">
   <mat-expansion-panel *ngFor="let channel of channels"> <!-- looping the floor channels -->
+
     <mat-expansion-panel-header>
-      <mat-panel-title>
-        {{ channel.name }}
+      <mat-panel-title (click)='doTheThing()' routerLink='/home'> <!-- TODO add routerLink or click to view channel's chat -->
+        {{ channel.channel }}
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <button>Create Channel</button>
-    <mat-expansion-panel *ngFor="let interest of channel.interests"> <!-- Looping the interest channels-->
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ interest }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
 
-      <p>This is the primary content of the panel.</p>
+    <mat-card *ngFor="let interest of channel.subchannels"> <!-- Looping the interest channels-->
+      <mat-card-content (click)='doTheThing()' routerLink='/home'> <!-- TODO add routerLink or click to view channel's chat -->
+        {{ interest.channel }}
+      </mat-card-content>
+    </mat-card>
 
-    </mat-expansion-panel>
+    <button mat-stroked-button class="add-channel-button" routerLink='/home'>Add Channel</button> <!--TODO add routerLink to add new channel, -->
 
   </mat-expansion-panel>
 </div>
-  <p class="no-rezzi" *ngIf="channels.length < 1"> There are currently no channels in this Rezzi</p>
 
-</mat-expansion-panel>
+<p class="no-rezzi" *ngIf="channels.length < 1">You are currently not a member of any Rezzi channels.</p>
+
+<button mat-button (click)="openDialog()" class="join-channel-button">Join Channel</button>
+</div>

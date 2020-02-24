@@ -58,3 +58,10 @@ export class HDUser {
   accountType: number;
   verified: boolean;
 }
+export interface ChannelData {
+  id: string,
+  channel: string,
+  users: number,
+  belongs: boolean,
+  subchannels: ChannelData[],
+}

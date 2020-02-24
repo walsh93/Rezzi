@@ -2,7 +2,6 @@ const path = require('path')
 
 module.exports = {
   indexFile: `${path.join(__dirname, '../dist/Rezzi/index.html')}`,
-  //indexFile: `${path.join(__dirname, '../src/index.html')}`,
   // Service URLs
   service: {
     get_session: "/get-session",
@@ -12,7 +11,8 @@ module.exports = {
   // Firebase constants
   db_keys: {
     users: 'users',
-    email: 'email'
+    email: 'email',
+    rezzis: 'residence-halls'
   },
 
   // URLs
@@ -22,6 +22,8 @@ module.exports = {
     sign_up_hd: "/sign-up-hd",
     home: "/home",
     sign_out: "/sign-out",
+    join_channel: "/join-channel",
+    get_channels: "/get-channels",
   },
 
   http_status: {
