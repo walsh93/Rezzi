@@ -24,7 +24,7 @@ export class NewMessageComponent implements OnInit {
       // owner: this.tempuser,
       // time: new Date(),
       // visible: true,
-      id: null //TODO Need to change the ID
+      id: null // TODO Need to change the ID
     };
     this.messagesService.addMessage(message);
     form.resetForm();

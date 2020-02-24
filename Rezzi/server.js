@@ -66,6 +66,8 @@ const joinchannel = require('./server/routes/join-channel')
 app.use(url.join_channel, joinchannel)
 const createrezzi = require('./server/routes/create-rezzi') // Exact route will be specified in step 3*
 app.use(url.create_rezzi, createrezzi)
+const dashboard = require('./server/routes/dashboard')
+app.use(url.dashboard, dashboard)
 
 // Testing
 app.use((request,response,next)=>{
@@ -98,15 +100,8 @@ app.use('/api/messages',(request,response,next) => {
   });
 });
 
-app.post('/api/sign-up',(request,response,next) => {
-  const rb = request.body
-  console.log(rb);
-  firebase.addUser(rb)
-  response.status(201).json({
-    notification: 'User may be signed up?'
-  });
-  //add user here
-});
+
+
 
 // Error has occured
 const onError = error => {

@@ -12,6 +12,7 @@ import {
   MatSidenavModule,
   MatDialogModule,
   MatTableModule,
+  MatTabsModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -44,11 +45,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { EditProfileComponent } from './dashboard/edit-profile/edit-profile.component';
 import { EditProfileFormComponent } from './dashboard/edit-profile/edit-profile-form/edit-profile-form.component';
 
+import { HdAdminComponent } from './dashboard/hd-admin/hd-admin.component';
+
+
 import { RaAdminComponent } from './dashboard/ra-admin/ra-admin.component';
 import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
 
-import { CreateRezziComponent } from './dashboard/ha-admin/create-rezzi/create-rezzi.component';
-import { InviteUsersComponent } from './dashboard/ha-admin/invite-users/invite-users.component';
+import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-rezzi.component';
+import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
 
 // Home Page Components
 import { HomeComponent } from './home/home.component';
@@ -98,7 +102,8 @@ import { FloorDrawerComponent } from './dashboard/ha-admin/create-rezzi/floor-dr
     RaAdminComponent,
     RaCreateChannelComponent,
     ChannelPanelComponent,
-    FloorDrawerComponent
+    FloorDrawerComponent,
+    HdAdminComponent
   ],
   imports: [
     BrowserModule,
@@ -116,7 +121,8 @@ import { FloorDrawerComponent } from './dashboard/ha-admin/create-rezzi/floor-dr
     MatSidenavModule,
     MatDialogModule,
     MatTableModule,
-    NgbModule
+    NgbModule,
+    MatTabsModule
   ],
   entryComponents: [
     JoinChannelComponent

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HaAdminComponent } from './ha-admin.component';
+import { HdAdminComponent } from './hd-admin.component';
 
-describe('HaAdminComponent', () => {
-  let component: HaAdminComponent;
-  let fixture: ComponentFixture<HaAdminComponent>;
+describe('HdAdminComponent', () => {
+  let component: HdAdminComponent;
+  let fixture: ComponentFixture<HdAdminComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HaAdminComponent ]
+      declarations: [ HdAdminComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HaAdminComponent);
+    fixture = TestBed.createComponent(HdAdminComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
