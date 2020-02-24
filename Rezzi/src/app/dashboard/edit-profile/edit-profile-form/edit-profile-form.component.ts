@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { firestore } from 'firebase';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-profile-form',
@@ -8,7 +10,6 @@ import { NgForm } from '@angular/forms';
 })
 export class EditProfileFormComponent implements OnInit {
   hide = true;
-  name = "lit fam";
   // fetch user data
   // use "double b"
   onEditProfile(form: NgForm) {
@@ -18,9 +19,15 @@ export class EditProfileFormComponent implements OnInit {
     // if(form.value.age)
     // return;
     console.log(form);
-
+    var userInfo = {
+      firstName: form.value.firstName,
+      lastName: form.value.lastName,
+      age: form.value.age,
+      major: form.value.major,
+      nickName: form.value.nickName,
+      bio: form.value.bio
+    }
     /* Katarina - This is all the form data:
-      form.value.email,
       form.value.password,
       form.value.firstName,
       form.value.lastName,
@@ -28,14 +35,20 @@ export class EditProfileFormComponent implements OnInit {
       form.value.major,
       form.value.nickName,
       form.value.bio,
-      true
+    */
 
-    console.log(user);
-
-    this.addUser(user);
+    this.editUser(userInfo);
 */
   }
-  constructor() { }
+
+  constructor(private http: HttpClient) { }
+
+  editUser(data) {
+    this.http.post<{notification: string}>('http://localhost:4100/api/sign-up', data)
+      .subscribe(responseData => {
+        console.log(responseData.notification);
+      });
+  }
 
   ngOnInit(): void {
   }

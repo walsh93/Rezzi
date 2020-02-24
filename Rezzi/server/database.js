@@ -36,3 +36,7 @@ module.exports.addUser = function addUser(data) {
       console.log("Error creating account");
     })
 }
+
+module.exports.editUser = function(editUser) {
+  
+}
