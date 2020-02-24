@@ -8,9 +8,14 @@ import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+<<<<<<< HEAD
 import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
 import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
 import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
+=======
+import { DashboardComponent } from './dashboard/dashboard.component';
+
+>>>>>>> 207c720e50affd6c89880bde7f819ffc20dce8ca
 
 // Routes
 const routes: Routes = [
@@ -19,10 +24,14 @@ const routes: Routes = [
   { path: 'sign-up-hd', component: SignUpHdComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'home', component: HomeComponent },
+<<<<<<< HEAD
   { path: 'pword-reset-request', component: PwordresetRequestComponent},
   { path: 'pword-reset-sent', component: PwordresetSentComponent},
   { path: 'pword-reset-change', component: PwordresetChangeComponent},
   //put new paths above this one
+=======
+  { path: 'dashboard', component: DashboardComponent },
+>>>>>>> 207c720e50affd6c89880bde7f819ffc20dce8ca
   { path: '**', component: PageNotFoundComponent },
 ];
 
