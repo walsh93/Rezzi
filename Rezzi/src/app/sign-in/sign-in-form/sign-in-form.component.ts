@@ -54,6 +54,8 @@ export class SignInFormComponent implements OnInit {
           this.router.navigate(['/home']);
         }
       } else {
+        document.getElementById('fplink').classList.add('vspace');
+        document.getElementById('error-msg').hidden = false;
         this.errorMsg = `${res.error}`;
       }
     });
