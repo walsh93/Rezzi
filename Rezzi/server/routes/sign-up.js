@@ -18,6 +18,7 @@ router.get('/', checkCookie, function(request, response) {
   // firebase.addUser(rb);
   var working  = firebase.addUser(rb); // conley-edit-here
   console.log(working) // conley-edit-here
+  request.__session.verified = true
   response.status(201).json({
     notification: 'User may be signed up?'
   })
