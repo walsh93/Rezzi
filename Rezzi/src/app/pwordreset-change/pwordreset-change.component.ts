@@ -9,14 +9,14 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./pwordreset-change.component.css']
 })
 export class PwordresetChangeComponent implements OnInit {
-
+  hide = true;
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
   }
 
   onReset(form: NgForm){
-    //Source: CS307 project https://github.com/kbaihoff/CheckedIn
+    // Source: CS307 project https://github.com/kbaihoff/CheckedIn
     // Get value of input fields (https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement)
     const password = form.value.password;
 
@@ -55,7 +55,7 @@ export class PwordresetChangeComponent implements OnInit {
 
     // Send the request
     xhr.send(body);
-  
+
   }
 
 }
