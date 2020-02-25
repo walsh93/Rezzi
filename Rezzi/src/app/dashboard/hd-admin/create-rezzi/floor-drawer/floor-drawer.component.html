@@ -1,15 +1,23 @@
 <mat-expansion-panel> 
   <mat-expansion-panel-header>
     <mat-panel-title>
-      {{name}}
+      {{floor.name}}
     </mat-panel-title>
     <mat-panel-description>
-      Add channels to your floor
+      Add channels to the floor
     </mat-panel-description>
+    <button mat-icon-button aria-label="Delete Channel" (click)="deleteFloor()">
+      <mat-icon>delete</mat-icon>
+    </button>
   </mat-expansion-panel-header>
-  <app-channel-panel *ngFor="let channel of channels"
-    [name]="channel.name"
-    [default]="channel.default">
+  <mat-form-field>
+    <mat-label>Floor Name</mat-label>
+    <input matInput value="{{floor.name}}" (blur)="onNameChange($event.target.value)">
+  </mat-form-field>
+  <app-channel-panel *ngFor="let channel of floor.channels"
+    [channel]="channel"
+    (default_emitter)="onChange($event)"
+    (delete_emitter)="deleteChannel($event)">
   </app-channel-panel>
   <button mat-icon-button aria-label="Add Channel" (click)="addChannel()">
     <mat-icon>control_point</mat-icon>

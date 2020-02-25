@@ -1,10 +1,16 @@
 <mat-card>
 	<mat-card-header>
-    {{name}}
+    <mat-form-field>
+      <mat-label>Channel Name</mat-label>
+      <input matInput value="{{channel.name}}" (blur)="onNameChange($event.target.value)">
+    </mat-form-field>
   </mat-card-header>
   <mat-card-actions>
-    <mat-slide-toggle [checked]="default" (change)="onChange($event)">
+    <mat-slide-toggle [checked]="channel.default" (change)="onToggleChange($event)">
       Default
     </mat-slide-toggle>
+    <button mat-icon-button aria-label="Delete Channel" (click)="onDelete()">
+      <mat-icon>delete</mat-icon>
+    </button>
   </mat-card-actions>
 </mat-card>

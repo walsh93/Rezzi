@@ -15,6 +15,7 @@ import {
   MatTabsModule,
   MatIconModule,
   MatSlideToggleModule,
+  MatSnackBarModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -125,6 +126,7 @@ import { MessagesService } from './home/interface/messages/messages.service';
     MatTableModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatSnackBarModule,
     NgbModule,
     MatTabsModule
   ],
