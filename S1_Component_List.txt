@@ -4,8 +4,8 @@ COMPONENT LIST:
 - sign-up component
 - sign-up form: first name, last name, password, reenter password, personal info,
 
-- dashboard-page component has HAAdmin which has create-rezzi component
-- dashboard-page component has HAAdmin component which has invite-users component
+- dashboard-page component has HdAdmin which has create-rezzi component
+- dashboard-page component has HdAdmin component which has invite-users component
 - dashboard-page component has RAAdmin component which has ra-create-channel component
 - dashboard-page component has edit-profile component which has edit-profile-form component
 - edit profile form component has: first name, last name, password, reenter password, personal info,

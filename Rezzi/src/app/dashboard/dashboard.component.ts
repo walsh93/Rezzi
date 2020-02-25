@@ -6,7 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
+  showEdit = true;
+  showPM = false;
+  showRA = false;
+  showHD = false;
   constructor() { }
 
   ngOnInit() {
