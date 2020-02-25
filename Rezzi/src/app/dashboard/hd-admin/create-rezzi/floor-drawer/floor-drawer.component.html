@@ -1,16 +1,17 @@
 <mat-expansion-panel> 
   <mat-expansion-panel-header>
     <mat-panel-title>
-      Floors
+      {{name}}
     </mat-panel-title>
     <mat-panel-description>
-      Add floors to your Rezzi
+      Add channels to your floor
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <div *ngFor="let channel of channels">
-    <app-channel-panel [name]="channel.name" [default]="channel.default"></app-channel-panel>
-  </div>
-  <button mat-icon-button aria-label="Add Floor" (click)="addFloor()">
+  <app-channel-panel *ngFor="let channel of channels"
+    [name]="channel.name"
+    [default]="channel.default">
+  </app-channel-panel>
+  <button mat-icon-button aria-label="Add Channel" (click)="addChannel()">
     <mat-icon>control_point</mat-icon>
   </button>
 </mat-expansion-panel>

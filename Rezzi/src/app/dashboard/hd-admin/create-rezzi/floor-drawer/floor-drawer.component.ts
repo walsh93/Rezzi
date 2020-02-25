@@ -14,4 +14,11 @@ export class FloorDrawerComponent implements OnInit {
   ngOnInit() {
   }
 
+  addChannel() {
+  	this.channels.push({
+  		name: "Example Channel Name",
+      default: true
+  	})
+  }
+
 }

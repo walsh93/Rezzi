@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-channel-panel',
@@ -12,6 +13,10 @@ export class ChannelPanelComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
   }
 
+  onChange(ob: MatSlideToggleChange) {
+  	this.default = ob.checked;
+  }
 }

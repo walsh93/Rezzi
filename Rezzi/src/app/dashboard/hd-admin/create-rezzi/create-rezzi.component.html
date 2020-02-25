@@ -16,9 +16,10 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <mat-accordion>
-      <div *ngFor="let floor of floors">
-        <app-floor-drawer [name]="floor.name" [channels]="floor.channels"></app-floor-drawer>
-      </div>
+      <app-floor-drawer *ngFor="let floor of floors"
+        [name]="floor.name"
+        [channels]="floor.channels">
+      </app-floor-drawer>
     </mat-accordion>
     <button mat-icon-button aria-label="Add Floor" (click)="addFloor()">
       <mat-icon>control_point</mat-icon>
@@ -35,6 +36,13 @@
         Add default channels to your Rezzi
       </mat-panel-description>
     </mat-expansion-panel-header>
+    <app-channel-panel *ngFor="let channel of hallwide_channels"
+      [name]="channel.name"
+      [default]="channel.default">
+    </app-channel-panel>
+    <button mat-icon-button aria-label="Add Floor" (click)="addChannel('hallwide')">
+      <mat-icon>control_point</mat-icon>
+    </button>
   </mat-expansion-panel>
 
   <!-- RA Panel -->
@@ -47,5 +55,13 @@
         Add default channels for your RAs
       </mat-panel-description>
     </mat-expansion-panel-header>
+    <app-channel-panel *ngFor="let channel of ra_channels"
+      [name]="channel.name"
+      [default]="channel.default">
+    </app-channel-panel>
+    <button mat-icon-button aria-label="Add Floor" (click)="addChannel('ra')">
+      <mat-icon>control_point</mat-icon>
+    </button>
   </mat-expansion-panel>
 </mat-accordion>
+<button mat-button aria-label="Create Rezzi" (click)="createRezzi()">Create Rezzi!</button>

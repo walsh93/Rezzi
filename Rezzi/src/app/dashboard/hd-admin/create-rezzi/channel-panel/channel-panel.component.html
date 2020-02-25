@@ -3,10 +3,7 @@
     {{name}}
   </mat-card-header>
   <mat-card-actions>
-    <mat-slide-toggle
-          class="{{name}}"
-          [color]="primary"
-          [checked]="default">
+    <mat-slide-toggle [checked]="default" (change)="onChange($event)">
       Default
     </mat-slide-toggle>
   </mat-card-actions>
