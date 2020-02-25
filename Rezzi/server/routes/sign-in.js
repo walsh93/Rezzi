@@ -26,7 +26,7 @@ router.get('/', checkCookie, function(request, response) {
           email: req.email,
           verified: data.verified,
           accountType: data.accountType || account_type.resident,  // TODO: resident is default???
-          // TODO: rezzi: data.rezzi ?
+          rezzi: data.rezzi,
         }
         response.status(http.ok).json({ verified: data.verified })
       } else {
