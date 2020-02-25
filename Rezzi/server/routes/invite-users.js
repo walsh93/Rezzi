@@ -29,12 +29,19 @@ router.get('/', checkCookie, function(request, response) {
     for(var i = 0; i < emailarr.length; i++){
         var tempPword = randomstring.generate();
         var currentEmail = emailarr[i]
-        db.collection('users').doc(currentEmail).get().then(doc => {
+        /*
+        if (db.collection('users').doc(currentEmail).get()){
+          console.log("EXISTS");
+          continue;
+        }
+          TODO: Determine how to check to see if email exists
+        */
+        /*db.collection('users').doc(currentEmail).get().then(doc => {
           if(doc.exists){
             response.send(c.EMAIL_ALREADY_REGISTERED)
           } else {
-            //put things in database
-        db.collection(request.__session.dbCollection).add({
+            //put things in database*/
+          db.collection('users').doc(currentEmail).set({
           email: currentEmail,
           password: tempPword,
           verified: 'false',
@@ -42,8 +49,6 @@ router.get('/', checkCookie, function(request, response) {
           //floor: request.body.floor,
           rezzi: rezzi,
           //channels:
-      }).then(() =>{
-          response.status(http.ok).send('Add user sucessful') 
       })
 
       var smtpTransport = nodemailer.createTransport({
@@ -56,8 +61,8 @@ router.get('/', checkCookie, function(request, response) {
 
       var mailOptions = {
           to: currentEmail,
-          from: rezi + ' Rezzi <rezzi407@gmail.com',
-          subject: rezi + ' Rezzi Sign-up',
+          from: rezzi + ' Rezzi <rezzi407@gmail.com>',
+          subject: rezzi + ' Rezzi Sign-up',
           text: 'Welcome to Rezzi!\n\n' +
           'You hall director has just invited you to the ' + rezzi + 'Rezzi\n\n' +
           'To complete the set up procces and activate your account, visit http://localhost:4200/login and use the following credentials:\n\n' +
@@ -69,16 +74,11 @@ router.get('/', checkCookie, function(request, response) {
 
       smtpTransport.sendMail(mailOptions, function(error, res) {
           if (error) {
-            return response.status(c.HTTP_INTERNAL_ERR).send(`An error occured when sending an email to ${currentEmail}`);
+            res.location('/invite-users').status(c.SENDING_EMAIL_ERR).render('inviteUsers',{msg: `There was an error sending email to ${currentEmail}`})
           }
-        });
-          }
-      }).catch(err => {
-        response.location('/invite-users').render('inviteUsers', { msg: 'There was an error' })
       });
-      
     }
-    
+
   });
 
   module.exports = router

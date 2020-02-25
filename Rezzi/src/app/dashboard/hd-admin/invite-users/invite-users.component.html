@@ -1,54 +1,48 @@
 <!--
     The invite users page will have two text boxes
         One for RA invites and one for resident invites
-        Below that is a list of available channels that HD can add the group of users to 
+        Below that is a list of available channels that HD can add the group of users to
         When "Invte <user type>" is pressed, emails are sent to users and user infor is stored in the database
 -->
-
 <div class="container-fluid">
-
-        <div class="center" id="logo">
-          
-        </div>
-        <br>
-        <br>
-      
-        <h2>Invite New Users to Your Rezzi</h2>
-        <br>
-        <div>
-    <div class="row">
-            <!--Invite RAs-->
-          <div class="column">
-              <h3>Invite RAs</h3>
-            <textarea id="RAEmails" rows="8" cols="20">Enter RA emails in a comma seperated list. You must submit this form separately for RAs of different floors.
-            </textarea>
-            <p>Select the floor you would like these users to be automatically added to.</p>
-            <!--TODO: Pull list of channels for this Rezzi and put them with radio button/dropdown-->
-
-            <div class="form-row vspace">
-                    <button class="btn btn-primary" (click)="initiateRAInvite()">Invite RAs</button>
-                  </div>
-          </div>
-
-            <!--Invite Residents-->
-            <div class="column">
-                <h3>Invite Residents</h3>
-                <textarea id="ResidentEmails" rows="8" cols="20">Enter resident emails in a comma seperated list. You must submit this form separately for residents of different floors.
-                </textarea>
-
-                <p>Select the floor you would like these users to be automatically added to.</p>
-            <!--TODO: Pull list of floors for this Rezzi and put them with radio button/dropdown-->
-
-            <div class="form-row vspace">
-                    <button class="btn btn-primary" (click)="initiateResidentInvite()">Invite residents</button>
-                  </div>
-            </div>
-          <br>
-        </div>
-          
-          <br>
-      
-          
-        </div>
-        
-      </div>
+  <h2 style="text-align: center;">Invite New Users to Your Rezzi</h2>
+  <br>
+  <div class="row">
+    <div class="column">
+      <mat-card color="primary">
+        <!--Invite RAs-->
+        <form (submit)="onRAInvite(RAInviteForm)" #RAInviteForm="ngForm">
+          <h3 style="text-align: center;">Invite RAs</h3>
+          <mat-form-field class="example-full-width">
+            <textarea matInput name="RAEmails" ngModel rows="8"
+              placeholder='Enter RA emails in a comma seperated list.'
+              required></textarea>
+            <mat-error>Please enter a valid comma seperated list</mat-error>
+          </mat-form-field>
+          <p>Select the floor you would like these users to be automatically added to.</p>
+          <p>You must submit this form separately for RAs of different floors.</p>
+          <!--TODO: Pull list of channels for this Rezzi and put them with radio button/dropdown-->
+          <button mat-raised-button color="accent" type="submit">Invite RAs</button>
+        </form>
+      </mat-card>
+    </div>
+    <div class="column">
+      <mat-card color="primary">
+        <!--Invite Residents-->
+        <form (submit)="onResidentInvite(residentInviteForm)" #residentInviteForm="ngForm">
+          <h3 style="text-align: center;">Invite Residents</h3>
+          <mat-form-field class="example-full-width">
+            <textarea matInput name="residentEmails" rows="8"
+              placeholder='Enter resident emails in a comma seperated list.'
+              required></textarea>
+            <mat-error>Please enter a valid comma seperated list</mat-error>
+          </mat-form-field>
+          <p>Select the floor you would like these users to be automatically added to.</p>
+          <p>You must submit this form separately for residents of different floors.</p>
+          <!--TODO: Pull list of floors for this Rezzi and put them with radio button/dropdown-->
+          <button mat-raised-button color="accent" type="submit">Invite Residents</button>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>
