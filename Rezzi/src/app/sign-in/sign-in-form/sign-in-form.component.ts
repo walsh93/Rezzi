@@ -40,9 +40,9 @@ export class SignInFormComponent implements OnInit {
     this.http.post('/sign-in', body).toPromise().then((response) => {
       const res = response as any;
       //TO DO: so this routing doesnt owrk for pword reset???? Idk why gotta fix that
-      if(res.tempPword === true) {
+      if (res.tempPword === true) {
         this.router.navigate(['/pword-reset-change']);
-      }else if (res.verified === false) {
+      } else if (res.verified === false) {
         this.router.navigate(['/sign-up']);
       } else {
         this.router.navigate(['/home']);
