@@ -27,8 +27,10 @@ module.exports.addUser = function addUser(data) {
       if (doc.exists && doc.data().verified == true) {
         //Do something about the error here
         //checks to see if account is verified per Megan's implementation
+        return false; // conley-edit-here
       } else if (doc.exists) {
         dbstore.collection('users').doc(data.email).update(data)
+        return true; // conley-edit-here
       } else {
         //Should NEVER get here. Only for SignUpHD
         dbstore.collection('users').doc(data.email).set(data)
@@ -37,6 +39,7 @@ module.exports.addUser = function addUser(data) {
       //reject(err)
       console.log(err)
       console.log("Error creating account");
+      return false; // conley-edit-here
     })
 }
 

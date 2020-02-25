@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ra-admin.component.css']
 })
 export class RaAdminComponent implements OnInit {
-
+  showCreateChannel = false;
   constructor() { }
 
   ngOnInit(): void {
