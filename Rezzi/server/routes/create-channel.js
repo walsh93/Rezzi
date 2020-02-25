@@ -37,7 +37,7 @@ router.get('/', checkCookie, function(request, response) {
      * `response.status().redirect()` statement instead
      */
     if (req.level == keys.ra) {
-      db.collection(keys.residence_halls).doc(/* get user's rezzi from data or __session once implemented? */)
+      db.collection(keys.residence_halls).doc(data.rezzi)
           .collection(keys.ra).doc(channel.title).set(channel).then((write_result) => {
         response.status(http.ok).send('Your RA channel has been successfully created!')
 //        response.status(http.ok).redirect('wherever the view-channel link is')
@@ -46,7 +46,7 @@ router.get('/', checkCookie, function(request, response) {
         response.status(http.bad_request).send(errorMsg)
       })
     } else if (req.level == keys.hallwide) {
-      db.collection(keys.residence_halls).doc(/* get user's rezzi from data or __session once implemented? */)
+      db.collection(keys.residence_halls).doc(data.rezzi)
           .collection(keys.hallwide).doc(channel.title).set(channel).then((write_result) => {
         response.status(http.ok).send('Your hallwide channel has been successfully created!')
 //        response.status(http.ok).redirect('wherever the view-channel link is')
@@ -55,8 +55,8 @@ router.get('/', checkCookie, function(request, response) {
         response.status(http.bad_request).send(errorMsg)
       })
     } else {
-      db.collection(keys.residence_halls).doc(/* get user's rezzi from data or __session once implemented? */)
-          .collection(keys.floors).doc(/* get user's floor; not currently sure where that's being stored */)
+      db.collection(keys.residence_halls).doc(data.rezzi)
+          .collection(keys.floors).doc(data.floor)
           .collection('channels').doc(channel.title).set(channel).then((write_result) => {
         response.status(http.ok).send('Your floor interest channel has been successfully created!')
 //        response.status(http.ok).redirect('wherever the view-channel link is')
