@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RezziService } from '../../../rezzi.service'; 
+import { RezziService } from '../../../rezzi.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-invite-users',
@@ -13,51 +14,63 @@ export class InviteUsersComponent implements OnInit {
 
   // Class variables
   errorMsg: string;
-
+  session;
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
     // Initialize class variables
     this.rezziService.getSession().then((__session) => {
-
+        this.session = __session;
     })
     this.errorMsg = '';
   }
-
-  initiateRAInvite(){
-    const emailList = (document.getElementById('RAEmails') as HTMLInputElement).value;
+  onRAInvite(form: NgForm) {
+    if (form.invalid) {
+      return;
+    }
+    const emailList = form.value.RAEmails;
+    console.log(emailList);
 
     //get the selected floor
     //get the Rezzi the HD belongs to
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)
     const body = {
-      emailList: `${emailList}`,
+      emailList: form.value.RAEmails,
       //floor: `${floor}`,
       accountType: `1`,
-      //channels: 
+      //channels:
     };
+    this.addInvite(body);
+  }
 
-    //TO DO: what should I be doing response wise here?
-    this.http.post('/invite-users', body).toPromise().then((response) => {
-      const res = response as any;
-      
-    }).catch((error) => {
-      const res = error as HttpErrorResponse;
-      if (res.status === 200) {
-        const res2 = error as any;
-        
-      } else {
-        document.getElementById('fplink').classList.add('vspace');
-        document.getElementById('error-msg').hidden = false;
-        this.errorMsg = `${res.error}`;
-      }
+  onResidentInvite(form: NgForm){
+    if (form.invalid) {
+      return;
+    }
+    const emailList = form.value.residentEmails;
+    console.log(emailList);
+
+    //get the selected floor
+    //get the Rezzi the HD belongs to
+
+    // Body of the HTTP request (param names MUST match input field form names expected in login.js)
+    const body = {
+      emailList: form.value.residentEmails,
+      rezzi: this.session.rezzi,
+      //floor: `${floor}`,
+      accountType: `1`,
+      //channels:
+    };
+    this.addInvite(body);
+  }
+
+  addInvite(list){
+    this.http.post<{notification: string}>('/invite-users', list)
+    .subscribe(responseData => {
+      console.log(responseData.notification);
     });
   }
 
-  initiateResidentInvite(){
-    const emailList = (document.getElementById('RAEmails') as HTMLInputElement).value;
-    const emailarr = emailList.split(",");
-  }
-
+    //TO DO: what should I be doing response wise here?
 }

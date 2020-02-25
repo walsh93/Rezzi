@@ -25,6 +25,7 @@ router.get('/', checkCookie, function(request, response) {
           email: req.email,
           verified: data.verified,
           accountType: data.accountType,
+          rezzi: data.rezzi,
         }
         response.status(http.ok).json({ verified: data.verified })
       } else {
