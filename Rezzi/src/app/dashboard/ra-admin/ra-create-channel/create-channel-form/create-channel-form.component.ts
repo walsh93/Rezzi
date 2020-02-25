@@ -114,6 +114,7 @@ export class CreateChannelFormComponent implements OnInit {
       if (res.status === 200) {
         this.router.navigate(['/home']);  // TODO change this to route to channel?
       } else {
+        document.getElementById('error-msg').hidden = false;
         this.errorMsg = `${res.error}`;
       }
     });
