@@ -40,3 +40,28 @@ export interface Message {
   // time: Date;
   // visible: boolean;
 }
+
+export class HDUser {
+  constructor(firstName: string, lastName: string, email: string, password: string, verified: boolean) {
+    this.firstName = firstName;
+    this. lastName = lastName;
+    this.email = email;
+    this.password = password;
+    this.accountType = 0;
+    this.verified = verified;
+  }
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  accountType: number;
+  verified: boolean;
+}
+export interface ChannelData {
+  id: string,
+  channel: string,
+  users: number,
+  belongs: boolean,
+  subchannels: ChannelData[],
+}

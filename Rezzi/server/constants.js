@@ -2,7 +2,6 @@ const path = require('path')
 
 module.exports = {
   indexFile: `${path.join(__dirname, '../dist/Rezzi/index.html')}`,
-
   // Service URLs
   service: {
     get_session: "/get-session",
@@ -27,6 +26,7 @@ module.exports = {
     invite_users: "/invite-users",
     join_channel: "/join-channel",
     get_channels: "/get-channels",
+    dashboard: "/dashboard",
   },
 
   http_status: {

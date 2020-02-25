@@ -1,5 +1,4 @@
 #sign-in-form {
-  background-color: coral;
   padding: 2em;
 
   /* Dimensions */
@@ -12,5 +11,5 @@
 }
 
 #error-msg {
-  color: white;
+  color: red;
 }
