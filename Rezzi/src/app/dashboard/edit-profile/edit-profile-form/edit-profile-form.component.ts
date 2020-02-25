@@ -92,6 +92,7 @@ export class EditProfileFormComponent implements OnInit {
   // ngOnInit(): void {
   // }
   ngOnInit() {
+
     this.rezziService.getSession().then(response => {
       if (response.email == null) {
         // not signed in
@@ -110,16 +111,16 @@ export class EditProfileFormComponent implements OnInit {
          //response.user[0];
 
         // this.theUser.setUser(
-          console.log("HEREsw:" +response[0]);
+          this.theUser = new User(response.user.email, response.user.password, response.user.firstName, response.user.lastName, response.user.age, response.user.major, response.user.nickName, response.user.bio, true );
           console.log("wrerw: " + response.user);
-          console.log(" ewr: "+ response.user[0]);
-          this.theUser.password = response.user[0].password,
-         this.theUser.firstName = response.user[0].firstName,
-         this.theUser.lastName= response.user[0].lastName,
-         this.theUser.age= response.user[0].age,
-         this.theUser.major= response.user[0].info.major,
-         this.theUser.nickName = response.user[0].nickName,
-         this.theUser.bio = response.user[0].bio
+          console.log(" ewr: "+ response.user.password);
+        //   this.theUser.password = response.user.password,
+        //  this.theUser.firstName = response.user.firstName,
+        //  this.theUser.lastName= response.user.lastName,
+        //  this.theUser.age= response.user.age,
+        //  this.theUser.major= response.user.major,
+        //  this.theUser.nickName = response.user.nickName,
+        //  this.theUser.bio = response.user.bio
         // );
 
         console.log("userdata: " + this.theUser.lastName + "k" + this.theUser.major);
@@ -134,7 +135,6 @@ export class EditProfileFormComponent implements OnInit {
       //   nickName: form.value.nickName,
       //   bio: form.value.bio
       // };
-      console.log("USER:" + this.theUser.age + "sfs" + this.theUser.major);
     });
   }
 }

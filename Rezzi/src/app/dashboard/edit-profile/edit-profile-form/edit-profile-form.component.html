@@ -65,17 +65,19 @@ Confirm Password: <input id="confirm_password" type="password" name="confirm_pas
       <mat-form-field class="example-full-width">
         <mat-label>First Name</mat-label>
         <input
+        [(ngModel)]="theUser.firstName"
           matInput
           type="text"
           placeholder="First Name"
           name="firstName"
           ngModel
           required>
-          <!-- {{user.firstName}} -->
+          <!-- {{theUser.firstName}} -->
           <mat-error>Please enter a valid first name (Alpha only)</mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <input
+        [(ngModel)]="theUser.lastName"
           matInput
           type="text"
           placeholder="Last Name"
@@ -86,12 +88,14 @@ Confirm Password: <input id="confirm_password" type="password" name="confirm_pas
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <input
+        [(ngModel)]="theUser.nickName"
           matInput
           type="text"
           placeholder="Preferred Name"
           ngModel
           name="nickName"
           >
+
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <input
