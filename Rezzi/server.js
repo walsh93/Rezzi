@@ -83,9 +83,10 @@ app.use((request,response,next)=>{
 app.post('/api/messages', (request, response, next) => {
   const message = request.body;
   console.log(message);
-  response.status(201).json({
-    notification: 'Message added successfully'
-  });
+  // response.status(201).json({
+  //   notification: 'Message added successfully'
+  // });
+  response.status(200)//.sendFile(indexFile)
 });
 
 app.use('/api/messages',(request,response,next) => {
@@ -95,10 +96,11 @@ app.use('/api/messages',(request,response,next) => {
     { id: '123457',
     content: 'Second message'}
   ];
-  response.status(200).json({
-    message: 'Messages fetched successfully!',
-    messages: messages
-  });
+  // response.status(200).json({
+  //   message: 'Messages fetched successfully!',
+  //   messages: messages
+  // });
+  response.status(200)//.sendFile(indexFile)
 });
 
 
