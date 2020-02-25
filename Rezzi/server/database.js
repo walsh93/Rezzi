@@ -40,15 +40,24 @@ module.exports.addUser = function addUser(data) {
     })
 }
 
-// module.exports.getUser = function getUser(data){
-//   let query = firestore.collection('users').where('email', '==', data.email)
-//   console.log(query)
-// //   dbstore.collection('users').doc(data.email.get().then(doc => {
-// //     dbstore.collection('users').doc(data.email).get
-// //   }))
-//  }
-module.exports.editUser = function editUser(data,email){
-  dbstore.collection('users').doc(email).get().then(doc => {
+module.exports.getUser = function getUser(data){
+  dbstore.collection('users').doc(data.email).get().then(doc => {
+    if (!doc.exists) {
+      //Do something about the error here
+
+    } else {
+    //  return dbstore.collection('users').doc(email).get(data)
+    console.log("GET: " + dbstore.collection('users').doc(email) + "fe: " + dbstore.collection('users').doc(email)).firstName
+    return dbstore.collection('users').doc(email)
+    }
+  }).catch(err => {
+    //reject(err)
+    console.log(err)
+    console.log("Error getting user's profile");
+  })
+}
+module.exports.editUser = function editUser(data){
+  dbstore.collection('users').doc(data.email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
       //checks to see if account is verified per Megan's implementation
