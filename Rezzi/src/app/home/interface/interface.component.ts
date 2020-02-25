@@ -8,13 +8,14 @@ import { RezziService } from '../../rezzi.service';
 })
 export class InterfaceComponent implements OnInit {
   session: any;
+  resHall: string;
 
   constructor(private rezziService: RezziService) { }
 
   ngOnInit() {
     this.rezziService.getSession().then((__session) => {
       this.session = __session;
-
+      this.resHall = this.session.rezzi;
     });
   }
 
