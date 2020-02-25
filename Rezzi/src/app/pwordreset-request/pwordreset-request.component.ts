@@ -13,7 +13,7 @@ export class PwordresetRequestComponent implements OnInit {
   }
 
   onResetPassword(){
-    //Source: CS307 project https://github.com/kbaihoff/CheckedIn
+    // Source: CS307 project https://github.com/kbaihoff/CheckedIn
     // Get value of input fields (https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement)
     const email = (<HTMLInputElement>document.getElementById("email")).value;
 
@@ -35,19 +35,19 @@ export class PwordresetRequestComponent implements OnInit {
      * Need credentials = 403, xhr.responseText = <welcome page URL>
      * Firebase error = 500, xhr.responseText = <error message>
      */
-    xhr.onreadystatechange = function () {
-      if (this.readyState === XMLHttpRequest.DONE) {
-        console.log(xhr.status)
-        if (xhr.status == 200 || xhr.status == 403) {
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        console.log(xhr.status);
+        if (xhr.status === 200 || xhr.status === 403) {
           window.location.href = xhr.responseText;
-        } else if (xhr.status == 401 || xhr.status == 500) {
+        } else if (xhr.status === 401 || xhr.status === 500) {
           alert(xhr.responseText);
         } else {
-          console.log(xhr.status)
-          alert("Your POST request received an unhandled response code.");
+          console.log(xhr.status);
+          alert('Your POST request received an unhandled response code.');
         }
       }
-    }
+    };
 
     // Send the request
     xhr.send(body);
