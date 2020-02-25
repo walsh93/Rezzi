@@ -3,7 +3,7 @@ const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
-const c = require('../constants');
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAndUnverified
 
 
 // router.get(':/userId', function(request,response) {
@@ -15,4 +15,30 @@ const c = require('../constants');
 //     }
 //   });
 // })
+router.get('/', checkCookie, function (request, response) {
+  db.collection('users').get().then((snapshot) => {
+    let user = []
+    snapshot.forEach((info) => {
+      const data = info.data()
+      const info = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        password: data.password,
+        major: data.major,
+        nickname: data.nickname,
+        bio: data.bio,
+        age: data.age,
+      }
+      user.push(user)
+    }),
+     console.log("WEREREWEW: " + user + "wefew: " + user.info.firstName)
+      response.status(http.ok).json({ user: user })  // will be accessed as data_from_backend in prev code blocks
+  }).catch((error) => {
+    console.log('Error getting documents', error)
+    response.status(http.conflict).json(null)
+  })
+});
+
+
+
 module.exports = router;

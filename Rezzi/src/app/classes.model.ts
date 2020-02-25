@@ -34,7 +34,6 @@ export class User {
   }
 
   setUser(
-    email: string,
     password: string,
     firstName: string,
     lastName: string,
@@ -42,9 +41,7 @@ export class User {
     major: string,
     nickName: string,
     bio: string,
-    verified: boolean
   ) {
-    this.email = email;
     this.password = password;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -52,11 +49,9 @@ export class User {
     this.major = major;
     this.nickName = nickName;
     this.bio = bio;
-    this.verified = verified;
   }
 
   updateUser(
-    newEmail: string,
     newPassword: string,
     newFirstName: string,
     newLastName: string,
@@ -64,9 +59,7 @@ export class User {
     newMajor: string,
     newNickName: string,
     newBio: string,
-    newVerified: boolean
   ) {
-    this.email = newEmail;
     this.password = newPassword;
     this.firstName = newFirstName;
     this.lastName = newLastName;
@@ -74,7 +67,6 @@ export class User {
     this.major = newMajor;
     this.nickName = newNickName;
     this.bio = newBio;
-    this.verified = newVerified;
   }
 }
 

@@ -12,8 +12,7 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ["./edit-profile-form.component.css"]
 })
 export class EditProfileFormComponent implements OnInit {
-
-   user: User;
+  theUser: User;
   // constructor(private rezziService: RezziService, private router: Router) {}
 
   // ngOnInit() {
@@ -25,10 +24,10 @@ export class EditProfileFormComponent implements OnInit {
   //       // signed in but not verified
   //       this.router.navigate(["/sign-up"]);
   //     } // else signed in and verified
-  //     this.user = this.rezziService
+  //     this.theUser = this.rezziService
   //       .getUserData(response.email)
   //       .then(response => {
-  //         console.log('userdata: ' + this.user + " " + this.user.lastName )
+  //         console.log('userdata: ' + this.theUser + " " + this.theUser.lastName )
   //       });
   //   });
   hide = true;
@@ -49,12 +48,12 @@ export class EditProfileFormComponent implements OnInit {
       nickName: form.value.nickName,
       bio: form.value.bio
     };
-    this.user.firstName = userInfo.firstName;
-    this.user.lastName = userInfo.lastName;
-    this.user.age = userInfo.age;
-    this.user.major = userInfo.major;
-    this.user.nickName = userInfo.nickName;
-    this.user.bio = userInfo.bio;
+    this.theUser.firstName = userInfo.firstName;
+    this.theUser.lastName = userInfo.lastName;
+    this.theUser.age = userInfo.age;
+    this.theUser.major = userInfo.major;
+    this.theUser.nickName = userInfo.nickName;
+    this.theUser.bio = userInfo.bio;
 
     /* Katarina - This is all the form data:
       form.value.password,
@@ -88,8 +87,7 @@ export class EditProfileFormComponent implements OnInit {
       });
   }
   getUser(data) {
-        return this.http.get('/edit-profile');
-
+    return this.http.get("/edit-profile");
   }
   // ngOnInit(): void {
   // }
@@ -103,13 +101,31 @@ export class EditProfileFormComponent implements OnInit {
         this.router.navigate(["/sign-up"]);
       } // else signed in and verified
 
-      // this.user = this.rezziService
+      // this.theUser = this.rezziService
       //   .getUserData(response.email)
       //   .then(response => {
-      //     console.log("userdata: " + this.user + " " + this.user.lastName);
+      //     console.log("userdata: " + this.theUser + " " + this.theUser.lastName);
       //   });
-      let user2= this.getUser(response.email);
-      console.log('USER thingy: '+ user2);
+       this.rezziService.getUserProfile().then(response => {
+         //response.user[0];
+
+        // this.theUser.setUser(
+          console.log("HEREsw:" +response[0]);
+          console.log("wrerw: " + response.user);
+          console.log(" ewr: "+ response.user[0]);
+          this.theUser.password = response.user[0].password,
+         this.theUser.firstName = response.user[0].firstName,
+         this.theUser.lastName= response.user[0].lastName,
+         this.theUser.age= response.user[0].age,
+         this.theUser.major= response.user[0].info.major,
+         this.theUser.nickName = response.user[0].nickName,
+         this.theUser.bio = response.user[0].bio
+        // );
+
+        console.log("userdata: " + this.theUser.lastName + "k" + this.theUser.major);
+      });
+      // let user2= this.getUser(response.email);
+      // console.log('USER thingy: '+ user2);
       // let userInfo = {
       //   firstName: user.firstName,
       //   lastName: form.value.lastName,
@@ -118,7 +134,7 @@ export class EditProfileFormComponent implements OnInit {
       //   nickName: form.value.nickName,
       //   bio: form.value.bio
       // };
-      console.log("USER:" + this.user);
+      console.log("USER:" + this.theUser.age + "sfs" + this.theUser.major);
     });
   }
 }
