@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
 import { ErrorComponent } from './error/error.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+
 
 // Routes
 const routes: Routes = [
@@ -19,12 +21,9 @@ const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
   { path: 'home', component: HomeComponent },
   { path: 'create-channel', component: RaCreateChannelComponent },
-
-  // Error routes
-  { path: 'err/:accountType/unauthorized', component: ErrorComponent },
-
-  // MUST BE LAST
-  { path: '**', component: PageNotFoundComponent },
+  { path: 'err/:accountType/unauthorized', component: ErrorComponent }, // Error routes
+  { path: 'dashboard', component: DashboardComponent },
+  { path: '**', component: PageNotFoundComponent },                     // MUST BE LAST
 ];
 
 @NgModule({

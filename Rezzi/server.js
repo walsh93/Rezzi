@@ -67,6 +67,8 @@ const getchannels = require('./server/routes/get-channels')
 app.use(url.get_channels, getchannels)
 const joinchannel = require('./server/routes/join-channel')
 app.use(url.join_channel, joinchannel)
+const dashboard = require('./server/routes/dashboard')
+app.use(url.dashboard, dashboard)
 
 // Testing
 app.use((request,response,next)=>{
@@ -99,15 +101,8 @@ app.use('/api/messages',(request,response,next) => {
   });
 });
 
-app.post('/api/sign-up',(request,response,next) => {
-  const rb = request.body
-  console.log(rb);
-  firebase.addUser(rb)
-  response.status(201).json({
-    notification: 'User may be signed up?'
-  });
-  //add user here
-});
+
+
 
 
 // All routes fall to here if they didn't match any of the previous routes

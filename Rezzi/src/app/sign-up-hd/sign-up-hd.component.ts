@@ -1,6 +1,9 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { RezziService } from '../rezzi.service';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { HDUser } from '../classes.model';
 
 @Component({
   selector: 'app-sign-up-hd',
@@ -9,24 +12,36 @@ import { Router } from '@angular/router';
 })
 export class SignUpHdComponent implements OnInit {
   hide = true;
-  newUser = new HDUser();
-  @Output() userCreatedHD = new EventEmitter();
 
-  onSignUpHD() {
-               console.log(this.newUser);
+  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
+
+  onSignUpHD(form: NgForm) {
+    if (form.invalid){
+      return;
+    }
+    console.log(form);
+    const newHDUser = new HDUser (
+      form.value.firstName,
+      form.value.lastName,
+      form.value.email,
+      form.value.password,
+      true
+    );
+    console.log(newHDUser);
+
+    this.addUser(newHDUser);
                // check that email doesn't exist in database
 
-               if (this.newUser.password !== this.newUser.confirmPassword) {
-                  alert('Your passwords do not match');
-               } else {
-                 this.userCreatedHD.emit(this.newUser);
-                  // create account
-                  // send data to backend
-                  // account created successfully
-               }
+
   }
 
-  constructor(private rezziService: RezziService, private router: Router) { }
+  addUser(user: HDUser) {
+    this.http.post<{notification: string}>('http://localhost:4100/api/sign-up', user)
+      .subscribe(responseData => {
+        console.log(responseData.notification);
+      });
+  }
+
 
   /**
    * Get session data and determine whether or not you need to reroute
@@ -41,13 +56,5 @@ export class SignUpHdComponent implements OnInit {
     });
   }
 
-}
-
-class HDUser {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
 }
 

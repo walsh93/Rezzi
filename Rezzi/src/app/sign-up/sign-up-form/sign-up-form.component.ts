@@ -49,9 +49,10 @@ export class SignUpFormComponent implements OnInit {
 }
 
 addUser(user: User) {
-  this.http.post<{notification: string}>('http://localhost:4100/api/sign-up', user)
+  this.http.post<{notification: string}>('/sign-up/api/sign-up', user)
     .subscribe(responseData => {
       console.log(responseData.notification);
+      // if success go home else show message indicating error
     });
 }
 
