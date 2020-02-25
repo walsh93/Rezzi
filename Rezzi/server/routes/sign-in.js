@@ -24,6 +24,7 @@ router.get('/', checkCookie, function(request, response) {
         request.__session = {
           email: req.email,
           verified: data.verified,
+          accountType: data.accountType,
         }
         response.status(http.ok).json({ verified: data.verified })
       } else {
