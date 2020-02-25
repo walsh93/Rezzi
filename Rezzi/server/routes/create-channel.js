@@ -29,13 +29,6 @@ router.get('/', checkCookie, function(request, response) {
 
     const errorMsg = 'There was an error creating your channel'
 
-    /**
-     * TODO @aaronlynn
-     * Not currently sure where the user's floor is being stored or what the key(s) for the user's
-     * floor and rezzi are. Need those keys to correctly query the database
-     * Also, once we know where to reroute to (what the link is), use the currently commented-out
-     * `response.status().redirect()` statement instead
-     */
     if (req.level == keys.ra) {
       db.collection(keys.residence_halls).doc(data.rezzi)
           .collection(keys.ra).doc(channel.title).set(channel).then((write_result) => {
@@ -45,6 +38,10 @@ router.get('/', checkCookie, function(request, response) {
         console.log(error)
         response.status(http.bad_request).send(errorMsg)
       })
+
+      // TODO add channel to owner's channel list here
+      // TODO add channel to user's channel list here
+
     } else if (req.level == keys.hallwide) {
       db.collection(keys.residence_halls).doc(data.rezzi)
           .collection(keys.hallwide).doc(channel.title).set(channel).then((write_result) => {
@@ -54,6 +51,10 @@ router.get('/', checkCookie, function(request, response) {
         console.log(error)
         response.status(http.bad_request).send(errorMsg)
       })
+
+      // TODO add channel to owner's channel list here
+      // TODO add channel to user's channel list here
+
     } else {
       db.collection(keys.residence_halls).doc(data.rezzi)
           .collection(keys.floors).doc(data.floor)
@@ -64,6 +65,10 @@ router.get('/', checkCookie, function(request, response) {
         console.log(error)
         response.status(http.bad_request).send(errorMsg)
       })
+
+      // TODO add channel to owner's channel list here
+      // TODO add channel to user's channel list here
+
     }
   })
 })
