@@ -1,15 +1,40 @@
 import { Component, OnInit } from '@angular/core';
+import { RezziService } from '../../../rezzi.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ra-create-channel',
-  templateUrl: './ra-create-channel.component.html',
-  styleUrls: ['./ra-create-channel.component.css']
+  styleUrls: ['./ra-create-channel.component.css'],
+
+  // Pass data to child via data binding (replaces templateUrl and the HTML file)
+  template: `
+    <div class="container">
+      <h1>Let's create a new channel!</h1>
+      <app-create-channel-form [owner]="owner"></app-create-channel-form>
+    </div>
+  `
 })
 export class RaCreateChannelComponent implements OnInit {
 
-  constructor() { }
+  owner: string;
 
+  constructor(private rezziService: RezziService, private router: Router) { }
+
+  /**
+   * Get session data and determine whether or not you need to reroute
+   * If the service is not called here, then if someone clicks a button to the Sign In page without
+   * manually putting it in, the middleware function in permissions.js won't run
+   */
   ngOnInit(): void {
+    this.rezziService.getSession().then((response) => {
+      if (response.email == null) {  // not signed in
+        this.router.navigate(['/sign-in']);
+      } else if (response.accountType !== 1) {  // not an RA
+        this.router.navigate(['/err/1/unauthorized']);
+      } else {  // else you are a signed-in RA
+        this.owner = response.email;
+      }
+    });
   }
 
 }

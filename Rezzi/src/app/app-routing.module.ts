@@ -8,6 +8,8 @@ import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { HomeComponent } from './home/home.component';
 import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
+import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
+import { ErrorComponent } from './error/error.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -20,8 +22,10 @@ const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
   { path: 'home', component: HomeComponent },
   { path: 'invite-users', component: InviteUsersComponent },
+  { path: 'create-channel', component: RaCreateChannelComponent },
+  { path: 'err/:accountType/unauthorized', component: ErrorComponent }, // Error routes
   { path: 'dashboard', component: DashboardComponent },
-  { path: '**', component: PageNotFoundComponent },
+  { path: '**', component: PageNotFoundComponent },                     // MUST BE LAST
 ];
 
 @NgModule({

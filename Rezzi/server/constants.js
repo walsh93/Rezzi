@@ -13,7 +13,19 @@ module.exports = {
   db_keys: {
     users: 'users',
     email: 'email',
+    residence_halls: 'residence-halls',
+    floors: 'floors',
+    hallwide: 'hallwide',
+    ra: 'RA',
+    channels: 'channels',
     rezzis: 'residence-halls'
+  },
+
+  // User types
+  account_type: {
+    hd: 0,
+    ra: 1,
+    resident: 2
   },
 
   // URLs
@@ -22,8 +34,16 @@ module.exports = {
     sign_up: "/sign-up",
     sign_up_hd: "/sign-up-hd",
     home: "/home",
+    create_channel: "/create-channel",
     sign_out: "/sign-out",
     invite_users: "/invite-users",
+    error: {
+      page: "/err",
+      not_raadmin: "/err/1/unauthorized",
+      not_raadmin_ext: "/1/unauthorized",
+      not_hdadmin: "/err/0/unauthorized",
+      not_hdadmin_ext: "/0/unauthorized",
+    },
     join_channel: "/join-channel",
     get_channels: "/get-channels",
     dashboard: "/dashboard",
@@ -40,20 +60,23 @@ module.exports = {
     conflict: 409,
   },
 
-  // Signup codes
-  EMAIL_ALREADY_REGISTERED: -500,
-  EMAIL_ALREADY_REGISTERED_MSG: 'This email is already registered',
-  PASSWORDS_DONT_MATCH: -501,
-  PASSWORDS_DONT_MATCH_MSG: 'Passwords don\'t match',
-  INVALID_PASSWORD: -504,
-  INVALID_PASSWORD_MSG: 'Invalid password pattern: must be at least 8 characters in [A-Za-z0-9]',
-  INVALID_EMAIL: -505,
-  INVALID_EMAIL_MSG: 'Invalid email pattern: must follow ^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$',
+  // Error messages (can use generic HTTP codes)
+  error: {
+    sign_in: {
+      email_error: 'This is not a registered email',
+      password_error: 'Password was incorrect',
+    },
+    sign_up: {
+      email_already_registered: 'This email is already registered',
+      email_invalid: 'Invalid email pattern: must follow ^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$',
+      password_mismatch: 'Passwords don\'t match',
+      password_invalid: 'Invalid password pattern: must be at least 8 characters in [A-Za-z0-9]',
+    },
 
-  // Login codes
-  sign_in: {
-    email_error: 'This is not a registered email',
-    password_error: 'Password was incorrect',
+    // MISC.
+    sending_email_error: 'Email could not be sent',
+    rezzi_not_exist: 'The Rezzi you are registered to does not exist, please speak with your RA.',
+    response_not_implemented: 'This response type has not yet been implemented.',
   },
 
   // Rezzi Error codes

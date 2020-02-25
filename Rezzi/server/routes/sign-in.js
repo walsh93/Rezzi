@@ -7,7 +7,8 @@ const checkCookie = require('../permissions').userNeedsToBeLoggedOut
 const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
-const sign_in = require('../constants').sign_in
+const account_type = require('../constants').account_type
+const sign_in = require('../constants').error.sign_in
 
 router.get('/', checkCookie, function(request, response) {
   response.sendFile(indexFile)
@@ -24,7 +25,7 @@ router.get('/', checkCookie, function(request, response) {
         request.__session = {
           email: req.email,
           verified: data.verified,
-          accountType: data.accountType,
+          accountType: data.accountType || account_type.resident,  // TODO: resident is default???
           rezzi: data.rezzi,
         }
         response.status(http.ok).json({ verified: data.verified })
