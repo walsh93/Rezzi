@@ -3,21 +3,25 @@
 <div class="rezzi" *ngIf="channels.length > 0"> <!-- TODO make sure expanded channels don't appear over 'Join' button -->
 
   <mat-expansion-panel *ngFor="let channel of channels"> <!-- looping the floor channels -->
+    <!-- <div *ngIf="channel.belongs"> -->
+      <div>
+        <mat-expansion-panel-header>
+          <mat-panel-title (click)='doTheThing()' routerLink='/home'> <!-- TODO add routerLink or click to view channel's chat -->
+            {{ channel.channel }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
 
-    <mat-expansion-panel-header>
-      <mat-panel-title (click)='doTheThing()' routerLink='/home'> <!-- TODO add routerLink or click to view channel's chat -->
-        {{ channel.channel }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
+        <mat-card *ngFor="let interest of channel.subchannels"> <!-- Looping the interest channels-->
+          <mat-card-content (click)='doTheThing()' routerLink='/home'> <!-- TODO add routerLink or click to view channel's chat -->
+            {{ interest.channel }}
+          </mat-card-content>
+        </mat-card>
+      </div>
 
-    <mat-card *ngFor="let interest of channel.subchannels"> <!-- Looping the interest channels-->
-      <mat-card-content (click)='doTheThing()' routerLink='/home'> <!-- TODO add routerLink or click to view channel's chat -->
-        {{ interest.channel }}
-      </mat-card-content>
-    </mat-card>
-
-    <button mat-stroked-button class="add-channel-button" routerLink='/home'>Add Channel</button> <!--TODO add routerLink to add new channel, -->
-
+      <div>
+        <button mat-stroked-button class="add-channel-button" routerLink='/home'>Add Channel</button> <!--TODO add routerLink to add new channel, -->
+      </div>
+    <!-- </div> -->
   </mat-expansion-panel>
 </div>
 

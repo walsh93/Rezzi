@@ -25,6 +25,8 @@ export class SidePanelComponent implements OnInit {
   constructor(public dialog: MatDialog, private sidePanelService: SidePanelService) {
     this.channels = [];
     this.sidePanelService.getChannels().subscribe(data => {
+      console.log("here comes the data");
+      console.log(data);
       for (var hall in data) {
         if (data.hasOwnProperty(hall)) {
           var temp_belongs = false;  // Set if the user doesn't belong to any chats within the category
@@ -51,6 +53,7 @@ export class SidePanelComponent implements OnInit {
           this.channels.push(temp);
         }
       }
+      console.log(data);
     });
   }
 
@@ -70,6 +73,6 @@ export class SidePanelComponent implements OnInit {
   }
 
   doTheThing() {
-    console.log('help');
+    console.log('view a channel hereeee');
   }
 }
