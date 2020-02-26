@@ -78,7 +78,7 @@ import { MessagesService } from './home/interface/messages/messages.service';
 import { ErrorComponent } from './error/error.component';
 import { CreateChannelFormComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/create-channel-form.component';
 
-//Reset password components
+// Reset password components
 import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
 import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
 import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
