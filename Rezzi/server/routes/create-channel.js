@@ -32,7 +32,11 @@ router.get('/', checkCookie, function(request, response) {
 
       const errorMsg = 'There was an error creating your channel'
 
+      // TODO make separate functions for all of the different db updates?
+
       if (req.level == keys.ra) {
+
+        /* add channel to residence-halls channel collection */
         db.collection(keys.residence_halls).doc(data.rezzi)
             .collection(keys.ra).doc(channel.title).set(channel).then((write_result) => {
           response.status(http.ok).send('Your RA channel has been successfully created!')
@@ -42,10 +46,19 @@ router.get('/', checkCookie, function(request, response) {
           response.status(http.bad_request).send(errorMsg)
         })
 
-        // TODO add channel to owner's channel list here
+        /* add channel to owner's channel list */
+        db.collection(keys.users).doc(channel.owner).update({
+          channels: admin.firestore.FieldValue.arrayUnion(channel.level + "-" + channel.title)
+        }).catch((error) => {
+          console.log(error)
+          response.status(http.bad_request).send(errorMsg)
+        });
+
         // TODO add channel to user's channel list here
 
       } else if (req.level == keys.hallwide) {
+
+        /* add channel to residence-halls channel collection */
         db.collection(keys.residence_halls).doc(data.rezzi)
             .collection(keys.hallwide).doc(channel.title).set(channel).then((write_result) => {
           response.status(http.ok).send('Your hallwide channel has been successfully created!')
@@ -55,10 +68,19 @@ router.get('/', checkCookie, function(request, response) {
           response.status(http.bad_request).send(errorMsg)
         })
 
-        // TODO add channel to owner's channel list here
+        /* add channel to owner's channel list */
+        db.collection(keys.users).doc(channel.owner).update({
+          channels: admin.firestore.FieldValue.arrayUnion(channel.level + "-" + channel.title)
+        }).catch((error) => {
+          console.log(error)
+          response.status(http.bad_request).send(errorMsg)
+        });
+
         // TODO add channel to user's channel list here
 
       } else {
+
+        /* add channel to residence-hall channel collection */
         db.collection(keys.residence_halls).doc(data.rezzi)
             .collection(keys.floors).doc(data.floor)
             .collection('channels').doc(channel.title).set(channel).then((write_result) => {
@@ -69,7 +91,14 @@ router.get('/', checkCookie, function(request, response) {
           response.status(http.bad_request).send(errorMsg)
         })
 
-        // TODO add channel to owner's channel list here
+        /* add channel to owner's channel list */
+        db.collection(keys.users).doc(channel.owner).update({
+          channels: admin.firestore.FieldValue.arrayUnion("floors-" + data.floor + "-" + channel.title)
+        }).catch((error) => {
+          console.log(error)
+          response.status(http.bad_request).send(errorMsg)
+        });
+
         // TODO add channel to user's channel list here
 
       }
