@@ -54,7 +54,16 @@ router.get('/', checkCookie, function(request, response) {
           response.status(http.bad_request).send(errorMsg)
         });
 
-        // TODO add channel to user's channel list here
+        /* add channel to user(s)'s channel list */
+        for (member in channel.members){
+          var userAdd = channel.members[member]
+          db.collection(keys.users).doc(userAdd).update({
+            channels: admin.firestore.FieldValue.arrayUnion(channel.level + "-" + channel.title)
+          }).catch((error) => {
+            console.log(error)
+            response.status(http.bad_request).send(errorMsg)
+          });
+        }
 
       } else if (req.level == keys.hallwide) {
 
@@ -76,7 +85,16 @@ router.get('/', checkCookie, function(request, response) {
           response.status(http.bad_request).send(errorMsg)
         });
 
-        // TODO add channel to user's channel list here
+        /* add channel to user(s)'s channel list */
+        for (member in channel.members){
+          var userAdd = channel.members[member]
+          db.collection(keys.users).doc(userAdd).update({
+            channels: admin.firestore.FieldValue.arrayUnion(channel.level + "-" + channel.title)
+          }).catch((error) => {
+            console.log(error)
+            response.status(http.bad_request).send(errorMsg)
+          });
+        }
 
       } else {
 
@@ -99,7 +117,16 @@ router.get('/', checkCookie, function(request, response) {
           response.status(http.bad_request).send(errorMsg)
         });
 
-        // TODO add channel to user's channel list here
+        /* add channel to user(s)'s channel list */
+        for (member in channel.members){
+          var userAdd = channel.members[member]
+          db.collection(keys.users).doc(userAdd).update({
+            channels: admin.firestore.FieldValue.arrayUnion("floors-" + data.floor + "-" + channel.title)
+          }).catch((error) => {
+            console.log(error)
+            response.status(http.bad_request).send(errorMsg)
+          });
+        }
 
       }
     }
