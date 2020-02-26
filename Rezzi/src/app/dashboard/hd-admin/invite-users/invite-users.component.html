@@ -1,1 +1,70 @@
-<p>invite-users works!</p>
+<!--
+    The invite users page will have two text boxes
+        One for RA invites and one for resident invites
+        Below that is a list of available channels that HD can add the group of users to
+        When "Invte <user type>" is pressed, emails are sent to users and user infor is stored in the database
+-->
+<div class="container-fluid">
+  <h2 style="text-align: center;">Invite New Users to Your Rezzi</h2>
+  <br>
+  <div class="row">
+    <div class="column">
+      <mat-card color="primary">
+        <!--Invite RAs-->
+        <form (submit)="onRAInvite(RAInviteForm)" #RAInviteForm="ngForm">
+          <h3 style="text-align: center;">Invite RAs</h3>
+          <mat-form-field class="example-full-width">
+            <textarea matInput name="RAEmails" ngModel rows="8"
+              placeholder='Enter RA emails in a comma seperated list.'
+              required></textarea>
+            <mat-error>Please enter a valid comma seperated list</mat-error>
+          </mat-form-field>
+          <p>Select the floor you would like these users to be automatically added to.</p>
+          <p>You must submit this form separately for RAs of different floors.</p>
+          <!--TODO: Pull list of channels for this Rezzi and put them with radio button/dropdown-->
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Select a floor</mat-label>
+            <mat-select [(value)]="selectedRaFloor" [formControl]="raFloorControl" required>
+              <mat-option name="floor" *ngFor="let floor of floors" [value]="floor">
+                {{ floor }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="raFloorControl.hasError('required')">Please choose a floor</mat-error>
+          </mat-form-field>
+
+          <button mat-raised-button color="accent" type="submit">Invite RAs</button>
+        </form>
+      </mat-card>
+    </div>
+    <div class="column">
+      <mat-card color="primary">
+        <!--Invite Residents-->
+        <form (submit)="onResidentInvite(residentInviteForm)" #residentInviteForm="ngForm">
+          <h3 style="text-align: center;">Invite Residents</h3>
+          <mat-form-field class="example-full-width">
+            <textarea matInput name="residentEmails" ngModel rows="8"
+              placeholder='Enter resident emails in a comma seperated list.'
+              required></textarea>
+            <mat-error>Please enter a valid comma seperated list</mat-error>
+          </mat-form-field>
+          <p>Select the floor you would like these users to be automatically added to.</p>
+          <p>You must submit this form separately for residents of different floors.</p>
+          <!--TODO: Pull list of floors for this Rezzi and put them with radio button/dropdown-->
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Select a floor</mat-label>
+            <mat-select [(value)]="selectedResFloor" [formControl]="resFloorControl" required>
+              <mat-option name="floor" *ngFor="let floor of floors" [value]="floor">
+                {{ floor }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="resFloorControl.hasError('required')">Please choose a floor</mat-error>
+          </mat-form-field>
+
+          <button mat-raised-button color="accent" type="submit">Invite Residents</button>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

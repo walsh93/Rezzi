@@ -38,4 +38,13 @@ export class RezziService {
         console.log(error);
       });
   }
+
+  getFloors(): Promise<any> {
+    return this.http.get('/get-floors').toPromise().then((floors) => {
+      return floors;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
 }

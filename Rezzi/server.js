@@ -49,6 +49,8 @@ const url = require('./server/constants').url
 // Routers for the rezzi.service
 const getSession = require('./server/service/getSession')
 app.use(service.get_session, getSession)
+const getFloors = require('./server/service/getFloors')
+app.use(service.get_floors, getFloors)
 const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
 
@@ -67,6 +69,8 @@ const createchannel = require('./server/routes/create-channel')
 app.use(url.create_channel, createchannel)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
+const inviteusers = require('./server/routes/invite-users')
+app.use(url.invite_users, inviteusers)
 
 const pwordResetRequest = require('./server/routes/pwordResetRequest')
 app.use(url.pword_reset_request, pwordResetRequest)

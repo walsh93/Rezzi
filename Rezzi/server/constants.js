@@ -5,6 +5,8 @@ module.exports = {
   // Service URLs
   service: {
     get_session: "/get-session",
+    get_user_by_email: "/get-user-by-email",
+    get_floors: "/get-floors",
     get_user: "/get-user",
   },
 
@@ -37,6 +39,7 @@ module.exports = {
     edit_profile: "/edit-profile",
     create_channel: "/create-channel",
     sign_out: "/sign-out",
+    invite_users: "/invite-users",
     error: {
       page: "/err",
       not_raadmin: "/err/1/unauthorized",
@@ -93,6 +96,13 @@ module.exports = {
   NOT_RAADMIN_MSG: 'You are not an RA Admin, you do not have permission to view this',
   NOT_HDADMIN: -530,
   NOT_HDADMIN_MSG: 'You are not an HD Admin, you do not have permission to view this',
+
+  //Invite codes
+  USER_ALREADY_EXISTS: -540,
+  USER_ALREADY_EXISTS_MSG: 'This user is alreaday a member of your Rezzi',
+
+  // Email codes
+  SENDING_EMAIL_ERR: 'Email could not be sent',
 
   // Email codes
   SENDING_EMAIL_ERR: 'Email could not be sent',

@@ -7,7 +7,6 @@ const checkCookie = require('../permissions').userNeedsToBeLoggedOut
 const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
-const account_type = require('../constants').account_type
 const sign_in = require('../constants').error.sign_in
 
 router.get('/', checkCookie, function(request, response) {
@@ -24,11 +23,12 @@ router.get('/', checkCookie, function(request, response) {
         // Set session cookie before sending the response
         // TODO add other fields that need to be saved in the session
         console.log(data.tempPword)
+        console.log(`THE USER'S ACCOUNT TYPE IS ${data.accountType}`)
         request.__session = {
           email: req.email,
           verified: data.verified,
           tempPword: data.tempPword,
-          accountType: data.accountType || account_type.resident,  // TODO: resident is default???
+          accountType: data.accountType,
           rezzi: data.rezzi,
         }
         response.status(http.ok).json({ verified: data.verified })
