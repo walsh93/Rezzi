@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CreateRezziService } from './create-rezzi.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -49,7 +48,7 @@ export class CreateRezziComponent implements OnInit {
     this.hallwide_empty_ids = [];
   }
 
-  displayErrorMessage(message: string) {
+  displayMessage(message: string) {
     this._snackBar.open(message, 'Dismiss', {
       duration: 4000,
     });
@@ -68,21 +67,21 @@ export class CreateRezziComponent implements OnInit {
   createRezzi() {
     // Validate data
     if (this.detectSameName(this.floors)) {
-      this.displayErrorMessage('Floors must have unique names');
+      this.displayMessage('Floors must have unique names');
       return;
     }
     this.floors.forEach(floor => {
       if (this.detectSameName(floor.channels)) {
-        this.displayErrorMessage('Channels must have unique names within floors (Check ' + floor.name + ')');
+        this.displayMessage('Channels must have unique names within floors (Check ' + floor.name + ')');
         return;
       }
     })
     if (this.detectSameName(this.hallwide_channels)) {
-      this.displayErrorMessage('Channels must have unique names (Check Hallwide Channels)');
+      this.displayMessage('Channels must have unique names (Check Hallwide Channels)');
       return;
     }
     if (this.detectSameName(this.ra_channels)) {
-      this.displayErrorMessage('Channels must have unique names (Check RA Channels)');
+      this.displayMessage('Channels must have unique names (Check RA Channels)');
       return;
     }
 
@@ -95,11 +94,13 @@ export class CreateRezziComponent implements OnInit {
     };
 
     this.http.post('/create-rezzi', body).toPromise().then((response) => {
-
+      console.log(response);
+      this.displayMessage("Rezzi Created!")
+      this.router.navigate(['/dashboard']);
     }).catch((error) => {
-
+      console.log(error);
     });
-  }
+  } 
 
   addFloor() {
     var temp_id = this.floors.length;
