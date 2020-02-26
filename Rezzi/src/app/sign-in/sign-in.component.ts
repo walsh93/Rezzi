@@ -19,6 +19,9 @@ export class SignInComponent implements OnInit {
   ngOnInit() {
     this.rezziService.getSession().then((response) => {
       if (response.email != null) {  // already signed in
+        if (response.tempPword === true) {  // user has temp password; needs to redirect to change password
+          this.router.navigate(['/pword-reset-change']);
+        }
         if (response.verified === true) {  // already registered
           this.router.navigate(['/home']);
         } else {  // not yet registered

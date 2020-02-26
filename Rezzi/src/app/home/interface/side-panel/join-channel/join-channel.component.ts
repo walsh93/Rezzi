@@ -41,7 +41,7 @@ export class JoinChannelComponent implements OnInit {
 
   joinChannel(id: string) {
     console.log("Would send a request to database to join channel " + id);
-    this.http.post<{notification: string}>('http://localhost:4100/join-channel', {"channel_id": id})
+    this.http.post<{notification: string}>('/join-channel', {"channel_id": id})
     .subscribe(responseData => {
       console.log(responseData.notification);
     });

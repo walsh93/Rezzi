@@ -63,10 +63,20 @@ const createchannel = require('./server/routes/create-channel')
 app.use(url.create_channel, createchannel)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
+
+const pwordResetRequest = require('./server/routes/pwordResetRequest')
+app.use(url.pword_reset_request, pwordResetRequest)
+const pwordResetSent = require('./server/routes/pwordResetSent')
+app.use(url.pword_reset_sent, pwordResetSent)
+const pwordResetChange = require('./server/routes/pwordResetChange')
+app.use(url.pword_reset_change, pwordResetChange)
+
 const getchannels = require('./server/routes/get-channels')
 app.use(url.get_channels, getchannels)
 const joinchannel = require('./server/routes/join-channel')
 app.use(url.join_channel, joinchannel)
+const createrezzi = require('./server/routes/create-rezzi')
+app.use(url.create_rezzi, createrezzi)
 const dashboard = require('./server/routes/dashboard')
 app.use(url.dashboard, dashboard)
 
@@ -83,9 +93,10 @@ app.use((request,response,next)=>{
 app.post('/api/messages', (request, response, next) => {
   const message = request.body;
   console.log(message);
-  response.status(201).json({
-    notification: 'Message added successfully'
-  });
+  // response.status(201).json({
+  //   notification: 'Message added successfully'
+  // });
+  response.status(200)//.sendFile(indexFile)
 });
 
 app.use('/api/messages',(request,response,next) => {
@@ -95,10 +106,11 @@ app.use('/api/messages',(request,response,next) => {
     { id: '123457',
     content: 'Second message'}
   ];
-  response.status(200).json({
-    message: 'Messages fetched successfully!',
-    messages: messages
-  });
+  // response.status(200).json({
+  //   message: 'Messages fetched successfully!',
+  //   messages: messages
+  // });
+  response.status(200)//.sendFile(indexFile)
 });
 
 
