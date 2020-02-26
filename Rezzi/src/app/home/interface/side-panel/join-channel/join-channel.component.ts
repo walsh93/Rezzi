@@ -21,7 +21,7 @@ export class JoinChannelComponent implements OnInit {
   columnsToDisplay = ['channel', 'user-count', 'join-channel'];
 
   constructor(public dialogRef: MatDialogRef<JoinChannelComponent>, 
-        // @Inject(MAT_DIALOG_DATA) public data,
+        @Inject(MAT_DIALOG_DATA) public data,
         private http: HttpClient) {
     // let can_join: ChannelData[] = [];
     console.log(data);
@@ -38,7 +38,7 @@ export class JoinChannelComponent implements OnInit {
     .subscribe(responseData => {
       console.log(responseData.notification);
     });
-    this.dataSource.forEach(hall => {
+    this.channels.forEach(hall => {
       hall.subchannels.forEach(channel => {
         if (channel.id === id) {
           channel.belongs = true;

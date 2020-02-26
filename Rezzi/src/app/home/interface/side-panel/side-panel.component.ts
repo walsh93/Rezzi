@@ -20,13 +20,11 @@ export class SidePanelComponent implements OnInit {
   //   {id: 7, channel: "Hallwide", users: 112},
   //   {id: 8, channel: "RAs", users: 12412}
   // ];
-  channels: ChannelData[];
+  public channels: ChannelData[];
 
   constructor(public dialog: MatDialog, private sidePanelService: SidePanelService) {
     this.channels = [];
     this.sidePanelService.getChannels().subscribe(data => {
-      console.log("here comes the data");
-      console.log(data);
       for (var hall in data) {
         if (data.hasOwnProperty(hall)) {
           var temp_belongs = false;  // Set if the user doesn't belong to any chats within the category
@@ -43,9 +41,13 @@ export class SidePanelComponent implements OnInit {
               temp_belongs = true;
             }
           }
+          var name = hall;
+          if (hall.indexOf('floors') !== -1) {  // only use the back half of 'floors-...'
+            name = hall.split('-')[1];
+          }
           var temp: ChannelData = {
             id: '',
-            channel: hall,
+            channel: name,
             users: -1,
             belongs: temp_belongs,
             subchannels: temp_channels
@@ -53,7 +55,7 @@ export class SidePanelComponent implements OnInit {
           this.channels.push(temp);
         }
       }
-      console.log(data);
+      console.log(this.channels);
     });
   }
 
