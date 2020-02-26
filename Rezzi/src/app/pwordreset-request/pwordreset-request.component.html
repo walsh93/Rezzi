@@ -1,0 +1,17 @@
+<div class="container" id="pword-reset-form-container">
+    <div id="pword-reset-form">
+        <h1>Enter the email associated with your Rezzi account and we will send you an email with a temporary password</h1>
+      <div class="form-row vspace">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required>
+      </div>
+      <div class="form-row vspace">
+        <button class="btn btn-primary" (click)="onResetPassword()">Submit</button>
+      </div>
+      <div class="form-row">
+        <a href="/sign-in">Remember your password?</a>
+      </div>
+      <div class="form-row" id="error-msg">
+        <p>{{ errorMsg }}</p>
+      </div>
+    </div>
+  </div>
