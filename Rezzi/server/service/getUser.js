@@ -18,7 +18,6 @@ const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 // })
 router.get('/', checkCookie, function (request, response) {
   db.collection('users').doc(request.__session.email).get().then((doc) => {
-    console.log(doc.id)
     const data = doc.data()
     console.log(data)
     const user = {
@@ -30,7 +29,6 @@ router.get('/', checkCookie, function (request, response) {
       bio: data.bio,
       age: data.age,
     }
-    console.log("WEREREWEW: " + user.password)
     response.status(http.ok).json({ user: user })  // will be accessed as data_from_backend in prev code blocks
   }).catch((error) => {
     console.log('Error getting documents', error)

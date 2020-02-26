@@ -18,9 +18,7 @@ router.get('/', checkCookie, function (request, response) {
 }).post('/api/edit-profile', (request, response, next) => {
   const rb = request.body
   const email = request.__session.email;
-  console.log("EMAIL: " + email)
-  console.log("this: " + rb);
-  firebase.editUser(email);
+  firebase.editUser(rb,email);
   response.status(201).json({
     notification: 'User may be edited?'
   })
