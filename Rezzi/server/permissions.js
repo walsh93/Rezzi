@@ -89,7 +89,7 @@ module.exports.userNeedsToBeLoggedInRA = function untblia(request, response, nex
 
 /**
  * Check that user is logged in, verified and a HD. This condition is needed for inviting users.
- * 
+ *
  * Check that the user is logged in and verified
  *
  * Check the __session. If the 'email' property is not set, that means that the user is not
@@ -105,7 +105,7 @@ module.exports.userNeedsToBeLoggedInHD = function untblihd(request, response, ne
   console.log('userNeedsToBeLoggedInHD', request.__session)
   if (!request.__session.email) {  // not signed in
     response.redirect('/sign-in')
-  } else if (request.__session.accountType != 0){
+  } else if (request.__session.accountType != account_type.hd) {
     response.redirect('/err/0/unauthorized') //doesn't have HD access
   } else {
     next() //Propogate to next handler
@@ -113,7 +113,7 @@ module.exports.userNeedsToBeLoggedInHD = function untblihd(request, response, ne
 }
 
 /**
- * 
+ *
  * Check that the user is logged in and verified and has a temp password
  *
  * Check the __session. If the 'email' property is not set, that means that the user is not

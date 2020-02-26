@@ -15,20 +15,27 @@ export class InviteUsersComponent implements OnInit {
   // Class variables
   errorMsg: string;
   session: any;
-  floors = new Array<string>();
+  floors: Array<string>;
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
     // Initialize class variables
+    this.errorMsg = '';
+
     this.rezziService.getSession().then((session) => {
         this.session = session;
     });
-    this.errorMsg = '';
 
-    // Hardcoding floors for testing
-    this.floors.push('3S');
-    this.floors.push('2N');
+    this.rezziService.getFloors().then((floorList) => {
+      console.log(`FLOOR LIST IS ${floorList}`);
+      if (floorList == null) {
+        this.errorMsg = 'Failed to retrieve floors.';
+      } else {
+        this.floors = floorList.floors;
+      }
+    });
   }
+
   onRAInvite(form: NgForm) {
     if (form.invalid) {
       return;
