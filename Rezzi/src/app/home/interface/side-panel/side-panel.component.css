@@ -23,7 +23,10 @@
 }
 
 .rezzi {
+  /*all: unset;*/
   overflow-y: auto;
+  position: relative;
+  z-index: 99999;
 }
 
 .no-rezzi {

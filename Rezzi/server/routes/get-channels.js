@@ -13,7 +13,7 @@ const url = require('../constants').url
 router.get('/', checkCookie, function(request, response) {
   const req = request.body;
   const email = request.__session.email;
-  
+
   // Get rezzis the user belongs to
   var rezzi = '';
   var belongs_to = [];
@@ -27,7 +27,7 @@ router.get('/', checkCookie, function(request, response) {
   	  floor = doc.data().floor;
   	}
 
-    // Get rezzis they can belong to
+    // Get channels they can belong to
     const prefix = keys.rezzis + '/' + rezzi + '/';
 
     function queryDb(collection, name) {
@@ -37,23 +37,23 @@ router.get('/', checkCookie, function(request, response) {
           channels: {}
         };
         db.collection(collection).select('members').get().then(function(snapshot) {
-          // console.log(collection);  // Debugging
+          console.log(collection);  // Debugging
           snapshot.forEach(function(doc) {
-            temp = {
-              belongs: false,
-            }
+            temp = {}
             if (doc.data().hasOwnProperty('members')) {
               temp.users = doc.data().members.length;
+              temp.belongs = (doc.data().members.indexOf(email) === -1) ? false : true;
             }
             else {
               temp.users = 0;
+              temp.belongs = false;
             }
             to_add.channels[doc.id] = temp;
           });
-          // console.log(to_add);
+          console.log(to_add);
           resolve(to_add);
         }).catch(function(rejection) {
-          // console.log(collection + " --- ERROR:", rejection);  // Debugging output
+          console.log(collection + " --- ERROR:", rejection);  // Debugging output
           resolve(to_add);
         })
       })
@@ -71,15 +71,15 @@ router.get('/', checkCookie, function(request, response) {
       console.log(to_return);
 
       // Check for channels they belong to and set flags accordingly
-      belongs_to.forEach((channel) => {
-        var parent = channel.split('-')[0];
-        var name = channel.split('-')[1];
-        if (channel.includes('floors')) {
-          parent = 'floors-' + name;
-          name = channel.replace(parent + '-', '');
-        }
-        to_return[parent][name].belongs = true;
-      })
+      // belongs_to.forEach((channel) => {
+      //   var parent = channel.split('-')[0];
+      //   var name = channel.split('-')[1];
+      //   if (channel.includes('floors')) {
+      //     parent = 'floors-' + name;
+      //     name = channel.replace(parent + '-', '');
+      //   }
+      //   to_return[parent][name].belongs = true;
+      // })
       response.status(200).json(to_return);
     })
   });

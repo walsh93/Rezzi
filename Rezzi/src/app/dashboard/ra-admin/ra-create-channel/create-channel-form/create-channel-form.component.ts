@@ -82,7 +82,16 @@ export class CreateChannelFormComponent implements OnInit {
 
     // Go through all member inputs, filter invalid email formats
     const memberInputs = document.getElementsByName('member');
+    const ownerInput = document.getElementsByName('owner');
     const members = new Array<string>();
+
+    ownerInput.forEach((element) => { // This should only run once
+      const ownerEmail = (element as HTMLInputElement).value;
+      if (ownerEmail.length > 1 && !members.includes(ownerEmail)) {
+        members.push(ownerEmail);
+      }
+    });
+
     memberInputs.forEach((element) => {
       const memberEmail = (element as HTMLInputElement).value;
       if (memberEmail.length > 1 && !members.includes(memberEmail)) {

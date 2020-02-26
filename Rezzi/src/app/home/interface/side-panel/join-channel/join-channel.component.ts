@@ -17,22 +17,15 @@ import { ChannelData } from '../../../../classes.model';
 })
 
 export class JoinChannelComponent implements OnInit {
-  dataSource: MatTableDataSource<ChannelData>;
+  channels: ChannelData[];
   columnsToDisplay = ['channel', 'user-count', 'join-channel'];
 
   constructor(public dialogRef: MatDialogRef<JoinChannelComponent>, 
         @Inject(MAT_DIALOG_DATA) public data,
         private http: HttpClient) {
-    let can_join: ChannelData[] = [];
+    // let can_join: ChannelData[] = [];
     console.log(data);
-    data.forEach(hall => {
-      hall.subchannels.forEach(subchannel => {
-        if (!subchannel.belongs) {  // if the user doesn't belong
-          can_join.push(subchannel);
-        }
-      })
-    });
-    this.dataSource = new MatTableDataSource(can_join);
+    this.channels = data;
   }
 
   onNoClick(): void {
@@ -45,6 +38,13 @@ export class JoinChannelComponent implements OnInit {
     .subscribe(responseData => {
       console.log(responseData.notification);
     });
+    this.channels.forEach(hall => {
+      hall.subchannels.forEach(channel => {
+        if (channel.id === id) {
+          channel.belongs = true;
+        }
+      })
+    })
   }
 
   ngOnInit() {}
