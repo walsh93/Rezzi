@@ -25,7 +25,7 @@ router.get('/', checkCookie, function (request, response) {
       lastName: data.lastName,
       password: data.password,
       major: data.major,
-      nickname: data.nickname,
+      nickName: data.nickName,
       bio: data.bio,
       age: data.age,
     }

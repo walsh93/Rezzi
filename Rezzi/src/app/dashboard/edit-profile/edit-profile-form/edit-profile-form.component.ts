@@ -37,12 +37,12 @@ export class EditProfileFormComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    // if(form.value.age)
-    // return;
+
     console.log(form);
     let userInfo = {
       firstName: form.value.firstName,
       lastName: form.value.lastName,
+      password: form.value.password,
       age: form.value.age,
       major: form.value.major,
       nickName: form.value.nickName,
@@ -54,6 +54,7 @@ export class EditProfileFormComponent implements OnInit {
     this.theUser.major = userInfo.major;
     this.theUser.nickName = userInfo.nickName;
     this.theUser.bio = userInfo.bio;
+    this.theUser.password = userInfo.password;
 
     this.editUser(userInfo);
   }
@@ -79,8 +80,7 @@ export class EditProfileFormComponent implements OnInit {
   // getUser(data) {
   //   return this.http.get("/edit-profile");
   // }
-  // ngOnInit(): void {
-  // }
+
   ngOnInit() {
     this.rezziService.getSession().then(response => {
       if (response.email == null) {
@@ -103,6 +103,7 @@ export class EditProfileFormComponent implements OnInit {
           response.user.bio,
           true
         );
+
 
       });
     });

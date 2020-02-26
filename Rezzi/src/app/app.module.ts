@@ -12,7 +12,6 @@ import {
   MatSidenavModule,
   MatFormFieldModule,
   MatMenuModule,
-  MatIconModule,
   MatSelectModule,
   MatListModule,
   MatGridListModule,
