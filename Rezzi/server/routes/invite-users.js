@@ -24,7 +24,6 @@ router.get('/', checkCookie, function(request, response) {
 
     //for each email in the array, need to save to the db a new user with email, role, floor, rezzi, verified = 0, and pword code
 
-    console.log(emailarr[0] + "    " + emailarr[1])
     for(var i = 0; i < emailarr.length; i++){
         var tempPword = randomstring.generate();
         var currentEmail = emailarr[i]

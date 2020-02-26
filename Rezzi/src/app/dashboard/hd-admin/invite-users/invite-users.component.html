@@ -42,7 +42,7 @@
         <form (submit)="onResidentInvite(residentInviteForm)" #residentInviteForm="ngForm">
           <h3 style="text-align: center;">Invite Residents</h3>
           <mat-form-field class="example-full-width">
-            <textarea matInput name="residentEmails" rows="8"
+            <textarea matInput name="residentEmails" ngModel rows="8"
               placeholder='Enter resident emails in a comma seperated list.'
               required></textarea>
             <mat-error>Please enter a valid comma seperated list</mat-error>
