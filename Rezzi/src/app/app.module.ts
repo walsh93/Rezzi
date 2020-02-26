@@ -77,6 +77,8 @@ import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel
 import { HeaderComponent } from './header/header.component';
 import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button.component';
 import { MessagesService } from './home/interface/messages/messages.service';
+import { ErrorComponent } from './error/error.component';
+import { CreateChannelFormComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/create-channel-form.component';
 
 @NgModule({
   declarations: [
@@ -106,6 +108,8 @@ import { MessagesService } from './home/interface/messages/messages.service';
     JoinChannelComponent,
     RaAdminComponent,
     RaCreateChannelComponent,
+    ErrorComponent,
+    CreateChannelFormComponent,
     HdAdminComponent
   ],
   imports: [
