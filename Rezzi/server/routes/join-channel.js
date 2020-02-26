@@ -13,10 +13,12 @@ const url = require('../constants').url
 router.post('/', checkCookie, function(request, response) {
   const req = request.body;
   const email = request.__session.email;
+  const rezzi = request.__session.rezzi;
   console.log(req);
   db.collection(keys.users).doc(email).update({
     channels: admin.firestore.FieldValue.arrayUnion(req.channel_id)
   });
+  db.collection(keys.rezzis).doc()
   response.status(http.ok)
 })
 
