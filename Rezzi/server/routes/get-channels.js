@@ -68,7 +68,7 @@ router.get('/', checkCookie, function(request, response) {
       responses.forEach((response) => {
         to_return[response.parent] = response.channels;
       });
-      // console.log(to_return);
+      console.log(to_return);
 
       // Check for channels they belong to and set flags accordingly
       belongs_to.forEach((channel) => {
@@ -85,4 +85,4 @@ router.get('/', checkCookie, function(request, response) {
   });
 })
 
-module.exports = router
+ module.exports = router;

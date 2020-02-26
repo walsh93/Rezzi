@@ -63,6 +63,14 @@ const createchannel = require('./server/routes/create-channel')
 app.use(url.create_channel, createchannel)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
+
+const pwordResetRequest = require('./server/routes/pwordResetRequest')
+app.use(url.pword_reset_request, pwordResetRequest)
+const pwordResetSent = require('./server/routes/pwordResetSent')
+app.use(url.pword_reset_sent, pwordResetSent)
+const pwordResetChange = require('./server/routes/pwordResetChange')
+app.use(url.pword_reset_change, pwordResetChange)
+
 const getchannels = require('./server/routes/get-channels')
 app.use(url.get_channels, getchannels)
 const joinchannel = require('./server/routes/join-channel')
