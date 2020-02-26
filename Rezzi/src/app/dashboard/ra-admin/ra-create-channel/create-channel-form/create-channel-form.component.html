@@ -57,8 +57,7 @@
           <!-- TODO Still only performs email check on first input -->
           <input type="email" class="form-control" name="member" placeholder="Enter member email"
             #htmlEmail="ngModel" ngModel [email]="true">
-            <!-- TODO this button submits after one email input -->
-          <button class="w3-button w3-round w3-teal plus" (click)="plus()">+</button>
+          <button type="button" class="w3-button w3-round w3-teal plus" (click)="plus()">+</button>
         </div>
         <div *ngIf="htmlEmail.invalid && (htmlEmail.dirty || htmlEmail.touched)" class="alert alert-danger">
           <div *ngIf="htmlEmail.errors.email">Not a valid email address</div>

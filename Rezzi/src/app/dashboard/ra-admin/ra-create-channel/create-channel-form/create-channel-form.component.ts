@@ -55,6 +55,7 @@ export class CreateChannelFormComponent implements OnInit {
     const inputGroup = inputClone.firstChild;  // input-group member-input
     (inputGroup.firstChild as HTMLInputElement).value = '';  // don't want to copy previous email
     (inputGroup.lastChild as HTMLButtonElement).addEventListener('click', this.plus.bind(this));  // .bind() sets scope
+    (inputGroup.lastChild as HTMLButtonElement).type = 'button';
 
     // Append cloned elements
     memberInputs.appendChild(labelClone);
