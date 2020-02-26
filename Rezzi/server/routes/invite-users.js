@@ -21,7 +21,6 @@ router.get('/', checkCookie, function(request, response) {
 
       const rezzi = request.__session.rezzi
       const emailarr = rb.emailList.split(",")
-    //TO DO: figure out how to add users to channels
 
     //for each email in the array, need to save to the db a new user with email, role, floor, rezzi, verified = 0, and pword code
 
@@ -41,14 +40,16 @@ router.get('/', checkCookie, function(request, response) {
             response.send(c.EMAIL_ALREADY_REGISTERED)
           } else {
             //put things in database*/
+          console.log(rb.floor)
+
           db.collection('users').doc(currentEmail).set({
           email: currentEmail,
           password: tempPword,
           verified: false,
           accountType: rb.accountType,
-          //floor: request.body.floor,
+          //floor: rb.floor,
           rezzi: rezzi,
-          //channels:
+          channels: rb.channels
       })
 
       var smtpTransport = nodemailer.createTransport({

@@ -42,16 +42,17 @@ export class InviteUsersComponent implements OnInit {
     }
     const emailList = form.value.RAEmails;
     console.log(emailList);
-
-    // get the selected floor
-    // get the Rezzi the HD belongs to
+   
+    //make array of channels that user will be added to 
+    const channelList = ["hallwide-General", "floors-" + form.value.floor + "-General", "RA-General"]
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)
     const body = {
       emailList: form.value.RAEmails,
-      // floor: `${floor}`,
+      //floor: form.value.floor,
+      rezzi: this.session.rezzi,
       accountType: `1`,
-      // channels:
+      channels: channelList
     };
     this.addInvite(body);
   }
@@ -62,17 +63,17 @@ export class InviteUsersComponent implements OnInit {
     }
     const emailList = form.value.residentEmails;
     console.log(emailList);
-
-    // get the selected floor
-    // get the Rezzi the HD belongs to
+   
+    //make array of channels that user will be added to 
+    const channelList = ["hallwide-General", "floors-" + form.value.floor + "-General"]
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)
     const body = {
       emailList: form.value.residentEmails,
+      //floor: form.value.floor,
       rezzi: this.session.rezzi,
-      //floor: `${floor}`,
       accountType: `2`,
-      //channels:
+      channels: channelList
     };
     this.addInvite(body);
   }

@@ -22,7 +22,6 @@ import {
   MatIconModule,
   MatSlideToggleModule,
   MatSnackBarModule,
-  MatSelectModule,
  } from '@angular/material';
 
 // Firebase Imports
