@@ -11,11 +11,11 @@ router.get('/', checkCookie, function(request, response) {
     { id: '123457',
     content: 'Second message'}
   ];
-  response.status(200).json({
-    notification: 'Posts fetched successfully!',
-    messages: messages
-  });
-  //response.sendFile(indexFile)
+  // response.status(200).json({
+  //   notification: 'Posts fetched successfully!',
+  //   messages: messages
+  // });
+  response.status(200).sendFile(indexFile)
 })
 
 module.exports = router

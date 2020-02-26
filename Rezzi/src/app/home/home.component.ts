@@ -22,6 +22,8 @@ export class HomeComponent implements OnInit {
         this.router.navigate(['/sign-in']);
       } else if (response.verified === false) {  // signed in but not verified
         this.router.navigate(['/sign-up']);
+      } else if (response.tempPword === true) { // needs to reset password
+        this.router.navigate(['/pword-reset-change']);
       }  // else signed in and verified
     });
   }

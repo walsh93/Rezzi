@@ -46,6 +46,10 @@ module.exports = {
     },
     join_channel: "/join-channel",
     get_channels: "/get-channels",
+    pword_reset_request: "/pword-reset-request",
+    pword_reset_sent: "/pword-reset-sent",
+    pword_reset_change: "/pword-reset-change",
+    create_rezzi: "/create-rezzi",
     dashboard: "/dashboard",
   },
 
@@ -58,6 +62,7 @@ module.exports = {
     forbidden: 403,
     not_found: 404,
     conflict: 409,
+    error: 500,
   },
 
   // Error messages (can use generic HTTP codes)
@@ -95,6 +100,12 @@ module.exports = {
 
   // Email codes
   SENDING_EMAIL_ERR: 'Email could not be sent',
+
+  // Email codes
+  SENDING_EMAIL_ERR: 'Email could not be sent',
+
+  //Password Reset Codes
+  EMAIL_NOT_REGISTERED: 'Email does not belong to a Rezzi account',
 
   // MISC.
   RESPONSE_NOT_YET_IMPLEMENTED: 'This response type has not yet been implemented.',
