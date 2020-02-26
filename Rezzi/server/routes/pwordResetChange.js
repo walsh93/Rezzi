@@ -3,7 +3,7 @@ const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
-const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerifiedAndTempPword
 const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
@@ -24,7 +24,7 @@ router.get('/', checkCookie, function(request, response) {
                 password: password,
                 tempPword: false,
             })
-
+            request.__session.tempPword = false
             response.status(http.ok).send(url.home);
         }
     }).catch(err => {
