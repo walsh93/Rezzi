@@ -17,11 +17,11 @@ export class RezziService {
   }
 
   getFloors(): Promise<any> {
-    return this.http.get('/get-floors').toPromise().then((list_of_floors) => {
-      return list_of_floors;
+    return this.http.get('/get-floors').toPromise().then((floors) => {
+      return floors;
     }).catch((error) => {
       console.log(error);
     });
   }
-  
+
 }
