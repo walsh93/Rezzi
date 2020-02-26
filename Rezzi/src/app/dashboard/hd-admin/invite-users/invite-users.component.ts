@@ -23,6 +23,12 @@ export class InviteUsersComponent implements OnInit {
         this.session = __session;
     })
     this.errorMsg = '';
+    
+    let floors: [string];
+    this.rezziService.getFloors().then((data_from_backend) => {
+       floors = data_from_backend.floors;
+    });
+
   }
   onRAInvite(form: NgForm) {
     if (form.invalid) {
@@ -59,7 +65,7 @@ export class InviteUsersComponent implements OnInit {
       emailList: form.value.residentEmails,
       rezzi: this.session.rezzi,
       //floor: `${floor}`,
-      accountType: `1`,
+      accountType: `2`,
       //channels:
     };
     this.addInvite(body);
