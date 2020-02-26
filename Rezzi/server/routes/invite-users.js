@@ -44,7 +44,7 @@ router.get('/', checkCookie, function(request, response) {
           db.collection('users').doc(currentEmail).set({
           email: currentEmail,
           password: tempPword,
-          verified: 'false',
+          verified: false,
           accountType: rb.accountType,
           //floor: request.body.floor,
           rezzi: rezzi,
