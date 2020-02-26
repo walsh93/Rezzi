@@ -5,6 +5,8 @@ import { Router } from "@angular/router";
 import { NgForm } from "@angular/forms";
 import { firestore } from "firebase";
 import { HttpClient } from "@angular/common/http";
+import {MatSnackBar} from '@angular/material/snack-bar';
+
 
 @Component({
   selector: "app-edit-profile-form",
@@ -31,6 +33,7 @@ export class EditProfileFormComponent implements OnInit {
   //       });
   //   });
   hide = true;
+
   // fetch user data
   // use "double b"
   onEditProfile(form: NgForm) {
@@ -57,12 +60,14 @@ export class EditProfileFormComponent implements OnInit {
     this.theUser.password = userInfo.password;
 
     this.editUser(userInfo);
+
   }
 
   constructor(
     private http: HttpClient,
     private rezziService: RezziService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) {
     // let user: User;
   }
@@ -76,6 +81,7 @@ export class EditProfileFormComponent implements OnInit {
       .subscribe(responseData => {
         console.log(responseData.notification);
       });
+
   }
   // getUser(data) {
   //   return this.http.get("/edit-profile");

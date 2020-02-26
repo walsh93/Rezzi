@@ -49,35 +49,46 @@
     </tr>
   </table>
 </form> -->
-<mat-drawer-container class="edit-profile-form-container" autosize>
-<div class="full-width">
-  <div class="example-form">
-    <mat-card color="primary">
-      <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
 
-      <mat-form-field class="example-full-width">
-        <mat-label>First Name</mat-label>
-        <input
-        [(ngModel)]="this.theUser.firstName"
-          matInput
-          type="text"
-          placeholder="First Name"
-          name="firstName"
-          ngModel
-          required>
-          <mat-error>Please enter a valid first name (Alpha only)</mat-error>
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input
-        [(ngModel)]="this.theUser.lastName"
-          matInput
-          type="text"
-          placeholder="Last Name"
-          ngModel
-          name="lastName"
-          required>
-          <mat-error>Please enter a valid last name (Alpha only)</mat-error>
-      </mat-form-field>
+
+  <div class="edit-profile-form">
+    <mat-card color="primary">
+      <mat-card-title>My Profile</mat-card-title>
+      <mat-card-subtitle></mat-card-subtitle>
+      <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
+        <table class="full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>First Name</mat-label>
+                <input
+                [(ngModel)]="this.theUser.firstName"
+                  matInput
+                  type="text"
+                  placeholder="First Name"
+                  name="firstName"
+                  ngModel
+                  required>
+                  <mat-error>Please enter a valid first name (Alpha only)</mat-error>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input
+                [(ngModel)]="this.theUser.lastName"
+                  matInput
+                  type="text"
+                  placeholder="Last Name"
+                  ngModel
+                  name="lastName"
+                  required>
+                  <mat-error>Please enter a valid last name (Alpha only)</mat-error>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+
+
       <mat-form-field class="example-full-width">
         <input
         [(ngModel)]="this.theUser.nickName"
@@ -151,6 +162,8 @@
         </textarea>
         <mat-hint>{{bio.value?.length || 0}}/100</mat-hint>
       </mat-form-field>
+      <br>
+      <br>
         <button
           mat-raised-button
           color="accent"
@@ -159,5 +172,3 @@
         </form>
     </mat-card >
   </div>
-</div>
-</mat-drawer-container>

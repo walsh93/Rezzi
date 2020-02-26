@@ -6,13 +6,21 @@
 }
 
 .example-sidenav-content {
-  display: flex;
+  display: block;
   height: 100%;
   align-items: center;
   justify-content: center;
+  padding-top: 20px;
 }
 
 .example-sidenav {
   position: absolute;
   padding: 20px;
 }
+.mat-raised-button {
+  display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+
+  }
