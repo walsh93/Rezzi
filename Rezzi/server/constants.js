@@ -44,13 +44,10 @@ module.exports = {
     },
     join_channel: "/join-channel",
     get_channels: "/get-channels",
-<<<<<<< HEAD
     pword_reset_request: "/pword-reset-request",
     pword_reset_sent: "/pword-reset-sent",
     pword_reset_change: "/pword-reset-change",
-=======
     create_rezzi: "/create-rezzi",
->>>>>>> 42676a6a46f1b32c55c6bdef92d197282fa8299d
     dashboard: "/dashboard",
   },
 

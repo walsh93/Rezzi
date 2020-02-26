@@ -16,13 +16,19 @@ router.get('/', checkCookie, function(request, response) {
   const rb = request.body
   //console.log(rb);
   // firebase.addUser(rb);
-  var working  = firebase.addUser(rb); // conley-edit-here
-  console.log(working) // conley-edit-here
-  request.__session.verified = true
-  response.status(201).json({
-    notification: 'User may be signed up?'
-  })
-  //add user here
+  firebase.addUser(rb).then(function(result){
+    if(result==501){
+        response.status(201).json({
+        notification: "Error creating account! Try again."
+      })
+    }
+    else{
+      request.__session.verified = true
+      response.status(201).json({
+        notification: "You have successfully signed up!"
+      })
+    }
+  }); // conley-edit-here
 })
 
 module.exports = router

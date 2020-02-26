@@ -111,14 +111,11 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
     JoinChannelComponent,
     RaAdminComponent,
     RaCreateChannelComponent,
-<<<<<<< HEAD
     PwordresetRequestComponent,
     PwordresetSentComponent,
     PwordresetChangeComponent,
-=======
     ChannelPanelComponent,
     FloorDrawerComponent,
->>>>>>> 42676a6a46f1b32c55c6bdef92d197282fa8299d
     ErrorComponent,
     CreateChannelFormComponent,
     HdAdminComponent
