@@ -1,1 +1,99 @@
-<p>edit-profile-form works!</p>
+<div class="container-fluid">
+  <div class="example-form">
+    <mat-card color="primary">
+      <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Enter your password"
+          [type]="hide ? 'password' : 'text'"
+          name="password"
+          ngModel
+          minlength="8"
+          #password = "ngModel"
+          required>
+          <mat-error *ngIf="password.invalid">Your password must be 8 characters long</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          placeholder="Confirm Password"
+          [type]="hide ? 'password' : 'text'"
+          name="confirmPassword"
+          ngModel
+          minlength="8"
+          required
+          #confirmPassword = "ngModel">
+          <mat-error *ngIf="password !== confirmPassword">Your passwords must match!</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          type="text"
+          placeholder="First Name"
+          name="firstName"
+          ngModel
+          required>
+          <mat-error>Please enter a valid first name (Alpha only)</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          type="text"
+          placeholder="Last Name"
+          ngModel
+          name="lastName"
+          required>
+          <mat-error>Please enter a valid last name (Alpha only)</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          type="text"
+          placeholder="Preferred Name"
+          ngModel
+          name="nickName"
+          >
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          type="text"
+          placeholder="Age"
+          ngModel
+          name="age"
+          pattern="[0-9][0-9]"
+          required>
+          <mat-error>Please enter a valid age</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input
+          matInput
+          type="text"
+          placeholder="Major"
+          ngModel
+          name="major"
+          required>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" hintLabel="Max 100 characters">
+        <textarea
+          matInput
+          rows="2"
+          placeholder="Bio"
+          ngModel
+          name="bio"
+          #bio
+          maxlength="100"
+          required>
+        </textarea>
+        <mat-hint>{{bio.value?.length || 0}}/100</mat-hint>
+      </mat-form-field>
+        <button
+          mat-raised-button
+          color="accent"
+          type="submit"
+          >Edit Profile</button>
+        </form>
+    </mat-card >
+  </div>
+</div>

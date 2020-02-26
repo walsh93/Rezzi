@@ -10,7 +10,9 @@ const keys = require('../constants').db_keys
 const sign_in = require('../constants').sign_in
 const url = require('../constants').url
 
-router.post('/', checkCookie, function(request, response) {
+router.get('/', checkCookie, function(request, response) {
+  response.sendFile(indexFile)
+}).post('/', checkCookie, function(request, response) {
   const req = request.body;
   const email = request.__session.email;
   const rezzi = request.__session.rezzi;

@@ -1,4 +1,6 @@
-# Guide for adding a route
+# Guide for adding a route (backend)
+
+The following steps are for setting up routing in the backend (JS files). If you need to link a component to the route (ie. it is a webpage/Angular component), then you need to add the route in `app-routing.module.ts` as well.
 
 ### Step 1
 In `Rezzi/server/constants.js` add a url to the `url` json object with the name of the function you want to add followed by the url endpoint you want to call.
@@ -33,7 +35,7 @@ router.get('/', function(request, response) {
   console.log(req)
 })
 
-module.exports = router // Honestly have no clue if this line is needed or not, but it probably is
+module.exports = router // You need this line so you can "require" this code in server.js
 ```
 The reason the first argument after `.post` or `.get` in these examples is `'/'` is because you already specified the endpoint in step 2, although it might be helpful to use relative links here. For example if I wanted for some reason to do something special with the channels like change all of the data before I send it back, and I wanted to do this when the endpoint was `/get-channels/riley`, I would write (in `Rezzi/server/routes/get-channel.js)`) `router.get('/riley', ...)`.
 

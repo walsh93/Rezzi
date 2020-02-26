@@ -39,7 +39,9 @@ export class SignInFormComponent implements OnInit {
      */
     this.http.post('/sign-in', body).toPromise().then((response) => {
       const res = response as any;
-      if (res.verified === false) {
+      if (res.tempPword === true) {
+        this.router.navigate(['/pword-reset-change']);
+      } else if (res.verified === false) {
         this.router.navigate(['/sign-up']);
       } else {
         this.router.navigate(['/home']);
@@ -54,6 +56,8 @@ export class SignInFormComponent implements OnInit {
           this.router.navigate(['/home']);
         }
       } else {
+        document.getElementById('fplink').classList.add('vspace');
+        document.getElementById('error-msg').hidden = false;
         this.errorMsg = `${res.error}`;
       }
     });

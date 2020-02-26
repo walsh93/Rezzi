@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HaAdminComponent } from './ha-admin.component';
+import { FloorDrawerComponent } from './floor-drawer.component';
 
-describe('HaAdminComponent', () => {
-  let component: HaAdminComponent;
-  let fixture: ComponentFixture<HaAdminComponent>;
+describe('FloorDrawerComponent', () => {
+  let component: FloorDrawerComponent;
+  let fixture: ComponentFixture<FloorDrawerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HaAdminComponent ]
+      declarations: [ FloorDrawerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HaAdminComponent);
+    fixture = TestBed.createComponent(FloorDrawerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

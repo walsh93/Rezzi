@@ -23,16 +23,40 @@ module.exports = {
 };
 
 module.exports.addUser = function addUser(data) {
+  return new Promise(function(resolve, reject) {
     dbstore.collection('users').doc(data.email).get().then(doc => {
       if (doc.exists && doc.data().verified == true) {
+        //Do something about the error here
         //checks to see if account is verified per Megan's implementation
-        reject(c.EMAIL_ALREADY_REGISTERED)
-      } else {
+        resolve(501)
+      } else if (doc.exists) {
         dbstore.collection('users').doc(data.email).update(data)
-        resolve(c.HTTP_CREATED)
+        resolve(201)
+      } else {
+        //Should NEVER get here. Only for SignUpHD
+        dbstore.collection('users').doc(data.email).set(data)
+        console.log("Potential error when creating account (unless during sign-up-hd)")
+        resolve(201)
       }
     }).catch(err => {
-      //reject(err)
+      reject(err)
+      console.log(err)
       console.log("Error creating account");
     })
+  })
+}
+
+module.exports.editUser = function editUser(data,email){
+  dbstore.collection('users').doc(email).get().then(doc => {
+    if (!doc.exists) {
+      //Do something about the error here
+      //checks to see if account is verified per Megan's implementation
+    } else {
+      dbstore.collection('users').doc(email).update(data)
+    }
+  }).catch(err => {
+    //reject(err)
+    console.log(err)
+    console.log("Error editing account");
+  })
 }

@@ -1,1 +1,9 @@
 <p>ra-admin works!</p>
+<div>
+  <button (click)="showCreateChannel = true;" mat-raised-button>
+    Create Channel
+  </button>
+</div>
+<div>
+  <p *ngIf="showCreateChannel"><app-ra-create-channel></app-ra-create-channel></p>
+</div>
