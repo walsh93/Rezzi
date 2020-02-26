@@ -15,12 +15,12 @@
           </mat-card-content>
         </mat-card>
       </ng-container>
-
+      
       <button mat-stroked-button class="add-channel-button" routerLink='/home'>Add Channel</button> <!--TODO add routerLink to add new channel, -->
     </mat-expansion-panel>
   </ng-container>
 </mat-accordion>
 
-<p class="no-rezzi" *ngIf="channels.length < 1">You are currently not a member of any Rezzi channels.</p>
+<p class="no-rezzi" *ngIf="channels.length == 0">You are currently not a member of any Rezzi channels.</p>
 
 <button mat-button (click)="openDialog()" class="join-channel-button">Join Channel</button>
