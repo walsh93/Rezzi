@@ -51,6 +51,8 @@ const getSession = require('./server/service/getSession')
 app.use(service.get_session, getSession)
 const getFloors = require('./server/service/getFloors')
 app.use(service.get_floors, getFloors)
+const getUser = require('./server/service/getUser')
+app.use(service.get_user, getUser)
 
 // Routers, links to URLs
 const signup = require('./server/routes/sign-up')
@@ -61,6 +63,8 @@ const signin = require('./server/routes/sign-in')
 app.use(url.sign_in, signin)
 const home = require('./server/routes/home')
 app.use(url.home, home)
+const editprofile = require('./server/routes/edit-profile')
+app.use(url.edit_profile,editprofile)
 const createchannel = require('./server/routes/create-channel')
 app.use(url.create_channel, createchannel)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
@@ -83,6 +87,7 @@ const createrezzi = require('./server/routes/create-rezzi')
 app.use(url.create_rezzi, createrezzi)
 const dashboard = require('./server/routes/dashboard')
 app.use(url.dashboard, dashboard)
+
 
 // Testing
 app.use((request,response,next)=>{
@@ -117,6 +122,21 @@ app.use('/api/messages',(request,response,next) => {
   response.status(200)//.sendFile(indexFile)
 });
 
+app.post('/api/sign-up',(request,response,next) => {
+  const rb = request.body
+  console.log(rb);
+  firebase.addUser(rb)
+  response.status(201).json({
+    notification: 'User may be signed up?'
+  });
+  //add user here
+})
+
+// app.post('api/edit-profile', (request, response, next) => {
+//   const rb = request.body;
+//   console.log(rb);
+//   firebase.getUser();
+// })
 
 
 

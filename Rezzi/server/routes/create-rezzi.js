@@ -12,8 +12,8 @@ const url = require('../constants').url
 
 router.post('/', checkCookie, function(request, response) {
   const req = request.body;
-  console.log(req);
-  db.collection(keys.rezzis).doc(req.name).set({}).then(response => {
+  // console.log(req);
+  db.collection(keys.rezzis).doc(req.name).set({}).then(resolve => {
     // Add floors
     var promises = [];
     var prefix = keys.rezzis + '/' + req.name + '/floors';
@@ -22,7 +22,7 @@ router.post('/', checkCookie, function(request, response) {
         residents: []
       }));
     });
-    Promise.all(promises).then(response => {
+    Promise.all(promises).then(resolve => {
       promises = [];
       req.floors.forEach(floor => {
         floor.channels.forEach(channel => {
@@ -35,7 +35,7 @@ router.post('/', checkCookie, function(request, response) {
         })
       })
 
-      Promise.all(promises).then(response => {
+      Promise.all(promises).then(resolve => {
         // Add hallwide and RA channels
         promises = [];
         req.ra_channels.forEach(channel => {
@@ -56,7 +56,7 @@ router.post('/', checkCookie, function(request, response) {
           }))
         })
 
-        Promise.all(promises).then(reponse => {
+        Promise.all(promises).then(resolve => {
           response.status(http.ok)
         }).catch(reject => {
           response.status(http.error).json({error: reject})
