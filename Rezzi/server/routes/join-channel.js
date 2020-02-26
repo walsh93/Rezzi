@@ -20,7 +20,20 @@ router.get('/', checkCookie, function(request, response) {
   db.collection(keys.users).doc(email).update({
     channels: admin.firestore.FieldValue.arrayUnion(req.channel_id)
   });
-  db.collection(keys.rezzis).doc()
+  if (req.channel_id.indexOf("floors") !== -1) {
+    db.collection(keys.rezzis + '/' + rezzi + '/floors/' + req.channel_id.split('-')[1] + '/channels')
+      .doc(req.channel_id.split('-')[2])
+      .update({
+        members: admin.firestore.FieldValue.arrayUnion(email)
+    })
+  }
+  else {
+    db.collection(keys.rezzis + '/' + rezzi + '/' + req.channel_id.split('-')[0])
+      .doc(req.channel_id.split('-')[1])
+      .update({
+        members: admin.firestore.FieldValue.arrayUnion(email)
+    })
+  }
   response.status(http.ok)
 })
 
