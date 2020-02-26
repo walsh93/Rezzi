@@ -34,5 +34,5 @@ router.get('/', checkCookie, function(request, response) {
 
   })
 
-  
+
   module.exports = router;
