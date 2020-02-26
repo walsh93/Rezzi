@@ -13,7 +13,7 @@ const url = require('../constants').url
 router.get('/', checkCookie, function(request, response) {
   const req = request.body;
   const email = request.__session.email;
-  
+
   // Get rezzis the user belongs to
   var rezzi = '';
   var belongs_to = [];
@@ -37,7 +37,7 @@ router.get('/', checkCookie, function(request, response) {
           channels: {}
         };
         db.collection(collection).select('members').get().then(function(snapshot) {
-          // console.log(collection);  // Debugging
+          console.log(collection);  // Debugging
           snapshot.forEach(function(doc) {
             temp = {
               belongs: false,
@@ -50,10 +50,10 @@ router.get('/', checkCookie, function(request, response) {
             }
             to_add.channels[doc.id] = temp;
           });
-          // console.log(to_add);
+          console.log(to_add);
           resolve(to_add);
         }).catch(function(rejection) {
-          // console.log(collection + " --- ERROR:", rejection);  // Debugging output
+          console.log(collection + " --- ERROR:", rejection);  // Debugging output
           resolve(to_add);
         })
       })
@@ -68,7 +68,7 @@ router.get('/', checkCookie, function(request, response) {
       responses.forEach((response) => {
         to_return[response.parent] = response.channels;
       });
-      // console.log(to_return);
+      console.log(to_return);
 
       // Check for channels they belong to and set flags accordingly
       belongs_to.forEach((channel) => {
