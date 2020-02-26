@@ -20,6 +20,9 @@ import {
   MatDialogModule,
   MatTableModule,
   MatTabsModule,
+  MatIconModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -59,6 +62,8 @@ import { RaAdminComponent } from './dashboard/ra-admin/ra-admin.component';
 import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
 
 import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-rezzi.component';
+import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
+import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
 import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
 
 // Home Page Components
@@ -79,6 +84,11 @@ import { SignOutButtonComponent } from './header/sign-out-button/sign-out-button
 import { MessagesService } from './home/interface/messages/messages.service';
 import { ErrorComponent } from './error/error.component';
 import { CreateChannelFormComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/create-channel-form.component';
+
+//Reset password components
+import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
+import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
+import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +118,11 @@ import { CreateChannelFormComponent } from './dashboard/ra-admin/ra-create-chann
     JoinChannelComponent,
     RaAdminComponent,
     RaCreateChannelComponent,
+    PwordresetRequestComponent,
+    PwordresetSentComponent,
+    PwordresetChangeComponent,
+    ChannelPanelComponent,
+    FloorDrawerComponent,
     ErrorComponent,
     CreateChannelFormComponent,
     HdAdminComponent
@@ -135,6 +150,9 @@ import { CreateChannelFormComponent } from './dashboard/ra-admin/ra-create-chann
     MatCheckboxModule,
     MatDialogModule,
     MatTableModule,
+    MatIconModule,
+    MatSlideToggleModule,
+    MatSnackBarModule,
     NgbModule,
     MatTabsModule
   ],

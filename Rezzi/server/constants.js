@@ -46,6 +46,10 @@ module.exports = {
     },
     join_channel: "/join-channel",
     get_channels: "/get-channels",
+    pword_reset_request: "/pword-reset-request",
+    pword_reset_sent: "/pword-reset-sent",
+    pword_reset_change: "/pword-reset-change",
+    create_rezzi: "/create-rezzi",
     dashboard: "/dashboard",
   },
 
@@ -58,6 +62,7 @@ module.exports = {
     forbidden: 403,
     not_found: 404,
     conflict: 409,
+    error: 500,
   },
 
   // Error messages (can use generic HTTP codes)
@@ -78,4 +83,24 @@ module.exports = {
     rezzi_not_exist: 'The Rezzi you are registered to does not exist, please speak with your RA.',
     response_not_implemented: 'This response type has not yet been implemented.',
   },
+
+  // Rezzi Error codes
+  REZZI_DOES_NOT_EXIST: -515,
+  REZZI_DOES_NOT_EXIST_MSG: 'The Rezzi you are registered to does not exist, please speak with your RA.',
+
+  // Permission codes
+  NOT_RAADMIN: -520,
+  NOT_RAADMIN_MSG: 'You are not an RA Admin, you do not have permission to view this',
+  NOT_HDADMIN: -530,
+  NOT_HDADMIN_MSG: 'You are not an HD Admin, you do not have permission to view this',
+
+  // Email codes
+  SENDING_EMAIL_ERR: 'Email could not be sent',
+
+  //Password Reset Codes
+  EMAIL_NOT_REGISTERED: 'Email does not belong to a Rezzi account',
+
+  // MISC.
+  RESPONSE_NOT_YET_IMPLEMENTED: 'This response type has not yet been implemented.',
+
 }
