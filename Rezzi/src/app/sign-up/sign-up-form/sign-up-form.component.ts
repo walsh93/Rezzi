@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { User } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
+import { RezziService } from 'src/app/rezzi.service';
 
 @Component({
   selector: 'app-sign-up-form',
@@ -10,7 +11,16 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SignUpFormComponent implements OnInit {
   hide = true;
-  constructor(private http: HttpClient) { }
+
+  session;
+  constructor(private rezziService: RezziService, private http: HttpClient) { }
+
+  ngOnInit() : void {
+    // Initialize class variables
+    this.rezziService.getSession().then((__session) => {
+        this.session = __session;
+    })
+  }
 
   onSignUp(form: NgForm) {
     if (form.invalid) {
@@ -18,9 +28,8 @@ export class SignUpFormComponent implements OnInit {
     }
     // if(form.value.age)
     // return;
-    console.log(form);
     const user = new User(
-      form.value.email,
+      this.session.email,
       form.value.password,
       form.value.firstName,
       form.value.lastName,
@@ -52,13 +61,10 @@ addUser(user: User) {
   this.http.post<{notification: string}>('/sign-up/api/sign-up', user)
     .subscribe(responseData => {
       console.log("hi.");
-      console.log(responseData.notification);
+      //console.log(responseData.notification);
       alert(responseData.notification); // conley-edit-here
       // if success go home else show message indicating error
     });
 }
-
-  ngOnInit(): void {
-  }
 
 }
