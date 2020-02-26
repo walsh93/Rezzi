@@ -23,24 +23,27 @@ module.exports = {
 };
 
 module.exports.addUser = function addUser(data) {
+  return new Promise(function(resolve, reject) {
     dbstore.collection('users').doc(data.email).get().then(doc => {
       if (doc.exists && doc.data().verified == true) {
         //Do something about the error here
         //checks to see if account is verified per Megan's implementation
-        return false; // conley-edit-here
+        resolve(501)
       } else if (doc.exists) {
         dbstore.collection('users').doc(data.email).update(data)
-        return true; // conley-edit-here
+        resolve(201)
       } else {
         //Should NEVER get here. Only for SignUpHD
         dbstore.collection('users').doc(data.email).set(data)
+        console.log("Potential error when creating account (unless during sign-up-hd)")
+        resolve(201)
       }
     }).catch(err => {
-      //reject(err)
+      reject(err)
       console.log(err)
       console.log("Error creating account");
-      return false; // conley-edit-here
     })
+  })
 }
 
 // module.exports.getUser = function getUser(data){
