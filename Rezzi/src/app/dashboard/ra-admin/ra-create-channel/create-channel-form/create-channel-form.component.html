@@ -1,0 +1,77 @@
+<form id="create-channel-form" (submit)="createChannel(ccForm)" #ccForm="ngForm">
+  <h3>Channel information</h3>
+  <fieldset id="channel-info">
+    <div class="form-group row vspace">
+      <label for="title" class="col-sm-2 col-form-label">Title</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="title" name="title" placeholder="What is the title of this channel?"
+          [(ngModel)]="title" #htmlTitle="ngModel" required>
+        <div *ngIf="htmlTitle.invalid && (htmlTitle.dirty || htmlTitle.touched)" class="alert alert-danger">
+          <div *ngIf="htmlTitle.errors.required">Title is required</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row vspace">
+      <label for="desc" class="col-sm-2 col-form-label">Description</label>
+      <div class="col-sm-10">
+        <textarea class="form-control" id="desc" name="desc" rows=6 placeholder="What is the this channel about? (Optional)"
+          [(ngModel)]="description"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <legend class="col-form-label col-sm-2 pt-0">Level</legend>
+        <div class="col-sm-10">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="level" id="floor-level"
+              value="floors" (change)="radioSwitch($event)" checked>
+            <label class="form-check-label" for="floor-level">My floor</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="level" id="ra-level"
+              value="RA" (change)="radioSwitch($event)">
+            <label class="form-check-label" for="ra-level">RAs</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="level" id="hallwide-level"
+              value="hallwide" (change)="radioSwitch($event)">
+            <label class="form-check-label" for="hallwide-level">Hallwide</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <h3>Member information</h3>
+  <fieldset id="member-info">
+    <div class="form-group row vspace">
+      <label for="owner" class="col-sm-2 col-form-label">Owner</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="owner" name="owner" value="{{ owner }}" required disabled>
+      </div>
+    </div>
+    <div class="form-group row vspace" id="members-to-add">
+      <label for="member" class="col-sm-2 col-form-label member-label">Add members</label>
+      <div class="col-sm-10 member-input-column">
+        <div class="input-group member-input">
+          <!-- TODO Still only performs email check on first input -->
+          <input type="email" class="form-control" name="member" placeholder="Enter member email"
+            #htmlEmail="ngModel" ngModel [email]="true">
+          <button class="w3-button w3-round w3-teal plus" (click)="plus()">+</button>
+        </div>
+        <div *ngIf="htmlEmail.invalid && (htmlEmail.dirty || htmlEmail.touched)" class="alert alert-danger">
+          <div *ngIf="htmlEmail.errors.email">Not a valid email address</div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset id="create">
+    <div class="form-row" id="error-msg" hidden>
+      <p class="alert alert-danger">{{ errorMsg }}</p>
+    </div>
+    <div class="form-group row vspace" id="create-btn">
+      <button class="btn btn-primary" type="submit">Create Channel</button>
+    </div>
+  </fieldset>
+</form>

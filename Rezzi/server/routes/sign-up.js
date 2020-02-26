@@ -14,8 +14,11 @@ router.get('/', checkCookie, function(request, response) {
   response.sendFile(indexFile)
 }).post('/api/sign-up',(request,response,next) => {
   const rb = request.body
-  console.log(rb);
-  firebase.addUser(rb);
+  //console.log(rb);
+  // firebase.addUser(rb);
+  var working  = firebase.addUser(rb); // conley-edit-here
+  console.log(working) // conley-edit-here
+  request.__session.verified = true
   response.status(201).json({
     notification: 'User may be signed up?'
   })

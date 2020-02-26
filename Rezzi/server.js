@@ -1,4 +1,5 @@
 const constants = require('./server/constants')
+const indexFile = constants.indexFile
 
 const debug = require('debug')('node-angular');
 
@@ -58,6 +59,8 @@ const signin = require('./server/routes/sign-in')
 app.use(url.sign_in, signin)
 const home = require('./server/routes/home')
 app.use(url.home, home)
+const createchannel = require('./server/routes/create-channel')
+app.use(url.create_channel, createchannel)
 const signout = require('./server/routes/sign-out')  // Get the router that's written in ./server/routes/sign-out.js
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
 const getchannels = require('./server/routes/get-channels')
@@ -82,9 +85,10 @@ app.use((request,response,next)=>{
 app.post('/api/messages', (request, response, next) => {
   const message = request.body;
   console.log(message);
-  response.status(201).json({
-    notification: 'Message added successfully'
-  });
+  // response.status(201).json({
+  //   notification: 'Message added successfully'
+  // });
+  response.status(200)//.sendFile(indexFile)
 });
 
 app.use('/api/messages',(request,response,next) => {
@@ -94,14 +98,21 @@ app.use('/api/messages',(request,response,next) => {
     { id: '123457',
     content: 'Second message'}
   ];
-  response.status(200).json({
-    message: 'Messages fetched successfully!',
-    messages: messages
-  });
+  // response.status(200).json({
+  //   message: 'Messages fetched successfully!',
+  //   messages: messages
+  // });
+  response.status(200)//.sendFile(indexFile)
 });
 
 
 
+
+
+// All routes fall to here if they didn't match any of the previous routes
+app.get('*', function (request, response) {
+  response.sendFile(indexFile)
+})
 
 // Error has occured
 const onError = error => {

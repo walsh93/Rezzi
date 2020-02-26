@@ -7,6 +7,8 @@ A running list of sources, tutorials, and other links that may be of great use d
   * [General tutorials](#general-tutorials)
   * [Using Angular with Node.js](#using-angular-with-nodejs)
   * [Using Angular with Firebase](#using-angular-with-firebase)
+  * [Forms](#forms)
+  * [Other HTML and Typescript stuff](#other-html-and-ts-stuff)
 - [Express JS](#express-js)
   * [Routing](#routing)
   * [NPM packages](#npm-packages)
@@ -37,8 +39,13 @@ Note: For `ng serve` and `ng build`, we can configure the commands so we just ha
   * Video tutorial showing how to create and use Angular components
 - [Routing](https://angular.io/start/routing)
   * Routing in Angular is separate from routing in Node.js, so we have to make sure that the Angular routes corresponding to our Node routes.
+  * [Angular 6 Url Parameters](https://medium.com/better-programming/angular-6-url-parameters-860db789db85)
+  * [Activated Route](https://angular.io/guide/router#activated-route)
+    + These are good references if you need URL parameters in Angular
 - [Managing Data](https://angular.io/start/data)
   * This is a good starting point for how we can use data from the backend and load it into Angular HTML pages on the frontend.
+- [Component Interaction](https://angular.io/guide/component-interaction)
+  * This is a good reference for if you have a parent and child component that need to pass data to each other. This is employed in the ra-create-channel and create-channel-form components.
 - [HTTP](https://angular.io/tutorial/toh-pt6)
   * This is a page from the tutorial, but I think this may be a really helpful page for when we are sendng data from Angular to the backend. Kai overcomplicated it during 307, so the methods described here may make it a little more manageable.
 - [HttpClient](https://angular.io/guide/http)
@@ -59,6 +66,18 @@ Note: For `ng serve` and `ng build`, we can configure the commands so we just ha
   * A simple step-by-step tutorial showing how Firebase and Angular can be incorporated within the same application. This example uses the *real-time* database.
 - [Firebase Firestore and Angular TODO List Application](https://medium.com/@coderonfleek/firebase-firestore-and-angular-todo-list-application-d0fe760f6bca)
   * Another simple tutorial showing how Firebase and Angular can be used together.
+
+### Forms
+- [Form validation](https://angular.io/guide/form-validation)
+- [NgForm](https://angular.io/api/forms/NgForm)
+- [NgModel](https://angular.io/api/forms/NgModel)
+- [NgModelGroup](https://angular.io/api/forms/NgModelGroup)
+- [EmailValidator](https://angular.io/api/forms/EmailValidator)
+- [How to use the “required” attribute with a “radio” input field](https://stackoverflow.com/questions/8287779/how-to-use-the-required-attribute-with-a-radio-input-field)
+
+### Other HTML and TS stuff
+- [Function.prototype.bind()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind)
+- [Function binding](https://javascript.info/bind)
 
 -----
 ## Express JS

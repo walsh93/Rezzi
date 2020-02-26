@@ -52,6 +52,7 @@ addUser(user: User) {
   this.http.post<{notification: string}>('/sign-up/api/sign-up', user)
     .subscribe(responseData => {
       console.log(responseData.notification);
+      alert(Notification); // conley-edit-here
       // if success go home else show message indicating error
     });
 }
