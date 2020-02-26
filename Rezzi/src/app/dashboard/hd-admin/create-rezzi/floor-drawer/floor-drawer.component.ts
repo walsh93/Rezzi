@@ -6,7 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./floor-drawer.component.css']
 })
 export class FloorDrawerComponent implements OnInit {
-  @Input() public floor: { id: number, name: string, channels: { id: number, name: string, default: boolean }[] };
+  @Input() public floor: { id: number, name: string, channels: { id: number, name: string/*, default: boolean*/ }[] };
   @Output() delete_emitter = new EventEmitter<number>();
   private empty_ids: number[];
 
@@ -25,7 +25,7 @@ export class FloorDrawerComponent implements OnInit {
     this.floor.channels.push({
       id: temp_id,
       name: "Example Channel Name",
-      default: true
+      // default: true
     })
   }
 
@@ -37,7 +37,7 @@ export class FloorDrawerComponent implements OnInit {
     this.empty_ids.push(channel_id);
   }
 
-  onChange(changed_channel: { id: number, name: string, default: boolean }) {
+  onChange(changed_channel: { id: number, name: string/*, default: boolean*/ }) {
     var index = this.floor.channels.findIndex((channel) => {
       return channel.id === changed_channel.id;
     });

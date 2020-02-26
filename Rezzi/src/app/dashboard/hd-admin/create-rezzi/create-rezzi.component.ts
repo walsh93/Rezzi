@@ -18,7 +18,7 @@ export class CreateRezziComponent implements OnInit {
         {
           id: 0,
           name: "General",
-          default: true
+          // default: true
         },
       ]
     },
@@ -28,7 +28,7 @@ export class CreateRezziComponent implements OnInit {
     {
       id: 0,
       name: "General",
-      default: true
+      // default: true
     },
   ];
 
@@ -36,7 +36,7 @@ export class CreateRezziComponent implements OnInit {
     {
       id: 0,
       name: "General",
-      default: true
+      // default: true
     },
   ];
   private floor_empty_ids: number[];
@@ -113,7 +113,7 @@ export class CreateRezziComponent implements OnInit {
         {
           id: 0,
           name: "General",
-          default: true
+          // default: true
         },
       ]
     })

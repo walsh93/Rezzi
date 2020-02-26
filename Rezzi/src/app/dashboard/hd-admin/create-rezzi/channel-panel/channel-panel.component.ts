@@ -7,8 +7,8 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   styleUrls: ['./channel-panel.component.css']
 })
 export class ChannelPanelComponent implements OnInit {
-  @Input() public channel: { id: number, name: string, default: boolean };
-  @Output() default_emitter = new EventEmitter<{ id: number, name: string, default: boolean }>();
+  @Input() public channel: { id: number, name: string/*, default: boolean*/ };
+  @Output() default_emitter = new EventEmitter<{ id: number, name: string/*, default: boolean*/ }>();
   @Output() delete_emitter = new EventEmitter<number>();
 
   constructor() { }
@@ -17,21 +17,21 @@ export class ChannelPanelComponent implements OnInit {
 
   }
 
-  onToggleChange(ob: MatSlideToggleChange) {
-  	this.channel.default = ob.checked;
-  	this.default_emitter.emit({
-      id: this.channel.id,
-  		name: this.channel.name,
-  		default: this.channel.default
-  	});
-  }
+  // onToggleChange(ob: MatSlideToggleChange) {
+  // 	this.channel.default = ob.checked;
+  // 	this.default_emitter.emit({
+  //     id: this.channel.id,
+  // 		name: this.channel.name,
+  // 		default: this.channel.default
+  // 	});
+  // }
 
   onNameChange(event: any) {
     this.channel.name = event;
     this.default_emitter.emit({
       id: this.channel.id,
       name: this.channel.name,
-      default: this.channel.default
+      // default: this.channel.default
     });
   }
 

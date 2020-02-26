@@ -1,16 +1,23 @@
 <mat-card>
-	<mat-card-header>
-    <mat-form-field>
-      <mat-label>Channel Name</mat-label>
-      <input matInput value="{{channel.name}}" (blur)="onNameChange($event.target.value)">
-    </mat-form-field>
-  </mat-card-header>
-  <mat-card-actions>
+	<!-- <mat-card-header> -->
+    <div *ngIf="channel.name !== 'General'">
+      <mat-form-field class="left-side">
+        <mat-label>Channel Name</mat-label>
+        <input matInput value="{{channel.name}}" (blur)="onNameChange($event.target.value)">
+      </mat-form-field>
+    </div>
+    <div *ngIf="channel.name === 'General'">
+      General
+    </div>
+    <div *ngIf="channel.name !== 'General'">
+      <button mat-icon-button aria-label="Delete Channel" (click)="onDelete()" class="right-side">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  <!-- </mat-card-header> -->
+<!--   <mat-card-actions>
     <mat-slide-toggle [checked]="channel.default" (change)="onToggleChange($event)">
       Default
     </mat-slide-toggle>
-    <button mat-icon-button aria-label="Delete Channel" (click)="onDelete()">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </mat-card-actions>
+  </mat-card-actions> -->
 </mat-card>
