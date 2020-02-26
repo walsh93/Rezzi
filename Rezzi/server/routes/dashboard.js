@@ -10,15 +10,14 @@ const keys = require('../constants').db_keys
 const sign_in = require('../constants').sign_in
 const firebase = require('../database')
 
-router.get('/', checkCookie, function(request, response) {
+router.get('/', checkCookie, function (request, response) {
   response.status(200).json({
     notification: 'Dashboard',
   });
   //response.sendFile(indexFile)
-}).post('/api/edit-profile',(request,response,next) => {
+}).post('/api/edit-profile', (request, response, next) => {
   const rb = request.body
   const email = request.__session.email;
-  console.log(rb);
   firebase.editUser(rb,email);
   response.status(201).json({
     notification: 'User may be edited?'

@@ -10,6 +10,12 @@ import {
   MatToolbarModule,
   MatExpansionModule,
   MatSidenavModule,
+  MatFormFieldModule,
+  MatMenuModule,
+  MatSelectModule,
+  MatListModule,
+  MatGridListModule,
+  MatCheckboxModule,
   MatDialogModule,
   MatTableModule,
   MatTabsModule,
@@ -134,6 +140,13 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
     MatToolbarModule,
     MatExpansionModule,
     MatSidenavModule,
+    MatFormFieldModule,
+    MatMenuModule,
+    MatIconModule,
+    MatSelectModule,
+    MatListModule,
+    MatGridListModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatTableModule,
     MatIconModule,
@@ -148,5 +161,4 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
   providers: [MessagesService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
-
+export class AppModule {}
