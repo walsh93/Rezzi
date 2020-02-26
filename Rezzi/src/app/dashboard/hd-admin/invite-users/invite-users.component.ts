@@ -14,21 +14,20 @@ export class InviteUsersComponent implements OnInit {
 
   // Class variables
   errorMsg: string;
-  session;
+  session: any;
+  floors = new Array<string>();
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
     // Initialize class variables
-    this.rezziService.getSession().then((__session) => {
-        this.session = __session;
-    })
-    this.errorMsg = '';
-    
-    let floors: [string];
-    this.rezziService.getFloors().then((data_from_backend) => {
-       floors = data_from_backend.floors;
+    this.rezziService.getSession().then((session) => {
+        this.session = session;
     });
+    this.errorMsg = '';
 
+    // Hardcoding floors for testing
+    this.floors.push('3S');
+    this.floors.push('2N');
   }
   onRAInvite(form: NgForm) {
     if (form.invalid) {
@@ -37,46 +36,52 @@ export class InviteUsersComponent implements OnInit {
     const emailList = form.value.RAEmails;
     console.log(emailList);
 
-    //get the selected floor
-    //get the Rezzi the HD belongs to
+    // get the selected floor
+    // get the Rezzi the HD belongs to
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)
     const body = {
       emailList: form.value.RAEmails,
-      //floor: `${floor}`,
+      // floor: `${floor}`,
       accountType: `1`,
-      //channels:
+      // channels:
     };
     this.addInvite(body);
   }
 
-  onResidentInvite(form: NgForm){
+  onResidentInvite(form: NgForm) {
     if (form.invalid) {
       return;
     }
     const emailList = form.value.residentEmails;
     console.log(emailList);
 
-    //get the selected floor
-    //get the Rezzi the HD belongs to
+    // get the selected floor
+    // get the Rezzi the HD belongs to
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)
     const body = {
       emailList: form.value.residentEmails,
       rezzi: this.session.rezzi,
+<<<<<<< HEAD
       //floor: `${floor}`,
       accountType: `2`,
       //channels:
+=======
+      // floor: `${floor}`,
+      accountType: `1`,
+      // channels:
+>>>>>>> 2ab69a588aa70c00e82647a11cd5c6f14d638c51
     };
     this.addInvite(body);
   }
 
-  addInvite(list){
+  addInvite(list) {
     this.http.post<{notification: string}>('/invite-users', list)
     .subscribe(responseData => {
       console.log(responseData.notification);
     });
   }
 
-    //TO DO: what should I be doing response wise here?
+    // TODO: what should I be doing response wise here?
 }

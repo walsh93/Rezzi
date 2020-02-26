@@ -22,13 +22,16 @@
           <p>Select the floor you would like these users to be automatically added to.</p>
           <p>You must submit this form separately for RAs of different floors.</p>
           <!--TODO: Pull list of channels for this Rezzi and put them with radio button/dropdown-->
-          <mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Select a floor</mat-label>
             <mat-select>
-              <mat-option *ngFor="let floor of floors" [value]="floor.value">
-                {{floors}}
+              <mat-option *ngFor="let floor of floors" [value]="floor">
+                {{ floor }}
               </mat-option>
             </mat-select>
           </mat-form-field>
+
           <button mat-raised-button color="accent" type="submit">Invite RAs</button>
         </form>
       </mat-card>
@@ -47,6 +50,16 @@
           <p>Select the floor you would like these users to be automatically added to.</p>
           <p>You must submit this form separately for residents of different floors.</p>
           <!--TODO: Pull list of floors for this Rezzi and put them with radio button/dropdown-->
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Select a floor</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let floor of floors" [value]="floor">
+                {{ floor }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
           <button mat-raised-button color="accent" type="submit">Invite Residents</button>
         </form>
       </mat-card>
