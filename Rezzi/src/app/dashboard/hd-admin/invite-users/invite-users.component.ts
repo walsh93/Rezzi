@@ -63,15 +63,9 @@ export class InviteUsersComponent implements OnInit {
     const body = {
       emailList: form.value.residentEmails,
       rezzi: this.session.rezzi,
-<<<<<<< HEAD
       //floor: `${floor}`,
       accountType: `2`,
       //channels:
-=======
-      // floor: `${floor}`,
-      accountType: `1`,
-      // channels:
->>>>>>> 2ab69a588aa70c00e82647a11cd5c6f14d638c51
     };
     this.addInvite(body);
   }
