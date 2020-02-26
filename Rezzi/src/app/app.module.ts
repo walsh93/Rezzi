@@ -16,6 +16,7 @@ import {
   MatIconModule,
   MatSlideToggleModule,
   MatSnackBarModule,
+  MatSelectModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -140,7 +141,8 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
     MatSlideToggleModule,
     MatSnackBarModule,
     NgbModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSelectModule,
   ],
   entryComponents: [
     JoinChannelComponent
