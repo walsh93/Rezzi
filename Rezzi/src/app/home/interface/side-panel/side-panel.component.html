@@ -1,8 +1,7 @@
 <!-- This component shows the floors/channels the user is in -->
-<div *ngIf="channels.length > 0"> <!-- TODO make sure expanded channels don't appear over 'Join' button -->
-
-  <mat-expansion-panel *ngFor="let channel of channels"> <!-- looping the floor channels -->
-    <ng-container *ngIf="channel.belongs">
+<mat-accordion *ngIf="channels.length > 0" multi="true" class="rezzi"> <!-- TODO make sure expanded channels don't appear over 'Join' button -->
+  <ng-container *ngFor="let channel of channels"> <!-- looping the floor channels -->
+    <mat-expansion-panel *ngIf="channel.belongs">
       <mat-expansion-panel-header>
         <mat-panel-title (click)='doTheThing()' routerLink='/home'> <!-- TODO add routerLink or click to view channel's chat -->
           {{ channel.channel }}
@@ -18,9 +17,9 @@
       </ng-container>
 
       <button mat-stroked-button class="add-channel-button" routerLink='/home'>Add Channel</button> <!--TODO add routerLink to add new channel, -->
-    </ng-container>
-  </mat-expansion-panel>
-</div>
+    </mat-expansion-panel>
+  </ng-container>
+</mat-accordion>
 
 <p class="no-rezzi" *ngIf="channels.length < 1">You are currently not a member of any Rezzi channels.</p>
 
