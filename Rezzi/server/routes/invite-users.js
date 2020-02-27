@@ -24,6 +24,19 @@ router.get("/", checkCookie, function(request, response) {
 
   //for each email in the array, need to save to the db a new user with email, role, floor, rezzi, verified = 0, and pword code
 
+  db.collection(keys.rezzis + '/' + rezzi + '/floors').doc(rb.floor).update({
+    residents: emailarr
+  });
+  db.collection(keys.rezzis + '/' + rezzi + '/floors/' + rb.floor + '/channels').doc('General').update({
+    members: emailarr
+  });
+  db.collection(keys.rezzis + '/' + rezzi + '/RA').doc('General').update({
+    members: emailarr
+  });
+  db.collection(keys.rezzis + '/' + rezzi + '/hallwide').doc('General').update({
+    members: emailarr
+  });
+
   for (var i = 0; i < emailarr.length; i++) {
     var tempPword = randomstring.generate();
     var currentEmail = emailarr[i];
