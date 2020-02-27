@@ -12,7 +12,11 @@ const url = require('../constants').url
 
 router.post('/', checkCookie, function(request, response) {
   const req = request.body;
+  const email = request.__session.email;
   // console.log(req);
+  db.collection(keys.users).doc(email).update({
+    rezzi: req.name
+  });
   db.collection(keys.rezzis).doc(req.name).set({}).then(resolve => {
     // Add floors
     var promises = [];
