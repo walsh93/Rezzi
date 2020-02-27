@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
+import { ChannelNavBarService } from './channel-nav-bar.service';
 
 @Component({
   selector: 'app-channel-nav-bar',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChannelNavBarComponent implements OnInit {
 
-  constructor() { }
+  @HostBinding('class.nav-title')
+  navTitle = 'Rezzi';
 
-  ngOnInit(): void {
+  constructor(private channelNavBarService: ChannelNavBarService) { }
+
+  ngOnInit() {
+    this.channelNavBarService.setTitle.subscribe(navTitle => {
+      this.navTitle = navTitle;
+    });
   }
 
 }

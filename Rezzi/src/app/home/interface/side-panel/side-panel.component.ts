@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { SidePanelService } from './side-panel.service';
 import { ChannelData } from '../../../classes.model';
+import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service';
 
 @Component({
   selector: 'app-side-panel',
@@ -11,18 +12,9 @@ import { ChannelData } from '../../../classes.model';
   providers: [SidePanelService],
 })
 export class SidePanelComponent implements OnInit {
-  // Sample object
-  // channels = [
-  //   {id: 6,
-  //     channel: "Floor 2E",
-  //     subchannels: [{id: 9, channel: "gamerz", users: 12}, {id: 10, channel: "best friends", users: 1}],
-  //     users: 45},
-  //   {id: 7, channel: "Hallwide", users: 112},
-  //   {id: 8, channel: "RAs", users: 12412}
-  // ];
   public channels: ChannelData[];
 
-  constructor(public dialog: MatDialog, private sidePanelService: SidePanelService) {
+  constructor(public dialog: MatDialog, private sidePanelService: SidePanelService, private channelNavBarService: ChannelNavBarService) {
     this.channels = [];
     this.sidePanelService.getChannels().subscribe(data => {
       for (var hall in data) {
@@ -74,7 +66,8 @@ export class SidePanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  doTheThing() {
-    console.log('view a channel hereeee');
+  viewChannel(channel: string) {
+    this.channelNavBarService.setNavTitle(channel);
   }
+
 }
