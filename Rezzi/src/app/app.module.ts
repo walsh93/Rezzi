@@ -89,6 +89,8 @@ import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-requ
 import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
 import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
 
+import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -160,7 +162,7 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
   entryComponents: [
     JoinChannelComponent
   ],
-  providers: [MessagesService],
+  providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
