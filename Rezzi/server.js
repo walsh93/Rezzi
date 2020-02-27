@@ -55,6 +55,8 @@ const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
 
 // Routers, links to URLs
+const welcome = require('./server/routes/welcome')
+app.use('/welcome', welcome)
 const signup = require('./server/routes/sign-up')
 app.use(url.sign_up, signup)
 const signuphd = require('./server/routes/sign-up-hd')
