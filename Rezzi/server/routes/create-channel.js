@@ -124,7 +124,6 @@ router.get('/', checkCookie, function(request, response) {
             channels: admin.firestore.FieldValue.arrayUnion("floors-" + data.floor + "-" + channel.title)
           }).catch((error) => {
             console.log("Error when adding channel user(s)'s channel list", error)
-            continue
 //            response.status(http.bad_request).send(errorMsg)
           });
         }

@@ -88,6 +88,7 @@ import { CreateChannelFormComponent } from './dashboard/ra-admin/ra-create-chann
 import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
 import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
 import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
+import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/member-input/member-input.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
     FloorDrawerComponent,
     ErrorComponent,
     CreateChannelFormComponent,
-    HdAdminComponent
+    HdAdminComponent,
+    MemberInputComponent
   ],
   imports: [
     BrowserModule,
