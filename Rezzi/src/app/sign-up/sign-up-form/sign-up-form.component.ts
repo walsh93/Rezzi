@@ -60,7 +60,6 @@ export class SignUpFormComponent implements OnInit {
 addUser(user: User) {
   this.http.post<{notification: string}>('/sign-up/api/sign-up', user)
     .subscribe(responseData => {
-      console.log("hi.");
       //console.log(responseData.notification);
       alert(responseData.notification); // conley-edit-here
       // if success go home else show message indicating error

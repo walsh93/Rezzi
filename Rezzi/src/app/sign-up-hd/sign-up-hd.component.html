@@ -42,6 +42,7 @@
           placeholder="First Name"
           name="firstName"
           ngModel
+          pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
           required>
           <mat-error>Please enter a valid first name (Alpha only)</mat-error>
       </mat-form-field>
@@ -52,6 +53,7 @@
           placeholder="Last Name"
           ngModel
           name="lastName"
+          pattern="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$"
           required>
           <mat-error>Please enter a valid last name (Alpha only)</mat-error>
       </mat-form-field>
