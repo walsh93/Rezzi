@@ -19,7 +19,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 // Routes
 const routes: Routes = [
-  { path: '', component: WelcomeComponent },
+  { path: 'welcome', component: WelcomeComponent },                     // Page with all the hyperlinks
   { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-up-hd', component: SignUpHdComponent },
   { path: 'sign-in', component: SignInComponent },
@@ -31,6 +31,7 @@ const routes: Routes = [
   { path: 'create-channel', component: RaCreateChannelComponent },
   { path: 'err/:accountType/unauthorized', component: ErrorComponent }, // Error routes
   { path: 'dashboard', component: DashboardComponent },
+  { path: '', redirectTo: '/sign-in', pathMatch: 'full' },              // Default path to sign-in
   { path: '**', component: PageNotFoundComponent },                     // MUST BE LAST
 ];
 

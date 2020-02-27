@@ -105,26 +105,26 @@ router.get('/', checkCookie, function(request, response) {
           response.status(http.ok).send('Your floor interest channel has been successfully created!')
 //          response.status(http.ok).redirect('wherever the view-channel link is')
         }).catch((error) => {
-          console.log(error)
-          response.status(http.bad_request).send(errorMsg)
+          console.log("Error when adding channel to residence hall channel collection", error)
+//          response.status(http.bad_request).send(errorMsg)
         })
 
         /* add channel to owner's channel list */
         db.collection(keys.users).doc(channel.owner).update({
           channels: admin.firestore.FieldValue.arrayUnion("floors-" + data.floor + "-" + channel.title)
         }).catch((error) => {
-          console.log(error)
-          response.status(http.bad_request).send(errorMsg)
+          console.log("Error when adding channel to owner's channel list", error)
+//          response.status(http.bad_request).send(errorMsg)
         });
 
         /* add channel to user(s)'s channel list */
-        for (member in channel.members){
+        for (member in channel.members) {
           var userAdd = channel.members[member]
           db.collection(keys.users).doc(userAdd).update({
             channels: admin.firestore.FieldValue.arrayUnion("floors-" + data.floor + "-" + channel.title)
           }).catch((error) => {
-            console.log(error)
-            response.status(http.bad_request).send(errorMsg)
+            console.log("Error when adding channel user(s)'s channel list", error)
+//            response.status(http.bad_request).send(errorMsg)
           });
         }
 

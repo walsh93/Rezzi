@@ -88,6 +88,7 @@ import { CreateChannelFormComponent } from './dashboard/ra-admin/ra-create-chann
 import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
 import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
 import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
+import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/member-input/member-input.component';
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
 
@@ -126,7 +127,8 @@ import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-n
     FloorDrawerComponent,
     ErrorComponent,
     CreateChannelFormComponent,
-    HdAdminComponent
+    HdAdminComponent,
+    MemberInputComponent
   ],
   imports: [
     BrowserModule,

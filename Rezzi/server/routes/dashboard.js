@@ -3,7 +3,7 @@ const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
-const checkCookie = require('../permissions').userNeedsToBeLoggedInAndUnverified
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
@@ -11,10 +11,10 @@ const sign_in = require('../constants').sign_in
 const firebase = require('../database')
 
 router.get('/', checkCookie, function (request, response) {
-  response.status(200).json({
-    notification: 'Dashboard',
-  });
-  //response.sendFile(indexFile)
+  // response.status(200).json({
+  //   notification: 'Dashboard',
+  // });
+  response.sendFile(indexFile)
 }).post('/api/edit-profile', (request, response, next) => {
   const rb = request.body
   const email = request.__session.email;

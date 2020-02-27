@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class CreateChannelFormComponent implements OnInit {
 
   // Class variables
+  numMembers: number;
   errorMsg: string;
   title: string;
   description: string;
@@ -23,6 +24,7 @@ export class CreateChannelFormComponent implements OnInit {
 
   ngOnInit(): void {
     // Initialize class variables
+    this.numMembers = 1;
     this.errorMsg = '';
     this.title = '';
     this.description = '';
@@ -38,27 +40,13 @@ export class CreateChannelFormComponent implements OnInit {
   }
 
   plus() {
-    // Get element references
-    const memberInputs = document.getElementById('members-to-add');
-    const memberLabel = document.getElementsByClassName('member-label')[0];
-    const lastInput = document.getElementsByClassName('member-input-column')[0];
-
-    // Clone and set attributes (label)
-    const labelClone = memberLabel.cloneNode(true) as HTMLElement;  // copy node and child elements
-    labelClone.textContent = '';
-
-    // Clone and set attributes (input group)
-    const inputClone = lastInput.cloneNode(true) as HTMLElement;
-    if (inputClone.childElementCount > 1) {  // count == 2 when alert-danger div is included
-      inputClone.removeChild(inputClone.lastChild);
+    if (this.numMembers > 19) {
+      alert('You can add a maximum of 20 members to start');
+    } else {
+      (document.getElementsByClassName('member-label')[this.numMembers] as HTMLElement).hidden = false;
+      (document.getElementsByClassName('member-input-column')[this.numMembers] as HTMLElement).hidden = false;
+      this.numMembers += 1;
     }
-    const inputGroup = inputClone.firstChild;  // input-group member-input
-    (inputGroup.firstChild as HTMLInputElement).value = '';  // don't want to copy previous email
-    (inputGroup.lastChild as HTMLButtonElement).addEventListener('click', this.plus.bind(this));  // .bind() sets scope
-
-    // Append cloned elements
-    memberInputs.appendChild(labelClone);
-    memberInputs.appendChild(inputClone);
   }
 
   /**
@@ -94,10 +82,11 @@ export class CreateChannelFormComponent implements OnInit {
 
     memberInputs.forEach((element) => {
       const memberEmail = (element as HTMLInputElement).value;
-      if (memberEmail.length > 1 && !members.includes(memberEmail)) {
+      if (memberEmail.length > 1 && !members.includes(memberEmail) && this.validateEmail(memberEmail)) {
         members.push(memberEmail);  // Validation happens on the form itself
       }
     });
+    console.log(members);
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)
     const body = {
@@ -128,5 +117,14 @@ export class CreateChannelFormComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Swiped straight from:
+   * https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+   */
+  validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
 }

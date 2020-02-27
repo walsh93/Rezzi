@@ -58,7 +58,7 @@ router.get("/", checkCookie, function(request, response) {
       email: currentEmail,
       password: tempPword,
       verified: false,
-      accountType: rb.accountType,
+      accountType: parseInt(rb.accountType),
       floor: rb.floor,
       rezzi: rezzi,
       channels: rb.channels
