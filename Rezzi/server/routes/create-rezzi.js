@@ -17,6 +17,22 @@ router.post('/', checkCookie, function(request, response) {
   db.collection(keys.users).doc(email).update({
     rezzi: req.name
   });
+
+  request.__session.rezzi = req.name
+
+  // Need to redefine the session
+  // savedEmail = request.__session.email
+  // savedVerified = request.__session.verified
+  // savedAccountType = request.__session.accountType
+
+  // request.__session.reset()
+  // request.__session = {
+  //   email: savedEmail,
+  //   verified: savedVerified,
+  //   accountType: savedAccountType,
+  //   rezzi: req.name,
+  // }
+
   db.collection(keys.rezzis).doc(req.name).set({}).then(resolve => {
     // Add floors
     var promises = [];
