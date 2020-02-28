@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
@@ -19,6 +19,7 @@ import { ChannelData } from '../../../../classes.model';
 export class JoinChannelComponent implements OnInit {
   channels: ChannelData[];
   columnsToDisplay = ['channel', 'user-count', 'join-channel'];
+  @Output() public join_channel_event = new EventEmitter();
 
   constructor(public dialogRef: MatDialogRef<JoinChannelComponent>, 
         @Inject(MAT_DIALOG_DATA) public data,
@@ -45,6 +46,7 @@ export class JoinChannelComponent implements OnInit {
         }
       })
     })
+    this.join_channel_event.emit(id);
   }
 
   ngOnInit() {}

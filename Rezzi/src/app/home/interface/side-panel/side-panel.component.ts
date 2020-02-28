@@ -14,7 +14,9 @@ import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service
 export class SidePanelComponent implements OnInit {
   public channels: ChannelData[];
 
-  constructor(public dialog: MatDialog, private sidePanelService: SidePanelService, private channelNavBarService: ChannelNavBarService) {
+  constructor(public dialog: MatDialog,
+    private sidePanelService: SidePanelService,
+    private channelNavBarService: ChannelNavBarService) {
     this.channels = [];
     this.sidePanelService.getChannels().subscribe(data => {
       for (var hall in data) {
@@ -52,10 +54,19 @@ export class SidePanelComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(JoinChannelComponent, {
+    let dialogRef = this.dialog.open(JoinChannelComponent, {
       width: '600px',
       height: 'auto',
       data: this.channels,
+    });
+    dialogRef.componentInstance.join_channel_event.subscribe((id: string) => {
+      this.channels.forEach(hall => {
+        hall.subchannels.forEach(channel => {
+          if (channel.id === id) {
+            channel.belongs = true;
+          }
+        })
+      })
     });
 
     // dialogRef.afterClosed().subscribe(result => {
