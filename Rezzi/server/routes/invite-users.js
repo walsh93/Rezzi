@@ -92,7 +92,7 @@ router.get("/", checkCookie, function(request, response) {
       });
     }
 
-    response.status(http.ok).send("An email attempt has been made for each email on the list. No guarentees on success ATM.")
+    response.status(http.ok).send("Your email list is currently being processed and will be sent our shortly.")
   })
 });
 
