@@ -91,6 +91,10 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
 import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/member-input/member-input.component';
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
+import { PmInterfaceComponent } from './dashboard/pm-interface/pm-interface.component';
+import { PmSidePanelComponent } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.component';
+import { NewPmComponent } from './dashboard/pm-interface/private-messages/new-pm/new-pm.component';
+import { PrivateMessagesComponent } from './dashboard/pm-interface/private-messages/private-messages/private-messages.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +132,11 @@ import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-n
     ErrorComponent,
     CreateChannelFormComponent,
     HdAdminComponent,
-    MemberInputComponent
+    MemberInputComponent,
+    PmInterfaceComponent,
+    PmSidePanelComponent,
+    NewPmComponent,
+    PrivateMessagesComponent
   ],
   imports: [
     BrowserModule,
