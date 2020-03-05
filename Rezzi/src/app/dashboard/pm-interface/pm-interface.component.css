@@ -1,0 +1,18 @@
+.pm-container {
+  position: absolute;
+  top: 65px;
+  margin: auto;
+  height: 80%;
+  width: 100%;
+}
+
+.pm-side-nav {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  min-width: 200px;
+  height: 90%;
+}
+
+.pm-sidenav-content {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  height: 90%
+}
