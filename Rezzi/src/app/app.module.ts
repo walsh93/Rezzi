@@ -65,6 +65,12 @@ import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel
 import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
 import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
 
+import { PmInterfaceComponent } from './dashboard/pm-interface/pm-interface.component';
+import { PmSidePanelComponent } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.component';
+import { NewPmComponent } from './dashboard/pm-interface/private-messages/new-pm/new-pm.component';
+import { PrivateMessagesComponent } from './dashboard/pm-interface/private-messages/private-messages/private-messages.component';
+
+
 // Home Page Components
 import { HomeComponent } from './home/home.component';
 import { InterfaceComponent } from './home/interface/interface.component';
@@ -91,10 +97,6 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
 import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/member-input/member-input.component';
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
-import { PmInterfaceComponent } from './dashboard/pm-interface/pm-interface.component';
-import { PmSidePanelComponent } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.component';
-import { NewPmComponent } from './dashboard/pm-interface/private-messages/new-pm/new-pm.component';
-import { PrivateMessagesComponent } from './dashboard/pm-interface/private-messages/private-messages/private-messages.component';
 
 @NgModule({
   declarations: [
