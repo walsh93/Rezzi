@@ -39,7 +39,7 @@
 .join-channel-button {
   width: 100%;
   position: absolute;
-  bottom: 65px;
+  bottom: 1px;
   right: 0px;
   padding: 5px;
 }
