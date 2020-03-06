@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { User } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 import { RezziService } from 'src/app/rezzi.service';
+import { AngularFireStorage } from 'angularfire2/storage';
 
 @Component({
   selector: 'app-sign-up-form',
@@ -11,9 +12,13 @@ import { RezziService } from 'src/app/rezzi.service';
 })
 export class SignUpFormComponent implements OnInit {
   hide = true;
+   private ref;
+   private task;
 
   session;
-  constructor(private rezziService: RezziService, private http: HttpClient) { }
+  constructor(private rezziService: RezziService, private http: HttpClient) {
+
+   }
 
   ngOnInit() : void {
     // Initialize class variables
@@ -21,7 +26,9 @@ export class SignUpFormComponent implements OnInit {
         this.session = __session;
     })
   }
+  upload(event) {
 
+  }
   onSignUp(form: NgForm) {
     if (form.invalid) {
       return;
@@ -67,3 +74,4 @@ addUser(user: User) {
 }
 
 }
+
