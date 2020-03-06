@@ -1,57 +1,4 @@
-<!-- <mat-drawer-container class="edit-profile-form-container" autosize> -->
-<!-- <form class="edit-profile-form">
-
-  <table class="full-width" cellspacing="0">
-    <tr>
-      <td>
-        <mat-form-field class="full-width">
-          <mat-label>First Name</mat-label>
-          <input matInput required>
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="full-width">
-          <mat-label>Last Name</mat-label>
-          <input matInput required>
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="full-width">
-          <mat-label>Nickname</mat-label>
-          <input matInput>
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
-
-  <table class="full-width" cellspacing="0">
-      <mat-form-field class="full-width">
-        <mat-label></mat-label>
-        <textarea matInput required>example@me</textarea>
-      </mat-form-field>
-  </table>
-
-
-  <table class="full-width" cellspacing="0">
-    <tr>
-      <td>
-        <mat-form-field class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput placeholder="Password" required>
-        </mat-form-field>
-      </td>
-      <td>
-        <mat-form-field class="full-width">
-          <mat-label>Confirm Password</mat-label>
-          <input matInput placeholder="Re-type password" required>
-        </mat-form-field>
-      </td>
-    </tr>
-  </table>
-</form> -->
-
-
-  <div class="edit-profile-form">
+<div class="edit-profile-form">
     <mat-card color="primary">
       <mat-card-title>My Profile</mat-card-title>
       <mat-card-subtitle></mat-card-subtitle>
@@ -171,4 +118,13 @@
           >Edit Profile</button>
         </form>
     </mat-card >
+    <br>
+    <br>
+    <mat-card color="primary">
+      <button
+          mat-raised-button
+          color="primary"
+          (click)="ondeletionRequest()"
+          >Request to Delete Account</button>
+    </mat-card>
   </div>

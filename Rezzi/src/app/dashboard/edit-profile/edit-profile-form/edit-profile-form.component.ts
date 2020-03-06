@@ -15,23 +15,6 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class EditProfileFormComponent implements OnInit {
   theUser: User;
-  // constructor(private rezziService: RezziService, private router: Router) {}
-
-  // ngOnInit() {
-  //   this.rezziService.getSession().then(response => {
-  //     if (response.email == null) {
-  //       // not signed in
-  //       this.router.navigate(["/sign-in"]);
-  //     } else if (response.verified === false) {
-  //       // signed in but not verified
-  //       this.router.navigate(["/sign-up"]);
-  //     } // else signed in and verified
-  //     this.theUser = this.rezziService
-  //       .getUserData(response.email)
-  //       .then(response => {
-  //         console.log('userdata: ' + this.theUser + " " + this.theUser.lastName )
-  //       });
-  //   });
   hide = true;
 
   // fetch user data
@@ -49,7 +32,7 @@ export class EditProfileFormComponent implements OnInit {
       age: form.value.age,
       major: form.value.major,
       nickName: form.value.nickName,
-      bio: form.value.bio
+      bio: form.value.bio,
     };
     this.theUser.firstName = userInfo.firstName;
     this.theUser.lastName = userInfo.lastName;
@@ -83,9 +66,21 @@ export class EditProfileFormComponent implements OnInit {
       });
 
   }
-  // getUser(data) {
-  //   return this.http.get("/edit-profile");
-  // }
+  ondeletionRequest(){
+   this.theUser.deletionReqest = 1;
+   this.deletionRequest(this.theUser);
+  }
+
+  deletionRequest(data){
+    this.http
+    .post<{ notification: string }>(
+      "http://localhost:4100/dashboard/api/edit-profile/deletion",
+      data
+    )
+    .subscribe(responseData => {
+      console.log(responseData.notification);
+    });
+  }
 
   ngOnInit() {
     this.rezziService.getSession().then(response => {
@@ -107,7 +102,8 @@ export class EditProfileFormComponent implements OnInit {
           response.user.major,
           response.user.nickName,
           response.user.bio,
-          true
+          true,
+          response.user.deletionRequest
         );
 
 

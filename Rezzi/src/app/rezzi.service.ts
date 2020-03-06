@@ -20,13 +20,6 @@ export class RezziService {
       }); // No error codes in getSession.js, so no need for a catch statement
   }
 
-  // getUserData(userId): Promise<any> {
-  //   return this.http.get(`${this.getUser}/${userId}`).toPromise().then((response) => {
-  //     return response;
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   });
-  // }
   getUserProfile(): Promise<any> {
     return this.http
       .get("/get-user")
@@ -40,11 +33,14 @@ export class RezziService {
   }
 
   getFloors(): Promise<any> {
-    return this.http.get('/get-floors').toPromise().then((floors) => {
-      return floors;
-    }).catch((error) => {
-      console.log(error);
-    });
+    return this.http
+      .get("/get-floors")
+      .toPromise()
+      .then(floors => {
+        return floors;
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
-
 }

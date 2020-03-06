@@ -10,7 +10,7 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./new-message.component.css']
 })
 export class NewMessageComponent implements OnInit {
-  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true);
+  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0);
   enteredMessage = '';
 
   constructor(public messagesService: MessagesService) { }

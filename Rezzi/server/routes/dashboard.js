@@ -23,6 +23,14 @@ router.get('/', checkCookie, function (request, response) {
     notification: 'User may be edited?'
   })
   //add user here
+}).post('/api/edit-profile/deletion', (request, response, next) => {
+  const rb = request.body
+  const email = request.__session.email;
+  firebase.requestAccountDeletion(rb,email);
+  response.status(201).json({
+    notification: 'User may have requested to delete account'
+  })
+  //add user here
 })
 
 module.exports = router
