@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { SidePanelService } from './side-panel.service';
@@ -11,20 +11,27 @@ import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service
   styleUrls: ['./side-panel.component.css'],
   providers: [SidePanelService],
 })
+
 export class SidePanelComponent implements OnInit {
   public channels: ChannelData[];
+  private filteredChannels: ChannelData[];
+
+  // Send channels to interface.component
+  @Output() channelsToSend = new EventEmitter<ChannelData[]>();
 
   constructor(public dialog: MatDialog,
-    private sidePanelService: SidePanelService,
-    private channelNavBarService: ChannelNavBarService) {
+              private sidePanelService: SidePanelService,
+              private channelNavBarService: ChannelNavBarService) {
     this.channels = [];
+    this.filteredChannels = [];
     this.sidePanelService.getChannels().subscribe(data => {
-      for (var hall in data) {
+      for (const hall in data) {
         if (data.hasOwnProperty(hall)) {
-          var temp_belongs = false;  // Set if the user doesn't belong to any chats within the category
-          var temp_channels: ChannelData[] = [];
-          for (var channel in data[hall]) {
-            temp_channels.push({
+          let tempBelongs = false;  // Set if the user doesn't belong to any chats within the category
+          let tempChannels: ChannelData[] = [];
+          // tslint:disable-next-line: forin
+          for (const channel in data[hall]) {
+            tempChannels.push({
               id: hall + '-' + channel,
               channel: channel,
               users: data[hall][channel].users,
@@ -32,24 +39,28 @@ export class SidePanelComponent implements OnInit {
               subchannels: []
             });
             if (data[hall][channel].belongs) {
-              temp_belongs = true;
+              tempBelongs = true;
             }
           }
-          var name = hall;
+          let name = hall;
           if (hall.indexOf('floors') !== -1) {  // only use the back half of 'floors-...'
             name = hall.split('-')[1];
           }
-          var temp: ChannelData = {
+          const temp: ChannelData = {
             id: '',
             channel: name,
             users: -1,
-            belongs: temp_belongs,
-            subchannels: temp_channels
+            belongs: tempBelongs,
+            subchannels: tempChannels
           };
           this.channels.push(temp);
+          if (tempBelongs) {
+            this.filteredChannels.push(temp);
+          }
         }
       }
-      console.log(this.channels);
+      // console.log(this.channels);
+      this.channelsToSend.emit(this.filteredChannels);
     });
   }
 
@@ -65,8 +76,8 @@ export class SidePanelComponent implements OnInit {
           if (channel.id === id) {
             channel.belongs = true;
           }
-        })
-      })
+        });
+      });
     });
 
     // dialogRef.afterClosed().subscribe(result => {
