@@ -27,7 +27,9 @@ router.get('/', checkCookie, function(request, response) {
         title: req.title,
         level: req.level,
         description: req.description,
-        members: req.memberEmails,  // messages and calendars can be added as they're created
+        members: req.memberEmails,
+        calendar: [],  // Copied from Riley's implementation
+        messages: [],
       }
 
       const errorMsg = 'There was an error creating your channel'

@@ -4,11 +4,8 @@ const admin = require('firebase-admin')
 const db = admin.firestore()
 
 const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
-const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
-const sign_in = require('../constants').sign_in
-const url = require('../constants').url
 
 router.post('/', checkCookie, function(request, response) {
   const req = request.body;
@@ -47,6 +44,11 @@ router.post('/', checkCookie, function(request, response) {
       req.floors.forEach(floor => {
         floor.channels.forEach(channel => {
           promises.push(db.collection(prefix + '/' + floor.name + '/channels').doc(channel.name).set({
+            owner: email,  // the HD should be the one currently logged in?
+            approvalStatus: true,
+            title: `${req.name}: ${floor.name} ${channel.name}`,
+            level: 'floor',
+            description: '',
             calendar: [],
             members: [],
             messages: [],
@@ -60,6 +62,11 @@ router.post('/', checkCookie, function(request, response) {
         promises = [];
         req.ra_channels.forEach(channel => {
           promises.push(db.collection(keys.rezzis + '/' + req.name + '/RA').doc(channel.name).set({
+            owner: email,  // the HD should be the one currently logged in?
+            approvalStatus: true,
+            title: `${req.name}: RA ${channel.name}`,
+            level: 'RA',
+            description: '',
             calendar: [],
             members: [],
             messages: [],
@@ -69,6 +76,11 @@ router.post('/', checkCookie, function(request, response) {
 
         req.hallwide_channels.forEach(channel => {
           promises.push(db.collection(keys.rezzis + '/' + req.name + '/hallwide').doc(channel.name).set({
+            owner: email,  // the HD should be the one currently logged in?
+            approvalStatus: true,
+            title: `${req.name}: Hallwide ${channel.name}`,
+            level: 'hallwide',
+            description: '',
             calendar: [],
             members: [],
             messages: [],

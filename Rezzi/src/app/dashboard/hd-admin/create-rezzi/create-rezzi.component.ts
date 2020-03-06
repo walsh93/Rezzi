@@ -12,11 +12,11 @@ export class CreateRezziComponent implements OnInit {
   floors = [
     {
       id: 0,
-      name: "Example Floor Name",
+      name: 'Example Floor Name',
       channels: [
         {
           id: 0,
-          name: "General",
+          name: 'General',
           // default: true
         },
       ]
@@ -26,7 +26,7 @@ export class CreateRezziComponent implements OnInit {
   ra_channels = [
     {
       id: 0,
-      name: "General",
+      name: 'General',
       // default: true
     },
   ];
@@ -34,7 +34,7 @@ export class CreateRezziComponent implements OnInit {
   hallwide_channels = [
     {
       id: 0,
-      name: "General",
+      name: 'General',
       // default: true
     },
   ];
@@ -55,7 +55,7 @@ export class CreateRezziComponent implements OnInit {
   }
 
   detectSameName(objects: any) {
-    var to_return = false;
+    let to_return = false;
     objects.forEach(object => {
       if (objects.filter(obj => obj.name === object.name ).length > 1) {
         to_return = true;
@@ -86,7 +86,7 @@ export class CreateRezziComponent implements OnInit {
     }
 
     const rezzi_name = (document.getElementById('rezzi-name') as HTMLInputElement).value;
-    var body = {
+    let body = {
       name: rezzi_name,
       floors: this.floors,
       ra_channels: this.ra_channels,
@@ -95,25 +95,25 @@ export class CreateRezziComponent implements OnInit {
 
     this.http.post('/create-rezzi', body).toPromise().then((response) => {
       console.log(response);
-      this.displayMessage("Rezzi Created!")
+      this.displayMessage('Rezzi Created!')
       this.router.navigate(['/dashboard']);
     }).catch((error) => {
       console.log(error);
     });
-  } 
+  }
 
   addFloor() {
-    var temp_id = this.floors.length;
+    let temp_id = this.floors.length;
     if (this.floor_empty_ids.length > 0) {
       temp_id = this.floor_empty_ids.pop();
     }
     this.floors.push({
       id: temp_id,
-      name: "Example Floor Name",
+      name: 'Example Floor Name',
       channels: [
         {
           id: 0,
-          name: "General",
+          name: 'General',
           // default: true
         },
       ]
@@ -121,7 +121,7 @@ export class CreateRezziComponent implements OnInit {
   }
 
   deleteFloor(floor_id: number) {
-    var index = this.floors.findIndex((floor) => {
+    let index = this.floors.findIndex((floor) => {
       return floor.id === floor_id;
     });
     this.floors.splice(index, 1);
@@ -129,21 +129,21 @@ export class CreateRezziComponent implements OnInit {
   }
 
   addChannel(type: string) {
-    var to_add = {
+    let to_add = {
       id: -1,
-      name: "Example Channel Name",
+      name: 'Example Channel Name',
       default: true
     }
     if (type === 'hallwide') {
-      var temp_id = this.hallwide_channels.length;
+      let temp_id = this.hallwide_channels.length;
       if (this.hallwide_empty_ids.length > 0) {
         temp_id = this.hallwide_empty_ids.pop();
       }
       to_add.id = temp_id;
       this.hallwide_channels.push(to_add);
     }
-    else if (type === 'ra') {
-      var temp_id = this.ra_channels.length;
+    else if (type === 'RA') {
+      let temp_id = this.ra_channels.length;
       if (this.ra_empty_ids.length > 0) {
         temp_id = this.ra_empty_ids.pop();
       }
@@ -154,14 +154,14 @@ export class CreateRezziComponent implements OnInit {
 
   deleteChannel(type: string, channel_id: number) {
     if (type === 'hallwide') {
-      var index = this.hallwide_channels.findIndex((channel) => {
+      let index = this.hallwide_channels.findIndex((channel) => {
         return channel.id === channel_id;
       });
       this.hallwide_channels.splice(index, 1);
       this.hallwide_empty_ids.push(channel_id);
     }
-    else if (type === 'ra') {
-      var index = this.ra_channels.findIndex((channel) => {
+    else if (type === 'RA') {
+      let index = this.ra_channels.findIndex((channel) => {
         return channel.id === channel_id;
       });
       this.ra_channels.splice(index, 1);
