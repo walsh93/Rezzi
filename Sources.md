@@ -46,6 +46,9 @@ Note: For `ng serve` and `ng build`, we can configure the commands so we just ha
   * This is a good starting point for how we can use data from the backend and load it into Angular HTML pages on the frontend.
 - [Component Interaction](https://angular.io/guide/component-interaction)
   * This is a good reference for if you have a parent and child component that need to pass data to each other. This is employed in the ra-create-channel and create-channel-form components.
+  * [Pass data from child to parent component Angular2](https://stackoverflow.com/questions/42107167/pass-data-from-child-to-parent-component-angular2)
+  * [Track variable change in Angular 5](https://stackoverflow.com/questions/48679431/track-variable-change-in-angular-5)
+  * [How to emit an event from parent to child?](https://stackoverflow.com/questions/44053227/how-to-emit-an-event-from-parent-to-child)
 - [HTTP](https://angular.io/tutorial/toh-pt6)
   * This is a page from the tutorial, but I think this may be a really helpful page for when we are sendng data from Angular to the backend. Kai overcomplicated it during 307, so the methods described here may make it a little more manageable.
 - [HttpClient](https://angular.io/guide/http)
