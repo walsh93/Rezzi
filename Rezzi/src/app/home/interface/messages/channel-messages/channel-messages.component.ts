@@ -13,18 +13,29 @@ import { ChannelData } from '../../../../classes.model';
 export class ChannelMessagesComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   private messagesSub: Subscription;
+  private channelMap: Map<string, ChannelData>;
 
-  // Gets info from interface.component
+
+  // Session data retrieved from interface.component
   session: any;
-  currentChannel: string;
-  channels: ChannelData[];
-  private channelUpdateSub: Subscription;
   private sessionUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
-  @Input('sessionUpdateEvent') sessionObs: Observable<ChannelData[]>;
+  @Input('sessionUpdateEvent') sessionObs: Observable<any>;
+
+
+  // Channel list retrieved from interface.component
+  channels: ChannelData[];
+  private channelUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
   @Input('channelsUpdateEvent') channelsObs: Observable<ChannelData[]>;
-  private channelMap: Map<string, ChannelData>;
+
+
+  // Current channel retrieved from interface.component
+  currentChannel: string;
+  private viewingUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('viewingUpdateEvent') viewingObs: Observable<string>;
+
 
   constructor(public messagesService: MessagesService) {
     this.session = null;
@@ -36,7 +47,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
-      console.log('session has been updated');
+      console.log('session has been updated in channel-messages.component');
       this.session = updatedSession;
     });
 
@@ -48,7 +59,12 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       updatedChannels.forEach((channel) => {
         this.channelMap.set(channel.id, channel);
       });
-      console.log(this.channelMap);
+    });
+
+    // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
+    this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
+      this.currentChannel = updatedChannelID;
+      console.log(this.channelMap.get(this.currentChannel));
     });
 
     this.messagesService.getMessages();
@@ -62,5 +78,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.sessionUpdateSub.unsubscribe();
     this.channelUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels
+    this.viewingUpdateSub.unsubscribe();
   }
 }

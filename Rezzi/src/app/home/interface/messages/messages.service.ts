@@ -1,4 +1,4 @@
-import { Message } from '../../../classes.model';
+import { Message, SocketMessageData } from '../../../classes.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -32,11 +32,14 @@ export class MessagesService {
   }
 
   addMessage(message: Message) {
-    this.socket.emit('new-message', message);
     this.http.post<{notification: string}>('http://localhost:4100/api/messages', message).subscribe(responseData => {
       console.log(responseData.notification);
       this.messages.push(message);
       this.messagesUpdated.next([...this.messages]);
     });
+  }
+
+  sendMessageThroughSocket(message: SocketMessageData) {
+    this.socket.emit('new-message', message);
   }
 }

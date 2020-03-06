@@ -18,6 +18,7 @@ export class SidePanelComponent implements OnInit {
 
   // Send channels to interface.component
   @Output() channelsToSend = new EventEmitter<ChannelData[]>();
+  @Output() channelToView = new EventEmitter<string>();
 
   constructor(public dialog: MatDialog,
               private sidePanelService: SidePanelService,
@@ -99,8 +100,21 @@ export class SidePanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  viewChannel(channel: string) {
+  viewChannel(channel: string, level: string) {
     this.channelNavBarService.setNavTitle(channel);
+
+    let viewingChannelString = '';
+    if (level != null) {
+      if (level === 'hallwide' || level === 'RA') {  // Reconstruct the channel ID
+        viewingChannelString = `${level}-${channel}`;
+      } else {
+        viewingChannelString = `floors-${level}-${channel}`;
+      }
+    } else {
+      console.log('Show category accouncements??? What are we showing here?');  // TODO @Kai
+      viewingChannelString = null;
+    }
+    this.channelToView.emit(viewingChannelString);
   }
 
 }

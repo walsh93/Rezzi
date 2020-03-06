@@ -13,8 +13,9 @@ export class InterfaceComponent implements OnInit {
   resHall: string;
 
   // Passing channels and session to child component channel-messages every time they update
-  channelsUpdateSubject: Subject<ChannelData[]> = new Subject<ChannelData[]>();
   sessionUpdateSubject: Subject<any> = new Subject<any>();
+  channelsUpdateSubject: Subject<ChannelData[]> = new Subject<ChannelData[]>();
+  viewingUpdateSubject: Subject<string> = new Subject<string>();
 
   constructor(private rezziService: RezziService) { }
 
@@ -28,6 +29,10 @@ export class InterfaceComponent implements OnInit {
 
   receivedChannels(channels: ChannelData[]) {
     this.channelsUpdateSubject.next(channels);
+  }
+
+  viewingNewChannel(channelID: string) {
+    this.viewingUpdateSubject.next(channelID);
   }
 
 }
