@@ -33,13 +33,26 @@ export class SidePanelComponent implements OnInit {
           for (const channel in data[hall]) {
             tempChannels.push({
               id: hall + '-' + channel,
-              channel: channel,
+              channel,
               users: data[hall][channel].users,
               belongs: data[hall][channel].belongs,
-              subchannels: []
+              subchannels: [],
+              messages: data[hall][channel].messages
             });
             if (data[hall][channel].belongs) {
               tempBelongs = true;
+            }
+
+            // Filtered channels for sibling components
+            if (data[hall][channel].belongs) {
+              this.filteredChannels.push({
+                id: hall + '-' + channel,
+                channel,
+                users: data[hall][channel].users,
+                belongs: data[hall][channel].belongs,
+                subchannels: [],
+                messages: data[hall][channel].messages
+              });
             }
           }
           let name = hall;
@@ -51,21 +64,19 @@ export class SidePanelComponent implements OnInit {
             channel: name,
             users: -1,
             belongs: tempBelongs,
-            subchannels: tempChannels
+            subchannels: tempChannels,
+            messages: []  // TODO does this temp thing have messages at any point???
           };
           this.channels.push(temp);
-          if (tempBelongs) {
-            this.filteredChannels.push(temp);
-          }
         }
       }
-      // console.log(this.channels);
+//      console.log(this.channels);
       this.channelsToSend.emit(this.filteredChannels);
     });
   }
 
   openDialog(): void {
-    let dialogRef = this.dialog.open(JoinChannelComponent, {
+    const dialogRef = this.dialog.open(JoinChannelComponent, {
       width: '600px',
       height: 'auto',
       data: this.channels,

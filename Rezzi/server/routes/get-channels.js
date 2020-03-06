@@ -4,11 +4,7 @@ const admin = require('firebase-admin')
 const db = admin.firestore()
 
 const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
-const indexFile = require('../constants').indexFile
-const http = require('../constants').http_status
 const keys = require('../constants').db_keys
-const sign_in = require('../constants').sign_in
-const url = require('../constants').url
 
 router.get('/', checkCookie, function(request, response) {
   const req = request.body;
@@ -39,14 +35,19 @@ router.get('/', checkCookie, function(request, response) {
         db.collection(collection).select('members').get().then(function(snapshot) {
           console.log(collection);  // Debugging
           snapshot.forEach(function(doc) {
+            const data = doc.data()
             temp = {}
-            if (doc.data().hasOwnProperty('members')) {
-              temp.users = doc.data().members.length;
-              temp.belongs = (doc.data().members.indexOf(email) === -1) ? false : true;
-            }
-            else {
+            if (data.hasOwnProperty('members')) {
+              temp.users = data.members.length;
+              temp.belongs = (data.members.indexOf(email) === -1) ? false : true;
+            } else {
               temp.users = 0;
               temp.belongs = false;
+            }
+            if (data.hasOwnProperty('messages')) {
+              temp.messages = data.messages
+            } else {
+              temp.messages = []
             }
             to_add.channels[doc.id] = temp;
           });

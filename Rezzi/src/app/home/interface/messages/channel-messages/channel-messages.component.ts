@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, range } from 'rxjs';
 
 import { Message } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
@@ -16,6 +16,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
 
   // Gets info from interface.component
   session: any;
+  currentChannel: string;
   channels: ChannelData[];
   private channelUpdateSub: Subscription;
   private sessionUpdateSub: Subscription;
@@ -23,10 +24,13 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   @Input('sessionUpdateEvent') sessionObs: Observable<ChannelData[]>;
   // tslint:disable-next-line: no-input-rename
   @Input('channelsUpdateEvent') channelsObs: Observable<ChannelData[]>;
+  private channelMap: Map<string, ChannelData>;
 
   constructor(public messagesService: MessagesService) {
     this.session = null;
+    this.currentChannel = null;
     this.channels = [];
+    this.channelMap = new Map<string, ChannelData>();
   }
 
   ngOnInit() {
@@ -40,6 +44,11 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.channelUpdateSub = this.channelsObs.subscribe((updatedChannels) => {
       console.log('channels have been updated');
       this.channels = updatedChannels;
+
+      updatedChannels.forEach((channel) => {
+        this.channelMap.set(channel.id, channel);
+      });
+      console.log(this.channelMap);
     });
 
     this.messagesService.getMessages();
