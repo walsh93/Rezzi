@@ -4,6 +4,8 @@ const indexFile = constants.indexFile
 const debug = require('debug')('node-angular');
 
 const http = require('http');
+const msgsocketio = require('socket.io')
+
 //Express Setup
 const express = require('express'),
     app = express();
@@ -168,10 +170,24 @@ const onError = error => {
   }
 };
 
-// Server Express App
+// Port instantiation
 const port = process.env.PORT || 4100;
 app.set('port',port);
+
+// Create server and SocketIO
 const server = http.createServer(app);
+const io = msgsocketio(server)
+
+// IO listener
+io.on('connection', (socket) => {
+  console.log('client connected to socket with ID ' + socket.client.id)
+
+  socket.on('new-message', (message) => {
+    console.log(message);
+  });
+})
+
+// Server listener
 server.on('error',onError);
 server.listen(port);
 console.log("Server started on port " + port);
