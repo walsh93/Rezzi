@@ -187,7 +187,7 @@ const io = msgsocketio(server)
 io.on('connection', (socket) => {
   console.log('client connected to socket with ID ' + socket.client.id)
 
-  socket.on('new-message', (data) => {
+  socket.on('new-message', (data) => {  // responds to a socket event sent from the front end
     const cid = data.channelID
     if (cid != null) {
       const resHallPath = `${db_keys.rezzis}/${data.rezzi}`
@@ -216,9 +216,9 @@ io.on('connection', (socket) => {
         db.collection(channelPath).doc(channelName).update({
           messages: messages
         })
+        socket.emit('added-new-message', messages)  // triggers a socket event in the front end
       })
     }
-
   });
 })
 

@@ -16,8 +16,25 @@ export class MessagesService {
 
   constructor(private http: HttpClient) {
     this.socket = io(this.url);
+
+    // Set socket event responders (backend socket will trigger these through .emit() calls)
+    this.socket.on('added-new-message', (updatedMessages) => {
+      console.log('added-new-message has been triggered');
+      this.messages = updatedMessages;
+      this.messagesUpdated.next([...this.messages]);
+    });
   }
 
+  /*********************************************************************************************************************************
+   * Events and listeners
+   ********************************************************************************************************************************/
+  getMessageUpdateListener() {
+    return this.messagesUpdated.asObservable(); // asObservable is to protect the data
+  }
+
+  /*********************************************************************************************************************************
+   * Message retrieval
+   ********************************************************************************************************************************/
   getMessages() {
     this.http.get<{notification: string, messages: Message[]}>('http://localhost:4100/api/messages')
     .subscribe((messageData) => {
@@ -31,14 +48,13 @@ export class MessagesService {
     this.http.get<{messages: Message[]}>(`/channel-messages?channelPath=${channelPath}&channelName=${channelName}`).subscribe((data) => {
       console.log('RETRIEVED messages', data);
       this.messages = data.messages;
-      this.messagesUpdated.next(this.messages);
+      this.messagesUpdated.next([...this.messages]);
     });
   }
 
-  getMessageUpdateListener() {
-    return this.messagesUpdated.asObservable(); // asObservable is to protect the data
-  }
-
+  /*********************************************************************************************************************************
+   * Message sending
+   ********************************************************************************************************************************/
   addMessage(message: Message) {
     this.http.post<{notification: string}>('http://localhost:4100/api/messages', message).subscribe(responseData => {
       console.log(responseData.notification);
@@ -47,10 +63,13 @@ export class MessagesService {
     });
   }
 
-  sendMessageThroughSocket(message: SocketMessageData) {
-    this.socket.emit('new-message', message);
+  sendMessageThroughSocket(data: SocketMessageData) {
+    this.socket.emit('new-message', data);
   }
 
+  /*********************************************************************************************************************************
+   * Helper functions
+   ********************************************************************************************************************************/
   createChannelPath(rezzi: string, channelID: string) {
     if (channelID != null) {
       const resHallPath = `residence-halls/${rezzi}`;
