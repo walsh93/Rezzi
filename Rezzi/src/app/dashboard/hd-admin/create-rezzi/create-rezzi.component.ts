@@ -142,7 +142,7 @@ export class CreateRezziComponent implements OnInit {
       to_add.id = temp_id;
       this.hallwide_channels.push(to_add);
     }
-    else if (type === 'RA') {
+    else if (type === 'ra') {
       let temp_id = this.ra_channels.length;
       if (this.ra_empty_ids.length > 0) {
         temp_id = this.ra_empty_ids.pop();
@@ -160,7 +160,7 @@ export class CreateRezziComponent implements OnInit {
       this.hallwide_channels.splice(index, 1);
       this.hallwide_empty_ids.push(channel_id);
     }
-    else if (type === 'RA') {
+    else if (type === 'ra') {
       let index = this.ra_channels.findIndex((channel) => {
         return channel.id === channel_id;
       });
