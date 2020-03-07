@@ -114,4 +114,11 @@ module.exports = {
   // MISC.
   RESPONSE_NOT_YET_IMPLEMENTED: 'This response type has not yet been implemented.',
 
+  // Socket events
+  socket: {
+    connection: 'connection',
+    new_channel_view: 'new-channel-view',
+    new_message: 'new-message',
+    new_message_added: 'added-new-message',
+  }
 }

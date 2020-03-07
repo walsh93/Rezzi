@@ -67,8 +67,11 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       const dbpath = this.messagesService.createChannelPath(this.session.rezzi, updatedChannelID);
       if (dbpath != null && dbpath !== undefined) {
         this.messagesService.getChannelMessages(dbpath.channelPath, dbpath.channelName);  // Triggers msg upd listener
+        this.messagesService.emitNewChannelView(dbpath);  // eventually triggers addListenerForChannelMessages
       }
     });
+
+    // TODO What is the opening channel view? Do we need to call this.messagesService.emitNewChannelView on opening?
 
     // Listen for updated message list
     this.messagesSub = this.messagesService.getMessageUpdateListener().subscribe((updatedMessages: Message[]) => {

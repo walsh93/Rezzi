@@ -182,44 +182,31 @@ app.set('port',port);
 // Create server and SocketIO
 const server = http.createServer(app);
 const io = msgsocketio(server)
+const socketEvents = require('./server/socketio/socketEvents')
+const dbListeners = require('./server/socketio/firestoreListeners')
+const skt = require('./server/constants').socket
+
+// Map of db channel listeners
+serverChannelListeners = new Map()
+serverCurrentChannel = null
 
 // IO listener
-io.on('connection', (socket) => {
+io.on(skt.connection, (socket) => {
   console.log('client connected to socket with ID ' + socket.client.id)
 
-  socket.on('new-message', (data) => {  // responds to a socket event sent from the front end
-    const cid = data.channelID
-    if (cid != null) {
-      const resHallPath = `${db_keys.rezzis}/${data.rezzi}`
-      let channelPath = null
-      let channelName = null
-      const level = cid.split('-')[0]
-      if (level == 'floors') {
-        // does NOT consider whether floor name has a '-', but DOES consider if channel name has a '-'
-        const firstDash = cid.indexOf('-')
-        const secondDash = cid.indexOf('-', firstDash + 1)
-        const floorName = cid.slice(firstDash + 1, secondDash)
-        channelName = cid.slice(secondDash + 1)
-        channelPath = `${resHallPath}/floors/${floorName}/channels`
-      } else {  // either 'hallwide' or 'RA'
-        const dash = cid.indexOf('-')
-        const hwOrRa = cid.slice(0, dash)
-        channelName = cid.slice(dash + 1)
-        channelPath = `${resHallPath}/${hwOrRa}`
-      }
-      db.collection(channelPath).doc(channelName).get().then((doc) => {
-        let messages = doc.data().messages
-        if (!messages || messages == null || messages == undefined) {
-          messages = []
-        }
-        messages.push(data.message)
-        db.collection(channelPath).doc(channelName).update({
-          messages: messages
-        })
-        socket.emit('added-new-message', messages)  // triggers a socket event in the front end
-      })
-    }
+  // When a new message is sent
+  socket.on(skt.new_message, (data) => {  // responds to a socket event sent from the front end
+    socketEvents.newMessage(socket, data)
   });
+
+  // When the user begins viewing a different channel
+  socket.on(skt.new_channel_view, (dbpath) => {
+    serverCurrentChannel = `${dbpath.channelPath}/${dbpath.channelName}`
+    if (!serverChannelListeners.has(serverCurrentChannel)) {
+      const observer = dbListeners.addListenerForChannelMessages(socket, dbpath)
+      serverChannelListeners.set(serverCurrentChannel, observer)
+    }
+  })
 })
 
 // Server listener

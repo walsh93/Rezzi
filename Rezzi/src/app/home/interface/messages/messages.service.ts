@@ -63,6 +63,18 @@ export class MessagesService {
     });
   }
 
+  /*********************************************************************************************************************************
+   * Socket functions
+   ********************************************************************************************************************************/
+
+  /**
+   * Emit another socket event indicating we need to listen to another channel
+   * @param objectFromCreateChannelPath - the object returned after calling createChannelPath(string, string)
+   */
+  emitNewChannelView(objectFromCreateChannelPath: any) {
+    this.socket.emit('new-channel-view', objectFromCreateChannelPath);
+  }
+
   sendMessageThroughSocket(data: SocketMessageData) {
     this.socket.emit('new-message', data);
   }
