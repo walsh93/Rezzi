@@ -64,14 +64,17 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
     this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
       this.currentChannel = updatedChannelID;
-      console.log(this.channelMap.get(this.currentChannel));
+      const dbpath = this.messagesService.createChannelPath(this.session.rezzi, updatedChannelID);
+      if (dbpath != null && dbpath !== undefined) {
+        this.messagesService.getChannelMessages(dbpath.channelPath, dbpath.channelName);  // Triggers msg upd listener
+      }
     });
 
-    this.messagesService.getMessages();
-    this.messagesSub = this.messagesService.getMessageUpdateListener()
-      .subscribe((messages: Message[]) => {
-        this.messages = messages;
-      }); // First function, Second error, Third when observable completed
+    // Listen for updated message list
+    this.messagesSub = this.messagesService.getMessageUpdateListener().subscribe((updatedMessages: Message[]) => {
+      console.log('Messages are updating...');
+      this.messages = updatedMessages;
+    }); // First function, Second error, Third when observable completed
   }
 
   ngOnDestroy() {

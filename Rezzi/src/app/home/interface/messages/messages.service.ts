@@ -27,6 +27,14 @@ export class MessagesService {
     // return [...this.messages]; // pulling messages into new array (hence the [...])
   }
 
+  getChannelMessages(channelPath: string, channelName: string) {
+    this.http.get<{messages: Message[]}>(`/channel-messages?channelPath=${channelPath}&channelName=${channelName}`).subscribe((data) => {
+      console.log('RETRIEVED messages', data);
+      this.messages = data.messages;
+      this.messagesUpdated.next(this.messages);
+    });
+  }
+
   getMessageUpdateListener() {
     return this.messagesUpdated.asObservable(); // asObservable is to protect the data
   }
@@ -42,4 +50,35 @@ export class MessagesService {
   sendMessageThroughSocket(message: SocketMessageData) {
     this.socket.emit('new-message', message);
   }
+
+  createChannelPath(rezzi: string, channelID: string) {
+    if (channelID != null) {
+      const resHallPath = `residence-halls/${rezzi}`;
+      let channelPath = null;
+      let channelName = null;
+      const level = channelID.split('-')[0];
+      if (level === 'floors') {
+        // does NOT consider whether floor name has a '-', but DOES consider if channel name has a '-'
+        const firstDash = channelID.indexOf('-');
+        const secondDash = channelID.indexOf('-', firstDash + 1);
+        const floorName = channelID.slice(firstDash + 1, secondDash);
+        channelName = channelID.slice(secondDash + 1);
+        channelPath = `${resHallPath}/floors/${floorName}/channels`;
+      } else {  // either 'hallwide' or 'RA'
+        const dash = channelID.indexOf('-');
+        const hwOrRa = channelID.slice(0, dash);
+        channelName = channelID.slice(dash + 1);
+        channelPath = `${resHallPath}/${hwOrRa}`;
+      }
+
+      if (channelPath == null || channelName == null) {
+        return null;
+      }
+
+      return { channelPath, channelName };
+    }
+
+    return null;
+  }
+
 }

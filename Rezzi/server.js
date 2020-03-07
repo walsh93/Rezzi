@@ -58,6 +58,8 @@ const getFloors = require('./server/service/getFloors')
 app.use(service.get_floors, getFloors)
 const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
+const channelMessages = require('./server/service/channelMessages')
+app.use(service.channel_messages, channelMessages)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')
