@@ -19,6 +19,7 @@ A running list of sources, tutorials, and other links that may be of great use d
   * [Using Firebase with Node.js](#using-firebase-with-nodejs)
   * [Using Firebase with Angular](#using-firebase-with-angular)
   * [NPM packages](#npm-packages-1)
+- [SocketIO and SocketIO Client](#socketio-and-socketio-client)
 
 -----
 ## Angular
@@ -141,3 +142,9 @@ This includes stuff about the corresponding NPM packages, database usage, cloud 
 - [firebase npm package](https://www.npmjs.com/package/firebase)
 - [firebase-admin npm package](https://www.npmjs.com/package/firebase-admin)
   * This package is needed to we can do Firebase stuff in the server.
+
+---
+## SocketIO and SocketIO Client
+- [Docs](https://socket.io/docs/)
+- [Emit Cheatsheet](https://socket.io/docs/emit-cheatsheet/)
+- [Rooms and Namespaces](https://socket.io/docs/rooms-and-namespaces/)
