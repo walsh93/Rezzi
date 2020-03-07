@@ -1,4 +1,5 @@
 const constants = require('./server/constants')
+const db_keys = constants.db_keys;
 const indexFile = constants.indexFile
 
 const debug = require('debug')('node-angular');
@@ -32,6 +33,8 @@ app.use(sessions({
 
 // Firebase Admin Client
 var firebase = require('./server/database.js');
+const admin = require('firebase-admin')
+const db = admin.firestore()
 
 app.use(jsonParser);
 app.use(bodyParser.urlencoded({extended: false}));
@@ -182,8 +185,38 @@ const io = msgsocketio(server)
 io.on('connection', (socket) => {
   console.log('client connected to socket with ID ' + socket.client.id)
 
-  socket.on('new-message', (message) => {
-    console.log(message);
+  socket.on('new-message', (data) => {
+    const cid = data.channelID
+    if (cid != null) {
+      const resHallPath = `${db_keys.rezzis}/${data.rezzi}`
+      let channelPath = null
+      let channelName = null
+      const level = cid.split('-')[0]
+      if (level == 'floors') {
+        // does NOT consider whether floor name has a '-', but DOES consider if channel name has a '-'
+        const firstDash = cid.indexOf('-')
+        const secondDash = cid.indexOf('-', firstDash + 1)
+        const floorName = cid.slice(firstDash + 1, secondDash)
+        channelName = cid.slice(secondDash + 1)
+        channelPath = `${resHallPath}/floors/${floorName}/channels`
+      } else {  // either 'hallwide' or 'RA'
+        const dash = cid.indexOf('-')
+        const hwOrRa = cid.slice(0, dash)
+        channelName = cid.slice(dash + 1)
+        channelPath = `${resHallPath}/${hwOrRa}`
+      }
+      db.collection(channelPath).doc(channelName).get().then((doc) => {
+        let messages = doc.data().messages
+        if (!messages || messages == null || messages == undefined) {
+          messages = []
+        }
+        messages.push(data.message)
+        db.collection(channelPath).doc(channelName).update({
+          messages: messages
+        })
+      })
+    }
+
   });
 })
 
