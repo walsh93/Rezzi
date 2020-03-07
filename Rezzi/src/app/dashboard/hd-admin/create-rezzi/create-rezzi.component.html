@@ -17,7 +17,7 @@
       <mat-icon>control_point</mat-icon>
     </button>
   </mat-tab>
-  
+
   <!-- Hallwide Panel -->
   <mat-tab label="Hallwide">
     <app-channel-panel *ngFor="let channel of hallwide_channels"
@@ -33,9 +33,9 @@
   <mat-tab label="RA">
     <app-channel-panel *ngFor="let channel of ra_channels"
       [channel]="channel"
-      (delete_emitter)="deleteChannel('ra', channel.id)">
+      (delete_emitter)="deleteChannel('RA', channel.id)">
     </app-channel-panel>
-    <button mat-icon-button aria-label="Add Floor" (click)="addChannel('ra')">
+    <button mat-icon-button aria-label="Add Floor" (click)="addChannel('RA')">
       <mat-icon>control_point</mat-icon>
     </button>
   </mat-tab>
