@@ -1,7 +1,9 @@
-<p>channel-messages works!</p>
 <div *ngFor="let message of messages">
   <!--{{ message.owner.firstName }}: Temporary Comment-->
-  {{ message.content }}
+  <app-message
+    [content]="message.content"
+    [time]="message.time"
+  ></app-message>
 </div>
 
 <!-- this is the component that displays the previous messages -->

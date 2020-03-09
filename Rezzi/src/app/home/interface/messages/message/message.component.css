@@ -1,0 +1,16 @@
+mat-card {
+  display: flex;
+  margin: 5px;
+}
+
+/* Column containing the name */
+.col-2 {
+  font-weight: bold;
+}
+
+mat-card-footer {
+  font-size: smaller;
+  margin-left: 5px;
+  margin-bottom: 2px;
+  text-align: end;
+}

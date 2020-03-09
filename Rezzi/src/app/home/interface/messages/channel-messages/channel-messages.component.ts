@@ -45,6 +45,9 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // If testing messages/message view with `ng serve`
+    // this.initializeTestData();
+
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
       console.log('session has been updated in channel-messages.component');
@@ -85,5 +88,29 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.channelUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels
     this.viewingUpdateSub.unsubscribe();
+  }
+
+  initializeTestData() {
+    const m1: Message = {
+      id: null,
+      content: 'Testing 1-2-3',
+      time: new Date('2020-01-26'),
+      visible: true,
+    };
+    const m2: Message = {
+      id: null,
+      content: 'you\'re on your own, kiddo',
+      time: new Date('2020-02-14'),
+      visible: true,
+    };
+    const m3: Message = {
+      id: null,
+      content: 'frickin rip',
+      time: new Date('2020-03-05'),
+      visible: true,
+    };
+    this.messages.push(m1);
+    this.messages.push(m2);
+    this.messages.push(m3);
   }
 }
