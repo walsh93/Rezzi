@@ -1,5 +1,5 @@
 mat-card {
-  display: flex;
+  /*display: flex;*/
   margin: 5px;
 }
 
@@ -13,4 +13,13 @@ mat-card-footer {
   margin-left: 5px;
   margin-bottom: 2px;
   text-align: end;
+}
+
+.avatar {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.reactions {
+	float: right;
 }

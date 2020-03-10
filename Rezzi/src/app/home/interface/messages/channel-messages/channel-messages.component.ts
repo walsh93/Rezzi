@@ -91,23 +91,45 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   }
 
   initializeTestData() {
+
     const m1: Message = {
       id: null,
       content: 'Testing 1-2-3',
       time: new Date('2020-01-26'),
       visible: true,
+      reactions: {
+        thumb_up: ["aa"],
+        thumb_down: ["aa", "aaaa"],
+        sentiment_very_satisfied: ["aaaa}", "aaaa"],
+        sentiment_dissatisfied: [],
+        whatshot: ["a", "b", "c", "d", "e"]
+      }
     };
     const m2: Message = {
       id: null,
       content: 'you\'re on your own, kiddo',
       time: new Date('2020-02-14'),
       visible: true,
+      reactions: {
+        thumb_up: ["aa"],
+        thumb_down: ["aa", "aaaa"],
+        sentiment_very_satisfied: ["aaaa}", "aaaa"],
+        sentiment_dissatisfied: [],
+        whatshot: ["a", "b", "c", "d", "e"]
+      }
     };
     const m3: Message = {
       id: null,
       content: 'frickin rip',
       time: new Date('2020-03-05'),
       visible: true,
+      reactions: {
+        thumb_up: ["aa"],
+        thumb_down: ["aa", "aaaa"],
+        sentiment_very_satisfied: ["aaaa}", "aaaa"],
+        sentiment_dissatisfied: [],
+        whatshot: ["a", "b", "c", "d", "e"]
+      }
     };
     this.messages.push(m1);
     this.messages.push(m2);

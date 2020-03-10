@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from 'src/app/classes.model';
+import { User, ReactionData } from 'src/app/classes.model';
 
 @Component({
   selector: 'app-message',
@@ -16,6 +16,7 @@ export class MessageComponent implements OnInit {
   @Input() user: User;
   @Input() content: string;
   @Input() time: Date;
+  @Input() reactions: ReactionData;
 
   constructor() { }
 
@@ -30,6 +31,7 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
+    console.log(this.reactions);
   }
 
 }

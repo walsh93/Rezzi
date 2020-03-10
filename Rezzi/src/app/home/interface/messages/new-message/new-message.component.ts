@@ -54,7 +54,14 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       // owner: this.tempuser,
       time: new Date(),
       visible: true,
-      id: null // TODO Need to change the ID
+      id: null, // TODO Need to change the ID
+      reactions: {
+        thumb_up: ["aa"],
+        thumb_down: ["aa", "aaaa"],
+        sentiment_very_satisfied: ["aaaa}", "aaaa"],
+        sentiment_dissatisfied: [],
+        whatshot: ["a", "b", "c", "d", "e"]
+      }
     };
 
     const scmd: SocketChannelMessageData = {

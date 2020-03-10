@@ -22,6 +22,7 @@ import {
   MatIconModule,
   MatSlideToggleModule,
   MatSnackBarModule,
+  MatBadgeModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -162,6 +163,7 @@ import { MessageComponent } from './home/interface/messages/message/message.comp
     NgbModule,
     MatTabsModule,
     MatSelectModule,
+    MatBadgeModule,
   ],
   entryComponents: [
     JoinChannelComponent
