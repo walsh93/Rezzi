@@ -17,10 +17,12 @@
       [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
       [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
+      [user]="user"
     ></app-channel-messages>
     <app-new-message
       [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
       [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
+      [user]="user"
     ></app-new-message>
     <!-- <app-new-message (messageCreated) = 'onMessageAdded($event)'></app-new-message> -->
     <!-- <div>

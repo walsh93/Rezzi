@@ -4,7 +4,17 @@
     <div mat-card-avatar class="avatar"></div>
     <mat-card-title>Name:</mat-card-title>
     <div class="reactions" *ngFor="let reaction of reactions | keyvalue">
-      <mat-icon matBadge="{{ reaction.value.length }}">{{ reaction.key }}</mat-icon>
+      <button mat-icon-button (click)="sendReaction(reaction.key)">
+        <mat-icon *ngIf="reaction.value.length > 0"
+          matBadge="{{ reaction.value.length }}"
+          color="{{ reacted[reaction.key] }}"
+          matBadgeSize="small">
+          {{ reaction.key }}
+        </mat-icon>
+        <mat-icon *ngIf="reaction.value.length == 0">
+          {{ reaction.key }}
+        </mat-icon>
+      </button>
     </div>
   </mat-card-header>
   <mat-card-content>{{ content }}</mat-card-content>

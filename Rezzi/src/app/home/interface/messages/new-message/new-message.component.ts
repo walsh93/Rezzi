@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
-import { Message, User, SocketChannelMessageData } from '../../../../classes.model';
+import { Message, User, SocketChannelMessageData, ReactionData } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { NgForm } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { Subscription, Observable } from 'rxjs';
 export class NewMessageComponent implements OnInit, OnDestroy {
   tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true);
   enteredMessage = '';
-
+  @Input() user: User;
 
   // Session data
   session: any;
@@ -55,13 +55,13 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       time: new Date(),
       visible: true,
       id: null, // TODO Need to change the ID
-      reactions: {
-        thumb_up: ["aa"],
-        thumb_down: ["aa", "aaaa"],
-        sentiment_very_satisfied: ["aaaa}", "aaaa"],
+      reactions: { // TODO should make this more generic for ReactionData so its easier to add icons
+        thumb_up: [],
+        thumb_down: [],
+        sentiment_very_satisfied: [],
         sentiment_dissatisfied: [],
-        whatshot: ["a", "b", "c", "d", "e"]
-      }
+        whatshot: [],
+      },
     };
 
     const scmd: SocketChannelMessageData = {

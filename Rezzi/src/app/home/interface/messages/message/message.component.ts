@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User, ReactionData } from 'src/app/classes.model';
+import { RezziService } from 'src/app/rezzi.service';
 
 @Component({
   selector: 'app-message',
@@ -11,9 +12,10 @@ export class MessageComponent implements OnInit {
   dayNames = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
   monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
   displayTime: string;
+  reacted = {};
 
   // Properties inherited from channel-messages (or whatever the parent component is)
-  @Input() user: User;
+  @Input() viewingUser: User;
   @Input() content: string;
   @Input() time: Date;
   @Input() reactions: ReactionData;
@@ -31,7 +33,32 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
-    console.log(this.reactions);
+
+    console.log("Viewing User", this.viewingUser);
+    for (var reaction in this.reactions) {  // Set initial color values
+      if (this.reactions.hasOwnProperty(reaction)) {
+        if (this.reactions[reaction].includes(this.viewingUser.email)) {
+          this.reacted[reaction] = "accent";
+        }
+        else {
+          this.reacted[reaction] = "";
+        }
+      }
+    }
+    console.log("REACTED", this.reacted);
+  }
+
+  sendReaction(reaction) {
+    if (this.reacted[reaction] === "") {  // If the user has not reacted
+      console.log("Reacting", reaction);
+      this.reacted[reaction] = "accent";
+      this.reactions[reaction].push(this.viewingUser.email);
+    }
+    else {
+      console.log("Unreacting", reaction);
+      this.reacted[reaction] = "";
+      this.reactions[reaction].splice(this.reactions[reaction].indexOf(this.viewingUser.email), 1);
+    }
   }
 
 }

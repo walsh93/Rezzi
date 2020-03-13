@@ -4,6 +4,7 @@ import { Subscription, Observable, range } from 'rxjs';
 import { Message } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ChannelData } from '../../../../classes.model';
+import { User } from '../../../../classes.model';
 
 @Component({
   selector: 'app-channel-messages',
@@ -14,7 +15,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   private messagesSub: Subscription;
   private channelMap: Map<string, ChannelData>;
-
+  @Input() user: User;
 
   // Session data retrieved from interface.component
   session: any;
@@ -126,7 +127,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       reactions: {
         thumb_up: ["aa"],
         thumb_down: ["aa", "aaaa"],
-        sentiment_very_satisfied: ["aaaa}", "aaaa"],
+        sentiment_very_satisfied: ["conleyutz@gmail.com", "aaaa"],
         sentiment_dissatisfied: [],
         whatshot: ["a", "b", "c", "d", "e"]
       }
