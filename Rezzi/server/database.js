@@ -1,5 +1,6 @@
 // Import HTTP codes
 const c = require('./constants')
+const db_keys = require('./constants').db_keys
 
 // Get firebase admin library
 const admin = require('firebase-admin');
@@ -73,4 +74,33 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data,ema
     console.log(err)
     console.log("Error updating deletion status on account");
   })
+
+module.exports.createChannelPath = function createChannelPath(rezzi, channelID) {
+  if (channelID != null) {
+    const resHallPath = `${db_keys.rezzis}/${rezzi}`
+    let channelPath = null
+    let channelName = null
+    const level = channelID.split('-')[0]
+    if (level === 'floors') {
+      // does NOT consider whether floor name has a '-', but DOES consider if channel name has a '-'
+      const firstDash = channelID.indexOf('-')
+      const secondDash = channelID.indexOf('-', firstDash + 1)
+      const floorName = channelID.slice(firstDash + 1, secondDash)
+      channelName = channelID.slice(secondDash + 1)
+      channelPath = `${resHallPath}/floors/${floorName}/channels`
+    } else {  // either 'hallwide' or 'RA'
+      const dash = channelID.indexOf('-')
+      const hwOrRa = channelID.slice(0, dash)
+      channelName = channelID.slice(dash + 1)
+      channelPath = `${resHallPath}/${hwOrRa}`
+    }
+
+    if (channelPath == null || channelName == null) {
+      return null
+    }
+
+    return { channelPath, channelName }
+  }
+
+  return null
 }

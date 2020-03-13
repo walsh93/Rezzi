@@ -77,8 +77,21 @@ export interface Message {
   id: string;
   // owner: User;
   content: string;
-  // time: Date;
-  // visible: boolean;
+  time: Date;
+  visible: boolean;
+}
+
+export interface SocketMessageData {
+  message: Message;
+}
+
+export interface SocketChannelMessageData extends SocketMessageData {
+  rezzi: string;
+  channelID: string;
+}
+
+export interface SocketPrivateMessageData extends SocketMessageData {
+  recipient: string;  // TODO ??
 }
 
 export class HDUser {
@@ -99,9 +112,10 @@ export class HDUser {
   verified: boolean;
 }
 export interface ChannelData {
-  id: string,
-  channel: string,
-  users: number,
-  belongs: boolean,
-  subchannels: ChannelData[],
+  id: string;
+  channel: string;
+  users: number;
+  belongs: boolean;
+  subchannels: ChannelData[];
+  messages: Message[];
 }
