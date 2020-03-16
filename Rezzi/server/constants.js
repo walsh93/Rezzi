@@ -120,5 +120,8 @@ module.exports = {
     new_channel_view: 'new-channel-view',
     new_message: 'new-message',
     new_message_added: 'added-new-message',
+    new_private_view: 'new-private-view', //$$$conley
+    new_private_messsage: 'new-private-message', //$$$conley
+    new_private_message_added: 'added-new-private-message', //$$$conley
   }
 }

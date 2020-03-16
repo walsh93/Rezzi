@@ -206,7 +206,13 @@ io.on(skt.connection, (socket) => {
       const observer = dbListeners.addListenerForChannelMessages(socket, dbpath)
       serverChannelListeners.set(serverCurrentChannel, observer)
     }
-  })
+  });
+  //$$$conley
+  socket.on(skt.new_private_messsage, (data) => {
+    socketEvents.newPrivateMessage(socket, data)
+  });
+
+
 })
 
 // Server listener
