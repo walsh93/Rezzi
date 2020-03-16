@@ -24,18 +24,43 @@ router.get("/", checkCookie, function(request, response) {
     const rezzi = doc.data().rezzi  // rezzi can't be added to session later on so this will have to do for now
     //for each email in the array, need to save to the db a new user with email, role, floor, rezzi, verified = 0, and pword code
 
-    db.collection(keys.rezzis + '/' + rezzi + '/floors').doc(rb.floor).update({
-      residents: emailarr
-    });
-    db.collection(keys.rezzis + '/' + rezzi + '/floors/' + rb.floor + '/channels').doc('General').update({
-      members: emailarr
-    });
-    db.collection(keys.rezzis + '/' + rezzi + '/RA').doc('General').update({
-      members: emailarr
-    });
-    db.collection(keys.rezzis + '/' + rezzi + '/hallwide').doc('General').update({
-      members: emailarr
-    });
+    const floorDocRef = db.collection(keys.rezzis + '/' + rezzi + '/floors').doc(rb.floor)
+    floorDocRef.get().then((floorDoc) => {
+      const residentsAlreadyInRezzi = floorDoc.data().residents
+      const fullArray = residentsAlreadyInRezzi.concat(emailarr)
+      floorDocRef.update({
+        residents: fullArray
+      })
+    })
+
+    const floorGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/floors/' + rb.floor + '/channels').doc('General')
+    floorGeneralDocRef.get().then((floorChannelsDoc) => {
+      const membersAlreadyInRezzi = floorChannelsDoc.data().members
+      const fullArray = membersAlreadyInRezzi.concat(emailarr)
+      floorGeneralDocRef.update({
+        members: fullArray
+      })
+    })
+
+    if (rb.accountType == 1) {
+      const raGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/RA').doc('General')
+      raGeneralDocRef.get().then((raGeneralDoc) => {
+        const residentsAlreadyInRezzi = raGeneralDoc.data().members
+        const fullArray = residentsAlreadyInRezzi.concat(emailarr)
+        raGeneralDocRef.update({
+          members: fullArray
+        })
+      })
+    }
+
+    const hallGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/hallwide').doc('General')
+    hallGeneralDocRef.get().then((hallGeneralDoc) => {
+      const membersAlreadyInRezzi = hallGeneralDoc.data().members
+      const fullArray = membersAlreadyInRezzi.concat(emailarr)
+      hallGeneralDocRef.update({
+        members: fullArray
+      })
+    })
 
     for (var i = 0; i < emailarr.length; i++) {
       var tempPword = randomstring.generate();

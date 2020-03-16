@@ -1,5 +1,6 @@
 // Import HTTP codes
 const c = require('./constants')
+const db_keys = require('./constants').db_keys
 
 // Get firebase admin library
 const admin = require('firebase-admin');
@@ -46,27 +47,6 @@ module.exports.addUser = function addUser(data) {
   })
 }
 
-// module.exports.getUser = function getUser(data){
-//   dbstore.collection('users').doc(data.email).get().then(doc => {
-//     console.log("GET: " + dbstore.collection('users').doc.data());
-
-//     if (!doc.exists) {
-//       //Do something about the error here
-
-//     } else {
-//     //  return dbstore.collection('users').doc(email).get(data)
-//     (function() {
-//     console.log("GET: " + dbstore.collection('users').doc.data());
-//     }).call();
-
-//     return dbstore.collection('users').doc(email)
-//     }
-//   }).catch(err => {
-//     //reject(err)
-//     console.log(err)
-//     console.log("Error getting user's profile");
-//   })
-// }
 module.exports.editUser = function editUser(data,email){
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
@@ -81,17 +61,33 @@ module.exports.editUser = function editUser(data,email){
     console.log("Error editing account");
   })
 }
-// module.exports.editUser = function editUser(data,email){
-//   dbstore.collection('users').doc(email).get().then(doc => {
-//     if (!doc.exists) {
-//       //Do something about the error here
-//       //checks to see if account is verified per Megan's implementation
-//     } else {
-//       dbstore.collection('users').doc(email).update(data)
-//     }
-//   }).catch(err => {
-//     //reject(err)
-//     console.log(err)
-//     console.log("Error editing account");
-//   })
-// }
+
+module.exports.createChannelPath = function createChannelPath(rezzi, channelID) {
+  if (channelID != null) {
+    const resHallPath = `${db_keys.rezzis}/${rezzi}`
+    let channelPath = null
+    let channelName = null
+    const level = channelID.split('-')[0]
+    if (level === 'floors') {
+      // does NOT consider whether floor name has a '-', but DOES consider if channel name has a '-'
+      const firstDash = channelID.indexOf('-')
+      const secondDash = channelID.indexOf('-', firstDash + 1)
+      const floorName = channelID.slice(firstDash + 1, secondDash)
+      channelName = channelID.slice(secondDash + 1)
+      channelPath = `${resHallPath}/floors/${floorName}/channels`
+    } else {  // either 'hallwide' or 'RA'
+      const dash = channelID.indexOf('-')
+      const hwOrRa = channelID.slice(0, dash)
+      channelName = channelID.slice(dash + 1)
+      channelPath = `${resHallPath}/${hwOrRa}`
+    }
+
+    if (channelPath == null || channelName == null) {
+      return null
+    }
+
+    return { channelPath, channelName }
+  }
+
+  return null
+}

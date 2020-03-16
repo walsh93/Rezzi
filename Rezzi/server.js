@@ -1,9 +1,12 @@
 const constants = require('./server/constants')
+const db_keys = constants.db_keys;
 const indexFile = constants.indexFile
 
 const debug = require('debug')('node-angular');
 
 const http = require('http');
+const msgsocketio = require('socket.io')
+
 //Express Setup
 const express = require('express'),
     app = express();
@@ -30,6 +33,8 @@ app.use(sessions({
 
 // Firebase Admin Client
 var firebase = require('./server/database.js');
+const admin = require('firebase-admin')
+const db = admin.firestore()
 
 app.use(jsonParser);
 app.use(bodyParser.urlencoded({extended: false}));
@@ -53,6 +58,8 @@ const getFloors = require('./server/service/getFloors')
 app.use(service.get_floors, getFloors)
 const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
+const channelMessages = require('./server/service/channelMessages')
+app.use(service.channel_messages, channelMessages)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')
@@ -168,10 +175,41 @@ const onError = error => {
   }
 };
 
-// Server Express App
+// Port instantiation
 const port = process.env.PORT || 4100;
 app.set('port',port);
+
+// Create server and SocketIO
 const server = http.createServer(app);
+const io = msgsocketio(server)
+const socketEvents = require('./server/socketio/socketEvents')
+const dbListeners = require('./server/socketio/firestoreListeners')
+const skt = require('./server/constants').socket
+
+// Map of db channel listeners
+serverChannelListeners = new Map()
+serverCurrentChannel = null
+
+// IO listener
+io.on(skt.connection, (socket) => {
+  console.log('client connected to socket with ID ' + socket.client.id)
+
+  // When a new message is sent
+  socket.on(skt.new_message, (data) => {  // responds to a socket event sent from the front end
+    socketEvents.newMessage(socket, data)
+  });
+
+  // When the user begins viewing a different channel
+  socket.on(skt.new_channel_view, (dbpath) => {
+    serverCurrentChannel = `${dbpath.channelPath}/${dbpath.channelName}`
+    if (!serverChannelListeners.has(serverCurrentChannel)) {
+      const observer = dbListeners.addListenerForChannelMessages(socket, dbpath)
+      serverChannelListeners.set(serverCurrentChannel, observer)
+    }
+  })
+})
+
+// Server listener
 server.on('error',onError);
 server.listen(port);
 console.log("Server started on port " + port);
