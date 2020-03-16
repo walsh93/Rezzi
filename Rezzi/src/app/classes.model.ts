@@ -116,3 +116,8 @@ export interface ChannelData {
   subchannels: ChannelData[];
   messages: Message[];
 }
+
+export interface PrivateMessageData {
+  recipient: string;
+  messages: Message[];
+}

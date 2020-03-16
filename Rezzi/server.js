@@ -97,6 +97,8 @@ app.use(url.create_rezzi, createrezzi)
 const dashboard = require('./server/routes/dashboard')
 app.use(url.dashboard, dashboard)
 
+const getpms = require('./server/routes/get-pms')
+app.use(url.get_pms, getpms)
 
 // Testing
 app.use((request,response,next)=>{

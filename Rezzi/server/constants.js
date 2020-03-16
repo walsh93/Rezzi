@@ -20,7 +20,8 @@ module.exports = {
     hallwide: 'hallwide',
     ra: 'RA',
     channels: 'channels',
-    rezzis: 'residence-halls'
+    rezzis: 'residence-halls',
+    private_messages: 'private-messages',
   },
 
   // User types
@@ -55,6 +56,7 @@ module.exports = {
     pword_reset_change: "/pword-reset-change",
     create_rezzi: "/create-rezzi",
     dashboard: "/dashboard",
+    get_pms: "/get-pms"
   },
 
   http_status: {

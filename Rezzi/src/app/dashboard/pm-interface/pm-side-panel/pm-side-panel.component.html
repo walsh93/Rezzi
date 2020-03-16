@@ -1,1 +1,9 @@
-<p>pm-side-panel works!</p>
+<ng-container > <!-- looping the floor channels -->
+    <ng-container *ngFor="let user of private_messages"> <!-- Looping the interest channels-->
+      <mat-card>
+        <mat-card-content (click)='viewUser(user.recipient)' routerLink='/dashboard'> <!-- TODO add routerLink or click to view channel's chat -->
+          {{ user.recipient }}
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+</ng-container>
