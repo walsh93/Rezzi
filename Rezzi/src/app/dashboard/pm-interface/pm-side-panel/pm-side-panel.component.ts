@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { PrivateMessageData, Message } from 'src/app/classes.model';
 import { PMSidePanelService } from './pm-side-panel.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-pm-side-panel',
@@ -10,12 +11,15 @@ import { PMSidePanelService } from './pm-side-panel.service';
 })
 
 export class PmSidePanelComponent implements OnInit {
+  public non_pm_users: string[];
   public private_message_users: PrivateMessageData[];
 
   @Output() pmUsersToSend = new EventEmitter<PrivateMessageData[]>();
   @Output() pmUserToView = new EventEmitter<string>();
 
-  constructor(private privateSidePanelService: PMSidePanelService) {
+  constructor(
+    public dialog: MatDialog,
+    private privateSidePanelService: PMSidePanelService) {
     this.private_message_users = [];
     this.privateSidePanelService.getPrivateMessageUsers().subscribe(data => {
       console.log('We out here: ', data);
@@ -53,6 +57,25 @@ export class PmSidePanelComponent implements OnInit {
 
     });
   }
+/*
+  openPMDialog(): void {
+    const dialogRef = this.dialog.open(JoinChannelComponent, {
+      width: '600px',
+      height: 'auto',
+      data: this.channels,
+    });
+    dialogRef.componentInstance.join_channel_event.subscribe((id: string) => {
+      this.channels.forEach(hall => {
+        hall.subchannels.forEach(channel => {
+          if (channel.id === id) {
+            channel.belongs = true;
+          }
+        });
+      });
+    });
+
+  }
+*/
 
   ngOnInit() {
   }

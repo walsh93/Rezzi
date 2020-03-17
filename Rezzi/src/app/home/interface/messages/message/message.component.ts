@@ -31,6 +31,7 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
+    console.log(this.displayTime);
     this.displayTime = String(dateAgain);
   }
 

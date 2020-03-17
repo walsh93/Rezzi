@@ -1,5 +1,5 @@
-<ng-container > <!-- looping the floor channels -->
-    <ng-container *ngFor="let user of private_message_users"> <!-- Looping the interest channels-->
+<ng-container >
+    <ng-container *ngFor="let user of private_message_users"> <!-- Looping the chats that already exist -->
       <mat-card>
         <mat-card-content (click)='viewUser(user.recipient)' routerLink='/dashboard'> <!-- TODO add routerLink or click to view channel's chat -->
           {{ user.recipient }}
@@ -7,3 +7,5 @@
       </mat-card>
     </ng-container>
 </ng-container>
+
+<button mat-button (click)="openPMDialog()" class="create-pm-button">Create New Private Chat</button>
