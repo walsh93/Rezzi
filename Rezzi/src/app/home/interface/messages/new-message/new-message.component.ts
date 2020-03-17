@@ -51,7 +51,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     console.log(this.session);
     const message: Message = {
       content: form.value.enteredMessage,
-      // owner: this.tempuser,
+      owner: this.session.email, //this.tempuser,
       time: new Date(),
       visible: true,
       id: null // TODO Need to change the ID

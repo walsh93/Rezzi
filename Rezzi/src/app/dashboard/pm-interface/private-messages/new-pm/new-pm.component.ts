@@ -48,7 +48,7 @@ export class NewPmComponent implements OnInit {
     console.log(this.session);
     const message: Message = {
       content: form.value.enteredMessage,
-      // owner: this.tempuser,
+      owner: this.session.email,
       time: new Date(),
       visible: true,
       id: null // TODO Need to change the ID

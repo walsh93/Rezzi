@@ -13,13 +13,14 @@ export class MessageComponent implements OnInit {
   displayTime: string;
 
   // Properties inherited from channel-messages (or whatever the parent component is)
-  @Input() user: User;
+  @Input() user: string; // User;
   @Input() content: string;
   @Input() time: Date;
 
   constructor() { }
 
   ngOnInit() {
+    //console.log(this.time);
     const dateAgain = new Date(this.time);
     const day = this.dayNames[dateAgain.getDay()];
     const month = this.monthNames[dateAgain.getMonth()];
@@ -30,6 +31,7 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
+    this.displayTime = String(dateAgain);
   }
 
 }

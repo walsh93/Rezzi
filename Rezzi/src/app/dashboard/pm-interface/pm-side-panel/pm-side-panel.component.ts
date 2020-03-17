@@ -30,6 +30,7 @@ export class PmSidePanelComponent implements OnInit {
         // tslint:disable-next-line: forin
         for ( const index2 in data[index].messages.messages) {
           messageContent.push({
+            owner: data[index].messages.messages[index2].owner,
             id: data[index].messages.messages[index2].id,
             content: data[index].messages.messages[index2].content,
             time: data[index].messages.messages[index2].time,

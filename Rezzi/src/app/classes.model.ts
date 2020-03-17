@@ -72,7 +72,7 @@ export class User {
 
 export interface Message {
   id: string;
-  // owner: User;
+  owner: string; //User;
   content: string;
   time: Date;
   visible: boolean;

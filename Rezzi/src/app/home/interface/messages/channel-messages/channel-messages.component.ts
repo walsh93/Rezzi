@@ -92,18 +92,21 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
 
   initializeTestData() {
     const m1: Message = {
+      owner: 'testOwner',
       id: null,
       content: 'Testing 1-2-3',
       time: new Date('2020-01-26'),
       visible: true,
     };
     const m2: Message = {
+      owner: 'testOwner',
       id: null,
       content: 'you\'re on your own, kiddo',
       time: new Date('2020-02-14'),
       visible: true,
     };
     const m3: Message = {
+      owner: 'testOwner',
       id: null,
       content: 'frickin rip',
       time: new Date('2020-03-05'),
