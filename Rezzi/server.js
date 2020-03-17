@@ -216,6 +216,7 @@ io.on(skt.connection, (socket) => {
 
   socket.on(skt.new_private_view, (dbpath) => {
     serverCurrentPrivate = `${dbpath.userPath}/${dbpath.receiverID}`
+    console.log("server.js",serverCurrentPrivate, dbpath)
     if (!serverPrivateListeners.has(serverCurrentPrivate)) {
       const observer = dbListeners.addListenerForPrivateMessages(socket, dbpath)
       serverPrivateListeners.set(serverCurrentPrivate, observer)
@@ -223,6 +224,7 @@ io.on(skt.connection, (socket) => {
   })
   //$$$conley
   socket.on(skt.new_private_messsage, (data) => {
+    console.log("Server.js - socket.on")
     socketEvents.newPrivateMessage(socket, data)
   });
 

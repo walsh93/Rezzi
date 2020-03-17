@@ -25,20 +25,21 @@ module.exports.newMessage = function newMessage(socket, data) {
 
 //$$$conley
 module.exports.newPrivateMessage = function newPrivateMessage(socket, data) {
-  const paths = createUserPath(data.sender, data.receiever);
+  console.log("In socketEvents.js");
+  const paths = createUserPath(data.sender, data.recipient);
   const senderPath = paths.senderPath;
   const receiverPath = paths.receiverPath;
   if(senderPath == null || receiverPath == null){
     console.log("newPrivateMessage error - socketEvents.js");
     return null;
   }
-  db.collection(senderPath).doc(data.receiever).get().then((doc) => {
+  db.collection(senderPath).doc(data.recipient).get().then((doc) => {
     messages = doc.data().messages;
     if(!messages || messages == null || messages == undefined){
       messages = []
     }
     messages.push(data.message)
-    db.collection(senderPath).doc(data.receiever).update({
+    db.collection(senderPath).doc(data.recipient).update({
       messages: messages
     })
   })

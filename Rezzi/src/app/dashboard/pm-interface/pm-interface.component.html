@@ -14,5 +14,11 @@
     [pmUsersUpdateEvent]="pmUsersUpdateSubject.asObservable()"
     [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
     ></app-private-messages>
+
+    <app-new-pm
+    [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
+    [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
+    ></app-new-pm>
+
   </div>
 </mat-drawer-container>

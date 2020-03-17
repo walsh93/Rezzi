@@ -61,6 +61,7 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
     this.viewingUpdateSub = this.viewingObs.subscribe((updatedPMUser) => {
       this.currentPMUser = updatedPMUser;
       const dbpath = this.messagesService.createUserPath(this.session.email, updatedPMUser);
+      console.log("P-M.component.ts dbpath",dbpath);
       if (dbpath != null && dbpath !== undefined) {
         this.messagesService.getPrivateMessages(dbpath.userPath, dbpath.receiverID);  // EDIT THIS Triggers msg upd listener
         this.messagesService.emitNewUserView(dbpath);  // EDIT THIS eventually triggers addListenerForChannelMessages
@@ -79,7 +80,6 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
     this.pmUserUpdateSub.unsubscribe();
     this.viewingUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe();
-    throw new Error("Method not implemented.");
   }
 
 

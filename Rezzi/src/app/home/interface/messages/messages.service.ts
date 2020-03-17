@@ -23,6 +23,12 @@ export class MessagesService {
       this.messages = updatedMessages;
       this.messagesUpdated.next([...this.messages]);
     });
+
+    this.socket.on('added-new-private-message', (updatedMessages) => {
+      console.log('added new private message triggered');
+      this.messages = updatedMessages;
+      this.messagesUpdated.next([...this.messages]);
+    });
   }
 
   /*********************************************************************************************************************************
@@ -52,7 +58,7 @@ export class MessagesService {
     });
   }
 
-  getPrivateMessages(pmUserPath: string, pmUser: string){
+  getPrivateMessages(pmUserPath: string, pmUser: string) {
     this.http.get<{messages: Message[]}>(`/private-messages?pmUserPath=${pmUserPath}&pmUser=${pmUser}`).subscribe((data) => {
       console.log('RETRIEVED messages', data);
       this.messages = data.messages;
@@ -92,6 +98,11 @@ export class MessagesService {
     this.socket.emit('new-message', data);
   }
 
+  sendPrivateMessageThroughSocket(data: SocketMessageData) {
+    console.log("messages.service.ts sPMTS", data);
+    this.socket.emit('new-private-message', data);
+  }
+
   /*********************************************************************************************************************************
    * Helper functions
    ********************************************************************************************************************************/
@@ -125,13 +136,13 @@ export class MessagesService {
     return null;
   }
 
-  createUserPath(sender: string, receiver: string){
-    if (sender == null || receiver == null){
-      console.log("Path Creating Error messages.service.ts");
+  createUserPath(sender: string, receiver: string) {
+    if (sender == null || receiver == null) {
+      console.log('Path Creating Error messages.service.ts');
       return null;
     }
-    let userPath = `users/${sender}/private-messages`;
-    let receiverID = receiver;
+    const userPath = `users/${sender}/private-messages`;
+    const receiverID = receiver;
     return { userPath, receiverID };
   }
 

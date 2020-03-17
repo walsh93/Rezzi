@@ -89,6 +89,7 @@ export interface SocketChannelMessageData extends SocketMessageData {
 
 export interface SocketPrivateMessageData extends SocketMessageData {
   recipient: string;  // TODO ??
+  sender: string;
 }
 
 export class HDUser {
