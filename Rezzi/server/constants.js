@@ -9,6 +9,7 @@ module.exports = {
     get_floors: "/get-floors",
     get_user: "/get-user",
     channel_messages: "/channel-messages",
+    private_messages: "/private-messages",
   },
 
   // Firebase constants
@@ -56,7 +57,7 @@ module.exports = {
     pword_reset_change: "/pword-reset-change",
     create_rezzi: "/create-rezzi",
     dashboard: "/dashboard",
-    get_pms: "/get-pms"
+    get_pm_users: "/get-pm-users"
   },
 
   http_status: {

@@ -1,5 +1,5 @@
 <ng-container > <!-- looping the floor channels -->
-    <ng-container *ngFor="let user of private_messages"> <!-- Looping the interest channels-->
+    <ng-container *ngFor="let user of private_message_users"> <!-- Looping the interest channels-->
       <mat-card>
         <mat-card-content (click)='viewUser(user.recipient)' routerLink='/dashboard'> <!-- TODO add routerLink or click to view channel's chat -->
           {{ user.recipient }}

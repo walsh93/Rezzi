@@ -21,22 +21,22 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
 
 
   // User list retrieved from interface.component
-  users: PrivateMessageData[];
-  private userUpdateSub: Subscription;
+  pmUsers: PrivateMessageData[];
+  private pmUserUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
-  @Input('usersUpdateEvent') usersObs: Observable<PrivateMessageData[]>;
+  @Input('pmUsersUpdateEvent') pmUsersObs: Observable<PrivateMessageData[]>;
 
 
   // Current user retrieved from interface.component
-  currentUser: string;
+  currentPMUser: string;
   private viewingUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEvent') viewingObs: Observable<string>;
 
   constructor(public messagesService: MessagesService) {
     this.session = null;
-    this.currentUser = null;
-    this.users = [];
+    this.currentPMUser = null;
+    this.pmUsers = [];
     this.userMap = new Map<string, PrivateMessageData>();
   }
 
@@ -48,27 +48,37 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
     });
 
     // Listen for user list updates
-    this.userUpdateSub = this.usersObs.subscribe((updatedUsers) => {
+    this.pmUserUpdateSub = this.pmUsersObs.subscribe((updatedPMUsers) => {
       console.log('channels have been updated');
-      this.users = updatedUsers;
+      this.pmUsers = updatedPMUsers;
 
-      updatedUsers.forEach((user) => {
+      updatedPMUsers.forEach((user) => {
         this.userMap.set(user.recipient, user);
       });
     });
 
-    // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
-    this.viewingUpdateSub = this.viewingObs.subscribe((updatedUserID) => {
-      this.currentUser = updatedUserID;
-      const dbpath = this.messagesService.createUserPath(this.session.email, updatedUserID);
+    // Listen for changes in which channel is being viewed TODO @Kai/Conley get messages in here!
+    this.viewingUpdateSub = this.viewingObs.subscribe((updatedPMUser) => {
+      this.currentPMUser = updatedPMUser;
+      const dbpath = this.messagesService.createUserPath(this.session.email, updatedPMUser);
       if (dbpath != null && dbpath !== undefined) {
-        this.messagesService.getChannelMessages(dbpath.userPath, dbpath.receiverID);  // Triggers msg upd listener
-        this.messagesService.emitNewUserView(dbpath);  // eventually triggers addListenerForChannelMessages
+        this.messagesService.getPrivateMessages(dbpath.userPath, dbpath.receiverID);  // EDIT THIS Triggers msg upd listener
+        this.messagesService.emitNewUserView(dbpath);  // EDIT THIS eventually triggers addListenerForChannelMessages
       }
     });
+
+    this.messagesSub = this.messagesService.getMessageUpdateListener().subscribe((updatedMessages: Message[]) => { // should be fine
+      console.log("message update");
+      this.messages = updatedMessages;
+    }
+    )
   }
 
   ngOnDestroy(): void {
+    this.sessionUpdateSub.unsubscribe();
+    this.pmUserUpdateSub.unsubscribe();
+    this.viewingUpdateSub.unsubscribe();
+    this.messagesSub.unsubscribe();
     throw new Error("Method not implemented.");
   }
 

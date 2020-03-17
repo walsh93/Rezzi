@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 export class PMSidePanelService {
   constructor(private http: HttpClient) {}
 
-  getPrivateMessages() {
-    return this.http.get('/get-pms');
+  getPrivateMessageUsers() {
+    return this.http.get('/get-pm-users');
   }
 }

@@ -10,14 +10,14 @@ import { PMSidePanelService } from './pm-side-panel.service';
 })
 
 export class PmSidePanelComponent implements OnInit {
-  public private_messages: PrivateMessageData[];
+  public private_message_users: PrivateMessageData[];
 
-  @Output() usersToSend = new EventEmitter<PrivateMessageData[]>();
-  @Output() userToView = new EventEmitter<string>();
+  @Output() pmUsersToSend = new EventEmitter<PrivateMessageData[]>();
+  @Output() pmUserToView = new EventEmitter<string>();
 
   constructor(private privateSidePanelService: PMSidePanelService) {
-    this.private_messages = [];
-    this.privateSidePanelService.getPrivateMessages().subscribe(data => {
+    this.private_message_users = [];
+    this.privateSidePanelService.getPrivateMessageUsers().subscribe(data => {
       console.log('We out here: ', data);
       // tslint:disable-next-line: forin
       for (const index in data) {
@@ -41,13 +41,14 @@ export class PmSidePanelComponent implements OnInit {
         // tempData.messages = data[index].messages;
         // console.log("Temp Data: ", tempData);
 
-        this.private_messages.push({
+        this.private_message_users.push({
           recipient: data[index].recipient,
           messages: messageContent,
         });
 
       }
-      console.log(this.private_messages);
+      console.log(this.private_message_users);
+      this.pmUsersToSend.emit(this.private_message_users)
 
     });
   }
@@ -56,8 +57,8 @@ export class PmSidePanelComponent implements OnInit {
   }
 
   viewUser(user: string) {
-    console.log("view User", user);
-    this.userToView.emit(user);
+    console.log("View User", user);
+    this.pmUserToView.emit(user);
   }
 
 }

@@ -52,6 +52,14 @@ export class MessagesService {
     });
   }
 
+  getPrivateMessages(pmUserPath: string, pmUser: string){
+    this.http.get<{messages: Message[]}>(`/private-messages?pmUserPath=${pmUserPath}&pmUser=${pmUser}`).subscribe((data) => {
+      console.log('RETRIEVED messages', data);
+      this.messages = data.messages;
+      this.messagesUpdated.next([...this.messages]);
+    });
+  }
+
 
   /*********************************************************************************************************************************
    * Message sending

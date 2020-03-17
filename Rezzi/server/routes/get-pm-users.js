@@ -7,7 +7,7 @@ const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 const keys = require('../constants').db_keys
 
 router.get('/', checkCookie, function(request, response) {
-  console.log("get-pms.js");
+  console.log("get-pm-users.js");
   const req = request.body;
   const email = request.__session.email;
   i = 0;
