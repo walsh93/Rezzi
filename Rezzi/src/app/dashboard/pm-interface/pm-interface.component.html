@@ -1,13 +1,14 @@
-<mat-drawer-container class="pm-container" >
+<mat-drawer-container class="pm-container">
   <mat-drawer class="pm-side-nav" #drawer mode="side" opened>
     <p>Side Nav</p>
-    <app-pm-side-panel>
-      ()
-      
+    <app-pm-side-panel (userToView)="viewingNewUser($event)">
     </app-pm-side-panel>
   </mat-drawer>
 
   <div class="pm-sidenav-content">
-    <p>Content</p>
+    <app-private-messages
+    [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
+    [usersUpdateEvent]="usersUpdateSubject.asObservable()"
+    [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"></app-private-messages>
   </div>
 </mat-drawer-container>

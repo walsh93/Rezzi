@@ -52,6 +52,7 @@ export class MessagesService {
     });
   }
 
+
   /*********************************************************************************************************************************
    * Message sending
    ********************************************************************************************************************************/
@@ -73,6 +74,10 @@ export class MessagesService {
    */
   emitNewChannelView(objectFromCreateChannelPath: any) {
     this.socket.emit('new-channel-view', objectFromCreateChannelPath);
+  }
+
+  emitNewUserView(objectFromCreateUserPath: any) {
+    this.socket.emit('new-private-view', objectFromCreateUserPath);
   }
 
   sendMessageThroughSocket(data: SocketMessageData) {
@@ -110,6 +115,16 @@ export class MessagesService {
     }
 
     return null;
+  }
+
+  createUserPath(sender: string, receiver: string){
+    if (sender == null || receiver == null){
+      console.log("Path Creating Error messages.service.ts");
+      return null;
+    }
+    let userPath = `users/${sender}/private-messages`;
+    let receiverID = receiver;
+    return { userPath, receiverID };
   }
 
 }

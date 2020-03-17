@@ -209,6 +209,14 @@ io.on(skt.connection, (socket) => {
       serverChannelListeners.set(serverCurrentChannel, observer)
     }
   });
+
+  socket.on(skt.new_private_view, (dbpath) => {
+    serverCurrentPrivate = `${dbpath.userPath}/${dbpath.receiverID}`
+    if (!serverPrivateListeners.has(serverCurrentPrivate)) {
+      const observer = dbListeners.addListenerForChannelMessages(socket, dbpath)
+      serverChannelListeners.set(serverCurrentChannel, observer)
+    }
+  })
   //$$$conley
   socket.on(skt.new_private_messsage, (data) => {
     socketEvents.newPrivateMessage(socket, data)

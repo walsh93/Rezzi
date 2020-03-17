@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { RezziService } from 'src/app/rezzi.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-pm-interface',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PmInterfaceComponent implements OnInit {
 
-  constructor() { }
+  viewingUpdateSubject: Subject<string> = new Subject<string>();
+
+
+  constructor(private rezziService: RezziService) { }
 
   ngOnInit() {
   }
 
+  viewingNewUser(userID: string){
+    this.viewingUpdateSubject.next(userID);
+  }
 }
