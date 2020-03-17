@@ -1,5 +1,5 @@
-<mat-drawer-container class="pm-container">
-  <mat-drawer class="pm-side-nav" #drawer mode="side" opened>
+<mat-drawer-container class="example-container">
+  <mat-drawer #drawer class="example-sidenav" mode="side" disableClose="true" opened="true">  <!-- Stuff in sidebar -->
     <p>Side Nav</p>
     <app-pm-side-panel
       (pmUsersToSend)="receivedPMUsers($event)"
@@ -7,7 +7,7 @@
     </app-pm-side-panel>
   </mat-drawer>
 
-  <div class="pm-sidenav-content">
+  <div class="example-sidenav-content">
 
     <app-private-messages
     [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
