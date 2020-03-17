@@ -43,13 +43,13 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
-      console.log('session has been updated in channel-messages.component');
+      console.log('session has been updated in private-messages.component');
       this.session = updatedSession;
     });
 
     // Listen for user list updates
     this.pmUserUpdateSub = this.pmUsersObs.subscribe((updatedPMUsers) => {
-      console.log('channels have been updated');
+      console.log('private messages have been updated');
       this.pmUsers = updatedPMUsers;
 
       updatedPMUsers.forEach((user) => {
