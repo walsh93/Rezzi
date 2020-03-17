@@ -64,6 +64,7 @@ import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-r
 import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
 import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
 import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
+import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
 
 // Home Page Components
 import { HomeComponent } from './home/home.component';
@@ -130,7 +131,8 @@ import { MessageComponent } from './home/interface/messages/message/message.comp
     CreateChannelFormComponent,
     HdAdminComponent,
     MemberInputComponent,
-    MessageComponent
+    MessageComponent,
+    UserManagementComponent
   ],
   imports: [
     BrowserModule,
