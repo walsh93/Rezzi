@@ -24,6 +24,7 @@ router.get("/", checkCookie, function(request, response) {
     const rezzi = doc.data().rezzi  // rezzi can't be added to session later on so this will have to do for now
     //for each email in the array, need to save to the db a new user with email, role, floor, rezzi, verified = 0, and pword code
 
+    //adding users to list of users in their floor
     const floorDocRef = db.collection(keys.rezzis + '/' + rezzi + '/floors').doc(rb.floor)
     floorDocRef.get().then((floorDoc) => {
       const residentsAlreadyInRezzi = floorDoc.data().residents
@@ -32,7 +33,8 @@ router.get("/", checkCookie, function(request, response) {
         residents: fullArray
       })
     })
-
+    
+    //adding users to floor general chat
     const floorGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/floors/' + rb.floor + '/channels').doc('General')
     floorGeneralDocRef.get().then((floorChannelsDoc) => {
       const membersAlreadyInRezzi = floorChannelsDoc.data().members
@@ -42,6 +44,7 @@ router.get("/", checkCookie, function(request, response) {
       })
     })
 
+    //adding new RAs to RA general channel
     if (rb.accountType == 1) {
       const raGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/RA').doc('General')
       raGeneralDocRef.get().then((raGeneralDoc) => {
@@ -53,6 +56,7 @@ router.get("/", checkCookie, function(request, response) {
       })
     }
 
+    //adds all users to hallwide general channel
     const hallGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/hallwide').doc('General')
     hallGeneralDocRef.get().then((hallGeneralDoc) => {
       const membersAlreadyInRezzi = hallGeneralDoc.data().members
@@ -60,6 +64,28 @@ router.get("/", checkCookie, function(request, response) {
       hallGeneralDocRef.update({
         members: fullArray
       })
+    })
+
+    //Add users to list of members for rezzi
+    const rezziDocRef = db.collection(keys.rezzis).doc(rezzi)
+    rezziDocRef.get().then((rezziDoc) => {
+      
+      //if user is RA, add to RA list
+      if(rb.accountType == 1){
+        const listofRAs = rezziDoc.data().RA_list
+        const fullArray = listofRAs.concat(emailarr)
+        rezziDocRef.update({
+          RA_list: fullArray
+        })
+
+      }
+      else if(rb.accountType == 2){
+        const listofResidents = rezziDoc.data().resident_list
+        const fullArray = listofResidents.concat(emailarr)
+        rezziDocRef.update({
+          resident_list: fullArray
+        })
+      }
     })
 
     for (var i = 0; i < emailarr.length; i++) {
