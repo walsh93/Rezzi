@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { PrivateMessageData, Message } from 'src/app/classes.model';
 import { PMSidePanelService } from './pm-side-panel.service';
 import { MatDialog } from '@angular/material/dialog';
+import { CreatePmComponent } from './create-pm/create-pm.component';
 
 @Component({
   selector: 'app-pm-side-panel',
@@ -11,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class PmSidePanelComponent implements OnInit {
-  public non_pm_users: string[];
+  public non_pm_users = [];
   public private_message_users: PrivateMessageData[];
 
   @Output() pmUsersToSend = new EventEmitter<PrivateMessageData[]>();
@@ -32,7 +33,7 @@ export class PmSidePanelComponent implements OnInit {
         //tempData.recipient = data[index].recipient;
         let messageContent: Message[] = [];
         // tslint:disable-next-line: forin
-        for ( const index2 in data[index].messages.messages) {
+        for (const index2 in data[index].messages.messages) {
           messageContent.push({
             owner: data[index].messages.messages[index2].owner,
             id: data[index].messages.messages[index2].id,
@@ -56,26 +57,35 @@ export class PmSidePanelComponent implements OnInit {
       this.pmUsersToSend.emit(this.private_message_users)
 
     });
+    this.privateSidePanelService.getNonPrivateMessageUsers().subscribe(data => {
+      // tslint:disable-next-line: forin
+      for (const index in data) {
+        this.non_pm_users.push(data[index])
+      }
+      console.log("MADE IT HERE");
+      console.log(this.non_pm_users);
+    })
   }
-/*
-  openPMDialog(): void {
-    const dialogRef = this.dialog.open(JoinChannelComponent, {
-      width: '600px',
-      height: 'auto',
-      data: this.channels,
-    });
-    dialogRef.componentInstance.join_channel_event.subscribe((id: string) => {
-      this.channels.forEach(hall => {
-        hall.subchannels.forEach(channel => {
-          if (channel.id === id) {
-            channel.belongs = true;
-          }
-        });
-      });
-    });
 
-  }
-*/
+    openPMDialog(): void {
+      const dialogRef = this.dialog.open(CreatePmComponent, {
+        width: '600px',
+        height: 'auto',
+        data: this.non_pm_users,
+      });
+      /*
+      dialogRef.componentInstance.join_channel_event.subscribe((id: string) => {
+        this.channels.forEach(hall => {
+          hall.subchannels.forEach(channel => {
+            if (channel.id === id) {
+              channel.belongs = true;
+            }
+          });
+        });
+      });*/
+
+    }
+
 
   ngOnInit() {
   }

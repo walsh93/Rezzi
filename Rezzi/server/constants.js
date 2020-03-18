@@ -57,7 +57,8 @@ module.exports = {
     pword_reset_change: "/pword-reset-change",
     create_rezzi: "/create-rezzi",
     dashboard: "/dashboard",
-    get_pm_users: "/get-pm-users"
+    get_pm_users: "/get-pm-users",
+    get_non_pm_users: "/get-non-pm-users",
   },
 
   http_status: {

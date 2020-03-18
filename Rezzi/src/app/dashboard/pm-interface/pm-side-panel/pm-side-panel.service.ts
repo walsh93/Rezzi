@@ -8,4 +8,8 @@ export class PMSidePanelService {
   getPrivateMessageUsers() {
     return this.http.get('/get-pm-users');
   }
+
+  getNonPrivateMessageUsers() {
+    return this.http.get('/get-non-pm-users');
+  }
 }

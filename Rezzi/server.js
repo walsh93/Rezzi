@@ -101,6 +101,8 @@ app.use(url.dashboard, dashboard)
 
 const get_pm_users = require('./server/routes/get-pm-users')
 app.use(url.get_pm_users, get_pm_users)
+const get_non_pm_users = require('./server/routes/get-non-pm-users')
+app.use(url.get_non_pm_users, get_non_pm_users)
 
 // Testing
 app.use((request,response,next)=>{
