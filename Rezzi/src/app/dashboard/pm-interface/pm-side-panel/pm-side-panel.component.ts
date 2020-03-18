@@ -67,24 +67,16 @@ export class PmSidePanelComponent implements OnInit {
     })
   }
 
-    openPMDialog(): void {
-      const dialogRef = this.dialog.open(CreatePmComponent, {
-        width: '600px',
-        height: 'auto',
-        data: this.non_pm_users,
-      });
-      /*
-      dialogRef.componentInstance.join_channel_event.subscribe((id: string) => {
-        this.channels.forEach(hall => {
-          hall.subchannels.forEach(channel => {
-            if (channel.id === id) {
-              channel.belongs = true;
-            }
-          });
-        });
-      });*/
+  openPMDialog(): void {
+    const dialogRef = this.dialog.open(CreatePmComponent, {
+      width: '600px',
+      height: 'auto',
+      data: this.non_pm_users,
+    });
 
-    }
+    dialogRef.componentInstance.create_pm_event.subscribe();
+
+  }
 
 
   ngOnInit() {

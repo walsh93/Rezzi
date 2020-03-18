@@ -98,7 +98,7 @@ import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/cre
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
 import { MessageComponent } from './home/interface/messages/message/message.component';
-import { CreatePmComponent } from './create-pm/create-pm.component';
+import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 
 @NgModule({
   declarations: [
@@ -176,7 +176,8 @@ import { CreatePmComponent } from './create-pm/create-pm.component';
     MatSelectModule,
   ],
   entryComponents: [
-    JoinChannelComponent
+    JoinChannelComponent,
+    CreatePmComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

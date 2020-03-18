@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>New Private Chat</h2>
+<div mat-dialog-content>
+      <!-- <table mat-table [dataSource]="hall.subchannels" class="fitwidth"> -->
+      <table class="fitwidth">
+        <tr>
+          <th>Users</th>
+          <th>Create Chat!</th>
+        </tr>
+        <ng-container *ngFor="let user of users">
+          <tr>
+            <td>{{ user }}</td>
+            <td>
+              <button mat-button (click)="joinChannel(channel.id)">Create!</button>
+            </td>
+          </tr>
+        </ng-container>
+        <!-- <ng-container matColumnDef="channel">
+          <th mat-header-cell *matHeaderCellDef>Channel</th>
+          <td mat-cell *matCellDef="let element">{{element.channel}}</td>
+        </ng-container>
+        <ng-container matColumnDef="user-count">
+          <th mat-header-cell *matHeaderCellDef>Users</th>
+          <td mat-cell *matCellDef="let element">{{element.users}}</td>
+        </ng-container>
+        <ng-container matColumnDef="join-channel">
+          <th mat-header-cell *matHeaderCellDef>Join</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-button (click)="joinChannel(element.id)">Join Channel!</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr> -->
+      </table>
+</div>
