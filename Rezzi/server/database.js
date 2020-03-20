@@ -74,6 +74,7 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data,ema
     console.log(err)
     console.log("Error updating deletion status on account");
   })
+}
 
 module.exports.createChannelPath = function createChannelPath(rezzi, channelID) {
   if (channelID != null) {

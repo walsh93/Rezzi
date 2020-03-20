@@ -58,6 +58,8 @@ const getFloors = require('./server/service/getFloors')
 app.use(service.get_floors, getFloors)
 const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
+const getHD = require('./server/service/getHD')
+app.use(service.get_hd, getHD)
 const channelMessages = require('./server/service/channelMessages')
 app.use(service.channel_messages, channelMessages)
 

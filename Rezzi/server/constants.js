@@ -8,6 +8,7 @@ module.exports = {
     get_user_by_email: "/get-user-by-email",
     get_floors: "/get-floors",
     get_user: "/get-user",
+    get_hd: "/get-hd",
     channel_messages: "/channel-messages",
   },
 

@@ -5,8 +5,7 @@ import { Router } from "@angular/router";
 import { NgForm } from "@angular/forms";
 import { firestore } from "firebase";
 import { HttpClient } from "@angular/common/http";
-import {MatSnackBar} from '@angular/material/snack-bar';
-
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-edit-profile-form",
@@ -16,6 +15,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class EditProfileFormComponent implements OnInit {
   theUser: User;
   hide = true;
+  hd: string;
 
   // fetch user data
   // use "double b"
@@ -32,7 +32,7 @@ export class EditProfileFormComponent implements OnInit {
       age: form.value.age,
       major: form.value.major,
       nickName: form.value.nickName,
-      bio: form.value.bio,
+      bio: form.value.bio
     };
     this.theUser.firstName = userInfo.firstName;
     this.theUser.lastName = userInfo.lastName;
@@ -43,7 +43,6 @@ export class EditProfileFormComponent implements OnInit {
     this.theUser.password = userInfo.password;
 
     this.editUser(userInfo);
-
   }
 
   constructor(
@@ -64,22 +63,22 @@ export class EditProfileFormComponent implements OnInit {
       .subscribe(responseData => {
         console.log(responseData.notification);
       });
-
   }
-  ondeletionRequest(){
-   this.theUser.deletionReqest = 1;
-   this.deletionRequest(this.theUser);
+  ondeletionRequest() {
+    this.theUser.deletionReqest = 1;
+
+    this.deletionRequest(this.theUser);
   }
 
-  deletionRequest(data){
+  deletionRequest(data) {
     this.http
-    .post<{ notification: string }>(
-      "http://localhost:4100/dashboard/api/edit-profile/deletion",
-      data
-    )
-    .subscribe(responseData => {
-      console.log(responseData.notification);
-    });
+      .post<{ notification: string }>(
+        "http://localhost:4100/dashboard/api/edit-profile/deletion",
+        data
+      )
+      .subscribe(responseData => {
+        console.log(responseData.notification);
+      });
   }
 
   ngOnInit() {
@@ -105,8 +104,10 @@ export class EditProfileFormComponent implements OnInit {
           true,
           response.user.deletionRequest
         );
-
-
+      });
+      this.rezziService.getHDEmail().then(response => {
+        this.hd = response;
+        console.log("OSFMSFK: " + response);
       });
     });
   }

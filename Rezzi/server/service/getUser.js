@@ -6,20 +6,13 @@ const http = require('../constants').http_status;
 
 const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 
-
-// router.get(':/userId', function(request,response) {
-//   db.collection(db_keys.users).doc(request.params.userId).get().then((doc) => {
-//     if (!doc.exists) {
-//       response.redirect('/home');
-//     } else {
-//       response.json(doc.data());
-//     }
-//   });
-// })
 router.get('/', checkCookie, function (request, response) {
   db.collection('users').doc(request.__session.email).get().then((doc) => {
     const data = doc.data()
+    console.log("edit profile data: ")
     console.log(data)
+    console.log("end edit profile")
+
     const user = {
       firstName: data.firstName,
       lastName: data.lastName,

@@ -10,6 +10,7 @@ export class RezziService {
   private getSessionUrl = "/get-session";
 
   private getUser = "/get-user";
+  private getHD = "/get-hd";
 
   getSession(): Promise<any> {
     return this.http
@@ -23,6 +24,17 @@ export class RezziService {
   getUserProfile(): Promise<any> {
     return this.http
       .get("/get-user")
+      .toPromise()
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+  getHDEmail(): Promise<any> {
+    return this.http
+      .get("/get-hd")
       .toPromise()
       .then(response => {
         return response;

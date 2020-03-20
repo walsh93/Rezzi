@@ -3,9 +3,7 @@
       <mat-card-title>My Profile</mat-card-title>
       <mat-card-subtitle></mat-card-subtitle>
       <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
-        <table class="full-width" cellspacing="0">
-          <tr>
-            <td>
+       
               <mat-form-field class="example-full-width">
                 <mat-label>First Name</mat-label>
                 <input
@@ -18,8 +16,7 @@
                   required>
                   <mat-error>Please enter a valid first name (Alpha only)</mat-error>
               </mat-form-field>
-            </td>
-            <td>
+           
               <mat-form-field class="example-full-width">
                 <input
                 [(ngModel)]="this.theUser.lastName"
@@ -31,9 +28,7 @@
                   required>
                   <mat-error>Please enter a valid last name (Alpha only)</mat-error>
               </mat-form-field>
-            </td>
-          </tr>
-        </table>
+            
 
 
       <mat-form-field class="example-full-width">
