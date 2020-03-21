@@ -60,6 +60,10 @@ const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
 const channelMessages = require('./server/service/channelMessages')
 app.use(service.channel_messages, channelMessages)
+const getRAs = require('./server/service/getRAs')
+app.use(service.getRAs, getRAs)
+const getResidents = require('./server/service/getResidents')
+app.use(service.getResidents, getResidents)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')

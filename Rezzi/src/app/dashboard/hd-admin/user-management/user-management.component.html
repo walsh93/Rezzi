@@ -1,1 +1,20 @@
 <p>user-management works!</p>
+<div class="container-fluid">
+    <form method="POST" class="center" id="data-has-loaded">
+      <div *ngFor="let RA of RAs" class="row button-section">
+        <button class="btn btn-primary" type="submit" name="RAs" value="{{ RAs.email }}">
+          {{ RA.firstName }} {{ RA.lastName }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="container-fluid">
+    <form method="POST" class="center" id="data-has-loaded">
+      <div *ngFor="let resident of residents" class="row button-section">
+        <button class="btn btn-primary" type="submit" name="residents" value="{{ residents.email }}">
+          {{ resident.firstName }} {{ resident.lastName }}
+        </button>
+      </div>
+    </form>
+  </div>

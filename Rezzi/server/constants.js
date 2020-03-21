@@ -9,6 +9,8 @@ module.exports = {
     get_floors: "/get-floors",
     get_user: "/get-user",
     channel_messages: "/channel-messages",
+    getRAs: "/getRAs",
+    getResidents: "/getResidents"
   },
 
   // Firebase constants

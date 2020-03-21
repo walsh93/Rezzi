@@ -1,4 +1,3 @@
-
 // Dependencies
 var express = require('express');
 var router = express.Router();
@@ -11,22 +10,23 @@ const keys = require('../constants').db_keys
 const url = require('../constants').url
 
 router.get('/', checkCookie, function(request, response) {
-  let RAs = [];
-  let RAInfo = [];
+  let residents = [];
+  let residentInfo = [];
+  console.log("hi we called this function")
   db.collection('residence-halls').doc(request.__session.rezzi).get().then((doc) => {
     if (!doc.exists) {
-        console.log('RA list Doc not found')
-        response.status(http.bad_request).send('Error retrieving RA information')
+        console.log('Resident list Doc not found')
+        response.status(http.bad_request).send('Error retrieving resident information')
       } else  {
         const data = doc.data()
-        //console.log(data)
-        RAs = data.RA_list
-        for(var i = 0; i < RAs.length; i++){
+        console.log(data)
+        residents = data.resident_list
+        for(var i = 0; i < residents.length; i++){
             
-            db.collection('users').doc(RAs[i]).get().then((doc) => {
+            db.collection('users').doc(residents[i]).get().then((doc) => {
                 if(!doc.exists){
-                    console.log('RA Email Doc not found')
-                    response.status(http.bad_request).send('Error retrieving RA information')
+                    console.log('resident Email Doc not found')
+                    response.status(http.bad_request).send('Error retrieving resident information')
                 }
                 const data = doc.data()
 
@@ -37,15 +37,15 @@ router.get('/', checkCookie, function(request, response) {
                     verified: data.verified,
                     floor: data.floor,
                 }
-                //console.log(info)
-                RAInfo.push(info)
+                console.log(info)
+                residentInfo.push(info)
                 //console.log(RAInfo.length)
             }).catch((error) => {
                 console.log('Error getting documents', error)
                 response.status(http.conflict).json(null)
               })
         }
-        response.status(http.ok).json({ RAInfo: RAInfo })  // will be accessed as data_from_backend in prev code blocks
+        response.status(http.ok).json({ residentInfo: residentInfo })  // will be accessed as data_from_backend in prev code blocks
 
       }
   }).catch((error) => {

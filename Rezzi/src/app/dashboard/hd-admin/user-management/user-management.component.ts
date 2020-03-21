@@ -11,9 +11,33 @@ import { NgForm, FormControl, Validators } from '@angular/forms';
 })
 export class UserManagementComponent implements OnInit {
 
-  constructor() { }
+  // Class variables
+  errorMsg: string;
+  session: any;
+  RAs: Array<any>;
+  residents: Array<any>;
+
+  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
+     // Initialize class variables
+     this.errorMsg = '';
+
+     this.rezziService.getSession().then((session) => {
+      this.session = session;
+    });
+
+    this.rezziService.getRAs().then((RAList) => {
+      console.log(`RA List IS ${RAList}`);
+        this.RAs = RAList.email;
+    });
+
+    this.rezziService.getResidents().then((residentList) => {
+      console.log(`Resident list is ${residentList}`);
+      this.residents = residentList.email;
+    });
+
+
   }
 
 }
