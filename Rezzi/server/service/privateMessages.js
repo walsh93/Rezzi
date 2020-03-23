@@ -17,7 +17,7 @@ router.get('/', checkCookie, function(request, response) {
       }
       response.status(http.ok).json({ messages: messages })
     } else {
-      response.status(http.bad_request).send('Error retrieving channel messages')
+      response.status(http.bad_request).send('Error retrieving private messages')
     }
   }).catch((error) => {
     console.log('Error getting documents', error)

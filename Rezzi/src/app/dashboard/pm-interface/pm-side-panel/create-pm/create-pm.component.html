@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>New Private Chat</h2>
 <div mat-dialog-content>
       <!-- <table mat-table [dataSource]="hall.subchannels" class="fitwidth"> -->
-      <table class="fitwidth">
+      <table class="fitwidth" *ngIf="users.length != 0">
         <tr>
           <th>Users</th>
           <th>Create Chat!</th>
@@ -10,7 +10,7 @@
           <tr>
             <td>{{ user }}</td>
             <td>
-              <button mat-button (click)="joinChannel(channel.id)">Create!</button>
+              <button mat-button (click)="createPrivateMessage(user)">Create!</button>
             </td>
           </tr>
         </ng-container>
@@ -32,4 +32,5 @@
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr> -->
       </table>
+      <p *ngIf="users.length == 0">No users to show</p>
 </div>

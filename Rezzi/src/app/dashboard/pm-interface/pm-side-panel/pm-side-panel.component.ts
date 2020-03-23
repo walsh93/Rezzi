@@ -74,7 +74,12 @@ export class PmSidePanelComponent implements OnInit {
       data: this.non_pm_users,
     });
 
-    dialogRef.componentInstance.create_pm_event.subscribe();
+    dialogRef.componentInstance.create_pm_event.subscribe((email: string) => {
+      this.private_message_users.push({
+        recipient: email,
+        messages: null
+      });
+    });
 
   }
 

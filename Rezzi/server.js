@@ -103,6 +103,8 @@ const get_pm_users = require('./server/routes/get-pm-users')
 app.use(url.get_pm_users, get_pm_users)
 const get_non_pm_users = require('./server/routes/get-non-pm-users')
 app.use(url.get_non_pm_users, get_non_pm_users)
+const create_pm = require('./server/routes/create-pm')
+app.use(url.create_pm, create_pm);
 
 // Testing
 app.use((request,response,next)=>{
