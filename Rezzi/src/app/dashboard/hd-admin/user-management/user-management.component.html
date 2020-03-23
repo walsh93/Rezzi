@@ -1,4 +1,87 @@
+<!-- Source for Angular material table https://material.angular.io/components/table/overview-->
 <p>user-management works!</p>
+<p> ding dong this is wrong </p>
+<div class="container-fluid">
+    <h2 style="text-align: center;">Manage Users</h2>
+    <h3 style="text-align: right;"> Hall Director</h3>
+    <!-- insert HD info here-->
+
+    <!-- RA info table-->
+    <!-- Resident info table-->
+    <table mat-table [dataSource]="RAs" class="mat-elevation-z8">
+        <!-- COLUMN INFO-->
+        <!-- Email column -->
+        <ng-containter matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email</th>
+            <td mat-cell *matCellDef="let RA"> {{RA.email}} </td>
+        </ng-containter>
+        <!-- First Name column-->
+        <ng-containter matColumnDef="fName">
+            <th mat-header-cell *matHeaderCellDef> First Name</th>
+            <td mat-cell *matCellDef="let RA"> {{RA.fName}} </td>
+        </ng-containter>
+        <!-- Last name column-->
+        <ng-containter matColumnDef="lName">
+            <th mat-header-cell *matHeaderCellDef> Last Name</th>
+            <td mat-cell *matCellDef="let RA"> {{RA.lName}} </td>
+        </ng-containter>
+        <!-- Floor column-->
+        <ng-containter matColumnDef="floor">
+            <th mat-header-cell *matHeaderCellDef> Floor</th>
+            <td mat-cell *matCellDef="let RA"> {{RA.floor}} </td>
+        </ng-containter>
+        <!-- Verification status column-->
+        <ng-containter matColumnDef="verified">
+            <th mat-header-cell *matHeaderCellDef> Verification Status</th>
+            <td mat-cell *matCellDef="let RA"> {{RA.verified}} </td>
+        </ng-containter>
+        <!-- TODO: Date last email sent column-->
+        <!-- TODO: make column for buttons-->
+
+        <!-- ROW INFO-->
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+      </table>
+
+    <!-- Resident info table-->
+    <table mat-table [dataSource]="residents" class="mat-elevation-z8">
+        <!-- COLUMN INFO-->
+        <!-- Email column -->
+        <ng-containter matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email</th>
+            <td mat-cell *matCellDef="let resident"> {{resident.email}} </td>
+        </ng-containter>
+        <!-- First Name column-->
+        <ng-containter matColumnDef="fName">
+            <th mat-header-cell *matHeaderCellDef> First Name</th>
+            <td mat-cell *matCellDef="let resident"> {{resident.fName}} </td>
+        </ng-containter>
+        <!-- Last name column-->
+        <ng-containter matColumnDef="lName">
+            <th mat-header-cell *matHeaderCellDef> Last Name</th>
+            <td mat-cell *matCellDef="let resident"> {{resident.lName}} </td>
+        </ng-containter>
+        <!-- Floor column-->
+        <ng-containter matColumnDef="floor">
+            <th mat-header-cell *matHeaderCellDef> Floor</th>
+            <td mat-cell *matCellDef="let resident"> {{resident.floor}} </td>
+        </ng-containter>
+        <!-- Verification status column-->
+        <ng-containter matColumnDef="verified">
+            <th mat-header-cell *matHeaderCellDef> Verification Status</th>
+            <td mat-cell *matCellDef="let resident"> {{resident.verified}} </td>
+        </ng-containter>
+        <!-- TODO: Date last email sent column-->
+        <!-- TODO: make column for buttons-->
+
+        <!-- ROW INFO-->
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+      </table>
+</div>
+
+
+<!--
 <div class="container-fluid">
     <form method="POST" class="center" id="data-has-loaded">
       <div *ngFor="let RA of RAs" class="row button-section">
@@ -18,3 +101,4 @@
       </div>
     </form>
   </div>
+  -->

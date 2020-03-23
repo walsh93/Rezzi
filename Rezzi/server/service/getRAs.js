@@ -13,6 +13,7 @@ const url = require('../constants').url
 router.get('/', checkCookie, function(request, response) {
   let RAs = [];
   let RAInfo = [];
+  //access collection of current user's rezzi
   db.collection('residence-halls').doc(request.__session.rezzi).get().then((doc) => {
     if (!doc.exists) {
         console.log('RA list Doc not found')
@@ -21,6 +22,7 @@ router.get('/', checkCookie, function(request, response) {
         const data = doc.data()
         //console.log(data)
         RAs = data.RA_list
+        //for every RA email in the RA_list array
         for(var i = 0; i < RAs.length; i++){
             
             db.collection('users').doc(RAs[i]).get().then((doc) => {
@@ -29,7 +31,7 @@ router.get('/', checkCookie, function(request, response) {
                     response.status(http.bad_request).send('Error retrieving RA information')
                 }
                 const data = doc.data()
-
+                //If more info is needed on the User Management page, add that here!
                 const info = {
                     email: data.email,
                     firstName: data.firstName,
