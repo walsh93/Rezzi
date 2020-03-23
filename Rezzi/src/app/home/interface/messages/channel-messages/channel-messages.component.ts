@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subscription, Observable, range } from 'rxjs';
 
-import { Message } from '../../../../classes.model';
+import { Message, AbbreviatedUser } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ChannelData } from '../../../../classes.model';
 
@@ -91,20 +91,22 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   }
 
   initializeTestData() {
+    const owner1 = new AbbreviatedUser('email1@purdue.edu', 'Lucky', 'McStruessel', 'Shrimpy');
+    const owner2 = new AbbreviatedUser('email2@purdue.edu', 'Doc', 'Goodman', 'Sean the Sheep');
     const m1: Message = {
-      id: null,
+      owner: owner1,
       content: 'Testing 1-2-3',
       time: new Date('2020-01-26'),
       visible: true,
     };
     const m2: Message = {
-      id: null,
+      owner: owner2,
       content: 'you\'re on your own, kiddo',
       time: new Date('2020-02-14'),
       visible: true,
     };
     const m3: Message = {
-      id: null,
+      owner: owner1,
       content: 'frickin rip',
       time: new Date('2020-03-05'),
       visible: true,
