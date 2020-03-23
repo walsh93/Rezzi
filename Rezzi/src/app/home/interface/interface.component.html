@@ -1,6 +1,5 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side" disableClose="true" opened="true">  <!-- Stuff in sidebar -->
-    <p> {{ resHall }} </p> <!-- TODO: dynamically add res hall name here -->
     <app-side-panel
       (channelsToSend)="receivedChannels($event)"
       (channelToView)="viewingNewChannel($event)"
@@ -12,7 +11,6 @@
     <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
       ≡
     </button>
-    <!-- <app-channel-messages [messages]="storedMessages"></app-channel-messages> -->
     <app-channel-messages
       [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
@@ -20,11 +18,8 @@
     ></app-channel-messages>
     <app-new-message
       [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
+      [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
       [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
     ></app-new-message>
-    <!-- <app-new-message (messageCreated) = 'onMessageAdded($event)'></app-new-message> -->
-    <!-- <div>
-      <app-channel-nav-bar></app-channel-nav-bar>
-    </div> -->
   </div>
 </mat-drawer-container>

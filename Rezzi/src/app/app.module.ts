@@ -64,6 +64,7 @@ import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-r
 import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
 import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
 import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
+import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
 
 import { PmInterfaceComponent } from './dashboard/pm-interface/pm-interface.component';
 import { PmSidePanelComponent } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.component';
@@ -142,7 +143,8 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
     NewPmComponent,
     PrivateMessagesComponent,
     MessageComponent,
-    CreatePmComponent
+    CreatePmComponent,
+    UserManagementComponent
   ],
   imports: [
     BrowserModule,

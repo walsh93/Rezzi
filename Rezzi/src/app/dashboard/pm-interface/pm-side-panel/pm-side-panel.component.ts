@@ -36,7 +36,6 @@ export class PmSidePanelComponent implements OnInit {
         for (const index2 in data[index].messages.messages) {
           messageContent.push({
             owner: data[index].messages.messages[index2].owner,
-            id: data[index].messages.messages[index2].id,
             content: data[index].messages.messages[index2].content,
             time: data[index].messages.messages[index2].time,
             visible: data[index].messages.messages[index2].visible,

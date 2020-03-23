@@ -82,6 +82,8 @@ const signout = require('./server/routes/sign-out')  // Get the router that's wr
 app.use(url.sign_out, signout)  // Link this router to respond to the link .../sign-out
 const inviteusers = require('./server/routes/invite-users')
 app.use(url.invite_users, inviteusers)
+const usermanagement = require('./server/routes/user-management')
+app.use(url.user_management, usermanagement)
 
 const pwordResetRequest = require('./server/routes/pwordResetRequest')
 app.use(url.pword_reset_request, pwordResetRequest)

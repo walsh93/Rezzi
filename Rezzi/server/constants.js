@@ -43,6 +43,7 @@ module.exports = {
     create_channel: "/create-channel",
     sign_out: "/sign-out",
     invite_users: "/invite-users",
+    user_management: "/user-management",
     error: {
       page: "/err",
       not_raadmin: "/err/1/unauthorized",

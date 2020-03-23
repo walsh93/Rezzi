@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class HdAdminComponent implements OnInit {
   showCreateRezzi = false;
   showInviteUsers = false;
+  showUserManagement = false;
   constructor() { }
 
   ngOnInit(): void {

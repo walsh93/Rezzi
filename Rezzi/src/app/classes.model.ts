@@ -70,9 +70,23 @@ export class User {
   }
 }
 
+export class AbbreviatedUser {
+  email: string;
+  firstName: string;
+  lastName: string;
+  nickName: string;
+
+  constructor(email: string, fname: string, lname: string, nick: string) {
+    this.email = email;
+    this.firstName = fname;
+    this.lastName = lname;
+    this.nickName = nick;
+  }
+}
+
 export interface Message {
-  id: string;
-  owner: string; //User;
+  // id: string;
+  owner: AbbreviatedUser;
   content: string;
   time: Date;
   visible: boolean;

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { MessagesService } from 'src/app/home/interface/messages/messages.service';
 import { NgForm } from '@angular/forms';
-import { Message, SocketPrivateMessageData } from 'src/app/classes.model';
+import { Message, SocketPrivateMessageData, AbbreviatedUser } from 'src/app/classes.model';
 
 @Component({
   selector: 'app-new-pm',
@@ -18,6 +18,12 @@ export class NewPmComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('sessionUpdateEventAnm') sessionObs: Observable<any>;
 
+  // Abbreviated User data
+  user: AbbreviatedUser;
+  private userUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
+
 
   // Current channel data
   currentPMUser: string;
@@ -28,30 +34,35 @@ export class NewPmComponent implements OnInit {
   constructor(public messagesService: MessagesService) { }
 
   ngOnInit() {
-        // Listen for session updates
-        this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
-          console.log('session has been updated in new-pm.component');
-          this.session = updatedSession;
-        });
+    // Listen for session updates
+    this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
+      console.log('session has been updated in new-pm.component');
+      this.session = updatedSession;
+    });
 
-        // Listen for changes in which channel is being viewed
-        this.viewingUpdateSub = this.viewingObs.subscribe((updatedPMUser) => {
-          console.log(`Now viewing user ${updatedPMUser}`);
-          this.currentPMUser = updatedPMUser;
-        });
+    // Listen for user updates
+    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
+      console.log('user has been updated in new-pm.component');
+      this.user = updatedUser;
+      console.log(this.user);
+    });
+
+    // Listen for changes in which channel is being viewed
+    this.viewingUpdateSub = this.viewingObs.subscribe((updatedPMUser) => {
+      console.log(`Now viewing user ${updatedPMUser}`);
+      this.currentPMUser = updatedPMUser;
+    });
   }
 
   onAddMessage(form: NgForm) {
     if (form.invalid) {
       return;
     }
-    console.log(this.session);
     const message: Message = {
       content: form.value.enteredMessage,
-      owner: this.session.email,
+      owner: this.user,
       time: new Date(),
       visible: true,
-      id: null // TODO Need to change the ID
     };
 
     const scmd: SocketPrivateMessageData = {
@@ -60,7 +71,7 @@ export class NewPmComponent implements OnInit {
       sender: this.session.email
     };
 
-    console.log("NEW-PM",scmd);
+    console.log("NEW-PM", scmd);
     // this.messagesService.addMessage(message);
     this.messagesService.sendPrivateMessageThroughSocket(scmd);
     form.resetForm();
@@ -69,6 +80,7 @@ export class NewPmComponent implements OnInit {
   ngOnDestroy() {
     this.sessionUpdateSub.unsubscribe();
     this.viewingUpdateSub.unsubscribe();
+    this.userUpdateSub.unsubscribe();
   }
 
 }

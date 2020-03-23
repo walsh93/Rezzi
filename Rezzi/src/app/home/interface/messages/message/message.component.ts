@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from 'src/app/classes.model';
+import { AbbreviatedUser } from 'src/app/classes.model';
 
 @Component({
   selector: 'app-message',
@@ -13,7 +13,7 @@ export class MessageComponent implements OnInit {
   displayTime: string;
 
   // Properties inherited from channel-messages (or whatever the parent component is)
-  @Input() user: string; // User;
+  @Input() user: AbbreviatedUser;
   @Input() content: string;
   @Input() time: Date;
 
