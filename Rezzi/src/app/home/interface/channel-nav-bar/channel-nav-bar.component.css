@@ -1,3 +1,8 @@
 .interior{
   margin-left: 4rem;
 }
+
+.menu-button{
+  position: fixed;
+  right: 8px;
+}

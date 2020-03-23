@@ -1,6 +1,5 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side" disableClose="true" opened="true">  <!-- Stuff in sidebar -->
-    <p> {{ resHall }} </p> <!-- TODO: dynamically add res hall name here -->
     <app-side-panel
       (channelsToSend)="receivedChannels($event)"
       (channelToView)="viewingNewChannel($event)"
