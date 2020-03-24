@@ -25,15 +25,15 @@ export class MessageComponent implements OnInit {
   private content: string;
   private time: Date;
 
-  constructor(public messagesService: MessagesService) {
+  constructor(public messagesService: MessagesService) { }
+
+  ngOnInit() {
+    //console.log(this.time);
+    console.log("Message: ", this.message);
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
     this.content = this.message.content;
     this.time = this.message.time;
-  }
-
-  ngOnInit() {
-    //console.log(this.time);
     const dateAgain = new Date(this.time);
     const day = this.dayNames[dateAgain.getDay()];
     const month = this.monthNames[dateAgain.getMonth()];

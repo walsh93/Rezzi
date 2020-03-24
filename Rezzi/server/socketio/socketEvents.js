@@ -27,11 +27,10 @@ module.exports.newMessage = function newMessage(socket, data) {
 
 module.exports.updateMessage = function updateMessage(socket, data) {
   const dbchannel = createChannelPath(data.rezzi, data.channelID);
-  console.log("Updating message " + data.message.id + " to", data.message)
   if (dbchannel != null) {
     db.collection(dbchannel.channelPath).doc(dbchannel.channelName).get().then((doc) => {
       let messages = doc.data().messages;
-      let id = parseInt(data.message.id.split('-')[-1]);
+      let id = parseInt(data.message.id.substring(data.message.id.lastIndexOf('-') + 1));
       let reactions = data.message.reactions;
       // can add more update possibilites
 

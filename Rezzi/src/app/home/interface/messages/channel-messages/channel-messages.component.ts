@@ -15,7 +15,12 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   private messagesSub: Subscription;
   private channelMap: Map<string, ChannelData>;
-  @Input() user: User;
+
+  // Abbreviated User data
+  user: AbbreviatedUser;
+  private userUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   // Session data retrieved from interface.component
   session: any;
@@ -37,7 +42,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEvent') viewingObs: Observable<string>;
 
-
   constructor(public messagesService: MessagesService) {
     this.session = null;
     this.currentChannel = null;
@@ -48,6 +52,13 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // If testing messages/message view with `ng serve`
     // this.initializeTestData();
+
+    // Listen for user updates
+    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
+      console.log('user has been updated in new-message.component');
+      this.user = updatedUser;
+      console.log(this.user);
+    });
 
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
