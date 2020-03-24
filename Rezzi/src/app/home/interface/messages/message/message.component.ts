@@ -34,7 +34,6 @@ export class MessageComponent implements OnInit {
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
 
-    console.log("Viewing User", this.viewingUser);
     for (var reaction in this.reactions) {  // Set initial color values
       if (this.reactions.hasOwnProperty(reaction)) {
         if (this.reactions[reaction].includes(this.viewingUser.email)) {
@@ -45,20 +44,26 @@ export class MessageComponent implements OnInit {
         }
       }
     }
-    console.log("REACTED", this.reacted);
   }
 
   sendReaction(reaction) {
+    let scmd: SocketChannelMessageData = {
+      message,
+      rezzi: this.session.rezzi,
+      channelID: this.currentChannel,
+    };
+
     if (this.reacted[reaction] === "") {  // If the user has not reacted
-      console.log("Reacting", reaction);
       this.reacted[reaction] = "accent";
       this.reactions[reaction].push(this.viewingUser.email);
     }
     else {
-      console.log("Unreacting", reaction);
       this.reacted[reaction] = "";
       this.reactions[reaction].splice(this.reactions[reaction].indexOf(this.viewingUser.email), 1);
     }
+
+    scmd.message.reactions = this.reactions;
+
   }
 
 }

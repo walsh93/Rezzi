@@ -206,6 +206,11 @@ io.on(skt.connection, (socket) => {
       const observer = dbListeners.addListenerForChannelMessages(socket, dbpath)
       serverChannelListeners.set(serverCurrentChannel, observer)
     }
+  });
+
+  // When a message is updated (like reactions)
+  socket.on(skt.update_message, (data) => {
+    socketEvents.updateMessage(socked, dat)
   })
 })
 

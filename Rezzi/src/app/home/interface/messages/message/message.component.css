@@ -7,7 +7,6 @@ mat-card {
 .col-2 {
   font-weight: bold;
 }
-
 mat-card-footer {
   font-size: smaller;
   margin-left: 5px;
@@ -21,5 +20,5 @@ mat-card-footer {
 }
 
 .reactions {
-	float: right;
+	float:      right;
 }

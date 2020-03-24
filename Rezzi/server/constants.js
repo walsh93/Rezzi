@@ -120,5 +120,6 @@ module.exports = {
     new_channel_view: 'new-channel-view',
     new_message: 'new-message',
     new_message_added: 'added-new-message',
+    update_message: 'update-message',
   }
 }

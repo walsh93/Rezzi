@@ -79,6 +79,10 @@ export class MessagesService {
     this.socket.emit('new-message', data);
   }
 
+  updateMessageThroughSocket(data: SocketMessageData) {
+    this.socket.emit('update-message', data);
+  }
+
   /*********************************************************************************************************************************
    * Helper functions
    ********************************************************************************************************************************/
