@@ -8,28 +8,41 @@ const keys = require('../constants').db_keys;
 
 const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 router.get('/', checkCookie, function (request, response) {
-  console.log("HERi!!!!!")
-    const rezzi = request.__session.rezzi
+  const rezzi = request.__session.rezzi
   console.log(rezzi);
 
   db.collection(keys.rezzis).doc(rezzi).get().then(doc => {
-    console.log("HERW!!!!!")
-
     const data = doc.data()
-    console.log("gethd:")
     console.log(data)
-    console.log('endhd')
-    const hd = data.HD.email;
+    const hd = data.HD;
 
     console.log('hd:' + hd);
 
+    // db.collection('users').get().then((snapshot) => {
+    //   let users = []
+    //   snapshot.forEach((user) => {
+    //     const data = user.data()
+    //     console.log(data);
+    //     const info = {
+    //       firstName: data.firstName,
+    //       lastName: data.lastName,
+    //       password: data.password,
+    //       major: data.major,
+    //       nickname: data.nickname,
+    //       bio: data.bio,
+    //       age: data.age,
+    //     }
 
-  response.status(http.ok).json({ hd: hd })  // will be accessed as data_from_backend in prev code blocks
+    //     users.push(info)
+    //   })
+    // });
 
-}).catch((error) => {
-  console.log('Error getting documents', error)
-  response.status(http.conflict).json(null)
-})
+    response.status(http.ok).json({ hd: hd })  // will be accessed as data_from_backend in prev code blocks
+
+  }).catch((error) => {
+    console.log('Error getting documents', error)
+    response.status(http.conflict).json(null)
+  })
 });
 
 

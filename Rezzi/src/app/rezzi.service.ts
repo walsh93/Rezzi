@@ -32,6 +32,17 @@ export class RezziService {
         console.log(error);
       });
   }
+  findUserByEmail(): Promise<any> {
+    return this.http
+      .get("/find-user")
+      .toPromise()
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   getHDEmail(): Promise<any> {
     return this.http
       .get("/get-hd")

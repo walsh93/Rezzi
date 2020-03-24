@@ -9,9 +9,7 @@ const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 router.get('/', checkCookie, function (request, response) {
   db.collection('users').doc(request.__session.email).get().then((doc) => {
     const data = doc.data()
-    console.log("edit profile data: ")
     console.log(data)
-    console.log("end edit profile")
 
     const user = {
       firstName: data.firstName,

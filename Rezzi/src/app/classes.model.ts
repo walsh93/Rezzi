@@ -95,13 +95,15 @@ export interface SocketPrivateMessageData extends SocketMessageData {
 }
 
 export class HDUser {
-  constructor(firstName: string, lastName: string, email: string, password: string, verified: boolean) {
+  constructor(firstName: string, lastName: string, email: string, password: string, verified: boolean, deletionRequests: String[]) {
     this.firstName = firstName;
     this. lastName = lastName;
     this.email = email;
     this.password = password;
     this.accountType = 0;
     this.verified = verified;
+    this.deletionRequests = deletionRequests;
+
   }
   firstName: string;
   lastName: string;
@@ -110,6 +112,7 @@ export class HDUser {
   confirmPassword: string;
   accountType: number;
   verified: boolean;
+  deletionRequests: String[];
 }
 export interface ChannelData {
   id: string;

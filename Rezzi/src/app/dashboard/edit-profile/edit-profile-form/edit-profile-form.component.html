@@ -1,125 +1,67 @@
 <div class="edit-profile-form">
-    <mat-card color="primary">
-      <mat-card-title>My Profile</mat-card-title>
-      <mat-card-subtitle></mat-card-subtitle>
-      <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
-       
-              <mat-form-field class="example-full-width">
-                <mat-label>First Name</mat-label>
-                <input
-                [(ngModel)]="this.theUser.firstName"
-                  matInput
-                  type="text"
-                  placeholder="First Name"
-                  name="firstName"
-                  ngModel
-                  required>
-                  <mat-error>Please enter a valid first name (Alpha only)</mat-error>
-              </mat-form-field>
-           
-              <mat-form-field class="example-full-width">
-                <input
-                [(ngModel)]="this.theUser.lastName"
-                  matInput
-                  type="text"
-                  placeholder="Last Name"
-                  ngModel
-                  name="lastName"
-                  required>
-                  <mat-error>Please enter a valid last name (Alpha only)</mat-error>
-              </mat-form-field>
-            
-
+  <mat-card color="primary">
+    <mat-card-title>My Profile</mat-card-title>
+    <mat-card-subtitle></mat-card-subtitle>
+    <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
 
       <mat-form-field class="example-full-width">
-        <input
-        [(ngModel)]="this.theUser.nickName"
-          matInput
-          type="text"
-          placeholder="Preferred Name"
-          ngModel
-          name="nickName"
-          >
+        <mat-label>First Name</mat-label>
+        <input [(ngModel)]="this.theUser.firstName" matInput type="text" placeholder="First Name" name="firstName"
+          ngModel required>
+        <mat-error>Please enter a valid first name (Alpha only)</mat-error>
       </mat-form-field>
+
       <mat-form-field class="example-full-width">
-        <input
-        [(ngModel)]="this.theUser.password"
-          matInput
-          placeholder="Enter your password"
-          [type]="hide ? 'password' : 'text'"
-          name="password"
-          ngModel
-          minlength="8"
-          #password = "ngModel"
+        <input [(ngModel)]="this.theUser.lastName" matInput type="text" placeholder="Last Name" ngModel name="lastName"
           required>
-
-          <mat-error *ngIf="password.invalid">Your password must be 8 characters long</mat-error>
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input
-          matInput
-          placeholder="Confirm Password"
-          [type]="hide ? 'password' : 'text'"
-          name="confirmPassword"
-          ngModel
-          minlength="8"
-          required
-          #confirmPassword = "ngModel">
-          <mat-error *ngIf="password !== confirmPassword">Your passwords must match!</mat-error>
+        <mat-error>Please enter a valid last name (Alpha only)</mat-error>
       </mat-form-field>
 
+
+
       <mat-form-field class="example-full-width">
-        <input
-        [(ngModel)]="this.theUser.age"
-          matInput
-          type="text"
-          placeholder="Age"
-          ngModel
-          name="age"
-          pattern="[0-9][0-9]"
-          required>
-          <mat-error>Please enter a valid age</mat-error>
+        <input [(ngModel)]="this.theUser.nickName" matInput type="text" placeholder="Preferred Name" ngModel
+          name="nickName">
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <input
-        [(ngModel)]="this.theUser.major"
-          matInput
-          type="text"
-          placeholder="Major"
-          ngModel
-          name="major"
-          required>
+        <input [(ngModel)]="this.theUser.password" matInput placeholder="Enter your password"
+          [type]="hide ? 'password' : 'text'" name="password" ngModel minlength="8" #password="ngModel" required>
+
+        <mat-error *ngIf="password.invalid">Your password must be 8 characters long</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Confirm Password" [type]="hide ? 'password' : 'text'" name="confirmPassword"
+          ngModel minlength="8" required #confirmPassword="ngModel">
+        <mat-error *ngIf="password !== confirmPassword">Your passwords must match!</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input [(ngModel)]="this.theUser.age" matInput type="text" placeholder="Age" ngModel name="age"
+          pattern="[0-9][0-9]" required>
+        <mat-error>Please enter a valid age</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input [(ngModel)]="this.theUser.major" matInput type="text" placeholder="Major" ngModel name="major" required>
       </mat-form-field>
       <mat-form-field class="example-full-width" hintLabel="Max 100 characters">
-        <textarea
-        [(ngModel)]="this.theUser.bio"
-          matInput
-          rows="2"
-          placeholder="Bio"
-          ngModel
-          name="bio"
-          #bio
-          maxlength="100"
-          required>
+        <textarea [(ngModel)]="this.theUser.bio" matInput rows="2" placeholder="Bio" ngModel name="bio" #bio
+          maxlength="100" required>
         </textarea>
         <mat-hint>{{bio.value?.length || 0}}/100</mat-hint>
       </mat-form-field>
       <br>
       <br>
-        <button
-          mat-raised-button
-          color="accent"
-          type="submit"
-          >Edit Profile</button>
-        </form>
-    </mat-card >
-    <br>
-    <br>
-    <mat-card color="primary">
-      <button
-          mat-raised-button
-          color="primary"
-          (click)="ondeletionRequest()"
-          >Request to Delete Account</button>
-    </mat-card>
-  </div>
+      <button mat-raised-button color="accent" type="submit">Edit Profile</button>
+      <br>
+
+
+    </form>
+
+    <button mat-raised-button color="primary" (click)="ondeletionRequest()">Request to Delete Account</button>
+
+  </mat-card>
+  <br>
+  <br>
+
+
+</div>

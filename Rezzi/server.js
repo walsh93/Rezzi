@@ -60,6 +60,8 @@ const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
 const getHD = require('./server/service/getHD')
 app.use(service.get_hd, getHD)
+const findUser = require('./server/service/findUser')
+app.use(service.find_user, findUser)
 const channelMessages = require('./server/service/channelMessages')
 app.use(service.channel_messages, channelMessages)
 

@@ -30,7 +30,13 @@ router.get('/', checkCookie, function (request, response) {
   response.status(201).json({
     notification: 'User may have requested to delete account'
   })
-  //add user here
+}).post('/api/edit-profile/update-hd', (request, response, next) => {
+  const rb = request.body
+  const email = request.__session.email;
+  firebase.updateHD(rb,email);
+  response.status(201).json({
+    notification: 'User may have requested to delete account'
+  })
 })
 
 module.exports = router

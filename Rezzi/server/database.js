@@ -51,7 +51,6 @@ module.exports.editUser = function editUser(data,email){
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
-      //checks to see if account is verified per Megan's implementation
     } else {
       dbstore.collection('users').doc(email).update(data)
     }
@@ -65,7 +64,19 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data,ema
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
-      //checks to see if account is verified per Megan's implementation
+    } else {
+      dbstore.collection('users').doc(email).update(data)
+    }
+  }).catch(err => {
+    //reject(err)
+    console.log(err)
+    console.log("Error updating deletion status on account");
+  })
+}
+module.exports.updateHD = function updateHD(data,email){
+  dbstore.collection('users').doc(email).get().then(doc => {
+    if (!doc.exists) {
+      //Do something about the error here
     } else {
       dbstore.collection('users').doc(email).update(data)
     }
