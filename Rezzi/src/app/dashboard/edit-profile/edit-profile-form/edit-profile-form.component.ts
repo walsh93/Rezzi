@@ -91,7 +91,7 @@ export class EditProfileFormComponent implements OnInit {
       });
   }
   updateHallDirector(hd) {
-    this.rezziService.findUserByEmail().then(response => {
+    this.rezziService.findUserByEmail(`${hd}`).then(response => {
       console.log(response)
       // this.theUser.setUser(
       this.theHD = new HDUser(
@@ -121,7 +121,7 @@ export class EditProfileFormComponent implements OnInit {
 
     this.http
       .post<{ notification: string }>(
-        "http://localhost:4100/dashboard/api/edit-profile/find-user",
+        `http://localhost:4100/dashboard/api/edit-profile/find-user?hd=${hd}`,
         hd
       )
       .subscribe(responseData => {

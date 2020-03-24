@@ -32,10 +32,10 @@ export class RezziService {
         console.log(error);
       });
   }
-  findUserByEmail(): Promise<any> {
-    return this.http
-      .get("/find-user")
-      .toPromise()
+  findUserByEmail(hd: string): Promise<any> {
+    return this.http.get(`/find-user?hd=${hd}`)
+    .toPromise()
+
       .then(response => {
         return response;
       })
