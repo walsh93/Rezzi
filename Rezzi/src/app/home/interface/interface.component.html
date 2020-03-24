@@ -15,13 +15,11 @@
       [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
       [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
-      [user]="user"
     ></app-channel-messages>
     <app-new-message
       [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
       [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
       [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
-      [user]="user"
     ></app-new-message>
   </div>
 </mat-drawer-container>

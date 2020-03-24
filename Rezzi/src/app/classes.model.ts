@@ -76,6 +76,7 @@ export interface ReactionData {
   sentiment_very_satisfied: string[];
   sentiment_dissatisfied: string[];
   whatshot: string[];
+}
 
 export class AbbreviatedUser {
   email: string;
@@ -92,7 +93,7 @@ export class AbbreviatedUser {
 }
 
 export interface Message {
-  // id: string;
+  id: string;
   owner: AbbreviatedUser;
   content: string;
   time: Date;

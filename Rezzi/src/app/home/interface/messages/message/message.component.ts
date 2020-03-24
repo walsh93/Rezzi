@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User, ReactionData, AbbreviatedUser } from 'src/app/classes.model';
+import { User, ReactionData, AbbreviatedUser, Message, SocketChannelMessageData } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
+import { MessagesService } from '../messages.service';
 
 @Component({
   selector: 'app-message',
@@ -16,12 +17,20 @@ export class MessageComponent implements OnInit {
 
   // Properties inherited from channel-messages (or whatever the parent component is)
   @Input() viewingUser: User;
-  @Input() user: AbbreviatedUser;
-  @Input() content: string;
-  @Input() time: Date;
-  @Input() reactions: ReactionData;
+  @Input() message: Message;
+  @Input() channel: string;
+  @Input() rezzi: string;
+  private reactions: ReactionData;
+  private user: AbbreviatedUser;
+  private content: string;
+  private time: Date;
 
-  constructor() { }
+  constructor(public messagesService: MessagesService) {
+    this.reactions = this.message.reactions;
+    this.user = this.message.owner;
+    this.content = this.message.content;
+    this.time = this.message.time;
+  }
 
   ngOnInit() {
     //console.log(this.time);
@@ -38,7 +47,7 @@ export class MessageComponent implements OnInit {
     console.log(this.displayTime);
     this.displayTime = String(dateAgain);
 
-    for (var reaction in this.reactions) {  // Set initial color values
+    for (var reaction in this.reactions) {  // Set initial color values for reactions
       if (this.reactions.hasOwnProperty(reaction)) {
         if (this.reactions[reaction].includes(this.viewingUser.email)) {
           this.reacted[reaction] = "accent";
@@ -52,9 +61,9 @@ export class MessageComponent implements OnInit {
 
   sendReaction(reaction) {
     let scmd: SocketChannelMessageData = {
-      message,
-      rezzi: this.session.rezzi,
-      channelID: this.currentChannel,
+      message: this.message,
+      rezzi: this.rezzi,
+      channelID: this.channel,
     };
 
     if (this.reacted[reaction] === "") {  // If the user has not reacted
@@ -67,6 +76,7 @@ export class MessageComponent implements OnInit {
     }
 
     scmd.message.reactions = this.reactions;
+    this.messagesService.updateMessageThroughSocket(scmd);
   }
 
 }

@@ -91,7 +91,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.viewingUpdateSub.unsubscribe();
   }
 
-  initializeTestData() {
+  /*initializeTestData() {
     const owner1 = new AbbreviatedUser('email1@purdue.edu', 'Lucky', 'McStruessel', 'Shrimpy');
     const owner2 = new AbbreviatedUser('email2@purdue.edu', 'Doc', 'Goodman', 'Sean the Sheep');
     const m1: Message = {
@@ -106,6 +106,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
         sentiment_dissatisfied: [],
         whatshot: ["a", "b", "c", "d", "e"]
       }
+      id: null
     };
     const m2: Message = {
       owner: owner2,
@@ -136,5 +137,5 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.messages.push(m1);
     this.messages.push(m2);
     this.messages.push(m3);
-  }
+  }*/
 }

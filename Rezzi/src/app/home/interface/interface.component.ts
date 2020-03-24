@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RezziService } from '../../rezzi.service';
-<<<<<<< HEAD
-import { ChannelData, User } from '../../classes.model';
-=======
-import { ChannelData, AbbreviatedUser } from '../../classes.model';
->>>>>>> master
+import { ChannelData, User, AbbreviatedUser } from '../../classes.model';
 import { Subject } from 'rxjs';
 
 @Component({

@@ -12,7 +12,6 @@ import { Subscription, Observable } from 'rxjs';
 export class NewMessageComponent implements OnInit, OnDestroy {
   tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true);
   enteredMessage = '';
-  @Input() user: User;
 
   // Session data
   session: any;
