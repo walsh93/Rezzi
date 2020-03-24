@@ -8,6 +8,7 @@ module.exports = {
     get_user_by_email: "/get-user-by-email",
     get_floors: "/get-floors",
     get_user: "/get-user",
+    get_floor_ra: "/get-ra-from-floor",
     channel_messages: "/channel-messages",
     private_messages: "/private-messages",
   },
@@ -60,7 +61,8 @@ module.exports = {
     dashboard: "/dashboard",
     get_pm_users: "/get-pm-users",
     get_non_pm_users: "/get-non-pm-users",
-    create_pm: "/create-pm"
+    create_pm: "/create-pm",
+    request_channel: "/request-channel",
   },
 
   http_status: {

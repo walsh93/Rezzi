@@ -62,6 +62,8 @@ const channelMessages = require('./server/service/channelMessages')
 app.use(service.channel_messages, channelMessages)
 const privateMessages = require('./server/service/privateMessages')
 app.use(service.private_messages, privateMessages)
+const raFromFloor = require('./server/service/getRaFromFloor')
+app.use(service.get_floor_ra, raFromFloor)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')
@@ -100,6 +102,8 @@ const createrezzi = require('./server/routes/create-rezzi')
 app.use(url.create_rezzi, createrezzi)
 const dashboard = require('./server/routes/dashboard')
 app.use(url.dashboard, dashboard)
+const requestchannel = require('./server/routes/request-channel')
+app.use(url.request_channel, requestchannel)
 
 const get_pm_users = require('./server/routes/get-pm-users')
 app.use(url.get_pm_users, get_pm_users)

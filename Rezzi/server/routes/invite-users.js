@@ -32,8 +32,20 @@ router.get("/", checkCookie, function(request, response) {
       floorDocRef.update({
         residents: fullArray
       })
+
+      // Add RAs to list of RAs
+      if (rb.accountType == 1) {
+        let rasAlreadyInRezzi = floorDoc.data().ras
+        if (rasAlreadyInRezzi == null || rasAlreadyInRezzi == undefined) {
+          rasAlreadyInRezzi = []
+        }
+        const fullArray2 = rasAlreadyInRezzi.concat(emailarr)
+        floorDocRef.update({
+          ras: fullArray2
+        })
+      }
     })
-    
+
     //adding users to floor general chat
     const floorGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/floors/' + rb.floor + '/channels').doc('General')
     floorGeneralDocRef.get().then((floorChannelsDoc) => {
@@ -69,7 +81,7 @@ router.get("/", checkCookie, function(request, response) {
     //Add users to list of members for rezzi
     const rezziDocRef = db.collection(keys.rezzis).doc(rezzi)
     rezziDocRef.get().then((rezziDoc) => {
-      
+
       //if user is RA, add to RA list
       if(rb.accountType == 1){
         const listofRAs = rezziDoc.data().RA_list
@@ -91,18 +103,6 @@ router.get("/", checkCookie, function(request, response) {
     for (var i = 0; i < emailarr.length; i++) {
       var tempPword = randomstring.generate();
       var currentEmail = emailarr[i];
-      /*
-        if (db.collection('users').doc(currentEmail).get()){
-          console.log("EXISTS");
-          continue;
-        }
-          TODO: Determine how to check to see if email exists
-        */
-      /*db.collection('users').doc(currentEmail).get().then(doc => {
-          if(doc.exists){
-            response.send(c.EMAIL_ALREADY_REGISTERED)
-          } else {
-            //put things in database*/
       console.log(rb.floor);
 
       db.collection(keys.users).doc(currentEmail).set({

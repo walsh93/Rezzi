@@ -16,6 +16,8 @@ export class RequestChannelFormComponent implements OnInit {
   title: string;
   description: string;
   levelSelection: string;
+  rezzi: string;
+  floor: string;
   respectiveRa: string = null;
 
   constructor(private rezziService: RezziService, private http: HttpClient, private router: Router) { }
@@ -37,8 +39,10 @@ export class RequestChannelFormComponent implements OnInit {
         }
 
         this.rezziService.getUserProfile().then((response) => {
-          this.rezziService.getRaFromFloor(`${response.user.rezzi}`, `${response.user.floor}`).then((ra) => {
-            this.respectiveRa = ra;
+          this.rezzi = response.user.rezzi;
+          this.floor = response.user.floor;
+          this.rezziService.getRaFromFloor(`${response.user.rezzi}`, `${response.user.floor}`).then((obj) => {
+            this.respectiveRa = obj.ra;
           });
         });
       }
@@ -73,11 +77,15 @@ export class RequestChannelFormComponent implements OnInit {
     }
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)
+    const idPrefix = (`${this.levelSelection}` === 'floor') ? `floors-${this.floor}` : 'hallwide';
     const body = {
-      owner: `${this.respectiveRa}`,
-      title: `${this.title}`,
-      level: `${this.levelSelection}`,
-      description: `${this.description}`,
+      channel: {
+        owner: `${this.respectiveRa}`,
+        title: `${this.title}`,
+        level: `${this.levelSelection}`,
+        description: `${this.description}`,
+      },
+      channelID: `${idPrefix}-${this.title}`,
     };
 
     /**
@@ -88,11 +96,15 @@ export class RequestChannelFormComponent implements OnInit {
      * Sometimes there is a parsing error in the browser, so a successful login is still "caught"
      * NOTE: Anything returned from request-channel.js will be accessible in res.error
      */
-    this.http.post('/request-channel', body).toPromise().then((response) => {
+    this.http.post(`/request-channel?rezzi=${this.rezzi}&floor=${this.floor}`, body).toPromise().then((response) => {
+      console.log(response);
+      alert('OKAY!!!');
       this.router.navigate(['/home']);  // TODO change this to route to channel?
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
+        console.log(res);
+        alert('NO-KAY!!!');
         this.router.navigate(['/home']);  // TODO change this to route to channel?
       } else {
         document.getElementById('error-msg').hidden = false;
