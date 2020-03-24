@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { RezziService } from '../../rezzi.service';
-import { ChannelData, AbbreviatedUser } from '../../classes.model';
+import { RezziService } from 'src/app/rezzi.service';
 import { Subject } from 'rxjs';
+import { PrivateMessageData, AbbreviatedUser } from 'src/app/classes.model';
 
 @Component({
-  selector: 'app-interface',
-  templateUrl: './interface.component.html',
-  styleUrls: ['./interface.component.css']
+  selector: 'app-pm-interface',
+  templateUrl: './pm-interface.component.html',
+  styleUrls: ['./pm-interface.component.css']
 })
-export class InterfaceComponent implements OnInit {
+export class PmInterfaceComponent implements OnInit {
   session: any;
-  resHall: string;
   abbrevUser: AbbreviatedUser;
 
   // Passing channels and session to child component channel-messages every time they update
   sessionUpdateSubject: Subject<any> = new Subject<any>();
-  abbrevUserUpdateSubject: Subject<AbbreviatedUser> = new Subject<AbbreviatedUser>();
-  channelsUpdateSubject: Subject<ChannelData[]> = new Subject<ChannelData[]>();
+  pmUsersUpdateSubject: Subject<PrivateMessageData[]> = new Subject<PrivateMessageData[]>();
   viewingUpdateSubject: Subject<string> = new Subject<string>();
+  abbrevUserUpdateSubject: Subject<AbbreviatedUser> = new Subject<AbbreviatedUser>();
+
 
   constructor(private rezziService: RezziService) { }
 
@@ -25,8 +25,6 @@ export class InterfaceComponent implements OnInit {
     this.rezziService.getSession().then((session) => {
       this.session = session;
       this.sessionUpdateSubject.next(session);
-      this.resHall = this.session.rezzi;
-
       if (this.session.email != null && this.session.email !== undefined) {
         this.rezziService.getUserProfile().then((response) => {
           this.abbrevUser = new AbbreviatedUser(response.user.email, response.user.firstName,
@@ -35,14 +33,14 @@ export class InterfaceComponent implements OnInit {
         });
       }
     });
+
   }
 
-  receivedChannels(channels: ChannelData[]) {
-    this.channelsUpdateSubject.next(channels);
+  receivedPMUsers(pmUsers: PrivateMessageData[]) {
+    this.pmUsersUpdateSubject.next(pmUsers);
   }
 
-  viewingNewChannel(channelID: string) {
-    this.viewingUpdateSubject.next(channelID);
+  viewingNewPMUser(userID: string) {
+    this.viewingUpdateSubject.next(userID);
   }
-
 }

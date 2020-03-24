@@ -20,6 +20,7 @@ router.get('/', checkCookie, function (request, response) {
       bio: data.bio,
       age: data.age,
       deletionRequest: data.deletionRequest,
+      email: data.email
     }
     response.status(http.ok).json({ user: user })  // will be accessed as data_from_backend in prev code blocks
   }).catch((error) => {

@@ -2,6 +2,8 @@ const admin = require('firebase-admin')
 const db = admin.firestore()
 const skt = require('../constants').socket
 const createChannelPath = require('../database').createChannelPath
+const createUserPath = require('../database').createUserPath
+
 
 module.exports.newMessage = function newMessage(socket, data) {
   const dbchannel = createChannelPath(data.rezzi, data.channelID)
@@ -20,3 +22,36 @@ module.exports.newMessage = function newMessage(socket, data) {
     })
   }
 }
+
+//$$$conley
+module.exports.newPrivateMessage = function newPrivateMessage(socket, data) {
+  console.log("In socketEvents.js");
+  const paths = createUserPath(data.sender, data.recipient);
+  const senderPath = paths.senderPath;
+  const receiverPath = paths.receiverPath;
+  if(senderPath == null || receiverPath == null){
+    console.log("newPrivateMessage error - socketEvents.js");
+    return null;
+  }
+  db.collection(senderPath).doc(data.recipient).get().then((doc) => {
+    messages = doc.data().messages;
+    if(!messages || messages == null || messages == undefined){
+      messages = []
+    }
+    messages.push(data.message)
+    db.collection(senderPath).doc(data.recipient).update({
+      messages: messages
+    })
+  })
+  db.collection(receiverPath).doc(data.sender).get().then((doc) => {
+    messages = doc.data().messages;
+    if(!messages || messages == null || messages == undefined){
+      messages = []
+    }
+    messages.push(data.message)
+    db.collection(receiverPath).doc(data.sender).update({
+      messages: messages
+    })
+  })
+}
+//$$$conley

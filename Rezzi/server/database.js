@@ -116,3 +116,15 @@ module.exports.createChannelPath = function createChannelPath(rezzi, channelID) 
 
   return null
 }
+
+//$$$conley
+module.exports.createUserPath = function createUserPath(sender, receiver) {
+  if (sender == null || receiver == null){
+    console.log("Path Creating Error");
+    return null;
+  }
+  senderPath = `users/${sender}/private-messages`;
+  receiverPath = `users/${receiver}/private-messages`;
+  return {senderPath: senderPath, receiverPath: receiverPath};
+}
+//$$$conley

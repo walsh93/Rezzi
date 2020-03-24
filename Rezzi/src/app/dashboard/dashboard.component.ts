@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  showEdit = true;
-  showPM = false;
+  showEdit = false;
+  showPM = true;
   showRA = false;
   showHD = false;
   constructor(private rezziService: RezziService, private router: Router) { }

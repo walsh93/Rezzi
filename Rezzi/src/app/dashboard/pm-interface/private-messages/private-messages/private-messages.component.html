@@ -1,10 +1,9 @@
+<p>private-messages works!</p>
 <div *ngFor="let message of messages">
   <!--{{ message.owner.firstName }}: Temporary Comment-->
   <app-message
-    [user]="message.owner"
     [content]="message.content"
+    [user]="message.owner"
     [time]="message.time"
   ></app-message>
 </div>
-
-<!-- this is the component that displays the previous messages -->

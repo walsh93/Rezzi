@@ -2,4 +2,12 @@
   <div class="interior">
     <span class="nav-title"> {{navTitle}} </span>
   </div>
+  <div class="menu-button">
+    <button mat-button [disabled]="channelMenuDisabled" [matMenuTriggerFor]="channelMenu">⋮</button>
+
+    <mat-menu #channelMenu="matMenu" xPosition="before">
+      <button mat-menu-item (click)="leaveChannel()">Leave Channel</button>
+      <button mat-menu-item disabled>Button 2</button>
+    </mat-menu>
+  </div>
 </mat-toolbar>
