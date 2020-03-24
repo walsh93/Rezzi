@@ -17,6 +17,12 @@ router.post('/', checkCookie, function(request, response) {
 
   request.__session.rezzi = req.name
 
+  db.collection(keys.rezzis).doc(req.name).set({
+    RA_list: [],
+    resident_list: [],
+    HD: email,
+  });
+
   db.collection(keys.rezzis).doc(req.name).set({}).then(resolve => {
     // Add floors
     var promises = [];

@@ -2,7 +2,7 @@
   <!-- First column: name -->
   <mat-card-header>
     <div mat-card-avatar class="avatar"></div>
-    <mat-card-title>Name:</mat-card-title>
+    <mat-card-title>Name: {{ user.nickName }}</mat-card-title>
     <div class="reactions" *ngFor="let reaction of reactions | keyvalue">
       <button mat-icon-button (click)="sendReaction(reaction.key)">
         <mat-icon *ngIf="reaction.value.length > 0"

@@ -1,0 +1,41 @@
+.pm-container {
+  position: absolute;
+  top: 65px;
+  margin: auto;
+  height: 80%;
+  width: 100%;
+}
+
+.pm-side-nav {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  min-width: 200px;
+  height: 90%;
+}
+
+.pm-sidenav-content {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  height: calc(100% - 64px);  /* mat-tool-bar is 64 px */
+}
+
+
+.example-container {
+  width: 100%;
+  height: calc(100% - 128px);  /* mat-tool-bar is 64 px */
+  position: absolute;
+}
+
+.example-sidenav {
+  padding: 20px;
+  width: 20%;
+}
+
+.hambutton{
+  position: absolute;
+  top: 12px;
+  left: 8px;
+  font-size: 25px;
+}
+
+.channelnavbar {
+  position: relative;
+}

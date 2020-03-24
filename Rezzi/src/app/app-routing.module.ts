@@ -15,7 +15,7 @@ import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-requ
 import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
 import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
 
 // Routes
 const routes: Routes = [
@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
   { path: 'home', component: HomeComponent },
   { path: 'invite-users', component: InviteUsersComponent },
+  { path: 'user-management', component: UserManagementComponent},
   { path: 'pword-reset-request', component: PwordresetRequestComponent},
   { path: 'pword-reset-sent', component: PwordresetSentComponent},
   { path: 'pword-reset-change', component: PwordresetChangeComponent},

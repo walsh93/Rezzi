@@ -76,11 +76,24 @@ export interface ReactionData {
   sentiment_very_satisfied: string[];
   sentiment_dissatisfied: string[];
   whatshot: string[];
+
+export class AbbreviatedUser {
+  email: string;
+  firstName: string;
+  lastName: string;
+  nickName: string;
+
+  constructor(email: string, fname: string, lname: string, nick: string) {
+    this.email = email;
+    this.firstName = fname;
+    this.lastName = lname;
+    this.nickName = nick;
+  }
 }
 
 export interface Message {
-  id: string;
-  // owner: User;
+  // id: string;
+  owner: AbbreviatedUser;
   content: string;
   time: Date;
   visible: boolean;
@@ -98,6 +111,7 @@ export interface SocketChannelMessageData extends SocketMessageData {
 
 export interface SocketPrivateMessageData extends SocketMessageData {
   recipient: string;  // TODO ??
+  sender: string;
 }
 
 export class HDUser {
@@ -124,5 +138,10 @@ export interface ChannelData {
   users: number;
   belongs: boolean;
   subchannels: ChannelData[];
+  messages: Message[];
+}
+
+export interface PrivateMessageData {
+  recipient: string;
   messages: Message[];
 }

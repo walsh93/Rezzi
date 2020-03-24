@@ -23,6 +23,12 @@ export class MessagesService {
       this.messages = updatedMessages;
       this.messagesUpdated.next([...this.messages]);
     });
+
+    this.socket.on('added-new-private-message', (updatedMessages) => {
+      console.log('added new private message triggered');
+      this.messages = updatedMessages;
+      this.messagesUpdated.next([...this.messages]);
+    });
   }
 
   /*********************************************************************************************************************************
@@ -52,6 +58,15 @@ export class MessagesService {
     });
   }
 
+  getPrivateMessages(pmUserPath: string, pmUser: string) {
+    this.http.get<{messages: Message[]}>(`/private-messages?pmUserPath=${pmUserPath}&pmUser=${pmUser}`).subscribe((data) => {
+      console.log('RETRIEVED messages', data);
+      this.messages = data.messages;
+      this.messagesUpdated.next([...this.messages]);
+    });
+  }
+
+
   /*********************************************************************************************************************************
    * Message sending
    ********************************************************************************************************************************/
@@ -75,12 +90,21 @@ export class MessagesService {
     this.socket.emit('new-channel-view', objectFromCreateChannelPath);
   }
 
+  emitNewUserView(objectFromCreateUserPath: any) {
+    this.socket.emit('new-private-view', objectFromCreateUserPath);
+  }
+
   sendMessageThroughSocket(data: SocketMessageData) {
     this.socket.emit('new-message', data);
   }
 
   updateMessageThroughSocket(data: SocketMessageData) {
     this.socket.emit('update-message', data);
+  }
+  
+  sendPrivateMessageThroughSocket(data: SocketMessageData) {
+    console.log("messages.service.ts sPMTS", data);
+    this.socket.emit('new-private-message', data);
   }
 
   /*********************************************************************************************************************************
@@ -114,6 +138,16 @@ export class MessagesService {
     }
 
     return null;
+  }
+
+  createUserPath(sender: string, receiver: string) {
+    if (sender == null || receiver == null) {
+      console.log('Path Creating Error messages.service.ts');
+      return null;
+    }
+    const userPath = `users/${sender}/private-messages`;
+    const receiverID = receiver;
+    return { userPath, receiverID };
   }
 
 }

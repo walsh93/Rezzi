@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-
-import { Message, User, SocketChannelMessageData, ReactionData } from '../../../../classes.model';
+import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { NgForm } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
@@ -22,6 +21,13 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   @Input('sessionUpdateEventAnm') sessionObs: Observable<any>;
 
 
+  // Abbreviated User data
+  user: AbbreviatedUser;
+  private userUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
+
+
   // Current channel data
   currentChannel: string;
   private viewingUpdateSub: Subscription;
@@ -35,6 +41,13 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
       console.log('session has been updated in new-message.component');
       this.session = updatedSession;
+    });
+
+    // Listen for user updates
+    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
+      console.log('user has been updated in new-message.component');
+      this.user = updatedUser;
+      console.log(this.user);
     });
 
     // Listen for changes in which channel is being viewed
@@ -51,7 +64,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     console.log(this.session);
     const message: Message = {
       content: form.value.enteredMessage,
-      // owner: this.tempuser,
+      owner: this.user,
       time: new Date(),
       visible: true,
       id: null, // TODO Need to change the ID
@@ -77,6 +90,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sessionUpdateSub.unsubscribe();
+    this.userUpdateSub.unsubscribe();
     this.viewingUpdateSub.unsubscribe();
   }
 

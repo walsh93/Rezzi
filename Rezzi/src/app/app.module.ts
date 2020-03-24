@@ -65,6 +65,13 @@ import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-r
 import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
 import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
 import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
+import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
+
+import { PmInterfaceComponent } from './dashboard/pm-interface/pm-interface.component';
+import { PmSidePanelComponent } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.component';
+import { NewPmComponent } from './dashboard/pm-interface/private-messages/new-pm/new-pm.component';
+import { PrivateMessagesComponent } from './dashboard/pm-interface/private-messages/private-messages/private-messages.component';
+
 
 // Home Page Components
 import { HomeComponent } from './home/home.component';
@@ -93,6 +100,7 @@ import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/cre
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
 import { MessageComponent } from './home/interface/messages/message/message.component';
+import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 
 @NgModule({
   declarations: [
@@ -131,7 +139,13 @@ import { MessageComponent } from './home/interface/messages/message/message.comp
     CreateChannelFormComponent,
     HdAdminComponent,
     MemberInputComponent,
-    MessageComponent
+    PmInterfaceComponent,
+    PmSidePanelComponent,
+    NewPmComponent,
+    PrivateMessagesComponent,
+    MessageComponent,
+    CreatePmComponent,
+    UserManagementComponent
   ],
   imports: [
     BrowserModule,
@@ -166,7 +180,8 @@ import { MessageComponent } from './home/interface/messages/message/message.comp
     MatBadgeModule,
   ],
   entryComponents: [
-    JoinChannelComponent
+    JoinChannelComponent,
+    CreatePmComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

@@ -1,55 +1,55 @@
-<div class>
-  <mat-drawer-container class="example-container" autosize>
-    <mat-toolbar color="primary" class="example-toolbar">
-      <button mat-icon-button (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
+<mat-drawer-container class="example-container" autosize>
+  <mat-toolbar color="accent" class="example-toolbar">
+    <button mat-icon-button (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="example-app-name">Dashboard</h1>
+  </mat-toolbar>
+  <mat-drawer #drawer class="example-sidenav" mode="side" opened>
+    <div>
+      <br>
+      <button (click)="showEdit = true; showPM = false; showRA = false; showHD = false;" mat-raised-button>
+        Edit Profile
       </button>
-      <h1 class="example-app-name">Dashboard</h1>
-    </mat-toolbar>
-    <mat-drawer #drawer class="example-sidenav" mode="side" opened>
-      <div>
-        <br>
-        <button (click)="showEdit = true; showPM = false; showRA = false; showHD = false;" mat-raised-button>
-          Edit Profile
-        </button>
-      </div>
-      <br>
-      <br>
-      <div>
-        <button (click)="showEdit = false; showPM = true; showRA = false; showHD = false;" mat-raised-button>
-          Private Messages
-        </button>
-      </div>
-      <br>
-      <br>
-      <!-- TODO Check to see if account status is <= 1 -->
-      <div>
-        <button (click)="showEdit = false; showPM = false; showRA = true; showHD = false;" mat-raised-button>
-          RA Admin
-        </button>
-      </div>
-      <br>
-      <br>
-      <!-- TODO Check to see if account status = 0 -->
-      <div>
-        <button (click)="showEdit = false; showPM = false; showRA = false; showHD = true;" mat-raised-button>
-          HD Admin
-        </button>
-      </div>
-    </mat-drawer>
-
-    <div class="example-sidenav-content">
-      <p *ngIf="showEdit">
-        <app-edit-profile></app-edit-profile>
-      </p>
-      <p *ngIf="showPM">PM Info</p>
-      <p *ngIf="showRA">
-        <app-ra-admin></app-ra-admin>
-      </p>
-      <p *ngIf="showHD">
-        <app-hd-admin></app-hd-admin>
-      </p>
     </div>
+    <br>
+    <br>
+    <div>
+      <button (click)="showEdit = false; showPM = true; showRA = false; showHD = false;" mat-raised-button>
+        Private Messages
+      </button>
+    </div>
+    <br>
+    <br>
+    <!-- TODO Check to see if account status is <= 1 -->
+    <div>
+      <button (click)="showEdit = false; showPM = false; showRA = true; showHD = false;" mat-raised-button>
+        RA Admin
+      </button>
+    </div>
+    <br>
+    <br>
+    <!-- TODO Check to see if account status = 0 -->
+    <div>
+      <button (click)="showEdit = false; showPM = false; showRA = false; showHD = true;" mat-raised-button>
+        HD Admin
+      </button>
+    </div>
+  </mat-drawer>
 
-  </mat-drawer-container>
-</div>
+  <div class="example-sidenav-content">
+    <p *ngIf="showEdit">
+      <app-edit-profile></app-edit-profile>
+    </p>
+    <p *ngIf="showPM">
+      <app-pm-interface></app-pm-interface>
+    </p>
+    <p *ngIf="showRA">
+      <app-ra-admin></app-ra-admin>
+    </p>
+    <p *ngIf="showHD">
+      <app-hd-admin></app-hd-admin>
+    </p>
+  </div>
+
+</mat-drawer-container>

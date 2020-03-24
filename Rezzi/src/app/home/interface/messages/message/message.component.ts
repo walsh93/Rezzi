@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User, ReactionData } from 'src/app/classes.model';
+import { User, ReactionData, AbbreviatedUser } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class MessageComponent implements OnInit {
 
   // Properties inherited from channel-messages (or whatever the parent component is)
   @Input() viewingUser: User;
+  @Input() user: AbbreviatedUser;
   @Input() content: string;
   @Input() time: Date;
   @Input() reactions: ReactionData;
@@ -23,6 +24,7 @@ export class MessageComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    //console.log(this.time);
     const dateAgain = new Date(this.time);
     const day = this.dayNames[dateAgain.getDay()];
     const month = this.monthNames[dateAgain.getMonth()];
@@ -33,6 +35,8 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
+    console.log(this.displayTime);
+    this.displayTime = String(dateAgain);
 
     for (var reaction in this.reactions) {  // Set initial color values
       if (this.reactions.hasOwnProperty(reaction)) {
@@ -63,7 +67,6 @@ export class MessageComponent implements OnInit {
     }
 
     scmd.message.reactions = this.reactions;
-
   }
 
 }
