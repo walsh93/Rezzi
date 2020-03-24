@@ -18,7 +18,7 @@ router.get('/', checkCookie, function (request, response) {
 }).post('/api/edit-profile', (request, response, next) => {
   const rb = request.body
   const email = request.__session.email;
-  firebase.editUser(rb,email);
+  firebase.editUser(rb, email);
   response.status(201).json({
     notification: 'User may be edited?'
   })
@@ -26,17 +26,35 @@ router.get('/', checkCookie, function (request, response) {
 }).post('/api/edit-profile/deletion', (request, response, next) => {
   const rb = request.body
   const email = request.__session.email;
-  firebase.requestAccountDeletion(rb,email);
+  firebase.requestAccountDeletion(rb, email);
   response.status(201).json({
     notification: 'User may have requested to delete account'
   })
-}).post('/api/edit-profile/update-hd', (request, response, next) => {
-  const rb = request.body
-  const email = request.__session.email;
-  firebase.updateHD(rb,email);
-  response.status(201).json({
-    notification: 'User may have requested to delete account'
-  })
+  // }).post('/api/edit-profile/update-hd', (request, response, next) => {
+  //   const rb = request.body
+  //   const email = request.__session.email;
+  //   firebase.updateHD(rb,email);
+  //   response.status(201).json({
+  //     notification: 'User may have requested to delete account'
+  //   })
 })
+  .post('/api/edit-profile/find-user', (request, response, next) => {
+    const rb = request.body
+    let email = '';
+    const rezzi = request.__session.rezzi
+    db.collection(keys.rezzis).doc(rezzi).get().then(doc => {
+      const data = doc.data()
+      email = data.HD;
+    }).catch((error) => {
+      console.log('Error getting documents', error)
+      response.status(http.conflict).json(null)
+    })
+    console.log(email);
 
+    console.log("wefewfewfewfew");
+    firebase.findUser(rb, email);
+    response.status(201).json({
+      notification: 'User may have requested to delete account'
+    })
+  })
 module.exports = router

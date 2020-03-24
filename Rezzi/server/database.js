@@ -73,7 +73,7 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data,ema
     console.log("Error updating deletion status on account");
   })
 }
-module.exports.updateHD = function updateHD(data,email){
+module.exports.findUser = function findUser(data,email){
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here

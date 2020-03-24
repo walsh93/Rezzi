@@ -20,7 +20,6 @@ router.get('/', checkCookie, function (request, response) {
     console.log('hd:' + hd);
 
     let users = [];
-    console.log('waewfeew');
     // console.log(request.body);
     // let email = request;
     // let usersref = db.collection('users').doc(email).get();

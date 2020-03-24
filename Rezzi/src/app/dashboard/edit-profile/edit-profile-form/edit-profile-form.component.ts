@@ -70,7 +70,13 @@ export class EditProfileFormComponent implements OnInit {
     this.theUser.deletionReqest = 1;
 
     this.deletionRequest(this.theUser);
-    console.log("HERFE");
+    this.rezziService.getHDEmail().then(response => {
+      this.hd = response;
+      console.log("hall director:" + response.hd);
+      if ((this.theUser.deletionReqest = 1)) {
+        console.log("it is 1!!");
+      }
+    });
     this.updateHallDirector(this.hd);
   }
 
@@ -86,30 +92,36 @@ export class EditProfileFormComponent implements OnInit {
   }
   updateHallDirector(hd) {
     this.rezziService.findUserByEmail().then(response => {
+      console.log(response)
       // this.theUser.setUser(
       this.theHD = new HDUser(
-        response.user.firstName,
-        response.user.lastName,
-        response.user.email,
-        response.user.password,
-        response.user.verified,
-        response.user.deletionRequests
+        response.hd.firstName,
+        response.hd.lastName,
+        response.hd.email,
+        response.hd.password,
+        response.hd.verified,
+        response.hd.deletionRequests
       );
+      if(this.theHD.deletionRequests === undefined){
+        this.theHD.deletionRequests = [];
+      }
+          this.theHD.deletionRequests.push(this.theUser.email);
+          console.log(this.theHD.deletionRequests[0]);
+
+
     });
-    this.theHD.deletionRequests.push(this.theUser.email);
-    console.log(this.theHD.deletionRequests[0]);
 
     //     const myheader = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     // let body = new HttpParams();
     // body = body.set('hd', this.theHD.email);
     // body = body.set('hd', this.theUser.email);
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append("hd", this.theHD.email);
-    urlSearchParams.append("user", this.theUser.email);
+    // let urlSearchParams = new URLSearchParams();
+    // urlSearchParams.append("hd", this.theHD.email);
+    // urlSearchParams.append("user", this.theUser.email);
 
     this.http
       .post<{ notification: string }>(
-        "http://localhost:4100/dashboard/api/edit-profile/update-hd",
+        "http://localhost:4100/dashboard/api/edit-profile/find-user",
         hd
       )
       .subscribe(responseData => {
@@ -141,13 +153,7 @@ export class EditProfileFormComponent implements OnInit {
           response.user.deletionRequest
         );
       });
-      this.rezziService.getHDEmail().then(response => {
-        this.hd = response;
-        console.log("hall director:" + response.hd);
-        if ((this.theUser.deletionReqest = 1)) {
-          console.log("it is 1!!");
-        }
-      });
+
     });
   }
 }
