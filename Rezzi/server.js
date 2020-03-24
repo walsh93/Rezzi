@@ -108,6 +108,9 @@ app.use(url.get_non_pm_users, get_non_pm_users)
 const create_pm = require('./server/routes/create-pm')
 app.use(url.create_pm, create_pm);
 
+const setup_test = require('./server/routes/setup-test')
+app.use(url.setup_test, setup_test)
+
 // Testing
 app.use((request,response,next)=>{
   response.setHeader('Access-Control-Allow-Origin','*');
