@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
   showPM = true;
   showRA = false;
   showHD = false;
+  showReqChan = false;
   constructor(private rezziService: RezziService, private router: Router) { }
 
   ngOnInit() {

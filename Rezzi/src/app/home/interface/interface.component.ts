@@ -32,6 +32,10 @@ export class InterfaceComponent implements OnInit {
           this.abbrevUser = new AbbreviatedUser(response.user.email, response.user.firstName,
             response.user.lastName, response.user.nickName);
           this.abbrevUserUpdateSubject.next(this.abbrevUser);
+
+          if (this.resHall == null || this.resHall === undefined) {
+            this.resHall = response.user.rezzi;
+          }
         });
       }
     });

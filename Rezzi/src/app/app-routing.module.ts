@@ -16,6 +16,7 @@ import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.compo
 import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
+import { RequestChannelComponent } from './request-channel/request-channel.component';
 
 // Routes
 const routes: Routes = [
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'create-channel', component: RaCreateChannelComponent },
   { path: 'err/:accountType/unauthorized', component: ErrorComponent }, // Error routes
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'request-channel', component: RequestChannelComponent },
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },              // Default path to sign-in
   { path: '**', component: PageNotFoundComponent },                     // MUST BE LAST
 ];
