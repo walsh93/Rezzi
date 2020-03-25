@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { RezziService } from '../../rezzi.service';
+import { RezziService } from '../../../rezzi.service';
 
 @Component({
   selector: 'app-request-channel-form',
