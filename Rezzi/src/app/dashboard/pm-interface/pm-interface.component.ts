@@ -33,7 +33,6 @@ export class PmInterfaceComponent implements OnInit {
         });
       }
     });
-
   }
 
   receivedPMUsers(pmUsers: PrivateMessageData[]) {

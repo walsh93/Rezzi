@@ -105,8 +105,8 @@ router.get("/", checkCookie, function(request, response) {
             //put things in database*/
       console.log(rb.floor);
 
-      db.collection(keys.users).doc(currentEmail).set({
-        email: currentEmail,
+      db.collection(keys.users).doc(currentEmail.trim()).set({
+        email: currentEmail.trim(),
         password: tempPword,
         verified: false,
         accountType: parseInt(rb.accountType),

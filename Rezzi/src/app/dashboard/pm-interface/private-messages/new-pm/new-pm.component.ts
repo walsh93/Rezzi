@@ -63,6 +63,14 @@ export class NewPmComponent implements OnInit {
       owner: this.user,
       time: new Date(),
       visible: true,
+      id: null,
+      reactions: { // TODO should make this more generic for ReactionData so its easier to add icons
+        thumb_up: [],
+        thumb_down: [],
+        sentiment_very_satisfied: [],
+        sentiment_dissatisfied: [],
+        whatshot: [],
+      },
     };
 
     const scmd: SocketPrivateMessageData = {

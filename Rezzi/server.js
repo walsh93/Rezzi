@@ -112,6 +112,9 @@ app.use(url.get_non_pm_users, get_non_pm_users)
 const create_pm = require('./server/routes/create-pm')
 app.use(url.create_pm, create_pm);
 
+const setup_test = require('./server/routes/setup-test')
+app.use(url.setup_test, setup_test)
+
 // Testing
 app.use((request,response,next)=>{
   response.setHeader('Access-Control-Allow-Origin','*');
@@ -224,6 +227,11 @@ io.on(skt.connection, (socket) => {
     }
   });
 
+  // When a message is updated (like reactions)
+  socket.on(skt.update_message, (data) => {
+    socketEvents.updateMessage(socket, data)
+  });
+
   socket.on(skt.new_private_view, (dbpath) => {
     serverCurrentPrivate = `${dbpath.userPath}/${dbpath.receiverID}`
     console.log("server.js",serverCurrentPrivate, dbpath)
@@ -231,15 +239,14 @@ io.on(skt.connection, (socket) => {
       const observer = dbListeners.addListenerForPrivateMessages(socket, dbpath)
       serverPrivateListeners.set(serverCurrentPrivate, observer)
     }
-  })
+  });
+
   //$$$conley
   socket.on(skt.new_private_messsage, (data) => {
     console.log("Server.js - socket.on")
     socketEvents.newPrivateMessage(socket, data)
   });
-
-
-})
+});
 
 // Server listener
 server.on('error',onError);
