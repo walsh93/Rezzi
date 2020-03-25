@@ -97,14 +97,13 @@ export class RequestChannelFormComponent implements OnInit {
      * NOTE: Anything returned from request-channel.js will be accessible in res.error
      */
     this.http.post(`/request-channel?rezzi=${this.rezzi}&floor=${this.floor}`, body).toPromise().then((response) => {
-      console.log(response);
-      alert('OKAY!!!');
+      alert((response as any).msg);
       this.router.navigate(['/home']);  // TODO change this to route to channel?
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
         console.log(res);
-        alert('NO-KAY!!!');
+        alert((res as any).msg);
         this.router.navigate(['/home']);  // TODO change this to route to channel?
       } else {
         document.getElementById('error-msg').hidden = false;
