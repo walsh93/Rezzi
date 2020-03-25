@@ -8,5 +8,7 @@
 </div>
 <div>
   <p *ngIf="showCreateChannel"><app-ra-create-channel></app-ra-create-channel></p>
-  <p *ngIf="showChannelRequests"><app-ra-channel-requests [email]="email"></app-ra-channel-requests></p>
+  <p *ngIf="showChannelRequests">
+    <app-ra-channel-requests [email]="email" [rezzi]="rezzi"></app-ra-channel-requests>
+  </p>
 </div>

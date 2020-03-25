@@ -66,6 +66,8 @@ const raFromFloor = require('./server/service/getRaFromFloor')
 app.use(service.get_floor_ra, raFromFloor)
 const getChannelRequests = require('./server/service/getChannelRequests')
 app.use(service.get_channel_requests, getChannelRequests)
+const getChannelData = require('./server/service/getChannelData')
+app.use(service.get_channel_data, getChannelData)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')

@@ -12,6 +12,7 @@ export class RaAdminComponent implements OnInit {
 
   // Data from parent element
   @Input() email: string;
+  @Input() rezzi: string;
 
   constructor() { }
 

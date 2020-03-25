@@ -1,16 +1,33 @@
 <ng-container id="outer-component" class="container">
   <div class="row">
     <div class="col-6 component-column">
-      <ng-container *ngFor="let channel of channelRequestNames | keyvalue">
-        <div class="row btnrow">
-          <button (click)="channelRequestSelected($event)" value="{{ channel.value }}" color="accent" mat-raised-button>
-            {{ channel.key }}
-          </button>
-        </div>
-      </ng-container>
+      <!-- Wait for asynchronous calls to complete -->
+      <div *ngIf="nameObservable | async as chanReqNames; else loading">
+        <ng-container *ngIf="chanReqNames.size > 0; else nonames">
+          <ng-container *ngFor="let channel of chanReqNames | keyvalue">
+            <div class="row btnrow">
+              <button (click)="channelRequestSelected($event)"value="{{ channel.value }}" color="accent" mat-raised-button>
+                {{ channel.key }}
+              </button>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-template #nonames>You do not currently have any channel requests</ng-template>
+      </div>
+      <ng-template #loading>Retrieving list of requests...</ng-template>
     </div>
-    <div class="col-6 component-column">
-      <p>Column 2</p>
+
+    <!-- Information block -->
+    <div id="channel-info" class="col-6 component-column">
+      <h1 *ngIf="!channelIsBeingViewed">Select a channel request to view</h1>
+      <mat-card *ngIf="channelIsBeingViewed">
+        <h1>{{ channelData.title }}</h1>
+        <br>
+        <mat-card-content>Owner: {{ channelData.owner }}</mat-card-content>
+        <mat-card-content>Rezzi: {{ rezzi }} - {{ channelData.level }} channel</mat-card-content>
+        <br>
+        <p>Description: {{ channelData.description }}</p>
+      </mat-card>
     </div>
   </div>
 </ng-container>

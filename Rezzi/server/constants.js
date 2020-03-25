@@ -10,6 +10,7 @@ module.exports = {
     get_user: "/get-user",
     get_floor_ra: "/get-ra-from-floor",
     get_channel_requests: "/get-channel-requests",
+    get_channel_data: "/get-channel-data",
     channel_messages: "/channel-messages",
     private_messages: "/private-messages",
   },

@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
 
   // Data to pass to child elements
   email: string;
+  rezzi: string;
 
   constructor(private rezziService: RezziService, private router: Router) { }
 
@@ -29,6 +30,7 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/sign-up']);
       } else {
         this.email = response.email;
+        this.rezzi = response.rezzi;
         this.accountType = response.accountType;
         if (response.accountType == null || response.accountType === undefined) {
           this.accountType = 2;  // Set as resident by default??
