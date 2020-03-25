@@ -44,8 +44,8 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
-    console.log(this.displayTime);
-    this.displayTime = String(dateAgain);
+    // console.log(this.displayTime);
+    // this.displayTime = String(dateAgain);
 
     for (var reaction in this.reactions) {  // Set initial color values for reactions
       if (this.reactions.hasOwnProperty(reaction)) {
@@ -79,4 +79,7 @@ export class MessageComponent implements OnInit {
     this.messagesService.updateMessageThroughSocket(scmd);
   }
 
+  getList(reaction) {
+    return this.reactions[reaction].join("\n")
+  }
 }
