@@ -6,10 +6,6 @@ const createUserPath = require('../database').createUserPath
 
 
 module.exports.newMessage = function newMessage(socket, data) {
-  console.log("Sending message through socket...");
-  console.log("\tFrom: " + data.message.owner);
-  console.log("\tMessage: ", data.message);
-  console.log("\tChannel: " + data.channelID + " in " + data.rezzi);
   const dbchannel = createChannelPath(data.rezzi, data.channelID)
   if (dbchannel != null) {
     db.collection(dbchannel.channelPath).doc(dbchannel.channelName).get().then((doc) => {
