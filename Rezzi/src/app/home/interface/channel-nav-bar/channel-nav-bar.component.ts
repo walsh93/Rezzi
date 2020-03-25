@@ -28,6 +28,6 @@ export class ChannelNavBarComponent implements OnInit {
       return;
     }
     console.log('user wants to leave ' + this.navTitle);
-    // TODO implement leave-channel route
+    // TODO implement leave-channel route, and "are you sure?" dialog box
   }
 }
