@@ -4,10 +4,14 @@ var router = express.Router();
 const admin = require('firebase-admin');
 const db = admin.firestore();
 
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
+const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 
-router.post('/', function(request, response) {
+router.get('/', checkCookie, function(request, response) {
+  response.sendFile(indexFile)
+}).post('/', function(request, response) {
   const channelInfo = request.body.channel
   if (channelInfo.owner == null || channelInfo.owner == undefined) {
     response.status(http.bad_request).json({ msg: 'Channel owner (RA) not defined' })

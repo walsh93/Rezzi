@@ -14,7 +14,7 @@ const account_type = require('./constants').account_type
  * @param {*} next Function that passes handling to next handler
  */
 module.exports.userNeedsToBeLoggedOut = function untblo(request, response, next) {
-  console.log('userNeedsToBeLoggedOut', request.__session)
+  // console.log('userNeedsToBeLoggedOut', request.__session)
   if (request.__session.email) {
     response.redirect(url.home)
   } else {
@@ -35,7 +35,7 @@ module.exports.userNeedsToBeLoggedOut = function untblo(request, response, next)
  * @param {*} next Function that passes handling to next handler
  */
 module.exports.userNeedsToBeLoggedInAndVerified = function untbliav(request, response, next) {
-  console.log('userNeedsToBeLoggedIn', request.__session)
+  // console.log('userNeedsToBeLoggedInAndVerified', request.__session)
   if (!request.__session.email) {  // not signed in
     response.redirect(url.sign_in)
   } else if (!request.__session.verified) {  // signed-in but not verified
@@ -54,7 +54,7 @@ module.exports.userNeedsToBeLoggedInAndVerified = function untbliav(request, res
  * @param {*} next Function that passes handling to next handler
  */
 module.exports.userNeedsToBeLoggedInAndUnverified = function untbliau(request, response, next) {
-  console.log('userNeedsToBeLoggedIn', request.__session)
+  // console.log('userNeedsToBeLoggedInAndUnverified', request.__session)
   if (!request.__session.email) {  // not signed in
     response.redirect(url.sign_in)
   } else if (request.__session.verified) {  // signed-in and verified
@@ -77,7 +77,7 @@ module.exports.userNeedsToBeLoggedInAndUnverified = function untbliau(request, r
  * @param {*} next Function that passes handling to next handler
  */
 module.exports.userNeedsToBeLoggedInRA = function untblia(request, response, next) {
-  console.log('userNeedsToBeLoggedIn', request.__session)
+  // console.log('userNeedsToBeLoggedInRA', request.__session)
   if (!request.__session.email) {  // not signed in
     response.redirect(url.sign_in)
   } else if (request.__session.accountType != account_type.ra) {  // signed-in but not admin
@@ -102,7 +102,7 @@ module.exports.userNeedsToBeLoggedInRA = function untblia(request, response, nex
  * @param {*} next Function that passes handling to next handler
  */
 module.exports.userNeedsToBeLoggedInHD = function untblihd(request, response, next) {
-  console.log('userNeedsToBeLoggedInHD', request.__session)
+  // console.log('userNeedsToBeLoggedInHD', request.__session)
   if (!request.__session.email) {  // not signed in
     response.redirect('/sign-in')
   } else if (request.__session.accountType != account_type.hd) {
@@ -126,7 +126,7 @@ module.exports.userNeedsToBeLoggedInHD = function untblihd(request, response, ne
  * @param {*} next Function that passes handling to next handler
  */
 module.exports.userNeedsToBeLoggedInAndVerifiedAndTempPword = function untbliav(request, response, next) {
-  console.log('userNeedsToBeLoggedInAndTempPword', request.__session)
+  // console.log('userNeedsToBeLoggedInAndVerifiedAndTempPword', request.__session)
   if (!request.__session.email) {  // not signed in
     response.redirect(url.sign_in)
   } else if (!request.__session.verified) {  // signed-in but not verified
