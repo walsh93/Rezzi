@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User, ReactionData, AbbreviatedUser, Message, SocketChannelMessageData } from 'src/app/classes.model';
+import { User, ReactionData, AbbreviatedUser, Message, SocketChannelMessageData, SocketPrivateMessageData } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
 import { MessagesService } from '../messages.service';
 
@@ -16,20 +16,23 @@ export class MessageComponent implements OnInit {
   reacted = {};
 
   // Properties inherited from channel-messages (or whatever the parent component is)
-  @Input() viewingUser: User;
-  @Input() message: Message;
-  @Input() channel: string;
-  @Input() rezzi: string;
-  private reactions: ReactionData;
-  private user: AbbreviatedUser;
-  private content: string;
-  private time: Date;
+  @Input() viewingUser: User;          // The user viewing the channel (or PM)
+  @Input() message: Message;           // The actual message data
+  @Input() channel: string;            // The channel the message is in
+  @Input() rezzi: string;              // The Rezzi the channel is in
+  @Input() pm: boolean;                // Whether or not the message is a pm
+  @Input() pmUser: string;             // The user being PMd
+  private reactions: ReactionData;     // Data holding the reaction (extracted from message)
+  private user: AbbreviatedUser;       // The user who sent the message (extracted from message)
+  private content: string;             // The content of the message (extracted from message)
+  private time: Date;                  // When the message was sent (extracted from message)
 
   constructor(public messagesService: MessagesService) { }
 
   ngOnInit() {
     //console.log(this.time);
     console.log("Message: ", this.message);
+    console.log(this.viewingUser);
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
     this.content = this.message.content;
@@ -60,12 +63,6 @@ export class MessageComponent implements OnInit {
   }
 
   sendReaction(reaction) {
-    let scmd: SocketChannelMessageData = {
-      message: this.message,
-      rezzi: this.rezzi,
-      channelID: this.channel,
-    };
-
     if (this.reacted[reaction] === "") {  // If the user has not reacted
       this.reacted[reaction] = "accent";
       this.reactions[reaction].push(this.viewingUser.email);
@@ -75,8 +72,24 @@ export class MessageComponent implements OnInit {
       this.reactions[reaction].splice(this.reactions[reaction].indexOf(this.viewingUser.email), 1);
     }
 
-    scmd.message.reactions = this.reactions;
-    this.messagesService.updateMessageThroughSocket(scmd);
+    if (this.pm) {
+      let spmd: SocketPrivateMessageData = {
+        message: this.message,
+        sender: this.viewingUser.email,
+        recipient: this.pmUser,
+      };
+      spmd.message.reactions = this.reactions;
+      this.messagesService.updateMessageThroughSocket(spmd);
+    }
+    else {
+      let scmd: SocketChannelMessageData = {
+        message: this.message,
+        rezzi: this.rezzi,
+        channelID: this.channel
+      };
+      scmd.message.reactions = this.reactions;
+      this.messagesService.updateMessageThroughSocket(scmd);
+    }
   }
 
   getList(reaction) {

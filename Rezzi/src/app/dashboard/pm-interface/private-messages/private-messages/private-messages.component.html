@@ -3,7 +3,9 @@
   <!--{{ message.owner.firstName }}: Temporary Comment-->
   <app-message
     [message]="message"
-    [viewingUser]="currentPMUser"
+    [viewingUser]="viewingUser"
     [rezzi]="session.rezzi"
+    [pm]="true"
+    [pmUser]="currentPMUser"
   ></app-message>
 </div>
