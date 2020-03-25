@@ -16,6 +16,9 @@ export class DashboardComponent implements OnInit {
   showReqChan = false;
   accountType: number;
 
+  // Data to pass to child elements
+  email: string;
+
   constructor(private rezziService: RezziService, private router: Router) { }
 
   ngOnInit() {
@@ -25,6 +28,7 @@ export class DashboardComponent implements OnInit {
       } else if (response.verified === false) {  // signed in but not verified
         this.router.navigate(['/sign-up']);
       } else {
+        this.email = response.email;
         this.accountType = response.accountType;
         if (response.accountType == null || response.accountType === undefined) {
           this.accountType = 2;  // Set as resident by default??
