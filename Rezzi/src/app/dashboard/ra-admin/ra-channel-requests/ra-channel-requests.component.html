@@ -1,0 +1,16 @@
+<ng-container id="outer-component" class="container">
+  <div class="row">
+    <div class="col-6 component-column">
+      <ng-container *ngFor="let channel of channelRequestNames | keyvalue">
+        <div class="row btnrow">
+          <button (click)="channelRequestSelected($event)" value="{{ channel.value }}" color="accent" mat-raised-button>
+            {{ channel.key }}
+          </button>
+        </div>
+      </ng-container>
+    </div>
+    <div class="col-6 component-column">
+      <p>Column 2</p>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,8 @@
+#outer-component {
+  min-width: 90%;
+}
+
+.btnrow {
+  justify-content: center;
+  margin: 20px;
+}

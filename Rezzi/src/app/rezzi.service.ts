@@ -51,4 +51,12 @@ export class RezziService {
     });
   }
 
+  getChannelRequests(): Promise<any> {
+    return this.http.get('/get-channel-requests').toPromise().then((requests) => {
+      return requests;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
 }
