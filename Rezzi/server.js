@@ -60,6 +60,8 @@ const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
 const channelMessages = require('./server/service/channelMessages')
 app.use(service.channel_messages, channelMessages)
+const privateMessages = require('./server/service/privateMessages')
+app.use(service.private_messages, privateMessages)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')
@@ -99,6 +101,12 @@ app.use(url.create_rezzi, createrezzi)
 const dashboard = require('./server/routes/dashboard')
 app.use(url.dashboard, dashboard)
 
+const get_pm_users = require('./server/routes/get-pm-users')
+app.use(url.get_pm_users, get_pm_users)
+const get_non_pm_users = require('./server/routes/get-non-pm-users')
+app.use(url.get_non_pm_users, get_non_pm_users)
+const create_pm = require('./server/routes/create-pm')
+app.use(url.create_pm, create_pm);
 
 // Testing
 app.use((request,response,next)=>{
@@ -190,7 +198,9 @@ const skt = require('./server/constants').socket
 
 // Map of db channel listeners
 serverChannelListeners = new Map()
+serverPrivateListeners = new Map()
 serverCurrentChannel = null
+serverCurrentPrivate = null
 
 // IO listener
 io.on(skt.connection, (socket) => {
@@ -208,7 +218,23 @@ io.on(skt.connection, (socket) => {
       const observer = dbListeners.addListenerForChannelMessages(socket, dbpath)
       serverChannelListeners.set(serverCurrentChannel, observer)
     }
+  });
+
+  socket.on(skt.new_private_view, (dbpath) => {
+    serverCurrentPrivate = `${dbpath.userPath}/${dbpath.receiverID}`
+    console.log("server.js",serverCurrentPrivate, dbpath)
+    if (!serverPrivateListeners.has(serverCurrentPrivate)) {
+      const observer = dbListeners.addListenerForPrivateMessages(socket, dbpath)
+      serverPrivateListeners.set(serverCurrentPrivate, observer)
+    }
   })
+  //$$$conley
+  socket.on(skt.new_private_messsage, (data) => {
+    console.log("Server.js - socket.on")
+    socketEvents.newPrivateMessage(socket, data)
+  });
+
+
 })
 
 // Server listener

@@ -20,6 +20,7 @@ export class MessageComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    //console.log(this.time);
     const dateAgain = new Date(this.time);
     const day = this.dayNames[dateAgain.getDay()];
     const month = this.monthNames[dateAgain.getMonth()];
@@ -30,6 +31,8 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
+    console.log(this.displayTime);
+    this.displayTime = String(dateAgain);
   }
 
 }

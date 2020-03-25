@@ -103,6 +103,7 @@ export interface SocketChannelMessageData extends SocketMessageData {
 
 export interface SocketPrivateMessageData extends SocketMessageData {
   recipient: string;  // TODO ??
+  sender: string;
 }
 
 export class HDUser {
@@ -128,5 +129,10 @@ export interface ChannelData {
   users: number;
   belongs: boolean;
   subchannels: ChannelData[];
+  messages: Message[];
+}
+
+export interface PrivateMessageData {
+  recipient: string;
   messages: Message[];
 }
