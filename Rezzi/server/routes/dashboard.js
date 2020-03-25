@@ -41,7 +41,7 @@ router.get('/', checkCookie, function (request, response) {
   .post('/api/edit-profile/find-user', (request, response, next) => {
     const rb = request.body
     let email = request.query.hd;
-    const rezzi = request.__session.rezzi
+    let user = request.query.user;
     // db.collection(keys.rezzis).doc(rezzi).get().then(doc => {
     //   const data = doc.data()
     //   email = data.HD;
@@ -49,10 +49,13 @@ router.get('/', checkCookie, function (request, response) {
     //   console.log('Error getting documents', error)
     //   response.status(http.conflict).json(null)
     // })
+    console.log("wdw " + request.query.hd)
+    for (const key in request.query) {
+      console.log(key, request.query[key])
+    }
     console.log(email);
 
-    console.log("wefewfewfewfew");
-    firebase.findUser(rb, email);
+    firebase.findUser(rb, email,user);
     response.status(201).json({
       notification: 'User may have requested to delete account'
     })

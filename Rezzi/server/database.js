@@ -8,9 +8,10 @@ const admin = require('firebase-admin');
 // Initialize firebase admin client
 const serviceAccount = require('../rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json');
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://rezzi-33137.firebaseio.com"
-  });
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://rezzi-33137.firebaseio.com"
+});
+const FieldValue = require('firebase-admin').firestore.FieldValue;
 
 console.log('Database client seems to be working');
 
@@ -24,7 +25,7 @@ module.exports = {
 };
 
 module.exports.addUser = function addUser(data) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     dbstore.collection('users').doc(data.email).get().then(doc => {
       if (doc.exists && doc.data().verified == true) {
         //Do something about the error here
@@ -47,7 +48,7 @@ module.exports.addUser = function addUser(data) {
   })
 }
 
-module.exports.editUser = function editUser(data,email){
+module.exports.editUser = function editUser(data, email) {
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
@@ -60,7 +61,7 @@ module.exports.editUser = function editUser(data,email){
     console.log("Error editing account");
   })
 }
-module.exports.requestAccountDeletion = function requestAccountDeletion(data,email){
+module.exports.requestAccountDeletion = function requestAccountDeletion(data, email) {
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
@@ -73,17 +74,18 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data,ema
     console.log("Error updating deletion status on account");
   })
 }
-module.exports.findUser = function findUser(data,email){
+module.exports.findUser = function findUser(data,email, user) {
+  console.log("qwwqdwqdw " + email + " " + user)
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
     } else {
-      dbstore.collection('users').doc(email).update(data)
+      dbstore.collection('users').doc(email).update({'deletionRequests': FieldValue.arrayUnion(user)})
     }
   }).catch(err => {
     //reject(err)
     console.log(err)
-    console.log("Error updating deletion status on account");
+    console.log("Error updating HD's deletion requests");
   })
 }
 
@@ -119,12 +121,12 @@ module.exports.createChannelPath = function createChannelPath(rezzi, channelID) 
 
 //$$$conley
 module.exports.createUserPath = function createUserPath(sender, receiver) {
-  if (sender == null || receiver == null){
+  if (sender == null || receiver == null) {
     console.log("Path Creating Error");
     return null;
   }
   senderPath = `users/${sender}/private-messages`;
   receiverPath = `users/${receiver}/private-messages`;
-  return {senderPath: senderPath, receiverPath: receiverPath};
+  return { senderPath: senderPath, receiverPath: receiverPath };
 }
 //$$$conley

@@ -32,8 +32,9 @@ export class RezziService {
         console.log(error);
       });
   }
-  findUserByEmail(hd: string): Promise<any> {
-    return this.http.get(`/find-user?hd=${hd}`)
+  findUserByEmail(hd: string, user: string): Promise<any> {
+    console.log("EWRWGED " + hd);
+    return this.http.get(`/find-user?hd=${hd}&user=${user}`)
     .toPromise()
 
       .then(response => {

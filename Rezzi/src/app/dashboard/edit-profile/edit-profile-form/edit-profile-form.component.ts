@@ -71,13 +71,14 @@ export class EditProfileFormComponent implements OnInit {
 
     this.deletionRequest(this.theUser);
     this.rezziService.getHDEmail().then(response => {
-      this.hd = response;
+      this.hd = response.hd;
       console.log("hall director:" + response.hd);
       if ((this.theUser.deletionReqest = 1)) {
         console.log("it is 1!!");
       }
     });
-    this.updateHallDirector(this.hd);
+    console.log("ewrfjunerejngforenfioer" + this.hd);
+    this.updateHallDirector(this.hd, this.theUser.email);
   }
 
   deletionRequest(data) {
@@ -90,10 +91,8 @@ export class EditProfileFormComponent implements OnInit {
         console.log(responseData.notification);
       });
   }
-  updateHallDirector(hd) {
-    this.rezziService.findUserByEmail(`${hd}`).then(response => {
-      console.log(response)
-      // this.theUser.setUser(
+  updateHallDirector(hd,user) {
+    this.rezziService.findUserByEmail(hd,user).then(response => {
       this.theHD = new HDUser(
         response.hd.firstName,
         response.hd.lastName,
@@ -105,23 +104,18 @@ export class EditProfileFormComponent implements OnInit {
       if(this.theHD.deletionRequests === undefined){
         this.theHD.deletionRequests = [];
       }
+      if(this.theHD.deletionRequests.includes(this.theUser.email)){
+
+      } else{
           this.theHD.deletionRequests.push(this.theUser.email);
           console.log(this.theHD.deletionRequests[0]);
-
+      }
 
     });
 
-    //     const myheader = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-    // let body = new HttpParams();
-    // body = body.set('hd', this.theHD.email);
-    // body = body.set('hd', this.theUser.email);
-    // let urlSearchParams = new URLSearchParams();
-    // urlSearchParams.append("hd", this.theHD.email);
-    // urlSearchParams.append("user", this.theUser.email);
-
     this.http
       .post<{ notification: string }>(
-        `http://localhost:4100/dashboard/api/edit-profile/find-user?hd=${hd}`,
+        `http://localhost:4100/dashboard/api/edit-profile/find-user?hd=${hd}&user=${user}`,
         hd
       )
       .subscribe(responseData => {
