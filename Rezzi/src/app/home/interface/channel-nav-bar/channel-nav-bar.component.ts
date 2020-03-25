@@ -29,5 +29,6 @@ export class ChannelNavBarComponent implements OnInit {
     }
     console.log('user wants to leave ' + this.navTitle);
     // TODO implement leave-channel route, and "are you sure?" dialog box
+    // TODO also figure out how to pass in channel.id, follow join-channel.component.ts for help
   }
 }
