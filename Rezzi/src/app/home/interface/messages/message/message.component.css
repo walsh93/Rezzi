@@ -1,16 +1,27 @@
 mat-card {
-  display: flex;
-  margin: 5px;
+  /*display: flex;*/
+  margin: 10px;
 }
 
-/* Column containing the name */
-.col-2 {
-  font-weight: bold;
+mat-card-header {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
 }
 
 mat-card-footer {
   font-size: smaller;
-  margin-left: 5px;
-  margin-bottom: 2px;
+  /*margin-left: 5px;*/
+  margin-bottom: 1px;
+  margin-right: 3px;
   text-align: end;
+}
+
+.avatar {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.reactions {
+  margin-left: auto;
 }

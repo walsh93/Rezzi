@@ -22,6 +22,8 @@ import {
   MatIconModule,
   MatSlideToggleModule,
   MatSnackBarModule,
+  MatBadgeModule,
+  MatTooltipModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -181,6 +183,8 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
     NgbModule,
     MatTabsModule,
     MatSelectModule,
+    MatBadgeModule,
+    MatTooltipModule,
   ],
   entryComponents: [
     JoinChannelComponent,

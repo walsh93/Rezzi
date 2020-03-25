@@ -70,6 +70,14 @@ export class User {
   }
 }
 
+export interface ReactionData {
+  thumb_up: string[];
+  thumb_down: string[];
+  sentiment_very_satisfied: string[];
+  sentiment_dissatisfied: string[];
+  whatshot: string[];
+}
+
 export class AbbreviatedUser {
   email: string;
   firstName: string;
@@ -85,11 +93,12 @@ export class AbbreviatedUser {
 }
 
 export interface Message {
-  // id: string;
+  id: string;
   owner: AbbreviatedUser;
   content: string;
   time: Date;
   visible: boolean;
+  reactions: ReactionData;
 }
 
 export interface SocketMessageData {
@@ -123,6 +132,7 @@ export class HDUser {
   accountType: number;
   verified: boolean;
 }
+
 export interface ChannelData {
   id: string;
   channel: string;

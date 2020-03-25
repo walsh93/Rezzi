@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Message, PrivateMessageData } from 'src/app/classes.model';
+import { Message, PrivateMessageData, AbbreviatedUser } from 'src/app/classes.model';
 import { MessagesService } from 'src/app/home/interface/messages/messages.service';
 
 @Component({
@@ -12,6 +12,7 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   private messagesSub: Subscription;
   private userMap: Map<string, PrivateMessageData>;
+  @Input() viewingUser: AbbreviatedUser;
 
   // Session data retrieved from interface.component
   session: any;

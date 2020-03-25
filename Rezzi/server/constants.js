@@ -65,6 +65,7 @@ module.exports = {
     get_non_pm_users: "/get-non-pm-users",
     create_pm: "/create-pm",
     request_channel: "/request-channel",
+    setup_test: "/setup-test"
   },
 
   http_status: {
@@ -130,6 +131,7 @@ module.exports = {
     new_channel_view: 'new-channel-view',
     new_message: 'new-message',
     new_message_added: 'added-new-message',
+    update_message: 'update-message',
     new_private_view: 'new-private-view', //$$$conley
     new_private_messsage: 'new-private-message', //$$$conley
     new_private_message_added: 'added-new-private-message', //$$$conley
