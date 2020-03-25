@@ -6,15 +6,23 @@
         <ng-container *ngIf="chanReqNames.size > 0; else nonames">
           <ng-container *ngFor="let channel of chanReqNames | keyvalue">
             <div class="row btnrow">
-              <button (click)="channelRequestSelected($event)"value="{{ channel.value }}" color="accent" mat-raised-button>
+              <button (click)="channelRequestSelected($event)" value="{{ channel.value }}" color="accent" mat-raised-button>
                 {{ channel.key }}
               </button>
             </div>
           </ng-container>
         </ng-container>
-        <ng-template #nonames>You do not currently have any channel requests</ng-template>
+        <ng-template #nonames>
+          <div class="row btnrow">
+            <p>You do not currently have any channel requests</p>
+          </div>
+        </ng-template>
       </div>
-      <ng-template #loading>Retrieving list of requests...</ng-template>
+      <ng-template #loading>
+        <div class="row btnrow">
+          <p>Retrieving list of requests...</p>
+        </div>
+      </ng-template>
     </div>
 
     <!-- Information block -->
@@ -27,6 +35,11 @@
         <mat-card-content>Rezzi: {{ rezzi }} - {{ channelData.level }} channel</mat-card-content>
         <br>
         <p>Description: {{ channelData.description }}</p>
+        <br>
+        <div id="adbtns" class="row">
+          <button class="adbtn" (click)="approveRequest()" color="primary" mat-raised-button>Approve</button>
+          <button class="adbtn" (click)="denyRequest()" color="warning" mat-raised-button>Deny</button>
+        </div>
       </mat-card>
     </div>
   </div>

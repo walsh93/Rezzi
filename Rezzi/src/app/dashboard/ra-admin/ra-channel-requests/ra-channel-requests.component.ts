@@ -86,4 +86,20 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
     this.channelIsBeingViewed = true;
   }
 
+  approveRequest() {
+    const approved = confirm('Are you sure you would like to approve this channel request?');
+    if (approved) {
+      console.log('Change tag, remove from array of requests, create-channel.js, and reload this page');
+    }
+  }
+
+  denyRequest() {
+    const p1 = 'Are you sure you would like to deny this channel request?';
+    const p2 = 'If you confirm, this request will no longer appear on your dashboard.';
+    const denied = confirm(`${p1} ${p2}`);
+    if (denied) {
+      console.log('Remove from array of requests in the database and reload this page');
+    }
+  }
+
 }

@@ -9,5 +9,14 @@
 
 mat-card {
   margin-top: 20px;
-  margin-right: 20px;
+  margin-right: 60px;
+}
+
+#adbtns {
+  justify-content: space-evenly;
+}
+
+.adbtn {
+  min-height: 50px;
+  min-width: 100px;
 }
