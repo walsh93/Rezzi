@@ -8,38 +8,35 @@
   <mat-drawer #drawer class="example-sidenav" mode="side" opened>
     <div>
       <br>
-      <button (click)="showEdit = true; showPM = false; showRA = false; showHD = false; showReqChan=false;" mat-raised-button>
+      <button (click)="showEdit=true;showPM=false;showRA=false;showHD=false;showReqChan=false;" mat-raised-button>
         Edit Profile
       </button>
     </div>
     <br>
     <br>
     <div>
-      <button (click)="showEdit = false; showPM = true; showRA = false; showHD = false; showReqChan=false;" mat-raised-button>
+      <button (click)="showEdit=false;showPM=true;showRA=false;showHD=false;showReqChan=false;" mat-raised-button>
         Private Messages
       </button>
     </div>
     <br>
     <br>
-    <!-- TODO Check to see if account status == 2 -->
-    <div>
+    <div *ngIf="accountType==2">
       <button (click)="showEdit=false;showPM=false;showRA=false;showHD=false;showReqChan=true;" mat-raised-button>
         Request Channel
       </button>
+      <br>
+      <br>
     </div>
-    <br>
-    <br>
-    <!-- TODO Check to see if account status is <= 1 -->
-    <div>
-      <button (click)="showEdit = false; showPM = false; showRA = true; showHD = false; showReqChan=false;" mat-raised-button>
+    <div *ngIf="accountType==0||accountType==1">
+      <button (click)="showEdit=false;showPM=false;showRA=true;showHD=false;showReqChan=false;" mat-raised-button>
         RA Admin
       </button>
+      <br>
+      <br>
     </div>
-    <br>
-    <br>
-    <!-- TODO Check to see if account status = 0 -->
-    <div>
-      <button (click)="showEdit = false; showPM = false; showRA = false; showHD = true; showReqChan=false;" mat-raised-button>
+    <div *ngIf="accountType==0">
+      <button (click)="showEdit=false;showPM=false;showRA=false;showHD=true;showReqChan=false;" mat-raised-button>
         HD Admin
       </button>
     </div>
