@@ -68,19 +68,12 @@ export class EditProfileFormComponent implements OnInit {
   }
   ondeletionRequest() {
     this.theUser.deletionReqest = 1;
-
     this.deletionRequest(this.theUser);
-    this.rezziService.getHDEmail().then(response => {
-      this.hd = response.hd;
-      console.log("hall director:" + response.hd);
-      if ((this.theUser.deletionReqest = 1)) {
-        console.log("it is 1!!");
-      }
-    });
-    console.log("ewrfjunerejngforenfioer" + this.hd);
+    this.getHDEmail();
     this.updateHallDirector(this.hd, this.theUser.email);
-  }
 
+
+  }
   deletionRequest(data) {
     this.http
       .post<{ notification: string }>(
@@ -91,7 +84,12 @@ export class EditProfileFormComponent implements OnInit {
         console.log(responseData.notification);
       });
   }
+  getHDEmail(){
+    console.log('gethdemial')
+
+  }
   updateHallDirector(hd,user) {
+    console.log("updatehd"+ hd);
     this.rezziService.findUserByEmail(hd,user).then(response => {
       this.theHD = new HDUser(
         response.hd.firstName,
@@ -113,13 +111,19 @@ export class EditProfileFormComponent implements OnInit {
 
     });
 
+    this.updateHD(hd,user);
+
+  }
+
+  updateHD(hd,user) {
+    console.log('update' + hd + "" + user)
     this.http
       .post<{ notification: string }>(
         `http://localhost:4100/dashboard/api/edit-profile/find-user?hd=${hd}&user=${user}`,
         hd
       )
       .subscribe(responseData => {
-        // console.log(responseData.notification);
+        console.log(responseData.notification);
       });
   }
 
@@ -146,6 +150,14 @@ export class EditProfileFormComponent implements OnInit {
           true,
           response.user.deletionRequest
         );
+      });
+      this.rezziService.getHDEmail().then(response => {
+        this.hd = response.hd;
+        console.log("hall director:" + response.hd);
+        if ((this.theUser.deletionReqest = 1)) {
+          console.log("it is 1!!");
+        }
+        console.log("ewrfjunerejngforenfioer" + this.hd);
       });
 
     });

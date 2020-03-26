@@ -37,7 +37,8 @@ export class InterfaceComponent implements OnInit {
           response.user.major,
           response.user.nickName,
           response.user.bio,
-          true
+          true,
+          response.user.deletionRequest,
         );
       });
 
