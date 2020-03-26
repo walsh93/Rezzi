@@ -1,6 +1,7 @@
 import { Component, OnInit, HostBinding, Inject } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ChannelData } from 'src/app/classes.model';
 
 export interface DialogData {
   channel: string;
@@ -12,6 +13,7 @@ export interface DialogData {
 })
 
 export class ChannelNavBarComponent implements OnInit {
+  channels: ChannelData[];
   @HostBinding('class.nav-title')
   navTitle = 'Rezzi';
   channelMenuDisabled = true;
