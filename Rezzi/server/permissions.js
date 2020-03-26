@@ -125,11 +125,11 @@ module.exports.userNeedsToBeLoggedInHD = function untblihd(request, response, ne
  * @param {*} next Function that passes handling to next handler
  */
 module.exports.userNeedsToBeLoggedInAdmin = function untblia(request, response, next) {
-  // console.log('userNeedsToBeLoggedInAdmin', request.__session)
+  //console.log('userNeedsToBeLoggedInAdmin', request.__session)
   if (!request.__session.email) {  // not signed in
     response.redirect(url.sign_in)
   } else if (request.__session.accountType != account_type.ra && request.__session.accountType != account_type.hd) {  // signed-in but not admin
-    response.redirect(url.error.not_raadmin)
+    response.redirect(url.error.not_hdadmin)
   } else {
     next()  // Propogate to the next handler
   }
