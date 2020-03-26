@@ -67,13 +67,13 @@ export class EditProfileFormComponent implements OnInit {
     alert("Your profile has been edited!");
   }
   ondeletionRequest() {
-    // if(this.theUser.deletionRequest !== 1){
+    if(this.theUser.email !== this.hd){
     this.theUser.deletionRequest = 1;
     this.deletionRequest(this.theUser);
     this.updateHallDirector(this.hd, this.theUser.email);
-    // } else {
-    //   alert("You have already requested to delete your account!")
-    // }
+    } else {
+      alert("Only non-hall director accounts can request deletion!")
+    }
 
   }
   deletionRequest(data) {
