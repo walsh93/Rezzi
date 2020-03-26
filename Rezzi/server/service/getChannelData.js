@@ -12,6 +12,17 @@ router.get('/', checkCookie, function(request, response) {
     if (doc.exists) {
       response.status(http.ok).json(doc.data())
     } else {
+      // Remove channel ID from request list if it's no longer in database
+      const raDocRef = db.collection('users').doc(request.__session.email)
+      raDocRef.get().then((raDoc) => {
+        const chanReqs = raDoc.data().channelRequests
+        chanReqs.splice(request.query.index, 1)
+        raDocRef.update({
+          channelRequests: chanReqs
+        })
+      })
+
+      // Send response without waiting for raDoc update to complete
       response.status(http.bad_request).json(null)
     }
   }).catch((error) => {

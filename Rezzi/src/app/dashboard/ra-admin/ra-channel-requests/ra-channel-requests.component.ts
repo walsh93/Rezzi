@@ -73,12 +73,14 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
       const paths = this.rezziService.createChannelPath(this.rezzi, channelID);
       if (paths == null) {
         this.viewingFailure();
+        return;
       }
 
       // Get channel data assuming retrieval from DB succeeded
-      this.rezziService.getChannelData(paths.channelPath, paths.channelName).then((data) => {
+      this.rezziService.getChannelData(paths.channelPath, paths.channelName, index).then((data) => {
         if (data == null) {
           this.viewingFailure();
+          return;
         }
 
         // Add data to mapping
@@ -91,9 +93,8 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
   }
 
   viewingFailure() {
-    this.rezziService.getChannelRequests();
     alert('The channel request you are trying to view could not be retrieved');
-    return;
+    this.rezziService.getChannelRequests();
   }
 
   setChannelBeingViewed(index: number, channelID: string) {

@@ -71,8 +71,8 @@ export class RezziService {
     });
   }
 
-  getChannelData(channelPath: string, channelName: string): Promise<any> {
-    return this.http.get(`/get-channel-data?channelPath=${channelPath}&channelName=${channelName}`).toPromise().then((data) => {
+  getChannelData(cp: string, cn: string, i: number): Promise<any> {
+    return this.http.get(`/get-channel-data?channelPath=${cp}&channelName=${cn}&index=${i}`).toPromise().then((data) => {
       return data;
     }).catch((error) => {
       console.log(error);
