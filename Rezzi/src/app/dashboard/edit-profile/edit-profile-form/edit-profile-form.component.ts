@@ -87,7 +87,7 @@ export class EditProfileFormComponent implements OnInit {
       });
   }
   updateHallDirector(hd,user) {
-    console.log("updatehd"+ hd);
+    // console.log("updatehd"+ hd);
     this.rezziService.findUserByEmail(hd,user).then(response => {
       this.theHD = new HDUser(
         response.hd.firstName,
