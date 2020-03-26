@@ -85,6 +85,7 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
     this.messagesSub = this.messagesService.getMessageUpdateListener().subscribe((updatedMessages: Message[]) => { // should be fine
       console.log("message update");
       this.messages = updatedMessages;
+      console.log("MESSAGES" + this.messages)
     }
     )
   }

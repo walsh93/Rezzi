@@ -23,7 +23,7 @@ router.get('/', checkCookie, function (request, response) {
       })
     })
 
-  let query2 = usersRef.where('rezzi', '==', rezzi).get()
+  let query2 = usersRef.where('rezzi', '==', rezzi).where('verified','==',true).get()
     .then(snapshot => {
       if (snapshot.empty) {
         console.log("No matching documents.");
