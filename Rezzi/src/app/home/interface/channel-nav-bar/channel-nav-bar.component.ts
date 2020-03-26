@@ -1,7 +1,10 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, Inject } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
+export interface DialogData {
+  channel: string;
+}
 @Component({
   selector: 'app-channel-nav-bar',
   templateUrl: './channel-nav-bar.component.html',
@@ -34,7 +37,8 @@ export class ChannelNavBarComponent implements OnInit {
       return;
     }
 
-    console.log('attempting to open dialog');
+    console.log('attempting to open dialog for ' + this.navTitle);
+
     const dialogRef = this.dialog.open(LeaveChannelDialog, {
       width: '450px',
       data: {channel: this.navTitle}
@@ -53,9 +57,12 @@ export class ChannelNavBarComponent implements OnInit {
   selector: 'app-leave-channel-dialog',
   templateUrl: 'leave-channel-dialog.html',
 })
+// tslint:disable-next-line: component-class-suffix
 export class LeaveChannelDialog {
 
-  constructor(public dialogRef: MatDialogRef<LeaveChannelDialog>) {}
+  constructor(
+    public dialogRef: MatDialogRef<LeaveChannelDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onCancelClick(): void {
     console.log('user cancelled leaving');
