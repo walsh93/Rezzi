@@ -2,6 +2,8 @@ import { Component, OnInit, HostBinding, Inject } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ChannelData } from 'src/app/classes.model';
+import { RezziService } from 'src/app/rezzi.service';
+import { Router } from '@angular/router';
 
 export interface DialogData {
   channel: string;
@@ -13,22 +15,47 @@ export interface DialogData {
 })
 
 export class ChannelNavBarComponent implements OnInit {
+
+  user: string;
+  accountType: number;
   channels: ChannelData[];
   @HostBinding('class.nav-title')
   navTitle = 'Rezzi';
+
+  // All buttons are disabled until permissions are checked on init
   channelMenuDisabled = true;
   leaveButtonDisabled = true;
+  deleteButtonDisabled = true;
 
-  constructor(private channelNavBarService: ChannelNavBarService, public dialog: MatDialog) {}
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private channelNavBarService: ChannelNavBarService,
+              public dialog: MatDialog) {}
+
+  checkPermissions() {
+    if (this.navTitle !== 'Rezzi') {    // Channel not selected
+      this.channelMenuDisabled = false;
+    }
+    if (this.navTitle !== 'General') {  // Cannot leave General channel
+      this.leaveButtonDisabled = false;
+    }
+    if (this.accountType < 2) {         // Must be RA or HD to delete
+      this.deleteButtonDisabled = false;
+    }
+  }
 
   ngOnInit() {
     this.channelNavBarService.setTitle.subscribe(navTitle => {
       this.navTitle = navTitle;
-      if (this.navTitle !== 'Rezzi') {
-        this.channelMenuDisabled = false;
-      }
-      if (this.navTitle !== 'General') {
-        this.leaveButtonDisabled = false;
+      this.checkPermissions();
+    });
+
+    this.rezziService.getSession().then((response) => {
+      if (response.email == null) {
+        this.router.navigate(['/sign-in']);
+      } else {
+        this.user = response.email;
+        this.accountType = response.accountType;
       }
     });
   }
