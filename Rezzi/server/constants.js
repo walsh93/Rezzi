@@ -10,6 +10,9 @@ module.exports = {
     get_user: "/get-user",
     get_hd: "/get-hd",
     update_hd: "/update-hd",
+    get_floor_ra: "/get-ra-from-floor",
+    get_channel_requests: "/get-channel-requests",
+    get_channel_data: "/get-channel-data",
     channel_messages: "/channel-messages",
     private_messages: "/private-messages",
   },
@@ -63,6 +66,8 @@ module.exports = {
     get_pm_users: "/get-pm-users",
     get_non_pm_users: "/get-non-pm-users",
     create_pm: "/create-pm",
+    request_channel: "/request-channel",
+    channel_requests: "/channel-requests",
     setup_test: "/setup-test"
   },
 
