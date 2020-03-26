@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RezziService } from '../../rezzi.service';
-import { ChannelData, AbbreviatedUser } from '../../classes.model';
+import { ChannelData, User, AbbreviatedUser } from '../../classes.model';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 export class InterfaceComponent implements OnInit {
   session: any;
   resHall: string;
+  user: User;
   abbrevUser: AbbreviatedUser;
 
   // Passing channels and session to child component channel-messages every time they update
@@ -26,12 +27,30 @@ export class InterfaceComponent implements OnInit {
       this.session = session;
       this.sessionUpdateSubject.next(session);
       this.resHall = this.session.rezzi;
+      this.rezziService.getUserProfile().then(response => {
+        this.user = new User(
+          response.user.email,
+          response.user.password,
+          response.user.firstName,
+          response.user.lastName,
+          response.user.age,
+          response.user.major,
+          response.user.nickName,
+          response.user.bio,
+          true,
+          response.user.deletionRequest,
+        );
+      });
 
       if (this.session.email != null && this.session.email !== undefined) {
         this.rezziService.getUserProfile().then((response) => {
           this.abbrevUser = new AbbreviatedUser(response.user.email, response.user.firstName,
             response.user.lastName, response.user.nickName);
           this.abbrevUserUpdateSubject.next(this.abbrevUser);
+
+          if (this.resHall == null || this.resHall === undefined) {
+            this.resHall = response.user.rezzi;
+          }
         });
       }
     });

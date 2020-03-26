@@ -1,12 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { User } from "src/app/classes.model";
+import { User, HDUser } from "src/app/classes.model";
 import { RezziService } from "../../../rezzi.service";
 import { Router } from "@angular/router";
 import { NgForm } from "@angular/forms";
 import { firestore } from "firebase";
-import { HttpClient } from "@angular/common/http";
-import {MatSnackBar} from '@angular/material/snack-bar';
-
+import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "app-edit-profile-form",
@@ -15,24 +14,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 })
 export class EditProfileFormComponent implements OnInit {
   theUser: User;
-  // constructor(private rezziService: RezziService, private router: Router) {}
-
-  // ngOnInit() {
-  //   this.rezziService.getSession().then(response => {
-  //     if (response.email == null) {
-  //       // not signed in
-  //       this.router.navigate(["/sign-in"]);
-  //     } else if (response.verified === false) {
-  //       // signed in but not verified
-  //       this.router.navigate(["/sign-up"]);
-  //     } // else signed in and verified
-  //     this.theUser = this.rezziService
-  //       .getUserData(response.email)
-  //       .then(response => {
-  //         console.log('userdata: ' + this.theUser + " " + this.theUser.lastName )
-  //       });
-  //   });
   hide = true;
+  hd: string;
+  theHD: HDUser;
 
   // fetch user data
   // use "double b"
@@ -60,7 +44,6 @@ export class EditProfileFormComponent implements OnInit {
     this.theUser.password = userInfo.password;
 
     this.editUser(userInfo);
-
   }
 
   constructor(
@@ -81,11 +64,69 @@ export class EditProfileFormComponent implements OnInit {
       .subscribe(responseData => {
         console.log(responseData.notification);
       });
-
+    alert("Your profile has been edited!");
   }
-  // getUser(data) {
-  //   return this.http.get("/edit-profile");
-  // }
+  ondeletionRequest() {
+    this.checkUser();
+  }
+
+  checkUser() {
+    this.rezziService.getSession().then(session => {
+      if (session.accountType === 0) {
+        // not a resident
+        alert("Only non-hall director accounts can request deletion!");
+      } else {
+        this.theUser.deletionRequest = 1;
+        this.deletionRequest(this.theUser);
+        this.updateHallDirector(this.hd, this.theUser.email);
+      }
+    });
+  }
+  deletionRequest(data) {
+    this.http
+      .post<{ notification: string }>(
+        "http://localhost:4100/dashboard/api/edit-profile/deletion",
+        data
+      )
+      .subscribe(responseData => {
+        console.log(responseData.notification);
+      });
+  }
+  updateHallDirector(hd, user) {
+    // console.log("updatehd"+ hd);
+    this.rezziService.findUserByEmail(hd, user).then(response => {
+      this.theHD = new HDUser(
+        response.hd.firstName,
+        response.hd.lastName,
+        response.hd.email,
+        response.hd.password,
+        response.hd.verified,
+        response.hd.deletionRequests
+      );
+      if (this.theHD.deletionRequests === undefined) {
+        this.theHD.deletionRequests = [];
+      }
+      if (this.theHD.deletionRequests.includes(this.theUser.email)) {
+      } else {
+        this.theHD.deletionRequests.push(this.theUser.email);
+        // console.log(this.theHD.deletionRequests[0]);
+      }
+    });
+
+    this.updateHD(hd, user);
+  }
+
+  updateHD(hd, user) {
+    this.http
+      .post<{ notification: string }>(
+        `http://localhost:4100/dashboard/api/edit-profile/update-hd?hd=${hd}&user=${user}`,
+        hd
+      )
+      .subscribe(responseData => {
+        console.log(responseData.notification);
+      });
+    alert("You have requested to delete your account!");
+  }
 
   ngOnInit() {
     this.rezziService.getSession().then(response => {
@@ -107,10 +148,16 @@ export class EditProfileFormComponent implements OnInit {
           response.user.major,
           response.user.nickName,
           response.user.bio,
-          true
+          true,
+          response.user.deletionRequest
         );
-
-
+      });
+      this.rezziService.getHDEmail().then(response => {
+        this.hd = response.hd;
+        // console.log("hall director:" + response.hd);
+        if ((this.theUser.deletionRequest = 1)) {
+          // console.log("it is 1!!");
+        }
       });
     });
   }

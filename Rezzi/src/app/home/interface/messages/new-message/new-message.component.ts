@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-
-import { Message, User, SocketChannelMessageData, AbbreviatedUser } from '../../../../classes.model';
+import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { NgForm } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
@@ -10,10 +9,9 @@ import { Subscription, Observable } from 'rxjs';
   templateUrl: './new-message.component.html',
   styleUrls: ['./new-message.component.css']
 })
-export class NewMessageComponent implements OnInit, OnDestroy {
-  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true);
+export class NewMessageComponent implements OnInit {
+  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0);
   enteredMessage = '';
-
 
   // Session data
   session: any;
@@ -67,7 +65,15 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       content: form.value.enteredMessage,
       owner: this.user,
       time: new Date(),
-      visible: true
+      visible: true,
+      id: null, // TODO Need to change the ID
+      reactions: { // TODO should make this more generic for ReactionData so its easier to add icons
+        thumb_up: [],
+        thumb_down: [],
+        sentiment_very_satisfied: [],
+        sentiment_dissatisfied: [],
+        whatshot: [],
+      },
     };
 
     const scmd: SocketChannelMessageData = {

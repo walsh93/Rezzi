@@ -5,12 +5,17 @@ const db_keys = require('./constants').db_keys
 // Get firebase admin library
 const admin = require('firebase-admin');
 
+// Get passwords.js
+const Passwords = require('./passwords')
+const pass = new Passwords();
+
 // Initialize firebase admin client
 const serviceAccount = require('../rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json');
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://rezzi-33137.firebaseio.com"
-  });
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://rezzi-33137.firebaseio.com"
+});
+const FieldValue = require('firebase-admin').firestore.FieldValue;
 
 console.log('Database client seems to be working');
 
@@ -24,17 +29,21 @@ module.exports = {
 };
 
 module.exports.addUser = function addUser(data) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     dbstore.collection('users').doc(data.email).get().then(doc => {
       if (doc.exists && doc.data().verified == true) {
         //Do something about the error here
         //checks to see if account is verified per Megan's implementation
         resolve(501)
       } else if (doc.exists) {
+        data.oldpassword = data.password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
+        data.password = pass.generateHash(data.password);
         dbstore.collection('users').doc(data.email).update(data)
         resolve(201)
       } else {
         //Should NEVER get here. Only for SignUpHD
+        data.oldpassword = data.password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
+        data.password = pass.generateHash(data.password);
         dbstore.collection('users').doc(data.email).set(data)
         console.log("Potential error when creating account (unless during sign-up-hd)")
         resolve(201)
@@ -47,18 +56,49 @@ module.exports.addUser = function addUser(data) {
   })
 }
 
-module.exports.editUser = function editUser(data,email){
+module.exports.editUser = function editUser(data, email) {
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
-      //checks to see if account is verified per Megan's implementation
     } else {
+      //new password
+      //run it through the hash
+      //set password
+      data.oldpassword = data.password; //TODO REMOVE THIS ON LIVE ENVIRONMENT
+      data.password = pass.generateHash(data.password);
       dbstore.collection('users').doc(email).update(data)
     }
   }).catch(err => {
     //reject(err)
     console.log(err)
     console.log("Error editing account");
+  })
+}
+module.exports.requestAccountDeletion = function requestAccountDeletion(data, email) {
+  dbstore.collection('users').doc(email).get().then(doc => {
+    if (!doc.exists) {
+      //Do something about the error here
+    } else {
+      dbstore.collection('users').doc(email).update(data)
+    }
+  }).catch(err => {
+    //reject(err)
+    console.log(err)
+    console.log("Error updating deletion status on account");
+  })
+}
+module.exports.updateHDArray = function updateHDArray(data,email, user) {
+  console.log("qwwqdwqdw " + email + " " + user)
+  dbstore.collection('users').doc(email).get().then(doc => {
+    if (!doc.exists) {
+      //Do something about the error here
+    } else {
+      dbstore.collection('users').doc(email).update({'deletionRequests': FieldValue.arrayUnion(user)})
+    }
+  }).catch(err => {
+    //reject(err)
+    console.log(err)
+    console.log("Error updating HD's deletion requests");
   })
 }
 
@@ -94,12 +134,12 @@ module.exports.createChannelPath = function createChannelPath(rezzi, channelID) 
 
 //$$$conley
 module.exports.createUserPath = function createUserPath(sender, receiver) {
-  if (sender == null || receiver == null){
+  if (sender == null || receiver == null) {
     console.log("Path Creating Error");
     return null;
   }
   senderPath = `users/${sender}/private-messages`;
   receiverPath = `users/${receiver}/private-messages`;
-  return {senderPath: senderPath, receiverPath: receiverPath};
+  return { senderPath: senderPath, receiverPath: receiverPath };
 }
 //$$$conley

@@ -8,10 +8,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  showEdit = false;
-  showPM = true;
+
+  showEdit = true;
+  showPM = false;
   showRA = false;
   showHD = false;
+  showReqChan = false;
+  accountType: number;
+
+  // Data to pass to child elements
+  email: string;
+  rezzi: string;
+
   constructor(private rezziService: RezziService, private router: Router) { }
 
   ngOnInit() {
@@ -20,7 +28,14 @@ export class DashboardComponent implements OnInit {
         this.router.navigate(['/sign-in']);
       } else if (response.verified === false) {  // signed in but not verified
         this.router.navigate(['/sign-up']);
-      }  // else signed in and verified
+      } else {
+        this.email = response.email;
+        this.rezzi = response.rezzi;
+        this.accountType = response.accountType;
+        if (response.accountType == null || response.accountType === undefined) {
+          this.accountType = 2;  // Set as resident by default??
+        }
+      }
     });
   }
 

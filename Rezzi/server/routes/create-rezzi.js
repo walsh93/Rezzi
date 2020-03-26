@@ -29,7 +29,8 @@ router.post('/', checkCookie, function(request, response) {
     var prefix = keys.rezzis + '/' + req.name + '/floors';
     req.floors.forEach(floor => {
       promises.push(db.collection(prefix).doc(floor.name).set({
-        residents: []
+        residents: [],
+        ras: []
       }));
     });
     Promise.all(promises).then(resolve => {

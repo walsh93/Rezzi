@@ -25,7 +25,8 @@ export class SignUpHdComponent implements OnInit {
       form.value.lastName,
       form.value.email,
       form.value.password,
-      true
+      true,
+      []
     );
     console.log(newHDUser);
 

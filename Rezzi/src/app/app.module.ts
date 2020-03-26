@@ -22,6 +22,8 @@ import {
   MatIconModule,
   MatSlideToggleModule,
   MatSnackBarModule,
+  MatBadgeModule,
+  MatTooltipModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -56,9 +58,11 @@ import { EditProfileFormComponent } from './dashboard/edit-profile/edit-profile-
 
 import { HdAdminComponent } from './dashboard/hd-admin/hd-admin.component';
 
-
 import { RaAdminComponent } from './dashboard/ra-admin/ra-admin.component';
 import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
+import { RaChannelRequestsComponent } from './dashboard/ra-admin/ra-channel-requests/ra-channel-requests.component';
+import { RequestChannelComponent } from './dashboard/request-channel/request-channel.component';
+import { RequestChannelFormComponent } from './dashboard/request-channel/request-channel-form/request-channel-form.component';
 
 import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-rezzi.component';
 import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
@@ -147,6 +151,9 @@ import { LeaveChannelDialogComponent } from './home/interface/channel-nav-bar/le
     CreatePmComponent,
     UserManagementComponent,
     LeaveChannelDialogComponent
+    RequestChannelComponent,
+    RequestChannelFormComponent,
+    RaChannelRequestsComponent
   ],
   imports: [
     BrowserModule,
@@ -178,6 +185,8 @@ import { LeaveChannelDialogComponent } from './home/interface/channel-nav-bar/le
     NgbModule,
     MatTabsModule,
     MatSelectModule,
+    MatBadgeModule,
+    MatTooltipModule,
   ],
   entryComponents: [
     JoinChannelComponent,

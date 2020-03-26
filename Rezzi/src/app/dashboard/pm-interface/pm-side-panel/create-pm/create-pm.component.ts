@@ -18,7 +18,7 @@ export class CreatePmComponent implements OnInit {
     private rezziService: RezziService,
     private http: HttpClient) {
     this.users = data;
-    console.log("here",data)
+    console.log("here", data)
   }
 
   onNoClick(): void {
@@ -29,24 +29,24 @@ export class CreatePmComponent implements OnInit {
   ngOnInit() {
   }
 
-  createPrivateMessage(email: string){
+  createPrivateMessage(email: string) {
     this.rezziService.getSession().then((response) => {
-    let body = {
-      to: email,
-      from: response.email
-    }
-    console.log("Creating chat with " + email);
-    this.http.post<{notification: string}>('/create-pm', body)
-    .subscribe(responseData => {
-      console.log(responseData);
+      let body = {
+        to: email,
+        from: response.email
+      }
+      console.log("Creating chat with " + email);
+      this.http.post<{ notification: string }>('/create-pm', body)
+        .subscribe(responseData => {
+          console.log(responseData);
+        });
+      var index = this.users.indexOf(email);
+      if (index > -1) {
+        this.users.splice(index, 1);
+      }
+      this.dialogRef.close();
+      this.create_pm_event.emit(email);
     });
-    var index = this.users.indexOf(email);
-    if(index>-1){
-      this.users.splice(index,1);
-    }
-    this.dialogRef.close();
-    this.create_pm_event.emit(email);
-  });
   }
 
 }

@@ -98,6 +98,10 @@ export class MessagesService {
     this.socket.emit('new-message', data);
   }
 
+  updateMessageThroughSocket(data: SocketMessageData) {
+    this.socket.emit('update-message', data);
+  }
+  
   sendPrivateMessageThroughSocket(data: SocketMessageData) {
     console.log("messages.service.ts sPMTS", data);
     this.socket.emit('new-private-message', data);

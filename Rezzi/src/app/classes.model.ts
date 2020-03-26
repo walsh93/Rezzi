@@ -10,6 +10,7 @@ export class User {
   nickName: string;
   bio: string;
   verified: boolean;
+  deletionRequest: number;
 
   constructor(
     theEmail: string,
@@ -20,7 +21,8 @@ export class User {
     theMajor: string,
     theNickName: string,
     theBio: string,
-    theVerified: boolean
+    theVerified: boolean,
+    deletionRequest: number
   ) {
     this.email = theEmail;
     this.password = thePassword;
@@ -31,6 +33,7 @@ export class User {
     this.nickName = theNickName;
     this.bio = theBio;
     this.verified = theVerified;
+    this.deletionRequest = deletionRequest;
   }
 
   setUser(
@@ -70,6 +73,14 @@ export class User {
   }
 }
 
+export interface ReactionData {
+  thumb_up: string[];
+  thumb_down: string[];
+  sentiment_very_satisfied: string[];
+  sentiment_dissatisfied: string[];
+  whatshot: string[];
+}
+
 export class AbbreviatedUser {
   email: string;
   firstName: string;
@@ -85,11 +96,12 @@ export class AbbreviatedUser {
 }
 
 export interface Message {
-  // id: string;
+  id: string;
   owner: AbbreviatedUser;
   content: string;
   time: Date;
   visible: boolean;
+  reactions: ReactionData;
 }
 
 export interface SocketMessageData {
@@ -107,13 +119,15 @@ export interface SocketPrivateMessageData extends SocketMessageData {
 }
 
 export class HDUser {
-  constructor(firstName: string, lastName: string, email: string, password: string, verified: boolean) {
+  constructor(firstName: string, lastName: string, email: string, password: string, verified: boolean, deletionRequests: String[]) {
     this.firstName = firstName;
     this. lastName = lastName;
     this.email = email;
     this.password = password;
     this.accountType = 0;
     this.verified = verified;
+    this.deletionRequests = deletionRequests;
+
   }
   firstName: string;
   lastName: string;
@@ -122,7 +136,9 @@ export class HDUser {
   confirmPassword: string;
   accountType: number;
   verified: boolean;
+  deletionRequests: String[];
 }
+
 export interface ChannelData {
   id: string;
   channel: string;
