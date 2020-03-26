@@ -1,25 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { User } from 'src/app/classes.model';
-import { HttpClient } from '@angular/common/http';
-import { RezziService } from 'src/app/rezzi.service';
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { User } from "src/app/classes.model";
+import { HttpClient } from "@angular/common/http";
+import { RezziService } from "src/app/rezzi.service";
+import {
+  AngularFirestore,
+  AngularFirestoreDocument
+} from "@angular/fire/firestore";
 
 @Component({
-  selector: 'app-sign-up-form',
-  templateUrl: './sign-up-form.component.html',
-  styleUrls: ['./sign-up-form.component.css']
+  selector: "app-sign-up-form",
+  templateUrl: "./sign-up-form.component.html",
+  styleUrls: ["./sign-up-form.component.css"]
 })
 export class SignUpFormComponent implements OnInit {
   hide = true;
 
   session;
-  constructor(private rezziService: RezziService, private http: HttpClient) { }
+  selectedPicture: File = null;
+  firestoreDocument: AngularFirestoreDocument;
 
-  ngOnInit() : void {
+  constructor(private rezziService: RezziService, private http: HttpClient) {}
+
+  ngOnInit(): void {
     // Initialize class variables
-    this.rezziService.getSession().then((__session) => {
-        this.session = __session;
-    })
+    this.rezziService.getSession().then(__session => {
+      this.session = __session;
+    });
   }
 
   onSignUp(form: NgForm) {
@@ -56,15 +63,66 @@ export class SignUpFormComponent implements OnInit {
        // send data to backend
        // account created successfully
     }*/
-}
+  }
 
-addUser(user: User) {
-  this.http.post<{notification: string}>('/sign-up/api/sign-up', user)
-    .subscribe(responseData => {
-      //console.log(responseData.notification);
-      alert(responseData.notification); // conley-edit-here
-      // if success go home else show message indicating error
-    });
-}
+  addUser(user: User) {
+    this.http
+      .post<{ notification: string }>("/sign-up/api/sign-up", user)
+      .subscribe(responseData => {
+        //console.log(responseData.notification);
+        alert(responseData.notification); // conley-edit-here
+        // if success go home else show message indicating error
+      });
+  }
 
+  onPictureSelected(event) {
+    const file = <File>event.target.files[0];
+    if (!file.type.startsWith("image")) {
+      this.selectedPicture = null;
+      alert("Please upload an image file");
+    } else {
+      this.selectedPicture = file;
+    }
+  }
+  onUpload(value) {
+    let fileToUpload: File = null;
+    let progressId: string = null;
+
+    // Set constants based on which file the user is uploading
+    if (value == "image") {
+      fileToUpload = this.selectedPicture;
+      progressId = "pic_";
+    } else {
+      alert("Something went wrong while uploading; please try again later.");
+      return;
+    }
+
+    if (fileToUpload === null) {
+      alert("Please upload image file");
+    } else {
+      // document.getElementById(`${progressId}progress`).hidden = false;
+      // document.getElementById(`${progressId}bar`).hidden = false;
+      const formData = new FormData();
+      formData.append(value, fileToUpload, fileToUpload.name);
+
+      // https://angular.io/guide/http#reading-the-full-response
+      this.http
+        .post(
+          "https://us-central-rezzi-33137.cloudfunctions.net/uploadFile",
+          formData,
+          {
+            observe: "response"
+          }
+        )
+        .subscribe(response => {
+          if (response.status == 200) {
+            location.reload();
+          } else {
+            alert(
+              `Something went wrong. Return with a status code ${response.status}: ${response.statusText}`
+            );
+          }
+        });
+    }
+  }
 }

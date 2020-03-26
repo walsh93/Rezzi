@@ -26,6 +26,13 @@
           #confirmPassword = "ngModel">
           <mat-error *ngIf="password !== confirmPassword">Your passwords must match!</mat-error>
       </mat-form-field>
+      <div class="row upload-section">
+        <mat-label> 1. Choose picture
+          <input type="file" accept="image/*" (change)="onPictureSelected($event)">
+          <button type="button" (click)="onUpload('image')">
+            2. Upload</button>
+        </mat-label>
+      </div>
       <mat-form-field class="example-full-width">
         <input
           matInput
