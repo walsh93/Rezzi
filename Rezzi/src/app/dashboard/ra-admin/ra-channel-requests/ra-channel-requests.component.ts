@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { RezziService } from '../../../rezzi.service';
 import { Observable, Subscription } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ra-channel-requests',
@@ -14,7 +16,9 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
   channelRequestDetails: Map<string, any>;
 
   channelIsBeingViewed = false;
-  channelData: any;
+  channelIndexBeingViewed = -1;
+  channelIdBeingViewed: string;
+  channelDataBeingViewed: any;
 
   // Asynchronous data handlers
   idSubscription: Subscription;
@@ -25,7 +29,7 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
   @Input() email: string;
   @Input() rezzi: string;
 
-  constructor(private rezziService: RezziService) { }
+  constructor(private rezziService: RezziService, private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.channelRequestDetails = new Map<string, any>();
@@ -51,6 +55,10 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
     this.nameSubscription.unsubscribe();
   }
 
+  /**************************************************************************************************************************************
+   * Channel selection functions
+   *************************************************************************************************************************************/
+
   channelRequestSelected(event) {
     let index = -1;
     const dom = event.target as HTMLElement;
@@ -64,32 +72,46 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
     if (!this.channelRequestDetails.has(channelID)) {
       const paths = this.rezziService.createChannelPath(this.rezzi, channelID);
       if (paths == null) {
-        alert('The channel request you are trying to view could not be retrieved');
-        return;
+        this.viewingFailure();
       }
 
       // Get channel data assuming retrieval from DB succeeded
       this.rezziService.getChannelData(paths.channelPath, paths.channelName).then((data) => {
         if (data == null) {
-          alert('The channel request you are trying to view could not be retrieved');
-          return;
+          this.viewingFailure();
         }
 
         // Add data to mapping
         this.channelRequestDetails.set(channelID, data);
-        this.channelData = data;
+        this.setChannelBeingViewed(index, channelID);
       });
     } else {
-      this.channelData = this.channelRequestDetails.get(channelID);
+      this.setChannelBeingViewed(index, channelID);
     }
+  }
 
+  viewingFailure() {
+    this.rezziService.getChannelRequests();
+    alert('The channel request you are trying to view could not be retrieved');
+    return;
+  }
+
+  setChannelBeingViewed(index: number, channelID: string) {
+    this.channelIndexBeingViewed = index;
+    this.channelIdBeingViewed = channelID;
+    this.channelDataBeingViewed = this.channelRequestDetails.get(channelID);
     this.channelIsBeingViewed = true;
   }
+
+  /**************************************************************************************************************************************
+   * Channel response functions
+   *************************************************************************************************************************************/
 
   approveRequest() {
     const approved = confirm('Are you sure you would like to approve this channel request?');
     if (approved) {
       console.log('Change tag, remove from array of requests, create-channel.js, and reload this page');
+      this.respondToChannelRequest(true);
     }
   }
 
@@ -99,7 +121,34 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
     const denied = confirm(`${p1} ${p2}`);
     if (denied) {
       console.log('Remove from array of requests in the database and reload this page');
+      this.respondToChannelRequest(false);
     }
+  }
+
+  respondToChannelRequest(approved: boolean) {
+    const paths = this.rezziService.createChannelPath(this.rezzi, this.channelIdBeingViewed);
+    const body = {
+      approved,
+      channelPath: paths.channelPath,
+      channelName: paths.channelName,
+      channelID: this.channelIdBeingViewed,
+      index: this.channelIndexBeingViewed,
+    };
+
+    this.http.post('/channel-requests', body).toPromise().then((response) => {
+      this.rezziService.getChannelRequests();
+      alert((response as any).msg);
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status === 200) {
+        this.rezziService.getChannelRequests();
+        alert((res as any).msg);
+      } else {
+        console.log('Channel request response rejected');
+        console.log((error as any).reject);
+        alert((error as any).msg);
+      }
+    });
   }
 
 }

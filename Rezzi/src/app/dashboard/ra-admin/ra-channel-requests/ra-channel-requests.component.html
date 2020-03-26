@@ -29,12 +29,12 @@
     <div id="channel-info" class="col-6 component-column">
       <h1 *ngIf="!channelIsBeingViewed">Select a channel request to view</h1>
       <mat-card *ngIf="channelIsBeingViewed">
-        <h1>{{ channelData.title }}</h1>
+        <h1>{{ channelDataBeingViewed.title }}</h1>
         <br>
-        <mat-card-content>Owner: {{ channelData.owner }}</mat-card-content>
-        <mat-card-content>Rezzi: {{ rezzi }} - {{ channelData.level }} channel</mat-card-content>
+        <mat-card-content>Owner: {{ channelDataBeingViewed.owner }}</mat-card-content>
+        <mat-card-content>Rezzi: {{ rezzi }} - {{ channelDataBeingViewed.level }} channel</mat-card-content>
         <br>
-        <p>Description: {{ channelData.description }}</p>
+        <p>Description: {{ channelDataBeingViewed.description }}</p>
         <br>
         <div id="adbtns" class="row">
           <button class="adbtn" (click)="approveRequest()" color="primary" mat-raised-button>Approve</button>

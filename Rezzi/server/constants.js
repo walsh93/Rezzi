@@ -65,6 +65,7 @@ module.exports = {
     get_non_pm_users: "/get-non-pm-users",
     create_pm: "/create-pm",
     request_channel: "/request-channel",
+    channel_requests: "/channel-requests",
     setup_test: "/setup-test"
   },
 

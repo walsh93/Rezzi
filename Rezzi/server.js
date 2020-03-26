@@ -108,6 +108,8 @@ const dashboard = require('./server/routes/dashboard')
 app.use(url.dashboard, dashboard)
 const requestchannel = require('./server/routes/request-channel')
 app.use(url.request_channel, requestchannel)
+const channelrequests = require('./server/routes/channel-requests')  // RA responding to request
+app.use(url.channel_requests, channelrequests)
 
 const get_pm_users = require('./server/routes/get-pm-users')
 app.use(url.get_pm_users, get_pm_users)

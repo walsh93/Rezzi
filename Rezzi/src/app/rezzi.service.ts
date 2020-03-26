@@ -113,6 +113,7 @@ export class RezziService {
   }
 
   extractChannelNames(channelIds: string[]) {
+    this.channelRequestNames.clear();  // If you don't clear, it will keep old requests that have already been handled
     for (let i = 0; i < channelIds.length; i++) {
       const channelID = channelIds[i];
       const firstDash = channelID.indexOf('-');
