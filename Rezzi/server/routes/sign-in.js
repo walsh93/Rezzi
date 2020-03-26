@@ -8,6 +8,8 @@ const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 const sign_in = require('../constants').error.sign_in
+const Passwords = require('../passwords')
+const pass = new Passwords();
 
 router.get('/', checkCookie, function(request, response) {
   response.sendFile(indexFile)
@@ -18,8 +20,9 @@ router.get('/', checkCookie, function(request, response) {
       response.status(http.bad_request).send(sign_in.email_error)
     } else if (snapshot.docs.length == 1) {
       const data = snapshot.docs[0].data()
-      console.log(data)
-      if (req.password == data.password) {
+      //console.log(data)
+      if (req.password.length < 20 || pass.validPassword(req.password, data.password)) { //check to see if password is valid
+        //TODOCONLEY ^ REMOVE THAT OTHERWISE ANYONE CAN LOG INTO AN ACCOUNT
         // Set session cookie before sending the response
         // TODO add other fields that need to be saved in the session
         console.log(data.tempPword)
