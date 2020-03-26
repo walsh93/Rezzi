@@ -34,7 +34,7 @@ export class RezziService {
   }
   findUserByEmail(hd: string, user: string): Promise<any> {
     console.log("EWRWGED " + hd);
-    return this.http.get(`/find-user?hd=${hd}&user=${user}`)
+    return this.http.get(`/update-hd?hd=${hd}&user=${user}`)
     .toPromise()
 
       .then(response => {

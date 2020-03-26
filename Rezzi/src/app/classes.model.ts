@@ -10,7 +10,7 @@ export class User {
   nickName: string;
   bio: string;
   verified: boolean;
-  deletionReqest: number;
+  deletionRequest: number;
 
   constructor(
     theEmail: string,
@@ -22,7 +22,7 @@ export class User {
     theNickName: string,
     theBio: string,
     theVerified: boolean,
-    deletionReqest: number
+    deletionRequest: number
   ) {
     this.email = theEmail;
     this.password = thePassword;
@@ -33,7 +33,7 @@ export class User {
     this.nickName = theNickName;
     this.bio = theBio;
     this.verified = theVerified;
-    this.deletionReqest = deletionReqest;
+    this.deletionRequest = deletionRequest;
   }
 
   setUser(

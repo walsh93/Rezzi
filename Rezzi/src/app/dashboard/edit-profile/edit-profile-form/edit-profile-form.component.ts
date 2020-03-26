@@ -67,11 +67,13 @@ export class EditProfileFormComponent implements OnInit {
     alert("Your profile has been edited!");
   }
   ondeletionRequest() {
-    this.theUser.deletionReqest = 1;
+    // if(this.theUser.deletionRequest !== 1){
+    this.theUser.deletionRequest = 1;
     this.deletionRequest(this.theUser);
-    this.getHDEmail();
     this.updateHallDirector(this.hd, this.theUser.email);
-
+    // } else {
+    //   alert("You have already requested to delete your account!")
+    // }
 
   }
   deletionRequest(data) {
@@ -83,10 +85,6 @@ export class EditProfileFormComponent implements OnInit {
       .subscribe(responseData => {
         console.log(responseData.notification);
       });
-  }
-  getHDEmail(){
-    console.log('gethdemial')
-
   }
   updateHallDirector(hd,user) {
     console.log("updatehd"+ hd);
@@ -106,7 +104,7 @@ export class EditProfileFormComponent implements OnInit {
 
       } else{
           this.theHD.deletionRequests.push(this.theUser.email);
-          console.log(this.theHD.deletionRequests[0]);
+          // console.log(this.theHD.deletionRequests[0]);
       }
 
     });
@@ -116,15 +114,16 @@ export class EditProfileFormComponent implements OnInit {
   }
 
   updateHD(hd,user) {
-    console.log('update' + hd + "" + user)
     this.http
       .post<{ notification: string }>(
-        `http://localhost:4100/dashboard/api/edit-profile/find-user?hd=${hd}&user=${user}`,
+        `http://localhost:4100/dashboard/api/edit-profile/update-hd?hd=${hd}&user=${user}`,
         hd
       )
       .subscribe(responseData => {
         console.log(responseData.notification);
       });
+      alert("You have requested to delete your account!");
+
   }
 
   ngOnInit() {
@@ -153,11 +152,10 @@ export class EditProfileFormComponent implements OnInit {
       });
       this.rezziService.getHDEmail().then(response => {
         this.hd = response.hd;
-        console.log("hall director:" + response.hd);
-        if ((this.theUser.deletionReqest = 1)) {
-          console.log("it is 1!!");
+        // console.log("hall director:" + response.hd);
+        if ((this.theUser.deletionRequest = 1)) {
+          // console.log("it is 1!!");
         }
-        console.log("ewrfjunerejngforenfioer" + this.hd);
       });
 
     });

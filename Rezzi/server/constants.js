@@ -9,7 +9,7 @@ module.exports = {
     get_floors: "/get-floors",
     get_user: "/get-user",
     get_hd: "/get-hd",
-    find_user: "/find-user",
+    update_hd: "/update-hd",
     channel_messages: "/channel-messages",
     private_messages: "/private-messages",
   },

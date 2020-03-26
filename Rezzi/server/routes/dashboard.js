@@ -38,24 +38,16 @@ router.get('/', checkCookie, function (request, response) {
   //     notification: 'User may have requested to delete account'
   //   })
 })
-  .post('/api/edit-profile/find-user', (request, response, next) => {
+  .post('/api/edit-profile/update-hd', (request, response, next) => {
     const rb = request.body
     let email = request.query.hd;
     let user = request.query.user;
-    // db.collection(keys.rezzis).doc(rezzi).get().then(doc => {
-    //   const data = doc.data()
-    //   email = data.HD;
-    // }).catch((error) => {
-    //   console.log('Error getting documents', error)
-    //   response.status(http.conflict).json(null)
-    // })
-    console.log("wdw " + request.query.hd)
-    for (const key in request.query) {
-      console.log(key, request.query[key])
-    }
-    console.log(email);
 
-    firebase.findUser(rb, email,user);
+    // for (const key in request.query) {
+    //   console.log(key, request.query[key])
+    // }
+
+    firebase.updateHDArray(rb, email,user);
     response.status(201).json({
       notification: 'User may have requested to delete account'
     })
