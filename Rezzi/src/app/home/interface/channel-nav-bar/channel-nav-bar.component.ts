@@ -1,5 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
+import { MatDialog, MatDialogRef } from '@angular/material';
+
 @Component({
   selector: 'app-channel-nav-bar',
   templateUrl: './channel-nav-bar.component.html',
@@ -10,8 +12,9 @@ export class ChannelNavBarComponent implements OnInit {
   @HostBinding('class.nav-title')
   navTitle = 'Rezzi';
   channelMenuDisabled = true;
+  leaveButtonDisabled = true;
 
-  constructor(private channelNavBarService: ChannelNavBarService) {}
+  constructor(private channelNavBarService: ChannelNavBarService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.channelNavBarService.setTitle.subscribe(navTitle => {
@@ -19,16 +22,48 @@ export class ChannelNavBarComponent implements OnInit {
       if (this.navTitle !== 'Rezzi') {
         this.channelMenuDisabled = false;
       }
+      if (this.navTitle !== 'General') {
+        this.leaveButtonDisabled = false;
+      }
     });
   }
 
-  leaveChannel() {
+  openLeaveDialog(): void {
     if (this.navTitle === 'Rezzi') {
       console.error('No channel selected');
       return;
     }
+
+    console.log('attempting to open dialog');
+    const dialogRef = this.dialog.open(LeaveChannelDialog, {
+      width: '450px',
+      data: {channel: this.navTitle}
+    });
+
+  }
+
+  leaveChannel() {
     console.log('user wants to leave ' + this.navTitle);
-    // TODO implement leave-channel route, and "are you sure?" dialog box
     // TODO also figure out how to pass in channel.id, follow join-channel.component.ts for help
   }
+
+}
+
+@Component({
+  selector: 'app-leave-channel-dialog',
+  templateUrl: 'leave-channel-dialog.html',
+})
+export class LeaveChannelDialog {
+
+  constructor(public dialogRef: MatDialogRef<LeaveChannelDialog>) {}
+
+  onCancelClick(): void {
+    console.log('user cancelled leaving');
+    this.dialogRef.close();
+  }
+
+  onConfirmClick(channel: string): void {
+    console.log('user wants to leave ' + channel);
+  }
+
 }

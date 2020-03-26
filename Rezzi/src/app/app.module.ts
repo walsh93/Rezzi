@@ -86,7 +86,7 @@ import { JoinChannelComponent } from './home/interface/side-panel/join-channel/j
 import { ChannelMessagesComponent } from './home/interface/messages/channel-messages/channel-messages.component';
 import { NewMessageComponent } from './home/interface/messages/new-message/new-message.component';
 
-import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel-nav-bar.component';
+import { ChannelNavBarComponent, LeaveChannelDialog } from './home/interface/channel-nav-bar/channel-nav-bar.component';
 
 // Header Component
 import { HeaderComponent } from './header/header.component';
@@ -104,7 +104,6 @@ import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/cre
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
 import { MessageComponent } from './home/interface/messages/message/message.component';
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
-import { LeaveChannelDialogComponent } from './home/interface/channel-nav-bar/leave-channel-dialog/leave-channel-dialog.component';
 
 @NgModule({
   declarations: [
@@ -150,10 +149,10 @@ import { LeaveChannelDialogComponent } from './home/interface/channel-nav-bar/le
     MessageComponent,
     CreatePmComponent,
     UserManagementComponent,
-    LeaveChannelDialogComponent
     RequestChannelComponent,
     RequestChannelFormComponent,
-    RaChannelRequestsComponent
+    RaChannelRequestsComponent,
+    LeaveChannelDialog
   ],
   imports: [
     BrowserModule,
@@ -190,7 +189,8 @@ import { LeaveChannelDialogComponent } from './home/interface/channel-nav-bar/le
   ],
   entryComponents: [
     JoinChannelComponent,
-    CreatePmComponent
+    CreatePmComponent,
+    LeaveChannelDialog
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

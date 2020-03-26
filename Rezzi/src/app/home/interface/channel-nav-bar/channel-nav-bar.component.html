@@ -6,7 +6,7 @@
     <button mat-button [disabled]="channelMenuDisabled" [matMenuTriggerFor]="channelMenu">⋮</button>
 
     <mat-menu #channelMenu="matMenu" xPosition="before">
-      <button mat-menu-item (click)="leaveChannel()">Leave Channel</button>
+      <button mat-menu-item [disabled]="leaveButtonDisabled" (click)="openLeaveDialog()">Leave Channel</button>
       <button mat-menu-item disabled>Delete Channel</button>
     </mat-menu>
   </div>
