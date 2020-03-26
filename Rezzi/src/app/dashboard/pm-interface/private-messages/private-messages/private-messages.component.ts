@@ -12,7 +12,12 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   private messagesSub: Subscription;
   private userMap: Map<string, PrivateMessageData>;
-  @Input() viewingUser: AbbreviatedUser;
+
+  // Abbreviated User data
+  user: AbbreviatedUser;
+  private userUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   // Session data retrieved from interface.component
   session: any;
@@ -42,6 +47,14 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    // Listen for user updates
+    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
+      console.log('user has been updated in new-message.component');
+      this.user = updatedUser;
+      console.log(this.user);
+    });
+
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
       console.log('session has been updated in private-messages.component');
@@ -62,7 +75,7 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
     this.viewingUpdateSub = this.viewingObs.subscribe((updatedPMUser) => {
       this.currentPMUser = updatedPMUser;
       const dbpath = this.messagesService.createUserPath(this.session.email, updatedPMUser);
-      console.log("P-M.component.ts dbpath",dbpath);
+      console.log("P-M.component.ts dbpath", dbpath);
       if (dbpath != null && dbpath !== undefined) {
         this.messagesService.getPrivateMessages(dbpath.userPath, dbpath.receiverID);  // EDIT THIS Triggers msg upd listener
         this.messagesService.emitNewUserView(dbpath);  // EDIT THIS eventually triggers addListenerForChannelMessages
