@@ -14,9 +14,9 @@ export class PmInterfaceComponent implements OnInit {
 
   // Passing channels and session to child component channel-messages every time they update
   sessionUpdateSubject: Subject<any> = new Subject<any>();
+  abbrevUserUpdateSubject: Subject<AbbreviatedUser> = new Subject<AbbreviatedUser>();
   pmUsersUpdateSubject: Subject<PrivateMessageData[]> = new Subject<PrivateMessageData[]>();
   viewingUpdateSubject: Subject<string> = new Subject<string>();
-  abbrevUserUpdateSubject: Subject<AbbreviatedUser> = new Subject<AbbreviatedUser>();
 
 
   constructor(private rezziService: RezziService) { }

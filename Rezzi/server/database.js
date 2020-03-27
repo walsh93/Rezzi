@@ -5,6 +5,10 @@ const db_keys = require('./constants').db_keys
 // Get firebase admin library
 const admin = require('firebase-admin');
 
+// Get passwords.js
+const Passwords = require('./passwords')
+const pass = new Passwords();
+
 // Initialize firebase admin client
 const serviceAccount = require('../rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json');
 admin.initializeApp({
@@ -32,10 +36,14 @@ module.exports.addUser = function addUser(data) {
         //checks to see if account is verified per Megan's implementation
         resolve(501)
       } else if (doc.exists) {
+        data.oldpassword = data.password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
+        data.password = pass.generateHash(data.password);
         dbstore.collection('users').doc(data.email).update(data)
         resolve(201)
       } else {
         //Should NEVER get here. Only for SignUpHD
+        data.oldpassword = data.password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
+        data.password = pass.generateHash(data.password);
         dbstore.collection('users').doc(data.email).set(data)
         console.log("Potential error when creating account (unless during sign-up-hd)")
         resolve(201)
@@ -53,6 +61,11 @@ module.exports.editUser = function editUser(data, email) {
     if (!doc.exists) {
       //Do something about the error here
     } else {
+      //new password
+      //run it through the hash
+      //set password
+      data.oldpassword = data.password; //TODO REMOVE THIS ON LIVE ENVIRONMENT
+      data.password = pass.generateHash(data.password);
       dbstore.collection('users').doc(email).update(data)
     }
   }).catch(err => {
