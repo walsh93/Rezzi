@@ -86,7 +86,7 @@ import { JoinChannelComponent } from './home/interface/side-panel/join-channel/j
 import { ChannelMessagesComponent } from './home/interface/messages/channel-messages/channel-messages.component';
 import { NewMessageComponent } from './home/interface/messages/new-message/new-message.component';
 
-import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel-nav-bar.component';
+import { ChannelNavBarComponent, LeaveChannelDialog } from './home/interface/channel-nav-bar/channel-nav-bar.component';
 
 // Header Component
 import { HeaderComponent } from './header/header.component';
@@ -151,7 +151,8 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
     UserManagementComponent,
     RequestChannelComponent,
     RequestChannelFormComponent,
-    RaChannelRequestsComponent
+    RaChannelRequestsComponent,
+    LeaveChannelDialog
   ],
   imports: [
     BrowserModule,
@@ -188,7 +189,8 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
   ],
   entryComponents: [
     JoinChannelComponent,
-    CreatePmComponent
+    CreatePmComponent,
+    LeaveChannelDialog
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]
