@@ -24,13 +24,38 @@ router.get('/', checkCookie, function(request, response) {
         RAs = data.RA_list
         //for every RA email in the RA_list array
         for(var i = 0; i < RAs.length; i++){
-            
+            //declare variables for each resident
+            var firstName;
+            var lastName;
             db.collection('users').doc(RAs[i]).get().then((doc) => {
                 if(!doc.exists){
                     console.log('RA Email Doc not found')
                     response.status(http.bad_request).send('Error retrieving RA information')
                 }
                 const data = doc.data()
+
+                //if a value is undefiened because it is an unregistered user, save value as "N/A"
+                if(data.firstName === undefined){
+                    firstName = "NA";
+                }
+                else{
+                    firstName = data.firstName;
+                }
+
+                if(data.lastName === undefined){
+                    lastName = "NA";
+                } 
+                else {
+                    lastName = data.lastName;
+                }
+
+                const info = {
+                    email: data.email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    verified: data.verified,
+                    floor: data.floor,
+                }
                 //If more info is needed on the User Management page, add that here!
                 const info = {
                     email: data.email,

@@ -15,8 +15,8 @@ export class UserManagementComponent implements OnInit {
   // Class variables
   errorMsg: string;
   session: any;
-  RAs;
-  residents;
+  RAs: Array<any>;
+  residents: Array<any>;
   columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified'];
 
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
