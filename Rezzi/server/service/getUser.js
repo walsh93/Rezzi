@@ -6,20 +6,11 @@ const http = require('../constants').http_status;
 
 const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 
-
-// router.get(':/userId', function(request,response) {
-//   db.collection(db_keys.users).doc(request.params.userId).get().then((doc) => {
-//     if (!doc.exists) {
-//       response.redirect('/home');
-//     } else {
-//       response.json(doc.data());
-//     }
-//   });
-// })
 router.get('/', checkCookie, function (request, response) {
   db.collection('users').doc(request.__session.email).get().then((doc) => {
     const data = doc.data()
     console.log(data)
+
     const user = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -28,6 +19,10 @@ router.get('/', checkCookie, function (request, response) {
       nickName: data.nickName,
       bio: data.bio,
       age: data.age,
+      deletionRequest: data.deletionRequest,
+      email: data.email,
+      rezzi: data.rezzi,
+      floor: data.floor  // For request-channel
     }
     response.status(http.ok).json({ user: user })  // will be accessed as data_from_backend in prev code blocks
   }).catch((error) => {

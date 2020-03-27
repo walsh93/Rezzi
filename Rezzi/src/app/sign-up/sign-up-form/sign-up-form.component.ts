@@ -37,7 +37,8 @@ export class SignUpFormComponent implements OnInit {
       form.value.major,
       form.value.nickName,
       form.value.bio,
-      true
+      true,
+      0
     );
 
     console.log(user);

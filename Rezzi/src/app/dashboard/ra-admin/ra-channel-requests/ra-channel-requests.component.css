@@ -1,0 +1,22 @@
+#outer-component {
+  min-width: 90%;
+}
+
+.btnrow {
+  justify-content: center;
+  margin: 20px;
+}
+
+mat-card {
+  margin-top: 20px;
+  margin-right: 60px;
+}
+
+#adbtns {
+  justify-content: space-evenly;
+}
+
+.adbtn {
+  min-height: 50px;
+  min-width: 100px;
+}

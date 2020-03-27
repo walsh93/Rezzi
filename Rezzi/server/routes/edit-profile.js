@@ -18,6 +18,7 @@ router.get('/', checkCookie, function (request, response) {
   // Get rezzis the user belongs to
   let user = '';
   let name = '';
+
   db.collection(keys.users).doc(email).get().then(doc => {
     console.log("userss: " + doc.data().email);
     if (doc.exists) {
@@ -28,6 +29,8 @@ router.get('/', checkCookie, function (request, response) {
     console.log('user:' + user + " " + name);
 
   })
+
+
 });
 
 

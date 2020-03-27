@@ -1,8 +1,11 @@
 <div *ngFor="let message of messages">
   <!--{{ message.owner.firstName }}: Temporary Comment-->
   <app-message
-    [content]="message.content"
-    [time]="message.time"
+    [message]="message"
+    [viewingUser]="user"
+    [channel]="currentChannel"
+    [rezzi]="session.rezzi"
+    [pm]="false"
   ></app-message>
 </div>
 

@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subscription, Observable, range } from 'rxjs';
 
-import { Message } from '../../../../classes.model';
+import { Message, AbbreviatedUser } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ChannelData } from '../../../../classes.model';
+import { User } from '../../../../classes.model';
 
 @Component({
   selector: 'app-channel-messages',
@@ -15,6 +16,11 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   private messagesSub: Subscription;
   private channelMap: Map<string, ChannelData>;
 
+  // Abbreviated User data
+  user: AbbreviatedUser;
+  private userUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   // Session data retrieved from interface.component
   session: any;
@@ -36,7 +42,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEvent') viewingObs: Observable<string>;
 
-
   constructor(public messagesService: MessagesService) {
     this.session = null;
     this.currentChannel = null;
@@ -47,6 +52,13 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // If testing messages/message view with `ng serve`
     // this.initializeTestData();
+
+    // Listen for user updates
+    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
+      console.log('user has been updated in new-message.component');
+      this.user = updatedUser;
+      console.log(this.user);
+    });
 
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
@@ -90,27 +102,51 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.viewingUpdateSub.unsubscribe();
   }
 
-  initializeTestData() {
+  /*initializeTestData() {
+    const owner1 = new AbbreviatedUser('email1@purdue.edu', 'Lucky', 'McStruessel', 'Shrimpy');
+    const owner2 = new AbbreviatedUser('email2@purdue.edu', 'Doc', 'Goodman', 'Sean the Sheep');
     const m1: Message = {
-      id: null,
+      owner: owner1,
       content: 'Testing 1-2-3',
       time: new Date('2020-01-26'),
       visible: true,
+      reactions: {
+        thumb_up: ["aa"],
+        thumb_down: ["aa", "aaaa"],
+        sentiment_very_satisfied: ["aaaa}", "aaaa"],
+        sentiment_dissatisfied: [],
+        whatshot: ["a", "b", "c", "d", "e"]
+      }
+      id: null
     };
     const m2: Message = {
-      id: null,
+      owner: owner2,
       content: 'you\'re on your own, kiddo',
       time: new Date('2020-02-14'),
       visible: true,
+      reactions: {
+        thumb_up: ["aa"],
+        thumb_down: ["aa", "aaaa"],
+        sentiment_very_satisfied: ["aaaa}", "aaaa"],
+        sentiment_dissatisfied: [],
+        whatshot: ["a", "b", "c", "d", "e"]
+      }
     };
     const m3: Message = {
-      id: null,
+      owner: owner1,
       content: 'frickin rip',
       time: new Date('2020-03-05'),
       visible: true,
+      reactions: {
+        thumb_up: ["aa"],
+        thumb_down: ["aa", "aaaa"],
+        sentiment_very_satisfied: ["conleyutz@gmail.com", "aaaa"],
+        sentiment_dissatisfied: [],
+        whatshot: ["a", "b", "c", "d", "e"]
+      }
     };
     this.messages.push(m1);
     this.messages.push(m2);
     this.messages.push(m3);
-  }
+  }*/
 }

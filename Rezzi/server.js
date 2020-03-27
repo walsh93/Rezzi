@@ -58,12 +58,24 @@ const getFloors = require('./server/service/getFloors')
 app.use(service.get_floors, getFloors)
 const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
+const getHD = require('./server/service/getHD')
+app.use(service.get_hd, getHD)
+const updateHDArray = require('./server/service/updateHDArray')
+app.use(service.update_hd, updateHDArray)
 const channelMessages = require('./server/service/channelMessages')
 app.use(service.channel_messages, channelMessages)
 const getRAs = require('./server/service/getRAs')
 app.use(service.getRAs, getRAs)
 const getResidents = require('./server/service/getResidents')
 app.use(service.getResidents, getResidents)
+const privateMessages = require('./server/service/privateMessages')
+app.use(service.private_messages, privateMessages)
+const raFromFloor = require('./server/service/getRaFromFloor')
+app.use(service.get_floor_ra, raFromFloor)
+const getChannelRequests = require('./server/service/getChannelRequests')
+app.use(service.get_channel_requests, getChannelRequests)
+const getChannelData = require('./server/service/getChannelData')
+app.use(service.get_channel_data, getChannelData)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')
@@ -102,7 +114,20 @@ const createrezzi = require('./server/routes/create-rezzi')
 app.use(url.create_rezzi, createrezzi)
 const dashboard = require('./server/routes/dashboard')
 app.use(url.dashboard, dashboard)
+const requestchannel = require('./server/routes/request-channel')
+app.use(url.request_channel, requestchannel)
+const channelrequests = require('./server/routes/channel-requests')  // RA responding to request
+app.use(url.channel_requests, channelrequests)
 
+const get_pm_users = require('./server/routes/get-pm-users')
+app.use(url.get_pm_users, get_pm_users)
+const get_non_pm_users = require('./server/routes/get-non-pm-users')
+app.use(url.get_non_pm_users, get_non_pm_users)
+const create_pm = require('./server/routes/create-pm')
+app.use(url.create_pm, create_pm);
+
+const setup_test = require('./server/routes/setup-test')
+app.use(url.setup_test, setup_test)
 
 // Testing
 app.use((request,response,next)=>{
@@ -194,7 +219,9 @@ const skt = require('./server/constants').socket
 
 // Map of db channel listeners
 serverChannelListeners = new Map()
+serverPrivateListeners = new Map()
 serverCurrentChannel = null
+serverCurrentPrivate = null
 
 // IO listener
 io.on(skt.connection, (socket) => {
@@ -212,8 +239,28 @@ io.on(skt.connection, (socket) => {
       const observer = dbListeners.addListenerForChannelMessages(socket, dbpath)
       serverChannelListeners.set(serverCurrentChannel, observer)
     }
-  })
-})
+  });
+
+  // When a message is updated (like reactions)
+  socket.on(skt.update_message, (data) => {
+    socketEvents.updateMessage(socket, data)
+  });
+
+  socket.on(skt.new_private_view, (dbpath) => {
+    serverCurrentPrivate = `${dbpath.userPath}/${dbpath.receiverID}`
+    console.log("server.js",serverCurrentPrivate, dbpath)
+    if (!serverPrivateListeners.has(serverCurrentPrivate)) {
+      const observer = dbListeners.addListenerForPrivateMessages(socket, dbpath)
+      serverPrivateListeners.set(serverCurrentPrivate, observer)
+    }
+  });
+
+  //$$$conley
+  socket.on(skt.new_private_messsage, (data) => {
+    console.log("Server.js - socket.on")
+    socketEvents.newPrivateMessage(socket, data)
+  });
+});
 
 // Server listener
 server.on('error',onError);

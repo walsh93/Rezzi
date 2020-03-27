@@ -8,9 +8,15 @@ module.exports = {
     get_user_by_email: "/get-user-by-email",
     get_floors: "/get-floors",
     get_user: "/get-user",
+    get_hd: "/get-hd",
+    update_hd: "/update-hd",
+    get_floor_ra: "/get-ra-from-floor",
+    get_channel_requests: "/get-channel-requests",
+    get_channel_data: "/get-channel-data",
     channel_messages: "/channel-messages",
     getRAs: "/getRAs",
-    getResidents: "/getResidents"
+    getResidents: "/getResidents",
+    private_messages: "/private-messages",
   },
 
   // Firebase constants
@@ -22,7 +28,8 @@ module.exports = {
     hallwide: 'hallwide',
     ra: 'RA',
     channels: 'channels',
-    rezzis: 'residence-halls'
+    rezzis: 'residence-halls',
+    private_messages: 'private-messages',
   },
 
   // User types
@@ -58,6 +65,12 @@ module.exports = {
     pword_reset_change: "/pword-reset-change",
     create_rezzi: "/create-rezzi",
     dashboard: "/dashboard",
+    get_pm_users: "/get-pm-users",
+    get_non_pm_users: "/get-non-pm-users",
+    create_pm: "/create-pm",
+    request_channel: "/request-channel",
+    channel_requests: "/channel-requests",
+    setup_test: "/setup-test"
   },
 
   http_status: {
@@ -123,5 +136,9 @@ module.exports = {
     new_channel_view: 'new-channel-view',
     new_message: 'new-message',
     new_message_added: 'added-new-message',
+    update_message: 'update-message',
+    new_private_view: 'new-private-view', //$$$conley
+    new_private_messsage: 'new-private-message', //$$$conley
+    new_private_message_added: 'added-new-private-message', //$$$conley
   }
 }

@@ -1,9 +1,14 @@
-<!-- <p>ra-admin works!</p> -->
 <div>
-  <button (click)="showCreateChannel = true;" mat-raised-button>
+  <button (click)="showCreateChannel=true;showChannelRequests=false" mat-raised-button>
     Create Channel
+  </button>
+  <button (click)="showCreateChannel=false;showChannelRequests=true" mat-raised-button>
+    View Channel Requests
   </button>
 </div>
 <div>
   <p *ngIf="showCreateChannel"><app-ra-create-channel></app-ra-create-channel></p>
+  <p *ngIf="showChannelRequests">
+    <app-ra-channel-requests [email]="email" [rezzi]="rezzi"></app-ra-channel-requests>
+  </p>
 </div>

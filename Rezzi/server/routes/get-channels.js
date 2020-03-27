@@ -32,26 +32,32 @@ router.get('/', checkCookie, function(request, response) {
           parent: name,
           channels: {}
         };
-        db.collection(collection).select('members').get().then(function(snapshot) {
-          console.log(collection);  // Debugging
+        db.collection(collection).select('members', 'approvalStatus').get().then(function(snapshot) {
+          // console.log(collection);  // Debugging (database path `residence-halls/name/...`)
           snapshot.forEach(function(doc) {
             const data = doc.data()
             temp = {}
-            if (data.hasOwnProperty('members')) {
-              temp.users = data.members.length;
-              temp.belongs = (data.members.indexOf(email) === -1) ? false : true;
+
+            // Only show this channel if it has been approved by an RA
+            if (data.approvalStatus == true) {
+              if (data.hasOwnProperty('members')) {
+                temp.users = data.members.length;
+                temp.belongs = (data.members.indexOf(email) === -1) ? false : true;
+              } else {
+                temp.users = 0;
+                temp.belongs = false;
+              }
+              if (data.hasOwnProperty('messages')) {
+                temp.messages = data.messages
+              } else {
+                temp.messages = []
+              }
+              to_add.channels[doc.id] = temp;
             } else {
-              temp.users = 0;
-              temp.belongs = false;
+              console.log(`Skipping unapproved channel ${doc.id}...`)
             }
-            if (data.hasOwnProperty('messages')) {
-              temp.messages = data.messages
-            } else {
-              temp.messages = []
-            }
-            to_add.channels[doc.id] = temp;
           });
-          console.log(to_add);
+          // console.log(to_add);  // Debugging (logs all channels to send to front end)
           resolve(to_add);
         }).catch(function(rejection) {
           console.log(collection + " --- ERROR:", rejection);  // Debugging output
@@ -69,7 +75,7 @@ router.get('/', checkCookie, function(request, response) {
       responses.forEach((response) => {
         to_return[response.parent] = response.channels;
       });
-      console.log(to_return);
+      console.log(to_return);  // Debugging (logs all channels to send to front end)
 
       // Check for channels they belong to and set flags accordingly
       // belongs_to.forEach((channel) => {

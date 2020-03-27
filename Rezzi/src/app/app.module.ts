@@ -22,6 +22,8 @@ import {
   MatIconModule,
   MatSlideToggleModule,
   MatSnackBarModule,
+  MatBadgeModule,
+  MatTooltipModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -56,15 +58,23 @@ import { EditProfileFormComponent } from './dashboard/edit-profile/edit-profile-
 
 import { HdAdminComponent } from './dashboard/hd-admin/hd-admin.component';
 
-
 import { RaAdminComponent } from './dashboard/ra-admin/ra-admin.component';
 import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
+import { RaChannelRequestsComponent } from './dashboard/ra-admin/ra-channel-requests/ra-channel-requests.component';
+import { RequestChannelComponent } from './dashboard/request-channel/request-channel.component';
+import { RequestChannelFormComponent } from './dashboard/request-channel/request-channel-form/request-channel-form.component';
 
 import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-rezzi.component';
 import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
 import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
 import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
 import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
+
+import { PmInterfaceComponent } from './dashboard/pm-interface/pm-interface.component';
+import { PmSidePanelComponent } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.component';
+import { NewPmComponent } from './dashboard/pm-interface/private-messages/new-pm/new-pm.component';
+import { PrivateMessagesComponent } from './dashboard/pm-interface/private-messages/private-messages/private-messages.component';
+
 
 // Home Page Components
 import { HomeComponent } from './home/home.component';
@@ -76,7 +86,7 @@ import { JoinChannelComponent } from './home/interface/side-panel/join-channel/j
 import { ChannelMessagesComponent } from './home/interface/messages/channel-messages/channel-messages.component';
 import { NewMessageComponent } from './home/interface/messages/new-message/new-message.component';
 
-import { ChannelNavBarComponent } from './home/interface/channel-nav-bar/channel-nav-bar.component';
+import { ChannelNavBarComponent, LeaveChannelDialog } from './home/interface/channel-nav-bar/channel-nav-bar.component';
 
 // Header Component
 import { HeaderComponent } from './header/header.component';
@@ -93,6 +103,7 @@ import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/cre
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
 import { MessageComponent } from './home/interface/messages/message/message.component';
+import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 
 @NgModule({
   declarations: [
@@ -131,8 +142,17 @@ import { MessageComponent } from './home/interface/messages/message/message.comp
     CreateChannelFormComponent,
     HdAdminComponent,
     MemberInputComponent,
+    PmInterfaceComponent,
+    PmSidePanelComponent,
+    NewPmComponent,
+    PrivateMessagesComponent,
     MessageComponent,
-    UserManagementComponent
+    CreatePmComponent,
+    UserManagementComponent,
+    RequestChannelComponent,
+    RequestChannelFormComponent,
+    RaChannelRequestsComponent,
+    LeaveChannelDialog
   ],
   imports: [
     BrowserModule,
@@ -164,9 +184,13 @@ import { MessageComponent } from './home/interface/messages/message/message.comp
     NgbModule,
     MatTabsModule,
     MatSelectModule,
+    MatBadgeModule,
+    MatTooltipModule,
   ],
   entryComponents: [
-    JoinChannelComponent
+    JoinChannelComponent,
+    CreatePmComponent,
+    LeaveChannelDialog
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]
