@@ -16,7 +16,7 @@ import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.compo
 import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
-
+import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
 // Routes
 const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },                     // Page with all the hyperlinks
@@ -26,6 +26,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'invite-users', component: InviteUsersComponent },
   { path: 'user-management', component: UserManagementComponent},
+  { path: 'hd-notifications', component: HdNotificationsComponent},
   { path: 'pword-reset-request', component: PwordresetRequestComponent},
   { path: 'pword-reset-sent', component: PwordresetSentComponent},
   { path: 'pword-reset-change', component: PwordresetChangeComponent},

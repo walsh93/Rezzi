@@ -42,6 +42,7 @@ module.exports = {
     sign_out: "/sign-out",
     invite_users: "/invite-users",
     user_management: "/user-management",
+    hd_notifications: "/hd-notifications",
     error: {
       page: "/err",
       not_raadmin: "/err/1/unauthorized",

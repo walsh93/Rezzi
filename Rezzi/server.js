@@ -82,6 +82,8 @@ const inviteusers = require('./server/routes/invite-users')
 app.use(url.invite_users, inviteusers)
 const usermanagement = require('./server/routes/user-management')
 app.use(url.user_management, usermanagement)
+const hdnotifications = require('./server/routes/hd-notifications')
+app.use(url.hd_notifications, hdnotifications)
 
 const pwordResetRequest = require('./server/routes/pwordResetRequest')
 app.use(url.pword_reset_request, pwordResetRequest)

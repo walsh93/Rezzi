@@ -93,6 +93,7 @@ import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/cre
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
 import { MessageComponent } from './home/interface/messages/message/message.component';
+import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,8 @@ import { MessageComponent } from './home/interface/messages/message/message.comp
     HdAdminComponent,
     MemberInputComponent,
     MessageComponent,
-    UserManagementComponent
+    UserManagementComponent,
+    HdNotificationsComponent
   ],
   imports: [
     BrowserModule,
