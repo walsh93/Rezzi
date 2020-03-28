@@ -30,13 +30,15 @@ export class UserManagementComponent implements OnInit {
     });
 
     this.rezziService.getResidents().then((residentList) => {
-      console.log(`Resident list is ${residentList}`);
-      this.residents = new MatTableDataSource(residentList);
+      console.log("pulling the resident list");
+      console.log(`Resident list is ${residentList[1]}`);
+      this.residents = new MatTableDataSource(residentList.residentInfo);
     });
     
     this.rezziService.getRAs().then((RAList) => {
-      console.log(`RA List IS ${RAList}`);
-        this.RAs = new MatTableDataSource(RAList);
+      console.log("pulling the RA list");
+      console.log(`RA List IS ${RAList.RAInfo[1]}`);
+        this.RAs = new MatTableDataSource(RAList.RAInfo);
     });
 
     

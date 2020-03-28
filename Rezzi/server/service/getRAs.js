@@ -10,6 +10,7 @@ const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 const url = require('../constants').url
 
+//uses list of RAs in each rezzi to get the user info for each RA
 router.get('/', checkCookie, function(request, response) {
   let RAs = [];
   let RAInfo = [];
@@ -17,20 +18,21 @@ router.get('/', checkCookie, function(request, response) {
   db.collection('residence-halls').doc(request.__session.rezzi).get().then((doc) => {
     if (!doc.exists) {
         console.log('RA list Doc not found')
-        response.status(http.bad_request).send('Error retrieving RA information')
+        //response.status(http.bad_request).send('Error retrieving RA information')
       } else  {
         const data = doc.data()
         //console.log(data)
         RAs = data.RA_list
         //for every RA email in the RA_list array
+        let promises = [];
         for(var i = 0; i < RAs.length; i++){
             //declare variables for each resident
             var firstName;
             var lastName;
-            db.collection('users').doc(RAs[i]).get().then((doc) => {
+            promises.push(db.collection('users').doc(RAs[i]).get().then((doc) => {
                 if(!doc.exists){
                     console.log('RA Email Doc not found')
-                    response.status(http.bad_request).send('Error retrieving RA information')
+                    //response.status(http.bad_request).send('Error retrieving RA information')
                 }
                 const data = doc.data()
 
@@ -56,19 +58,19 @@ router.get('/', checkCookie, function(request, response) {
                     verified: data.verified,
                     floor: data.floor,
                 }
-                
-                
                 console.log(info)
                 RAInfo.push(info)
-                console.log(RAInfo.length)
-            }).catch((error) => {
-                console.log('Error getting documents', error)
-                response.status(http.conflict).json(null)
-              })
+                //console.log(RAInfo.length)
+            }))
         }
+      Promise.all(promises).then((resolved) => {
         response.status(http.ok).json({ RAInfo: RAInfo })  // will be accessed as data_from_backend in prev code blocks
-
+      }).catch((reject) => {
+        response.status(http.error).json({ reject: reject, msg: 'Something went wrong. Please try again later.' })
+      })
       }
+
+
   }).catch((error) => {
     console.log('Error getting documents', error)
     response.status(http.conflict).json(null)
