@@ -22,6 +22,8 @@ export class MessageComponent implements OnInit {
   @Input() rezzi: string;              // The Rezzi the channel is in
   @Input() pm: boolean;                // Whether or not the message is a pm
   @Input() pmUser: string;             // The user being PMd
+  @Input() updateScrolling: boolean;   // Does the scroll depth need to update?
+
   private reactions: ReactionData;     // Data holding the reaction (extracted from message)
   private user: AbbreviatedUser;       // The user who sent the message (extracted from message)
   private content: string;             // The content of the message (extracted from message)
@@ -65,8 +67,11 @@ export class MessageComponent implements OnInit {
      * This will execute for every single message being shown every time, but usually happens fast enough that it is not
      * noticable to the user...
      */
-    const chanMsgs = document.getElementById('channelMessages');
-    chanMsgs.scrollTop = chanMsgs.scrollHeight;
+    if (this.updateScrolling) {
+      console.log('Need scrolling update...');
+      const chanMsgs = document.getElementById('channelMessages');
+      chanMsgs.scrollTop = chanMsgs.scrollHeight;
+    }
   }
 
   sendReaction(reaction) {
