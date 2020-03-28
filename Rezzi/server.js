@@ -58,8 +58,20 @@ const getFloors = require('./server/service/getFloors')
 app.use(service.get_floors, getFloors)
 const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
+const getHD = require('./server/service/getHD')
+app.use(service.get_hd, getHD)
+const updateHDArray = require('./server/service/updateHDArray')
+app.use(service.update_hd, updateHDArray)
 const channelMessages = require('./server/service/channelMessages')
 app.use(service.channel_messages, channelMessages)
+const privateMessages = require('./server/service/privateMessages')
+app.use(service.private_messages, privateMessages)
+const raFromFloor = require('./server/service/getRaFromFloor')
+app.use(service.get_floor_ra, raFromFloor)
+const getChannelRequests = require('./server/service/getChannelRequests')
+app.use(service.get_channel_requests, getChannelRequests)
+const getChannelData = require('./server/service/getChannelData')
+app.use(service.get_channel_data, getChannelData)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')
@@ -100,7 +112,20 @@ const createrezzi = require('./server/routes/create-rezzi')
 app.use(url.create_rezzi, createrezzi)
 const dashboard = require('./server/routes/dashboard')
 app.use(url.dashboard, dashboard)
+const requestchannel = require('./server/routes/request-channel')
+app.use(url.request_channel, requestchannel)
+const channelrequests = require('./server/routes/channel-requests')  // RA responding to request
+app.use(url.channel_requests, channelrequests)
 
+const get_pm_users = require('./server/routes/get-pm-users')
+app.use(url.get_pm_users, get_pm_users)
+const get_non_pm_users = require('./server/routes/get-non-pm-users')
+app.use(url.get_non_pm_users, get_non_pm_users)
+const create_pm = require('./server/routes/create-pm')
+app.use(url.create_pm, create_pm);
+
+const setup_test = require('./server/routes/setup-test')
+app.use(url.setup_test, setup_test)
 
 // Testing
 app.use((request,response,next)=>{
@@ -192,7 +217,9 @@ const skt = require('./server/constants').socket
 
 // Map of db channel listeners
 serverChannelListeners = new Map()
+serverPrivateListeners = new Map()
 serverCurrentChannel = null
+serverCurrentPrivate = null
 
 // IO listener
 io.on(skt.connection, (socket) => {
@@ -203,15 +230,50 @@ io.on(skt.connection, (socket) => {
     socketEvents.newMessage(socket, data)
   });
 
-  // When the user begins viewing a different channel
+  /**
+   * When the user begins viewing a different channel
+   * Need to pass `io` to addListenerForChannelMessages() instead of `socket`
+   * There is one IO listener in the server, but many different sockets can connect to it (new socket connections
+   * made on reroute, reload, refresh, etc.)
+   * If `socket` is passed (and this that `socket` calls emit), if a new connection is made, this old socket can't
+   * reach the new connection, so the frontend will not respond even though the backend is emitting data
+   */
   socket.on(skt.new_channel_view, (dbpath) => {
     serverCurrentChannel = `${dbpath.channelPath}/${dbpath.channelName}`
     if (!serverChannelListeners.has(serverCurrentChannel)) {
-      const observer = dbListeners.addListenerForChannelMessages(socket, dbpath)
+      const observer = dbListeners.addListenerForChannelMessages(io, dbpath)
       serverChannelListeners.set(serverCurrentChannel, observer)
     }
-  })
-})
+  });
+
+  // When a message is updated (like reactions)
+  socket.on(skt.update_message, (data) => {
+    socketEvents.updateMessage(socket, data)
+  });
+
+  /**
+   * When the user begins viewing a different private message channel
+   * Need to pass `io` to addListenerForChannelMessages() instead of `socket`
+   * There is one IO listener in the server, but many different sockets can connect to it (new socket connections
+   * made on reroute, reload, refresh, etc.)
+   * If `socket` is passed (and this that `socket` calls emit), if a new connection is made, this old socket can't
+   * reach the new connection, so the frontend will not respond even though the backend is emitting data
+   */
+  socket.on(skt.new_private_view, (dbpath) => {
+    serverCurrentPrivate = `${dbpath.userPath}/${dbpath.receiverID}`
+    console.log("server.js",serverCurrentPrivate, dbpath)
+    if (!serverPrivateListeners.has(serverCurrentPrivate)) {
+      const observer = dbListeners.addListenerForPrivateMessages(io, dbpath)
+      serverPrivateListeners.set(serverCurrentPrivate, observer)
+    }
+  });
+
+  //$$$conley
+  socket.on(skt.new_private_messsage, (data) => {
+    console.log("Server.js - socket.on")
+    socketEvents.newPrivateMessage(socket, data)
+  });
+});
 
 // Server listener
 server.on('error',onError);

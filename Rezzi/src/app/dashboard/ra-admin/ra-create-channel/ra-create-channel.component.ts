@@ -29,7 +29,7 @@ export class RaCreateChannelComponent implements OnInit {
     this.rezziService.getSession().then((response) => {
       if (response.email == null) {  // not signed in
         this.router.navigate(['/sign-in']);
-      } else if (response.accountType !== 1) {  // not an RA
+      } else if (response.accountType !== 1 && response.accountType !== 0) {  // not an RA or HD
         this.router.navigate(['/err/1/unauthorized']);
       } else {  // else you are a signed-in RA
         this.owner = response.email;

@@ -1,10 +1,25 @@
-<mat-card class="container">
-  <!-- First column: name -->
-  <mat-card-content class="col-2">Name: </mat-card-content>
-
-  <!-- Second column: everything else-->
-  <div class="col">
-    <mat-card-content class="row">{{ content }}</mat-card-content>
-    <mat-card-footer class="row">{{ displayTime }}</mat-card-footer>
-  </div>
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar class="avatar"></div>
+    <mat-card-title>{{ user.nickName }}</mat-card-title>
+    <span class="reactions">
+      <ng-container *ngFor="let reaction of reactions | keyvalue">
+        <button mat-icon-button (click)="sendReaction(reaction.key)">
+          <mat-icon *ngIf="reaction.value.length > 0"
+            matBadge="{{ reaction.value.length }}"
+            color="{{ reacted[reaction.key] }}"
+            matBadgeSize="small"
+            matTooltip="{{ getList(reaction.key) }}"
+            matTooltipPosition="above">
+            {{ reaction.key }}
+          </mat-icon>
+          <mat-icon *ngIf="reaction.value.length == 0">
+            {{ reaction.key }}
+          </mat-icon>
+        </button>
+      </ng-container>
+    </span>
+  </mat-card-header>
+  <mat-card-content>{{ content }}</mat-card-content>
+  <mat-card-footer>{{ displayTime }}</mat-card-footer>
 </mat-card>

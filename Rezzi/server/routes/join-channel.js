@@ -17,9 +17,13 @@ router.get('/', checkCookie, function(request, response) {
   const email = request.__session.email;
   const rezzi = request.__session.rezzi;
   console.log(req);
+
+  // Add channel from user's channel list
   db.collection(keys.users).doc(email).update({
     channels: admin.firestore.FieldValue.arrayUnion(req.channel_id)
   });
+
+  // Add user to channel's member list
   if (req.channel_id.indexOf("floors") !== -1) {
     db.collection(keys.rezzis + '/' + rezzi + '/floors/' + req.channel_id.split('-')[1] + '/channels')
       .doc(req.channel_id.split('-')[2])

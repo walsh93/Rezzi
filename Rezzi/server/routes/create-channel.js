@@ -3,7 +3,7 @@ const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
 
-const checkCookie = require('../permissions').userNeedsToBeLoggedInRA
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAdmin
 const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys

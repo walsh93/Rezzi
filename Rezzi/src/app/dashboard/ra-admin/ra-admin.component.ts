@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-ra-admin',
@@ -6,7 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./ra-admin.component.css']
 })
 export class RaAdminComponent implements OnInit {
+
   showCreateChannel = false;
+  showChannelRequests = false;
+
+  // Data from parent element
+  @Input() email: string;
+  @Input() rezzi: string;
+
   constructor() { }
 
   ngOnInit(): void {
