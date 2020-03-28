@@ -48,7 +48,7 @@ router.get('/', checkCookie, function(request, response) {
                 else {
                     lastName = data.lastName;
                 }
-
+                //If more info is needed on the User Management page, add that here!
                 const info = {
                     email: data.email,
                     firstName: firstName,
@@ -56,17 +56,11 @@ router.get('/', checkCookie, function(request, response) {
                     verified: data.verified,
                     floor: data.floor,
                 }
-                //If more info is needed on the User Management page, add that here!
-                const info = {
-                    email: data.email,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    verified: data.verified,
-                    floor: data.floor,
-                }
-                //console.log(info)
+                
+                
+                console.log(info)
                 RAInfo.push(info)
-                //console.log(RAInfo.length)
+                console.log(RAInfo.length)
             }).catch((error) => {
                 console.log('Error getting documents', error)
                 response.status(http.conflict).json(null)

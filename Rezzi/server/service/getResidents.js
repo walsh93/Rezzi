@@ -12,7 +12,6 @@ const url = require('../constants').url
 router.get('/', checkCookie, function(request, response) {
   let residents = [];
   let residentInfo = [];
-  console.log("hi we called this function")
   db.collection('residence-halls').doc(request.__session.rezzi).get().then((doc) => {
     if (!doc.exists) {
         console.log('Resident list Doc not found')

@@ -15,8 +15,8 @@ export class UserManagementComponent implements OnInit {
   // Class variables
   errorMsg: string;
   session: any;
-  RAs: Array<any>;
-  residents: Array<any>;
+  RAs: MatTableDataSource<any>;
+  residents: MatTableDataSource<any>;
   columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified'];
 
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
@@ -29,15 +29,17 @@ export class UserManagementComponent implements OnInit {
       this.session = session;
     });
 
-    this.rezziService.getRAs().then((RAList) => {
-      console.log(`RA List IS ${RAList}`);
-        this.RAs = RAList.email;
-    });
-
     this.rezziService.getResidents().then((residentList) => {
       console.log(`Resident list is ${residentList}`);
-      this.residents = residentList.email;
+      this.residents = new MatTableDataSource(residentList);
     });
+    
+    this.rezziService.getRAs().then((RAList) => {
+      console.log(`RA List IS ${RAList}`);
+        this.RAs = new MatTableDataSource(RAList);
+    });
+
+    
 
 
   }
