@@ -16,13 +16,10 @@ import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.compo
 import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
-<<<<<<< HEAD
 import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
-=======
 import { RequestChannelComponent } from './dashboard/request-channel/request-channel.component';
 import { RaChannelRequestsComponent } from './dashboard/ra-admin/ra-channel-requests/ra-channel-requests.component';
 
->>>>>>> 1400dd828d3b94c9c6196c16809e952c832950b1
 // Routes
 const routes: Routes = [
   { path: 'welcome', component: WelcomeComponent },                     // Page with all the hyperlinks
