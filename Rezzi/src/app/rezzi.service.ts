@@ -106,6 +106,21 @@ export class RezziService {
     });
   }
 
+  getRAs(): Promise<any> {
+    return this.http.get('/getRAs').toPromise().then((RAList) => {
+      return RAList;
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
+  getResidents(): Promise<any> {
+    return this.http.get('/getResidents').toPromise().then((residentList) => {
+      return residentList;
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
   /*********************************************************************************************************************************
    * Helper functions
    ********************************************************************************************************************************/

@@ -1,12 +1,15 @@
-<div *ngFor="let message of messages">
-  <!--{{ message.owner.firstName }}: Temporary Comment-->
-  <app-message
-    [message]="message"
-    [viewingUser]="user"
-    [channel]="currentChannel"
-    [rezzi]="session.rezzi"
-    [pm]="false"
-  ></app-message>
+<div id="channelMessages">
+  <div *ngFor="let message of messages">
+    <!--{{ message.owner.firstName }}: Temporary Comment-->
+    <app-message
+      [message]="message"
+      [viewingUser]="user"
+      [channel]="currentChannel"
+      [rezzi]="session.rezzi"
+      [pm]="false"
+      [updateScrolling]="needToUpdateScroll"
+    ></app-message>
+  </div>
 </div>
 
 <!-- this is the component that displays the previous messages -->

@@ -16,6 +16,9 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   private messagesSub: Subscription;
   private channelMap: Map<string, ChannelData>;
 
+  amViewingNewChannel = false;
+  needToUpdateScroll = false;
+
   // Abbreviated User data
   user: AbbreviatedUser;
   private userUpdateSub: Subscription;
@@ -81,6 +84,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       this.currentChannel = updatedChannelID;
       const dbpath = this.messagesService.createChannelPath(this.session.rezzi, updatedChannelID);
       if (dbpath != null && dbpath !== undefined) {
+        this.amViewingNewChannel = true;
         this.messagesService.getChannelMessages(dbpath.channelPath, dbpath.channelName);  // Triggers msg upd listener
         this.messagesService.emitNewChannelView(dbpath);  // eventually triggers addListenerForChannelMessages
       }
@@ -91,7 +95,10 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     // Listen for updated message list
     this.messagesSub = this.messagesService.getMessageUpdateListener().subscribe((updatedMessages: Message[]) => {
       console.log('Messages are updating...');
+      const diffNumberOfMessages = (this.messages.length !== updatedMessages.length);
+      this.needToUpdateScroll = (this.amViewingNewChannel || diffNumberOfMessages);  // Don't scroll on reaction only
       this.messages = updatedMessages;
+      this.amViewingNewChannel = false;  // Need to reset once on channel
     }); // First function, Second error, Third when observable completed
   }
 

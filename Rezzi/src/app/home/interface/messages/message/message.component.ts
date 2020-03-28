@@ -22,6 +22,8 @@ export class MessageComponent implements OnInit {
   @Input() rezzi: string;              // The Rezzi the channel is in
   @Input() pm: boolean;                // Whether or not the message is a pm
   @Input() pmUser: string;             // The user being PMd
+  @Input() updateScrolling: boolean;   // Does the scroll depth need to update?
+
   private reactions: ReactionData;     // Data holding the reaction (extracted from message)
   private user: AbbreviatedUser;       // The user who sent the message (extracted from message)
   private content: string;             // The content of the message (extracted from message)
@@ -30,9 +32,9 @@ export class MessageComponent implements OnInit {
   constructor(public messagesService: MessagesService) { }
 
   ngOnInit() {
-    //console.log(this.time);
-    console.log("Message: ", this.message);
-    console.log(this.viewingUser);
+    // console.log(this.time);
+    // console.log("Message: ", this.message);
+    // console.log(this.viewingUser);
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
     this.content = this.message.content;
@@ -50,39 +52,47 @@ export class MessageComponent implements OnInit {
     // console.log(this.displayTime);
     // this.displayTime = String(dateAgain);
 
-    for (var reaction in this.reactions) {  // Set initial color values for reactions
+    for (const reaction in this.reactions) {  // Set initial color values for reactions
       if (this.reactions.hasOwnProperty(reaction)) {
         if (this.reactions[reaction].includes(this.viewingUser.email)) {
-          this.reacted[reaction] = "accent";
-        }
-        else {
-          this.reacted[reaction] = "";
+          this.reacted[reaction] = 'accent';
+        } else {
+          this.reacted[reaction] = '';
         }
       }
+    }
+
+    /**
+     * Auto scroll to bottom of channel messages (.scrollTop = how much currently scrolled, .scrollHeight = total height)
+     * This will execute for every single message being shown every time, but usually happens fast enough that it is not
+     * noticable to the user...
+     */
+    if (this.updateScrolling) {
+      console.log('Need scrolling update...');
+      const chanMsgs = document.getElementById('channelMessages');
+      chanMsgs.scrollTop = chanMsgs.scrollHeight;
     }
   }
 
   sendReaction(reaction) {
-    if (this.reacted[reaction] === "") {  // If the user has not reacted
-      this.reacted[reaction] = "accent";
+    if (this.reacted[reaction] === '') {  // If the user has not reacted
+      this.reacted[reaction] = 'accent';
       this.reactions[reaction].push(this.viewingUser.email);
-    }
-    else {
-      this.reacted[reaction] = "";
+    } else {
+      this.reacted[reaction] = '';
       this.reactions[reaction].splice(this.reactions[reaction].indexOf(this.viewingUser.email), 1);
     }
 
     if (this.pm) {
-      let spmd: SocketPrivateMessageData = {
+      const spmd: SocketPrivateMessageData = {
         message: this.message,
         sender: this.viewingUser.email,
         recipient: this.pmUser,
       };
       spmd.message.reactions = this.reactions;
       this.messagesService.updateMessageThroughSocket(spmd);
-    }
-    else {
-      let scmd: SocketChannelMessageData = {
+    } else {
+      const scmd: SocketChannelMessageData = {
         message: this.message,
         rezzi: this.rezzi,
         channelID: this.channel
@@ -93,6 +103,6 @@ export class MessageComponent implements OnInit {
   }
 
   getList(reaction) {
-    return this.reactions[reaction].join("\n")
+    return this.reactions[reaction].join('\n');
   }
 }

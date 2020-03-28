@@ -14,6 +14,8 @@ module.exports = {
     get_channel_requests: "/get-channel-requests",
     get_channel_data: "/get-channel-data",
     channel_messages: "/channel-messages",
+    getRAs: "/getRAs",
+    getResidents: "/getResidents",
     private_messages: "/private-messages",
   },
 
