@@ -1,0 +1,9 @@
+/**
+ * Header navbar height = 64px (mat-tool-bar default)
+ * Channel navbar height = 64px (mat-tool-bar default)
+ * app-new-message height = 90px (declared in new-message.component.css)
+ */
+#channelMessages {
+  overflow-y: auto;
+  height: calc(100vh - 218px);
+}

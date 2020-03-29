@@ -1,4 +1,3 @@
-
 // Dependencies
 var express = require('express');
 var router = express.Router();
@@ -10,29 +9,27 @@ const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 const url = require('../constants').url
 
-//uses list of RAs in each rezzi to get the user info for each RA
 router.get('/', checkCookie, function(request, response) {
-  let RAs = [];
-  let RAInfo = [];
-  //access collection of current user's rezzi
+  let residents = [];
+  let residentInfo = [];
   db.collection('residence-halls').doc(request.__session.rezzi).get().then((doc) => {
     if (!doc.exists) {
-        console.log('RA list Doc not found')
-        //response.status(http.bad_request).send('Error retrieving RA information')
+        console.log('Resident list Doc not found')
+        //response.status(http.bad_request).send('Error retrieving resident information')
       } else  {
         const data = doc.data()
-        //console.log(data)
-        RAs = data.RA_list
-        //for every RA email in the RA_list array
+        console.log(data)
+        residents = data.resident_list
         let promises = [];
-        for(var i = 0; i < RAs.length; i++){
+
+        for(var i = 0; i < residents.length; i++){ 
             //declare variables for each resident
             var firstName;
             var lastName;
-            promises.push(db.collection('users').doc(RAs[i]).get().then((doc) => {
+            promises.push(db.collection('users').doc(residents[i]).get().then((doc) => {
                 if(!doc.exists){
-                    console.log('RA Email Doc not found')
-                    //response.status(http.bad_request).send('Error retrieving RA information')
+                    console.log('resident Email Doc not found')
+                    //response.status(http.bad_request).send('Error retrieving resident information')
                 }
                 const data = doc.data()
 
@@ -50,7 +47,7 @@ router.get('/', checkCookie, function(request, response) {
                 else {
                     lastName = data.lastName;
                 }
-                //If more info is needed on the User Management page, add that here!
+
                 const info = {
                     email: data.email,
                     firstName: firstName,
@@ -59,18 +56,17 @@ router.get('/', checkCookie, function(request, response) {
                     floor: data.floor,
                 }
                 console.log(info)
-                RAInfo.push(info)
+                residentInfo.push(info)
                 //console.log(RAInfo.length)
             }))
         }
-      Promise.all(promises).then((resolved) => {
-        response.status(http.ok).json({ RAInfo: RAInfo })  // will be accessed as data_from_backend in prev code blocks
-      }).catch((reject) => {
-        response.status(http.error).json({ reject: reject, msg: 'Something went wrong. Please try again later.' })
-      })
+
+        Promise.all(promises).then((resolved) => {
+          response.status(http.ok).json({ residentInfo: residentInfo })  // will be accessed as data_from_backend in prev code blocks
+        }).catch((reject) => {
+          response.status(http.error).json({ reject: reject, msg: 'Something went wrong. Please try again later.' })
+        })
       }
-
-
   }).catch((error) => {
     console.log('Error getting documents', error)
     response.status(http.conflict).json(null)
