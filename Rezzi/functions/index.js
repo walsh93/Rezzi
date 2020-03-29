@@ -35,7 +35,7 @@ const admin = require('firebase-admin');
 // Storage configuration/initialization for non-storage functions
 const storageConfig = {
   projectId: "rezzi-33137",
-  keyFilename: "/rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json",
+  keyFilename: "rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json"
 };
 const storage = new Storage(storageConfig);
 
@@ -62,7 +62,8 @@ exports.onFileDeleted = functions.storage.object().onDelete((event) => {
 
 // uploadFile - triggered when HTTPS request reaches this endpoint
 exports.uploadFile = functions.https.onRequest((request, response) => {
-  console.log("PFWEFE");
+  const docId = request.query.docId;
+  console.log(`docID = ${docId}`);
 
   cors(request, response, () => {
     // if (request.method != "POST") {
@@ -70,7 +71,7 @@ exports.uploadFile = functions.https.onRequest((request, response) => {
     //     message: "Not allowed!!!",
     //   });
     // }
-   const busboy = new Busboy({ headers: request.headers });
+    const busboy = new Busboy({ headers: request.headers });
     let uploadData = null;
 
     // Trigger this section when busboy successfully parses a file from incoming request
@@ -106,7 +107,7 @@ exports.uploadFile = functions.https.onRequest((request, response) => {
                 expires: '03-09-2491'
               }).then((signedUrls) => {
                 const image_url = signedUrls[0];
-                db.collection('users').doc(request.__session.email).get().then((doc) => {
+                db.collection('users').doc(docId).get().then((doc) => {
                   if (doc.exists) {
                     return doc.ref.update({
                       image_url: image_url,
