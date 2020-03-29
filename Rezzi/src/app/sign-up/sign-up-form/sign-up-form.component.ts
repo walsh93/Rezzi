@@ -27,6 +27,8 @@ export class SignUpFormComponent implements OnInit {
     this.rezziService.getSession().then(__session => {
       this.session = __session;
     });
+
+
   }
 
   onSignUp(form: NgForm) {
@@ -47,6 +49,7 @@ export class SignUpFormComponent implements OnInit {
       true,
       0
     );
+
 
     console.log(user);
 
@@ -104,11 +107,9 @@ export class SignUpFormComponent implements OnInit {
       // document.getElementById(`${progressId}bar`).hidden = false;
       const formData = new FormData();
       formData.append(value, fileToUpload, fileToUpload.name);
-
-      // https://angular.io/guide/http#reading-the-full-response
       this.http
         .post(
-          "https://us-central-rezzi-33137.cloudfunctions.net/uploadFile",
+          "https://us-central1-rezzi-33137.cloudfunctions.net/uploadFile",
           formData,
           {
             observe: "response"
