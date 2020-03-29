@@ -62,19 +62,15 @@ exports.onFileDeleted = functions.storage.object().onDelete((event) => {
 
 // uploadFile - triggered when HTTPS request reaches this endpoint
 exports.uploadFile = functions.https.onRequest((request, response) => {
+  console.log("PFWEFE");
+
   cors(request, response, () => {
-    if (request.method != "POST") {
-      return response.status(500).json({
-        message: "Not allowed!!!",
-      });
-    }
-
-    // Get the document ID
-    const urlSegments = request.headers["referer"].split("/");
-    const n = urlSegments.length;
-    const docId = urlSegments[n - 1];
-
-    const busboy = new Busboy({ headers: request.headers });
+    // if (request.method != "POST") {
+    //   return response.status(500).json({
+    //     message: "Not allowed!!!",
+    //   });
+    // }
+   const busboy = new Busboy({ headers: request.headers });
     let uploadData = null;
 
     // Trigger this section when busboy successfully parses a file from incoming request
@@ -84,6 +80,8 @@ exports.uploadFile = functions.https.onRequest((request, response) => {
         file: filepath,
         type: mimetype,
       };
+      console.log("HERE");
+      console.log(filename);
       file.pipe(fs.createWriteStream(filepath));
     });
 
