@@ -67,14 +67,20 @@ export class EditProfileFormComponent implements OnInit {
     alert("Your profile has been edited!");
   }
   ondeletionRequest() {
-    // if(this.theUser.deletionRequest !== 1){
-    this.theUser.deletionRequest = 1;
-    this.deletionRequest(this.theUser);
-    this.updateHallDirector(this.hd, this.theUser.email);
-    // } else {
-    //   alert("You have already requested to delete your account!")
-    // }
+    this.checkUser();
+  }
 
+  checkUser() {
+    this.rezziService.getSession().then(session => {
+      if (session.accountType === 0) {
+        // not a resident
+        alert("Only non-hall director accounts can request deletion!");
+      } else {
+        this.theUser.deletionRequest = 1;
+        this.deletionRequest(this.theUser);
+        this.updateHallDirector(this.hd, this.theUser.email);
+      }
+    });
   }
   deletionRequest(data) {
     this.http
@@ -86,9 +92,9 @@ export class EditProfileFormComponent implements OnInit {
         console.log(responseData.notification);
       });
   }
-  updateHallDirector(hd,user) {
+  updateHallDirector(hd, user) {
     // console.log("updatehd"+ hd);
-    this.rezziService.findUserByEmail(hd,user).then(response => {
+    this.rezziService.findUserByEmail(hd, user).then(response => {
       this.theHD = new HDUser(
         response.hd.firstName,
         response.hd.lastName,
@@ -97,23 +103,20 @@ export class EditProfileFormComponent implements OnInit {
         response.hd.verified,
         response.hd.deletionRequests
       );
-      if(this.theHD.deletionRequests === undefined){
+      if (this.theHD.deletionRequests === undefined) {
         this.theHD.deletionRequests = [];
       }
-      if(this.theHD.deletionRequests.includes(this.theUser.email)){
-
-      } else{
-          this.theHD.deletionRequests.push(this.theUser.email);
-          // console.log(this.theHD.deletionRequests[0]);
+      if (this.theHD.deletionRequests.includes(this.theUser.email)) {
+      } else {
+        this.theHD.deletionRequests.push(this.theUser.email);
+        // console.log(this.theHD.deletionRequests[0]);
       }
-
     });
 
-    this.updateHD(hd,user);
-
+    this.updateHD(hd, user);
   }
 
-  updateHD(hd,user) {
+  updateHD(hd, user) {
     this.http
       .post<{ notification: string }>(
         `http://localhost:4100/dashboard/api/edit-profile/update-hd?hd=${hd}&user=${user}`,
@@ -122,8 +125,7 @@ export class EditProfileFormComponent implements OnInit {
       .subscribe(responseData => {
         console.log(responseData.notification);
       });
-      alert("You have requested to delete your account!");
-
+    alert("You have requested to delete your account!");
   }
 
   ngOnInit() {
@@ -157,7 +159,6 @@ export class EditProfileFormComponent implements OnInit {
           // console.log("it is 1!!");
         }
       });
-
     });
   }
 }

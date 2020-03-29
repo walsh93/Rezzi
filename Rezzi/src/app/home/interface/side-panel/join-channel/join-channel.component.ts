@@ -21,9 +21,9 @@ export class JoinChannelComponent implements OnInit {
   columnsToDisplay = ['channel', 'user-count', 'join-channel'];
   @Output() public join_channel_event = new EventEmitter();
 
-  constructor(public dialogRef: MatDialogRef<JoinChannelComponent>, 
-        @Inject(MAT_DIALOG_DATA) public data,
-        private http: HttpClient) {
+  constructor(public dialogRef: MatDialogRef<JoinChannelComponent>,
+              @Inject(MAT_DIALOG_DATA) public data,
+              private http: HttpClient) {
     // let can_join: ChannelData[] = [];
     console.log(data);
     this.channels = data;
@@ -34,8 +34,8 @@ export class JoinChannelComponent implements OnInit {
   }
 
   joinChannel(id: string) {
-    console.log("Would send a request to database to join channel " + id);
-    this.http.post<{notification: string}>('/join-channel', {"channel_id": id})
+    console.log('Would send a request to database to join channel ' + id);
+    this.http.post<{notification: string}>('/join-channel', {channel_id: id})
     .subscribe(responseData => {
       console.log(responseData.notification);
     });
@@ -44,8 +44,8 @@ export class JoinChannelComponent implements OnInit {
         if (channel.id === id) {
           channel.belongs = true;
         }
-      })
-    })
+      });
+    });
     this.join_channel_event.emit(id);
   }
 
