@@ -36,8 +36,6 @@ module.exports = {
   db: db
 };
 
-
-
 module.exports.addUser = function addUser(data) {
   return new Promise(function (resolve, reject) {
     dbstore.collection('users').doc(data.email).get().then(doc => {
@@ -98,7 +96,6 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data, em
   })
 }
 module.exports.updateHDArray = function updateHDArray(data,email, user) {
-  console.log("qwwqdwqdw " + email + " " + user)
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
