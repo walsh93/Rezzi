@@ -64,9 +64,14 @@ module.exports.editUser = function editUser(data, email) {
       //new password
       //run it through the hash
       //set password
-      data.oldpassword = data.password; //TODO REMOVE THIS ON LIVE ENVIRONMENT
-      data.password = pass.generateHash(data.password);
-      dbstore.collection('users').doc(email).update(data)
+      if (data.password == undefined || data.password == null) {
+        dbstore.collection('users').doc(email).update(data)
+      }
+      else {
+        data.oldpassword = data.password; //TODO REMOVE THIS ON LIVE ENVIRONMENT
+        data.password = pass.generateHash(data.password);
+        dbstore.collection('users').doc(email).update(data)
+      }
     }
   }).catch(err => {
     //reject(err)
@@ -87,13 +92,13 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data, em
     console.log("Error updating deletion status on account");
   })
 }
-module.exports.updateHDArray = function updateHDArray(data,email, user) {
+module.exports.updateHDArray = function updateHDArray(data, email, user) {
   console.log("qwwqdwqdw " + email + " " + user)
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
     } else {
-      dbstore.collection('users').doc(email).update({'deletionRequests': FieldValue.arrayUnion(user)})
+      dbstore.collection('users').doc(email).update({ 'deletionRequests': FieldValue.arrayUnion(user) })
     }
   }).catch(err => {
     //reject(err)

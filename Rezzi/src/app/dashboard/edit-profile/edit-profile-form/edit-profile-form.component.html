@@ -23,17 +23,6 @@
         <input [(ngModel)]="this.theUser.nickName" matInput type="text" placeholder="Preferred Name" ngModel
           name="nickName">
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input [(ngModel)]="this.theUser.password" matInput placeholder="Enter your password"
-          [type]="hide ? 'password' : 'text'" name="password" ngModel minlength="8" #password="ngModel" required>
-
-        <mat-error *ngIf="password.invalid">Your password must be 8 characters long</mat-error>
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Confirm Password" [type]="hide ? 'password' : 'text'" name="confirmPassword"
-          ngModel minlength="8" required #confirmPassword="ngModel">
-        <mat-error *ngIf="password !== confirmPassword">Your passwords must match!</mat-error>
-      </mat-form-field>
 
       <mat-form-field class="example-full-width">
         <input [(ngModel)]="this.theUser.age" matInput type="text" placeholder="Age" ngModel name="age"
@@ -56,6 +45,22 @@
 
 
     </form>
+
+    <form  (submit)="onEditPassword(editPasswordForm)" #editPasswordForm="ngForm">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Enter your password"
+          [type]="hide ? 'password' : 'text'" name="password" ngModel minlength="8" #password="ngModel" required>
+
+        <mat-error *ngIf="password.invalid">Your password must be 8 characters long</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Confirm Password" [type]="hide ? 'password' : 'text'" name="confirmPassword"
+          ngModel minlength="8" required #confirmPassword="ngModel">
+        <mat-error *ngIf="password !== confirmPassword">Your passwords must match!</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="accent" type="submit">Edit Password</button>
+    </form>
+    <br>
 
     <button mat-raised-button color="primary" (click)="ondeletionRequest()">Request to Delete Account</button>
 
