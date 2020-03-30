@@ -1,6 +1,18 @@
-<mat-toolbar color="primary">
+<mat-toolbar id="header-toolbar" color="primary">
+  <!-- Show these buttons if user is logged in -->
+  <div *ngIf="userIsLoggedIn">
+    <a class="matbarurl" title="Hompage" routerLink='/home'>Rezzi</a>
+    <a class="matbarurl" title="Dashboard" routerLink='/dashboard'>Dashboard</a>
+  </div>
 
-  <a routerLink='/welcome'>Rezzi</a>
-  <!-- This header is in header.component.html. Anything put in header.component will be visible on all other pages we route to. -->
+  <div *ngIf="userIsLoggedIn">
+    <app-sign-out-button></app-sign-out-button>
+  </div>
 
+  <!-- Show these buttons if user is not logged in -->
+  <div *ngIf="!userIsLoggedIn">Rezzi</div>
+
+  <div *ngIf="!userIsLoggedIn">
+    <a class="matbarurl" title="Sign In" routerLink='/sign-in' mat-raised-button>Sign In</a>
+  </div>
 </mat-toolbar>
