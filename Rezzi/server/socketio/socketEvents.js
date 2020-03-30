@@ -1,9 +1,9 @@
 const admin = require('firebase-admin')
+const getUrls = require('get-urls')
 const db = admin.firestore()
 const skt = require('../constants').socket
 const createChannelPath = require('../database').createChannelPath
 const createUserPath = require('../database').createUserPath
-
 
 module.exports.newMessage = function newMessage(socket, data) {
   const dbchannel = createChannelPath(data.rezzi, data.channelID)
@@ -14,6 +14,25 @@ module.exports.newMessage = function newMessage(socket, data) {
         messages = []
       }
       data.message.id = data.channelID + '-' + messages.length;
+
+      // initialize image if applicable
+      let links = getUrls(data.message.content, {requireSchemeOrWww: false})
+      links.forEach(link => {
+        if (isUriImage(link)) {
+          data.message.image = link;
+        }
+        else if (link.includes("youtube") || link.includes("youtu.be")) {
+          let video_id = getVideoId(link);
+          if (video_id !== false) {
+            data.message.image = "https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg";
+          }
+        }
+        else {
+          // must get OpenGraph data
+
+        }
+      });
+
       messages.push(data.message);
       db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
         messages: messages
@@ -129,3 +148,27 @@ module.exports.newPrivateMessage = function newPrivateMessage(socket, data) {
   })
 }
 //$$$conley
+
+// Checks if the given url points to an image
+// from https://stackoverflow.com/questions/19395458/check-if-a-link-is-an-image
+function isUriImage(uri) { 
+  //make sure we remove any nasty GET params 
+  uri = uri.split('?')[0];
+  //moving on, split the uri into parts that had dots before them
+  var parts = uri.split('.');
+  //get the last part ( should be the extension )
+  var extension = parts[parts.length-1];
+  //define some image types to test against
+  var imageTypes = ['jpg','jpeg','tiff','png','gif','bmp'];
+  //check if the extension matches anything in the list.
+  if(imageTypes.indexOf(extension) !== -1) {
+      return true;   
+  }
+}
+
+// Gets youtube video id
+function getVideoId(url){
+  var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  var match = url.match(regExp);
+  return (match&&match[7].length==11)? match[7] : false;
+}

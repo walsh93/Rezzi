@@ -28,6 +28,7 @@ export class MessageComponent implements OnInit {
   private user: AbbreviatedUser;       // The user who sent the message (extracted from message)
   private content: string;             // The content of the message (extracted from message)
   private time: Date;                  // When the message was sent (extracted from message)
+  private image: string;               // Image from link in message, or webpage preview (extracted from message)
 
   constructor(public messagesService: MessagesService) { }
 
@@ -39,6 +40,7 @@ export class MessageComponent implements OnInit {
     this.user = this.message.owner;
     this.content = this.message.content;
     this.time = this.message.time;
+    this.image = this.message.image;
     const dateAgain = new Date(this.time);
     const day = this.dayNames[dateAgain.getDay()];
     const month = this.monthNames[dateAgain.getMonth()];
@@ -52,7 +54,8 @@ export class MessageComponent implements OnInit {
     // console.log(this.displayTime);
     // this.displayTime = String(dateAgain);
 
-    for (const reaction in this.reactions) {  // Set initial color values for reactions
+    // Set initial color values for reactions
+    for (const reaction in this.reactions) {
       if (this.reactions.hasOwnProperty(reaction)) {
         if (this.reactions[reaction].includes(this.viewingUser.email)) {
           this.reacted[reaction] = 'accent';

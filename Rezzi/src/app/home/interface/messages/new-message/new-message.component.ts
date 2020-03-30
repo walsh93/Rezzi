@@ -61,7 +61,7 @@ export class NewMessageComponent implements OnInit {
       return;
     }
     console.log(this.session);
-    const message: Message = {
+    let message: Message = {
       content: form.value.enteredMessage,
       owner: this.user,
       time: new Date(),
@@ -74,6 +74,7 @@ export class NewMessageComponent implements OnInit {
         sentiment_dissatisfied: [],
         whatshot: [],
       },
+      image: null,
     };
 
     const scmd: SocketChannelMessageData = {

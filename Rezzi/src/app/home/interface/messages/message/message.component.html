@@ -20,6 +20,7 @@
       </ng-container>
     </span>
   </mat-card-header>
+  <img *ngIf="image !== null" mat-card-image src="{{ image }}">
   <mat-card-content>{{ content }}</mat-card-content>
   <mat-card-footer>{{ displayTime }}</mat-card-footer>
 </mat-card>
