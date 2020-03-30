@@ -70,7 +70,13 @@ export class MessageComponent implements OnInit {
     if (this.updateScrolling) {
       console.log('Need scrolling update...');
       const chanMsgs = document.getElementById('channelMessages');
-      chanMsgs.scrollTop = chanMsgs.scrollHeight;
+      if (chanMsgs != null) {
+        chanMsgs.scrollTop = chanMsgs.scrollHeight;
+      }
+      else {
+        const pmMsgs = document.getElementById('privateUserMessages');
+        pmMsgs.scrollTop = pmMsgs.scrollHeight;
+      }
     }
   }
 

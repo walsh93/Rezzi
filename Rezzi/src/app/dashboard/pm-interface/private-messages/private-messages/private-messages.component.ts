@@ -13,6 +13,9 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
   private messagesSub: Subscription;
   private userMap: Map<string, PrivateMessageData>;
 
+  amViewingNewPM = false;
+  needToUpdateScroll = false;
+
   // Abbreviated User data
   user: AbbreviatedUser;
   private userUpdateSub: Subscription;
@@ -77,6 +80,7 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
       const dbpath = this.messagesService.createUserPath(this.session.email, updatedPMUser);
       console.log("P-M.component.ts dbpath", dbpath);
       if (dbpath != null && dbpath !== undefined) {
+        this.amViewingNewPM = true;
         this.messagesService.getPrivateMessages(dbpath.userPath, dbpath.receiverID);  // EDIT THIS Triggers msg upd listener
         this.messagesService.emitNewUserView(dbpath);  // EDIT THIS eventually triggers addListenerForChannelMessages
       }
@@ -84,7 +88,10 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
 
     this.messagesSub = this.messagesService.getMessageUpdateListener().subscribe((updatedMessages: Message[]) => { // should be fine
       console.log("message update");
+      const diffNumberOfMessages = (this.messages.length !== updatedMessages.length);
+      this.needToUpdateScroll = (this.amViewingNewPM || diffNumberOfMessages);
       this.messages = updatedMessages;
+      this.amViewingNewPM = false;
       console.log("MESSAGES" + this.messages)
     }
     )

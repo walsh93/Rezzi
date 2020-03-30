@@ -152,7 +152,7 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
     RequestChannelComponent,
     RequestChannelFormComponent,
     RaChannelRequestsComponent,
-    LeaveChannelDialog
+    LeaveChannelDialog,
   ],
   imports: [
     BrowserModule,
