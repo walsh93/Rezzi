@@ -16,6 +16,8 @@ export class SignUpFormComponent implements OnInit {
   session: any;
   selectedPicture: File = null;
 
+  profilePic: string;
+
   constructor(private rezziService: RezziService, private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
@@ -42,8 +44,13 @@ export class SignUpFormComponent implements OnInit {
       form.value.nickName,
       form.value.bio,
       true,
-      0
+      0,
+      this.profilePic,
     );
+    if (user.image_url) {
+      user.setImageUrl(user.image_url);
+      //document.getElementById("profile-picture").setAttribute("src", user.image_url);
+    }
 
 
     console.log(user);
@@ -109,11 +116,12 @@ export class SignUpFormComponent implements OnInit {
       ).subscribe(response => {
         if (response.status === 200) {
           // location.reload();
-          alert(`You're photo has been uploaded...`);
+          alert(`Your photo has been uploaded...`);
         } else {
           alert(`Something went wrong. Return with a status code ${response.status}: ${response.statusText}`);
         }
       });
     }
+
   }
 }

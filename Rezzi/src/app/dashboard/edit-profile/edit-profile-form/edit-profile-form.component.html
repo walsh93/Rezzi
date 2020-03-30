@@ -1,7 +1,30 @@
 <div class="edit-profile-form">
+  <div>
+    <!-- <picture>
+      <source media='(min-width:0px; max-width:200px)' srcset="../../../../../src/assets/images/default_profile.jpg">
+
+      <img mat-card-image src="" alt="Profile Image">
+
+    </picture> -->
+    <!-- <picture>
+      <source media='(min-width:0px)' srcset="../../../../../src/assets/images/default_profile.jpg">
+
+      <img id="no-profile-photo" mat-card-image src="" alt="Profile Image">
+
+    </picture> -->
+  </div>
+  <img id="profile-picture" src="../../../../../src/assets/images/default_profile.jpg">
+    <br><br><br><br>
+
   <mat-card color="primary">
     <mat-card-title>My Profile</mat-card-title>
-    <mat-card-subtitle></mat-card-subtitle>
+    <mat-card-subtitle> </mat-card-subtitle>
+
+
+    <!-- <picture>
+        <source media='(min-width:0px)' srcset="/Rezzi/images/default_profile.jpg">
+        <img  id="profile-picture" mat-card-image src="" alt="Profile Image">
+      </picture>-->
     <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
 
       <mat-form-field class="example-full-width">

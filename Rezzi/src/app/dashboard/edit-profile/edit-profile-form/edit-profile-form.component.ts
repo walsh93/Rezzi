@@ -149,8 +149,20 @@ export class EditProfileFormComponent implements OnInit {
           response.user.nickName,
           response.user.bio,
           true,
-          response.user.deletionRequest
+          response.user.deletionRequest,
+          response.user.image_url,
         );
+         // Show image section
+         if (this.theUser.image_url) {
+
+          // this.theUser.setImageUrl(this.theUser.image_url);
+          document.getElementById("profile-photo").setAttribute("src", this.theUser.image_url);
+        }
+        // else {
+        //   document.getElementById("profile-photo").setAttribute("hidden", "true");
+        //   document.getElementById("no-profile-photo").removeAttribute("hidden");
+        // }
+
       });
       this.rezziService.getHDEmail().then(response => {
         this.hd = response.hd;

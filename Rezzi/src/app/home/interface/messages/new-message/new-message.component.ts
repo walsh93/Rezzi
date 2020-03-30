@@ -10,7 +10,7 @@ import { Subscription, Observable } from 'rxjs';
   styleUrls: ['./new-message.component.css']
 })
 export class NewMessageComponent implements OnInit {
-  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0);
+  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0,"");
   enteredMessage = '';
 
   // Session data
