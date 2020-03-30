@@ -29,7 +29,7 @@ export class EditProfileFormComponent implements OnInit {
     let userInfo = {
       firstName: form.value.firstName,
       lastName: form.value.lastName,
-      password: form.value.password,
+      //password: form.value.password,
       age: form.value.age,
       major: form.value.major,
       nickName: form.value.nickName,
@@ -41,9 +41,20 @@ export class EditProfileFormComponent implements OnInit {
     this.theUser.major = userInfo.major;
     this.theUser.nickName = userInfo.nickName;
     this.theUser.bio = userInfo.bio;
-    this.theUser.password = userInfo.password;
+    //this.theUser.password = userInfo.password;
 
     this.editUser(userInfo);
+  }
+
+  onEditPassword(form: NgForm){
+    if (form.invalid) {
+      return;
+    }
+    let pw = {
+      password: form.value.password
+    }
+    this.theUser.password = pw.password;
+    this.editUser(pw);
   }
 
   constructor(
@@ -54,6 +65,7 @@ export class EditProfileFormComponent implements OnInit {
   ) {
     // let user: User;
   }
+
 
   editUser(data) {
     this.http
