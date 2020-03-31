@@ -1,0 +1,8 @@
+#header-toolbar {
+  /* mat-tool-bar display=flex by default */
+  justify-content: space-between;
+}
+
+.matbarurl {
+  margin-right: 25px;
+}
