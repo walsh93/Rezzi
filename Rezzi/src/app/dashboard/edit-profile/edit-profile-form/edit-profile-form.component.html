@@ -17,6 +17,14 @@
     <br><br><br><br>
 <img id="profile" src="../../../../../src/assets/images/default_profile.jpg">
 
+<div class="row upload-section">
+  <p style="padding-left: 15px; padding-top: 30px;"> Upload new profile photo</p>
+  <input style="padding-left: 15px;" type="file" accept="image/*"
+    (change)="onPictureSelected($event)">
+  <div style="padding-left: 15px; padding-top: 10px; padding-bottom: 20px;">
+    <button (click)="onUpload('image')"> Upload</button></div>
+</div>
+
   <mat-card color="primary">
     <mat-card-title>My Profile</mat-card-title>
     <mat-card-subtitle> </mat-card-subtitle>

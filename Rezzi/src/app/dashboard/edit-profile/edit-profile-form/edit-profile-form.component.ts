@@ -17,6 +17,9 @@ export class EditProfileFormComponent implements OnInit {
   hide = true;
   hd: string;
   theHD: HDUser;
+  selectedPicture: File = null;
+  session: any;
+
 
   // fetch user data
   // use "double b"
@@ -160,6 +163,53 @@ export class EditProfileFormComponent implements OnInit {
     // }
   }
 
+  onPictureSelected(event) {
+    const file = event.target.files[0] as File;
+    if (!file.type.startsWith('image')) {
+      this.selectedPicture = null;
+      alert('Please upload an image file');
+    } else {
+      this.selectedPicture = file;
+    }
+  }
+
+  onUpload(value) {
+    let fileToUpload: File = null;
+    let progressId: string = null;
+
+    // Set constants based on which file the user is uploading
+    if (value === 'image') {
+      fileToUpload = this.selectedPicture;
+      progressId = 'pic_';
+    } else {
+      alert('Something went wrong while uploading; please try again later.');
+      return;
+    }
+
+    if (fileToUpload === null) {
+      alert('Please upload image file');
+    } else {
+      // document.getElementById(`${progressId}progress`).hidden = false;
+      // document.getElementById(`${progressId}bar`).hidden = false;
+      const formData = new FormData();
+      formData.append(value, fileToUpload, fileToUpload.name);
+      this.http.post(
+        `https://us-central1-rezzi-33137.cloudfunctions.net/uploadFile?docId=${this.session.email}`,
+        formData,
+        { observe: 'response' }
+      ).subscribe(response => {
+        if (response.status === 200) {
+          // location.reload();
+          alert(`Your photo has been uploaded...`);
+        } else {
+          alert(`Something went wrong. Return with a status code ${response.status}: ${response.statusText}`);
+        }
+      });
+     this.loadProfilePicture(this.theUser);
+    }
+
+  }
+
   ngOnInit() {
     this.rezziService.getSession().then(response => {
       if (response.email == null) {
@@ -169,6 +219,9 @@ export class EditProfileFormComponent implements OnInit {
         // signed in but not verified
         this.router.navigate(["/sign-up"]);
       } // else signed in and verified
+      this.rezziService.getSession().then(session => {
+        this.session = session;
+      });
       this.rezziService.getUserProfile().then(response => {
         // this.theUser.setUser(
         this.theUser = new User(
@@ -182,10 +235,10 @@ export class EditProfileFormComponent implements OnInit {
           response.user.bio,
           true,
           response.user.deletionRequest,
-          response.user.image_url
+          response.user.image_url,
         );
         // Show image section
-
+        console.log("Ok:"+this.theUser.image_url)
         // else {
         //   document.getElementById("profile-photo").setAttribute("hidden", "true");
         //   document.getElementById("no-profile-photo").removeAttribute("hidden");
