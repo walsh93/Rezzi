@@ -26,8 +26,10 @@ export class MessageComponent implements OnInit {
 
   private reactions: ReactionData;     // Data holding the reaction (extracted from message)
   private user: AbbreviatedUser;       // The user who sent the message (extracted from message)
-  private content: string;             // The content of the message (extracted from message)
+  content: string;                     // The content of the message (extracted from message)
   private time: Date;                  // When the message was sent (extracted from message)
+
+  displayName: string;
 
   constructor(public messagesService: MessagesService) { }
 
@@ -52,6 +54,12 @@ export class MessageComponent implements OnInit {
     // console.log(this.displayTime);
     // this.displayTime = String(dateAgain);
 
+    if (this.user.nickName == null || this.user.nickName === undefined || this.user.nickName.length === 0) {
+      this.displayName = `${this.user.firstName} ${this.user.lastName.charAt(0)}.`;
+    } else {
+      this.displayName = this.user.nickName;
+    }
+
     for (const reaction in this.reactions) {  // Set initial color values for reactions
       if (this.reactions.hasOwnProperty(reaction)) {
         if (this.reactions[reaction].includes(this.viewingUser.email)) {
@@ -72,8 +80,7 @@ export class MessageComponent implements OnInit {
       const chanMsgs = document.getElementById('channelMessages');
       if (chanMsgs != null) {
         chanMsgs.scrollTop = chanMsgs.scrollHeight;
-      }
-      else {
+      } else {
         const pmMsgs = document.getElementById('privateUserMessages');
         pmMsgs.scrollTop = pmMsgs.scrollHeight;
       }
