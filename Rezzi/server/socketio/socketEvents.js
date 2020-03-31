@@ -27,66 +27,12 @@ module.exports.newMessage = function newMessage(socket, data) {
       }
       data.message.id = data.channelID + '-' + messages.length;
 
-      let links = linkify.find(data.message.content);
-      // data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>');
-
-      // initialize image if applicable
-      if (links.length > 0) {
-        // filter the links down
-        let pic_links = links.filter(isUriImage);
-        let youtube_links = links.filter(link => link.href.includes("youtube") || link.href.includes("youtu.be"));
-        let normal_links = links.filter(link => !(isUriImage(link) || link.href.includes("youtube") || link.href.includes("youtu.be")));
-        console.log("Pic links:", pic_links);
-        console.log("Youtube links:", youtube_links);
-        console.log("Normal links:", normal_links);
-
-        if (pic_links.length > 0) {  // only display the last image
-          data.message.image = pic_links[pic_links.length - 1].href;
-          if (data.message.content.replace(pic_links[0].value, "") === "") {
-            data.message.content = null;
-          }
-        }
-
-        if (youtube_links.length > 0) { // for now they override images
-          // TODO: the last youtube link might not be a video link and should be in normal
-          let video_id = getVideoId(youtube_links[youtube_links.length - 1].href);
-          if (video_id !== false) {
-            data.message.image = "https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg";
-          }
-        }
-
-        if (normal_links.length > 0) {
-          // must get OpenGraph data
-          getOGData(normal_links[normal_links.length - 1].href).then(resolve => {
-            data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>') + "=====================" + resolve;
-            messages.push(data.message);
-            db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
-              messages: messages
-            })
-          }).catch(reject => {
-            console.log(reject);
-            linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>')
-            messages.push(data.message);
-            db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
-              messages: messages
-            })
-          });
-        }
-        else {
-          linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>')
-          messages.push(data.message);
-          db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
-            messages: messages
-          })
-        }
-      }
-      else {
-        linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>')
-        messages.push(data.message);
+      processMessageContent(data).then(response => {
+        messages.push(response.message);
         db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
           messages: messages
         })
-      }
+      });
       // triggers a socket event in the front end; moved to firestoreListeners.js
       // socket.emit(skt.new_message_added, messages)
     })
@@ -170,32 +116,34 @@ module.exports.newPrivateMessage = function newPrivateMessage(socket, data) {
     console.log("newPrivateMessage error - socketEvents.js");
     return null;
   }
-  db.collection(senderPath).doc(data.recipient).get().then((doc) => {
-    let new_data = JSON.parse(JSON.stringify(data));
-    messages = doc.data().messages;
-    if(!messages || messages == null || messages == undefined){
-      messages = []
-    }
-    new_data.message.id = new_data.recipient + '-' + messages.length;
+  processMessageContent(data).then(data => {
+    db.collection(senderPath).doc(data.recipient).get().then((doc) => {
+      let new_data = JSON.parse(JSON.stringify(data));
+      messages = doc.data().messages;
+      if(!messages || messages == null || messages == undefined){
+        messages = []
+      }
+      new_data.message.id = new_data.recipient + '-' + messages.length;
 
-    messages.push(new_data.message)
-    db.collection(senderPath).doc(new_data.recipient).update({
-      messages: messages
-    })
-  })
-  db.collection(receiverPath).doc(data.sender).get().then((doc) => {
-    let new_data = JSON.parse(JSON.stringify(data));
-    messages = doc.data().messages;
-    if(!messages || messages == null || messages == undefined){
-      messages = []
-    }
-    new_data.message.id = new_data.sender + '-' + messages.length;
+      messages.push(new_data.message)
+      db.collection(senderPath).doc(new_data.recipient).update({
+        messages: messages
+      });
+    });
+    db.collection(receiverPath).doc(data.sender).get().then((doc) => {
+      let new_data = JSON.parse(JSON.stringify(data));
+      messages = doc.data().messages;
+      if(!messages || messages == null || messages == undefined){
+        messages = []
+      }
+      new_data.message.id = new_data.sender + '-' + messages.length;
 
-    messages.push(new_data.message)
-    db.collection(receiverPath).doc(new_data.sender).update({
-      messages: messages
-    })
-  })
+      messages.push(new_data.message)
+      db.collection(receiverPath).doc(new_data.sender).update({
+        messages: messages
+      });
+    });
+  });
 }
 //$$$conley
 
@@ -244,5 +192,59 @@ function getOGData(link) {
         resolve(resolve_html);
       });
     });
+  });
+}
+
+function processMessageContent(data) {
+  return new Promise((resolve, reject) => {
+    let links = linkify.find(data.message.content);
+
+    // initialize image if applicable
+    if (links.length > 0) {
+      // filter the links down
+      let pic_links = links.filter(isUriImage);
+      let youtube_links = links.filter(link => link.href.includes("youtube") || link.href.includes("youtu.be"));
+      let normal_links = links.filter(link => !(isUriImage(link) || link.href.includes("youtube") || link.href.includes("youtu.be")));
+      console.log("Pic links:", pic_links);
+      console.log("Youtube links:", youtube_links);
+      console.log("Normal links:", normal_links);
+
+      if (pic_links.length > 0) {  // only display the last image
+        data.message.image = pic_links[pic_links.length - 1].href;
+        if (data.message.content.replace(pic_links[0].value, "") === "") {
+          data.message.content = null;
+        }
+      }
+
+      if (youtube_links.length > 0) { // for now they override images
+        // TODO: the last youtube link might not be a video link and should be in normal
+        let video_id = getVideoId(youtube_links[youtube_links.length - 1].href);
+        if (video_id !== false) {
+          data.message.image = "https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg";
+        }
+      }
+
+      if (normal_links.length > 0) {
+        // must get OpenGraph data
+        getOGData(normal_links[normal_links.length - 1].href).then(resolved => {
+          data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>') + "=====================" + resolved;
+          resolve(data);
+        }).catch(reject => {
+          console.log(reject);
+          data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>');
+          resolve(data);
+        });
+      }
+      else {
+        if (data.message.content !== null) {
+          data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>');
+        }
+        resolve(data);
+      }
+    }
+    else {
+      data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>');
+      resolve(data);
+    }
   });
 }
