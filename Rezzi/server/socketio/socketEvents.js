@@ -5,6 +5,15 @@ const skt = require('../constants').socket
 const createChannelPath = require('../database').createChannelPath
 const createUserPath = require('../database').createUserPath
 
+const got = require('got')
+const metascraper = require('metascraper')([
+  require('metascraper-description')(),
+  require('metascraper-image')(),
+  require('metascraper-logo'),
+  require('metascraper-title')(),
+  require('metascraper-url')(),
+])
+
 module.exports.newMessage = function newMessage(socket, data) {
   const dbchannel = createChannelPath(data.rezzi, data.channelID)
   if (dbchannel != null) {
@@ -14,29 +23,59 @@ module.exports.newMessage = function newMessage(socket, data) {
         messages = []
       }
       data.message.id = data.channelID + '-' + messages.length;
+      data.message.content = '<p>' + data.message.content + '</p>';
 
       // initialize image if applicable
       let links = getUrls(data.message.content, {requireSchemeOrWww: false})
-      links.forEach(link => {
+      if (links.size > 0) {
+        let link = Array.from(links).pop();
+        let added = false;
         if (isUriImage(link)) {
           data.message.image = link;
+          added = true;
         }
         else if (link.includes("youtube") || link.includes("youtu.be")) {
           let video_id = getVideoId(link);
           if (video_id !== false) {
             data.message.image = "https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg";
           }
+          else {
+            added = false;
+          }
+        }
+        if (!added) {
+          // must get OpenGraph data
+          getOGData(link).then(resolve => {
+            data.message.content = '<mat-list><mat-list-item>' +
+              data.message.content +
+              '</mat-list-item><mat-divider></mat-divider><mat-list-item>' +
+              resolve +
+              '</mat-list-item></mat-list>';
+            messages.push(data.message);
+            db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+              messages: messages
+            })
+          }).catch(reject => {
+            console.log(reject);
+            messages.push(data.message);
+            db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+              messages: messages
+            })
+          });
         }
         else {
-          // must get OpenGraph data
-
+          messages.push(data.message);
+          db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+            messages: messages
+          })
         }
-      });
-
-      messages.push(data.message);
-      db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
-        messages: messages
-      })
+      }
+      else {
+        messages.push(data.message);
+        db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+          messages: messages
+        })
+      }
       // triggers a socket event in the front end; moved to firestoreListeners.js
       // socket.emit(skt.new_message_added, messages)
     })
@@ -167,8 +206,31 @@ function isUriImage(uri) {
 }
 
 // Gets youtube video id
-function getVideoId(url){
+function getVideoId(url) {
   var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
   var match = url.match(regExp);
   return (match&&match[7].length==11)? match[7] : false;
+}
+
+// Gets the the data for a url and returns html
+function getOGData(link) {
+  return new Promise((resolve, reject) => {
+    got(link).then((response) => {
+      metascraper({ html: response.body, url: response.url }).then(results => {
+        let image = (results.image !== null ? results.image : results.logo);
+        let resolve_html = '<a href="' + results.url + '">' +
+            '<strong>' + results.title + '</strong>' +
+          '</a>' + 
+          '<div style="display: flex; justify-content: flex-start;">';
+        if (image !== null && image !== undefined && image !== "") {
+          resolve_html += '<img src="' + image + '" ' +
+              'style="flex: none" ' +
+              'width="75px" ' +
+              'height="75px">';
+        }
+        resolve_html += '<p style="margin: 5px 5px 5px 10px">' + results.description + '</p></div>';
+        resolve(resolve_html);
+      });
+    });
+  });
 }

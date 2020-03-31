@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { User, ReactionData, AbbreviatedUser, Message, SocketChannelMessageData, SocketPrivateMessageData } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
 import { MessagesService } from '../messages.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-message',
@@ -26,11 +27,11 @@ export class MessageComponent implements OnInit {
 
   private reactions: ReactionData;     // Data holding the reaction (extracted from message)
   private user: AbbreviatedUser;       // The user who sent the message (extracted from message)
-  private content: string;             // The content of the message (extracted from message)
+  private content: SafeHtml;           // The content of the message (extracted from message)
   private time: Date;                  // When the message was sent (extracted from message)
   private image: string;               // Image from link in message, or webpage preview (extracted from message)
 
-  constructor(public messagesService: MessagesService) { }
+  constructor(public messagesService: MessagesService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     // console.log(this.time);
@@ -38,7 +39,7 @@ export class MessageComponent implements OnInit {
     // console.log(this.viewingUser);
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
-    this.content = this.message.content;
+    this.content = this.sanitizer.bypassSecurityTrustHtml(this.message.content);
     this.time = this.message.time;
     this.image = this.message.image;
     const dateAgain = new Date(this.time);
