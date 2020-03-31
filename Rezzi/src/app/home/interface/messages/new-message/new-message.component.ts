@@ -77,6 +77,8 @@ export class NewMessageComponent implements OnInit {
       reported: false,
     };
 
+      console.log("HERE " + message.reported);
+
     const scmd: SocketChannelMessageData = {
       message,
       rezzi: this.session.rezzi,

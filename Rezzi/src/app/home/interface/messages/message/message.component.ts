@@ -48,6 +48,7 @@ export class MessageComponent implements OnInit {
   private user: AbbreviatedUser; // The user who sent the message (extracted from message)
   private content: string; // The content of the message (extracted from message)
   private time: Date; // When the message was sent (extracted from message)
+  private reported: boolean;
 
   constructor(public messagesService: MessagesService) {}
 
@@ -59,6 +60,7 @@ export class MessageComponent implements OnInit {
     this.user = this.message.owner;
     this.content = this.message.content;
     this.time = this.message.time;
+    this.reported = this.message.reported;
     const dateAgain = new Date(this.time);
     const day = this.dayNames[dateAgain.getDay()];
     const month = this.monthNames[dateAgain.getMonth()];
@@ -139,6 +141,26 @@ export class MessageComponent implements OnInit {
   reportMessage() {
     console.log("before:" + this.message.reported);
     this.message.reported = true;
+    this.reported = true;
     console.log("after: " + this.message.reported);
+    if (this.pm) {
+      const spmd: SocketPrivateMessageData = {
+        message: this.message,
+        sender: this.viewingUser.email,
+        recipient: this.pmUser
+      };
+      spmd.message.reported = this.reported;
+      this.messagesService.updateMessageThroughSocket(spmd);
+    } else {
+      const scmd: SocketChannelMessageData = {
+        message: this.message,
+        rezzi: this.rezzi,
+        channelID: this.channel
+      };
+      scmd.message.reported = this.reported;
+      console.log("scmd: " + this.reported);
+      this.messagesService.updateMessageThroughSocket(scmd);
+    }
+    alert('This message has been reported to the hall director!')
   }
 }
