@@ -21,6 +21,11 @@
     </span>
   </mat-card-header>
   <img *ngIf="image !== null" mat-card-image src="{{ image }}">
-  <mat-card-content [innerHTML]="content"></mat-card-content>
+  <mat-card-content *ngIf="content.length > 1">
+    <div [innerHTML]="content[0]"></div>
+    <mat-divider></mat-divider>
+    <div [innerHTML]="content[1]"></div>
+  </mat-card-content>
+  <mat-card-content *ngIf="content.length === 1" [innerHTML]="content[0]"></mat-card-content>
   <mat-card-footer>{{ displayTime }}</mat-card-footer>
 </mat-card>

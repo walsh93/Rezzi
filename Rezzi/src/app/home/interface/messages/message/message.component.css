@@ -25,17 +25,9 @@ mat-card-footer {
 .reactions {
   margin-left: auto;
 }
-/*
-.og-data {
-  display: flex;
-  justify-content: flex-start;
+
+.mat-divider {
+  border-top-width: 3px;
+  position: relative;
+  padding-bottom: 10px;
 }
-
-.og-logo {
-
-}
-
-.og-description {
-  flex-grow: 3;
-  margin: 5px 5px 5px 5px;
-}*/

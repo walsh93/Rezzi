@@ -27,7 +27,7 @@ export class MessageComponent implements OnInit {
 
   private reactions: ReactionData;     // Data holding the reaction (extracted from message)
   private user: AbbreviatedUser;       // The user who sent the message (extracted from message)
-  private content: SafeHtml;           // The content of the message (extracted from message)
+  private content: SafeHtml[];           // The content of the message (extracted from message)
   private time: Date;                  // When the message was sent (extracted from message)
   private image: string;               // Image from link in message, or webpage preview (extracted from message)
 
@@ -39,9 +39,18 @@ export class MessageComponent implements OnInit {
     // console.log(this.viewingUser);
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
-    this.content = this.sanitizer.bypassSecurityTrustHtml(this.message.content);
     this.time = this.message.time;
     this.image = this.message.image;
+    console.log(this.message.content.split("====================="));
+    this.content = [];
+    if (this.message.content.includes("=====================")) {
+      this.message.content.split("=====================").forEach(section => {
+        this.content.push(this.sanitizer.bypassSecurityTrustHtml(section));
+      });
+    }
+    else {
+      this.content.push(this.sanitizer.bypassSecurityTrustHtml(this.message.content));
+    }
     const dateAgain = new Date(this.time);
     const day = this.dayNames[dateAgain.getDay()];
     const month = this.monthNames[dateAgain.getMonth()];

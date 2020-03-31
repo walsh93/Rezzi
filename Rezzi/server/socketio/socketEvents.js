@@ -46,11 +46,7 @@ module.exports.newMessage = function newMessage(socket, data) {
         if (!added) {
           // must get OpenGraph data
           getOGData(link).then(resolve => {
-            data.message.content = '<mat-list><mat-list-item>' +
-              data.message.content +
-              '</mat-list-item><mat-divider></mat-divider><mat-list-item>' +
-              resolve +
-              '</mat-list-item></mat-list>';
+            data.message.content = data.message.content + "=====================" + resolve;
             messages.push(data.message);
             db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
               messages: messages
@@ -225,8 +221,8 @@ function getOGData(link) {
         if (image !== null && image !== undefined && image !== "") {
           resolve_html += '<img src="' + image + '" ' +
               'style="flex: none" ' +
-              'width="75px" ' +
-              'height="75px">';
+              'width="65px" ' +
+              'height="65px">';
         }
         resolve_html += '<p style="margin: 5px 5px 5px 10px">' + results.description + '</p></div>';
         resolve(resolve_html);
