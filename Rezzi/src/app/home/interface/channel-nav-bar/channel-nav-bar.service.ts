@@ -1,18 +1,17 @@
-import { Injectable, Output, EventEmitter } from '@angular/core'
+import { Injectable, Output, EventEmitter } from '@angular/core';
+import { ChannelData } from 'src/app/classes.model';
 
 @Injectable()
 export class ChannelNavBarService {
   constructor() {}
 
-  navTitle = 'Rezzi';
+  channel: ChannelData;
 
-  @Output() setTitle: EventEmitter<string> = new EventEmitter();
+  @Output() setChannel: EventEmitter<ChannelData> = new EventEmitter();
 
-  setNavTitle(title: string) {
-    this.navTitle = title;
-    this.setTitle.emit(this.navTitle);
-
-    // TODO pass in channel id here also
+  setNavData(channelData: ChannelData) {
+    this.channel = channelData;
+    this.setChannel.emit(this.channel);
   }
 
 }

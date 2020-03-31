@@ -100,8 +100,8 @@ export class SidePanelComponent implements OnInit {
   ngOnInit() {
   }
 
-  viewChannel(channel: string, level: string) {
-    this.channelNavBarService.setNavTitle(channel);
+  viewChannel(channel: ChannelData, level: string) {
+    this.channelNavBarService.setNavData(channel);
 
     let viewingChannelString = '';
     if (level != null) {

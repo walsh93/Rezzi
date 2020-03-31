@@ -14,7 +14,7 @@ export interface DialogData {
 })
 
 export class ChannelNavBarComponent implements OnInit {
-  channels: ChannelData[];
+  channel: ChannelData[];
   @HostBinding('class.nav-title')
   navTitle = 'Rezzi';
   channelMenuDisabled = true;
@@ -23,9 +23,8 @@ export class ChannelNavBarComponent implements OnInit {
   constructor(private channelNavBarService: ChannelNavBarService, public dialog: MatDialog) {}
 
   ngOnInit() {
-    this.channelNavBarService.setTitle.subscribe(navTitle => {
-      //TODO pass as an object instead
-      this.navTitle = navTitle;
+    this.channelNavBarService.setChannel.subscribe(channelData => {
+      this.navTitle = channelData.channel;
       if (this.navTitle !== 'Rezzi') {
         this.channelMenuDisabled = false;
       }
