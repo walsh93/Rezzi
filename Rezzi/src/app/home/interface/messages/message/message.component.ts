@@ -41,9 +41,11 @@ export class MessageComponent implements OnInit {
     this.user = this.message.owner;
     this.time = this.message.time;
     this.image = this.message.image;
-    console.log(this.message.content.split("====================="));
     this.content = [];
-    if (this.message.content.includes("=====================")) {
+    if (this.message.content === null) {
+      this.content.push(null);
+    }
+    else if (this.message.content.includes("=====================")) {
       this.message.content.split("=====================").forEach(section => {
         this.content.push(this.sanitizer.bypassSecurityTrustHtml(section));
       });

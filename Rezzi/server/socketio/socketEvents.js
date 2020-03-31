@@ -1,11 +1,14 @@
 const admin = require('firebase-admin')
-const getUrls = require('get-urls')
 const db = admin.firestore()
 const skt = require('../constants').socket
 const createChannelPath = require('../database').createChannelPath
 const createUserPath = require('../database').createUserPath
 
+// necessary for multimedia
 const got = require('got')
+const escapeHtml = require('escape-html')
+const linkify = require('linkifyjs')
+const linkifyHtml = require('linkifyjs/html')
 const metascraper = require('metascraper')([
   require('metascraper-description')(),
   require('metascraper-image')(),
@@ -23,36 +26,46 @@ module.exports.newMessage = function newMessage(socket, data) {
         messages = []
       }
       data.message.id = data.channelID + '-' + messages.length;
-      data.message.content = '<p>' + data.message.content + '</p>';
+
+      let links = linkify.find(data.message.content);
+      // data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>');
 
       // initialize image if applicable
-      let links = getUrls(data.message.content, {requireSchemeOrWww: false})
-      if (links.size > 0) {
-        let link = Array.from(links).pop();
-        let added = false;
-        if (isUriImage(link)) {
-          data.message.image = link;
-          added = true;
+      if (links.length > 0) {
+        // filter the links down
+        let pic_links = links.filter(isUriImage);
+        let youtube_links = links.filter(link => link.href.includes("youtube") || link.href.includes("youtu.be"));
+        let normal_links = links.filter(link => !(isUriImage(link) || link.href.includes("youtube") || link.href.includes("youtu.be")));
+        console.log("Pic links:", pic_links);
+        console.log("Youtube links:", youtube_links);
+        console.log("Normal links:", normal_links);
+
+        if (pic_links.length > 0) {  // only display the last image
+          data.message.image = pic_links[pic_links.length - 1].href;
+          if (data.message.content.replace(pic_links[0].value, "") === "") {
+            data.message.content = null;
+          }
         }
-        else if (link.includes("youtube") || link.includes("youtu.be")) {
-          let video_id = getVideoId(link);
+
+        if (youtube_links.length > 0) { // for now they override images
+          // TODO: the last youtube link might not be a video link and should be in normal
+          let video_id = getVideoId(youtube_links[youtube_links.length - 1].href);
           if (video_id !== false) {
             data.message.image = "https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg";
           }
-          else {
-            added = false;
-          }
         }
-        if (!added) {
+
+        if (normal_links.length > 0) {
           // must get OpenGraph data
-          getOGData(link).then(resolve => {
-            data.message.content = data.message.content + "=====================" + resolve;
+          getOGData(normal_links[normal_links.length - 1].href).then(resolve => {
+            data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>') + "=====================" + resolve;
             messages.push(data.message);
             db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
               messages: messages
             })
           }).catch(reject => {
             console.log(reject);
+            linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>')
             messages.push(data.message);
             db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
               messages: messages
@@ -60,6 +73,7 @@ module.exports.newMessage = function newMessage(socket, data) {
           });
         }
         else {
+          linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>')
           messages.push(data.message);
           db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
             messages: messages
@@ -67,6 +81,7 @@ module.exports.newMessage = function newMessage(socket, data) {
         }
       }
       else {
+        linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>')
         messages.push(data.message);
         db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
           messages: messages
@@ -186,7 +201,8 @@ module.exports.newPrivateMessage = function newPrivateMessage(socket, data) {
 
 // Checks if the given url points to an image
 // from https://stackoverflow.com/questions/19395458/check-if-a-link-is-an-image
-function isUriImage(uri) { 
+function isUriImage(uri_obj) {
+  let uri = uri_obj.href; 
   //make sure we remove any nasty GET params 
   uri = uri.split('?')[0];
   //moving on, split the uri into parts that had dots before them
