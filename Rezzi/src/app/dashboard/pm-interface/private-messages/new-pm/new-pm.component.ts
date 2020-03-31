@@ -72,6 +72,7 @@ export class NewPmComponent implements OnInit {
         whatshot: [],
       },
       reported: false,
+      image: null,
     };
 
     const scmd: SocketPrivateMessageData = {

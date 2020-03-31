@@ -26,6 +26,14 @@ mat-card-footer {
   margin-left: auto;
 }
 
+<<<<<<< HEAD
 #report {
   font-size: 17px;
 }
+=======
+.mat-divider {
+  border-top-width: 3px;
+  position: relative;
+  padding-bottom: 10px;
+}
+>>>>>>> d0a2abbbd4697eb4929fe01be34caf4e7b528ab8
