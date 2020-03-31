@@ -5,11 +5,8 @@
     <span class="reactions">
       <ng-container *ngFor="let reaction of reactions | keyvalue">
         <button mat-icon-button (click)="sendReaction(reaction.key)">
-          <mat-icon *ngIf="reaction.value.length > 0"
-            matBadge="{{ reaction.value.length }}"
-            color="{{ reacted[reaction.key] }}"
-            matBadgeSize="small"
-            matTooltip="{{ getList(reaction.key) }}"
+          <mat-icon *ngIf="reaction.value.length > 0" matBadge="{{ reaction.value.length }}"
+            color="{{ reacted[reaction.key] }}" matBadgeSize="small" matTooltip="{{ getList(reaction.key) }}"
             matTooltipPosition="above">
             {{ reaction.key }}
           </mat-icon>
@@ -21,5 +18,10 @@
     </span>
   </mat-card-header>
   <mat-card-content>{{ content }}</mat-card-content>
-  <mat-card-footer>{{ displayTime }}</mat-card-footer>
+  <mat-card-footer>{{ displayTime }}
+    <button mat-icon-button (click)="reportMessage()">
+      <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
+        matTooltip="report">flag</mat-icon>
+    </button>
+  </mat-card-footer>
 </mat-card>

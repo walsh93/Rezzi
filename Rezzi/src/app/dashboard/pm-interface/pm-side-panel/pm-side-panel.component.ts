@@ -40,6 +40,7 @@ export class PmSidePanelComponent implements OnInit {
             time: data[index].messages.messages[index2].time,
             visible: data[index].messages.messages[index2].visible,
             reactions: data[index].messages.messages[index2].reactions,
+            reported: data[index].messages.messages[index2].reported,
             id: data[index].messages.messages[index2].id,
             //will need to add more message details here
           });

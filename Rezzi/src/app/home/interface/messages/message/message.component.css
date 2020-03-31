@@ -25,3 +25,7 @@ mat-card-footer {
 .reactions {
   margin-left: auto;
 }
+
+#report {
+  font-size: 17px;
+}
