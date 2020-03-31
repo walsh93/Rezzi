@@ -31,6 +31,7 @@ const Busboy = require('busboy');
 const spawn = require('child-process-promise').spawn;
 const fs = require('fs');
 const admin = require('firebase-admin');
+const UUID = require('uuid-v4');
 
 // Storage configuration/initialization for non-storage functions
 const storageConfig = {
@@ -96,6 +97,7 @@ exports.uploadFile = functions.https.onRequest((request, response) => {
           metadata: {
             metadata: {
               contentType: uploadData.type,
+              firebaseStorageDownloadTokens: UUID(),
             }
           }
         }).then(() => {
