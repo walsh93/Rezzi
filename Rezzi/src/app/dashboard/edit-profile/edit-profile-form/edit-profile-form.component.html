@@ -1,7 +1,18 @@
 <div class="edit-profile-form">
   <mat-card color="primary">
     <mat-card-title>My Profile</mat-card-title>
-    <mat-card-subtitle></mat-card-subtitle>
+    <mat-card-subtitle> </mat-card-subtitle>
+      <picture>
+        <source media='(max-width:200px)' srcset="{{this.thePic}}">
+        <img mat-card-image src="{{this.thePic}}" alt="Profile Image">
+      </picture>
+      <br>
+      <div class="rowUploadSection">
+        <p class = "up"> Upload new profile photo</p>
+        <input class = "up" type="file" accept="image/*" (change)="onPictureSelected($event)">
+        <div >
+          <button  class = "up" (click)="onUpload('image')"> Upload</button></div>
+      </div>
     <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
 
       <mat-form-field class="example-full-width">
@@ -46,10 +57,10 @@
 
     </form>
 
-    <form  (submit)="onEditPassword(editPasswordForm)" #editPasswordForm="ngForm">
+    <form (submit)="onEditPassword(editPasswordForm)" #editPasswordForm="ngForm">
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Enter your password"
-          [type]="hide ? 'password' : 'text'" name="password" ngModel minlength="8" #password="ngModel" required>
+        <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" name="password" ngModel
+          minlength="8" #password="ngModel" required>
 
         <mat-error *ngIf="password.invalid">Your password must be 8 characters long</mat-error>
       </mat-form-field>

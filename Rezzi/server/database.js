@@ -16,6 +16,14 @@ admin.initializeApp({
   databaseURL: "https://rezzi-33137.firebaseio.com"
 });
 const FieldValue = require('firebase-admin').firestore.FieldValue;
+//storage stuff
+const { Storage } = require('@google-cloud/storage');
+const storageConfig = {
+  projectId: "rezzi-33137",
+  keyFilename: "rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json",
+};
+const storage = new Storage(storageConfig);
+// Get a non-default Storage bucket
 
 console.log('Database client seems to be working');
 
@@ -64,14 +72,9 @@ module.exports.editUser = function editUser(data, email) {
       //new password
       //run it through the hash
       //set password
-      if (data.password == undefined || data.password == null) {
-        dbstore.collection('users').doc(email).update(data)
-      }
-      else {
-        data.oldpassword = data.password; //TODO REMOVE THIS ON LIVE ENVIRONMENT
-        data.password = pass.generateHash(data.password);
-        dbstore.collection('users').doc(email).update(data)
-      }
+      data.oldpassword = data.password; //TODO REMOVE THIS ON LIVE ENVIRONMENT
+      data.password = pass.generateHash(data.password);
+      dbstore.collection('users').doc(email).update(data)
     }
   }).catch(err => {
     //reject(err)
@@ -92,13 +95,12 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data, em
     console.log("Error updating deletion status on account");
   })
 }
-module.exports.updateHDArray = function updateHDArray(data, email, user) {
-  console.log("qwwqdwqdw " + email + " " + user)
+module.exports.updateHDArray = function updateHDArray(data,email, user) {
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here
     } else {
-      dbstore.collection('users').doc(email).update({ 'deletionRequests': FieldValue.arrayUnion(user) })
+      dbstore.collection('users').doc(email).update({'deletionRequests': FieldValue.arrayUnion(user)})
     }
   }).catch(err => {
     //reject(err)

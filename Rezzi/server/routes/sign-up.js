@@ -18,13 +18,15 @@ router.get('/', checkCookie, function(request, response) {
   // firebase.addUser(rb);
   firebase.addUser(rb).then(function(result){
     if(result==501){
-        response.status(201).json({
+      response.status(http.bad_request).json({
+        status: http.bad_request,
         notification: "Error creating account! Try again."
       })
     }
     else{
       request.__session.verified = true
-      response.status(201).json({
+      response.status(http.created).json({
+        status: http.created,
         notification: "You have successfully signed up!"
       })
     }

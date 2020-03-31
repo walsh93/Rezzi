@@ -11,6 +11,7 @@ export class User {
   bio: string;
   verified: boolean;
   deletionRequest: number;
+  image_url: string;
 
   constructor(
     theEmail: string,
@@ -22,7 +23,8 @@ export class User {
     theNickName: string,
     theBio: string,
     theVerified: boolean,
-    deletionRequest: number
+    deletionRequest: number,
+    image_url: string,
   ) {
     this.email = theEmail;
     this.password = thePassword;
@@ -34,6 +36,7 @@ export class User {
     this.bio = theBio;
     this.verified = theVerified;
     this.deletionRequest = deletionRequest;
+    this.image_url = image_url;
   }
 
   setUser(
@@ -53,7 +56,9 @@ export class User {
     this.nickName = nickName;
     this.bio = bio;
   }
-
+  setImageUrl(image_url: string) {
+    this.image_url = image_url;
+  }
   updateUser(
     newPassword: string,
     newFirstName: string,
@@ -102,6 +107,7 @@ export interface Message {
   time: Date;
   visible: boolean;
   reactions: ReactionData;
+  image: string;
 }
 
 export interface SocketMessageData {

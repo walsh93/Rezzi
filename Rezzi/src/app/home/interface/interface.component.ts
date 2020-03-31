@@ -39,6 +39,7 @@ export class InterfaceComponent implements OnInit {
           response.user.bio,
           true,
           response.user.deletionRequest,
+          response.user.image_url,
         );
       });
 
