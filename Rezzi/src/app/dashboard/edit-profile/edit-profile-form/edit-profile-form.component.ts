@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild  } from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
 import { User, HDUser } from "src/app/classes.model";
 import { RezziService } from "../../../rezzi.service";
 import { Router } from "@angular/router";
@@ -6,8 +6,8 @@ import { NgForm } from "@angular/forms";
 import { firestore } from "firebase";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Inject }  from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Inject } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
 
 @Component({
   selector: "app-edit-profile-form",
@@ -23,11 +23,7 @@ export class EditProfileFormComponent implements OnInit {
   session: any;
   thePic: any;
 
-
   // @ViewChild('pic', true) pic: ElementRef;
-
-
-
 
   // fetch user data
   // use "double b"
@@ -73,16 +69,8 @@ export class EditProfileFormComponent implements OnInit {
     private rezziService: RezziService,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private elementRef: ElementRef,
-    // @Inject(DOCUMENT) document,
-  ) {
-    // @ViewChild("pic")  elementRef: ElementRef;
-
-    // this.thePic = this.elementRef.nativeElement.getElementById('pic');
-
-    // let user: User;
-    // this.thePic = document.getElementById('pic');
-  }
+    private elementRef: ElementRef
+  ) {}
 
   editUser(data) {
     this.http
@@ -138,7 +126,6 @@ export class EditProfileFormComponent implements OnInit {
       if (this.theHD.deletionRequests.includes(this.theUser.email)) {
       } else {
         this.theHD.deletionRequests.push(this.theUser.email);
-        // console.log(this.theHD.deletionRequests[0]);
       }
     });
 
@@ -160,15 +147,8 @@ export class EditProfileFormComponent implements OnInit {
   loadProfilePicture(user) {
     if (document.readyState !== "loading") {
       console.log("document is already ready");
-
-      // this.theUser.setImageUrl(this.theUser.image_url);
-      // let img = document.createElement('img')
-      // img.src = user.image_url;
-      // this.thePic.appendChild(img);
       this.theUser.setImageUrl(this.theUser.image_url);
-
       this.thePic = this.theUser.image_url;
-            // document.getElementById("profile").setAttribute("src", user.image_url);
     } else {
       document.addEventListener("DOMContentLoaded", function() {
         console.log("document was not ready");
@@ -176,16 +156,12 @@ export class EditProfileFormComponent implements OnInit {
         document.getElementById("profile").setAttribute("src", user.image_url);
       });
     }
-    //  if (this.theUser.image_url) {
-
-    // console.log("URL: " + user.image_url);
-    // }
   }
   onPictureSelected(event) {
     const file = event.target.files[0] as File;
-    if (!file.type.startsWith('image')) {
+    if (!file.type.startsWith("image")) {
       this.selectedPicture = null;
-      alert('Please upload an image file');
+      alert("Please upload an image file");
     } else {
       this.selectedPicture = file;
     }
@@ -195,35 +171,38 @@ export class EditProfileFormComponent implements OnInit {
     let progressId: string = null;
 
     // Set constants based on which file the user is uploading
-    if (value === 'image') {
+    if (value === "image") {
       fileToUpload = this.selectedPicture;
-      progressId = 'pic_';
+      progressId = "pic_";
     } else {
-      alert('Something went wrong while uploading; please try again later.');
+      alert("Something went wrong while uploading; please try again later.");
       return;
     }
 
     if (fileToUpload === null) {
-      alert('Please upload image file');
+      alert("Please upload image file");
     } else {
       // document.getElementById(`${progressId}progress`).hidden = false;
       // document.getElementById(`${progressId}bar`).hidden = false;
       const formData = new FormData();
       formData.append(value, fileToUpload, fileToUpload.name);
-      this.http.post(
-        `https://us-central1-rezzi-33137.cloudfunctions.net/uploadFile?docId=${this.session.email}`,
-        formData,
-        { observe: 'response' }
-      ).subscribe(response => {
-        if (response.status === 200) {
-          // location.reload();
-          alert(`Your photo has been uploaded...`);
-        } else {
-          alert(`Something went wrong. Return with a status code ${response.status}: ${response.statusText}`);
-        }
-      });
+      this.http
+        .post(
+          `https://us-central1-rezzi-33137.cloudfunctions.net/uploadFile?docId=${this.session.email}`,
+          formData,
+          { observe: "response" }
+        )
+        .subscribe(response => {
+          if (response.status === 200) {
+            // location.reload();
+            alert(`Your photo has been uploaded...`);
+          } else {
+            alert(
+              `Something went wrong. Return with a status code ${response.status}: ${response.statusText}`
+            );
+          }
+        });
     }
-
   }
 
   ngOnInit() {
@@ -251,17 +230,10 @@ export class EditProfileFormComponent implements OnInit {
           response.user.bio,
           true,
           response.user.deletionRequest,
-          response.user.image_url,
+          response.user.image_url
         );
-        // Show image section
-        // else {
-        //   document.getElementById("profile-photo").setAttribute("hidden", "true");
-        //   document.getElementById("no-profile-photo").removeAttribute("hidden");
-        // }
         this.loadProfilePicture(this.theUser);
-
       });
-
 
       this.rezziService.getHDEmail().then(response => {
         this.hd = response.hd;
