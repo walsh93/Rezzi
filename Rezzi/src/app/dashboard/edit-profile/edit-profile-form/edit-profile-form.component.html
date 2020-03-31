@@ -1,11 +1,8 @@
-
 <div class="edit-profile-form">
   <div>
     <!-- <picture>
-      <source media='(min-width:0px; max-width:200px)' srcset="../../../../../src/assets/images/default_profile.jpg">
-
-      <img mat-card-image src="" alt="Profile Image">
-
+      <source media='(min-width:0px)' srcset="{{this.thePic}}">
+      <img mat-card-image src="{{this.thePic}}" alt="Profile Image">
     </picture> -->
     <!-- <picture>
       <source media='(min-width:0px)' srcset="../../../../../src/assets/images/default_profile.jpg">
@@ -14,31 +11,31 @@
 
     </picture> -->
   </div>
-    <br><br><br><br>
-<!-- <img id="profile" src="../../../../../src/assets/images/default_profile.jpg">
-<div #pic></div> -->
-<!-- <div ng-init="pic = '../../../../../src/assets/images/default_profile.jpg'"> -->
-    <img src="this.thePic">
-<!-- </div> -->
+  <!-- <br><br><br><br> -->
+
+  <!-- <img src = {{this.thePic}}> -->
 
 
-<div class="row upload-section">
-  <p style="padding-left: 15px; padding-top: 30px;"> Upload new profile photo</p>
-  <input style="padding-left: 15px;" type="file" accept="image/*"
-    (change)="onPictureSelected($event)">
-  <div style="padding-left: 15px; padding-top: 10px; padding-bottom: 20px;">
-    <button (click)="onUpload('image')"> Upload</button></div>
-</div>
+
+
+
 
   <mat-card color="primary">
     <mat-card-title>My Profile</mat-card-title>
     <mat-card-subtitle> </mat-card-subtitle>
 
 
-    <!-- <picture>
-        <source media='(min-width:0px)' srcset="/Rezzi/images/default_profile.jpg">
-        <img  id="profile-picture" mat-card-image src="" alt="Profile Image">
-      </picture>-->
+      <picture>
+        <source media='(min-width:0px)' srcset="{{this.thePic}}">
+        <img mat-card-image src="{{this.thePic}}" alt="Profile Image">
+      </picture>
+      <br>
+      <div class="row upload-section">
+        <p style="padding-left: 15px; padding-top: 30px;"> Upload new profile photo</p>
+        <input style="padding-left: 15px;" type="file" accept="image/*" (change)="onPictureSelected($event)">
+        <div style="padding-left: 15px; padding-top: 10px; padding-bottom: 20px;">
+          <button (click)="onUpload('image')"> Upload</button></div>
+      </div>
     <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
 
       <mat-form-field class="example-full-width">
@@ -83,10 +80,10 @@
 
     </form>
 
-    <form  (submit)="onEditPassword(editPasswordForm)" #editPasswordForm="ngForm">
+    <form (submit)="onEditPassword(editPasswordForm)" #editPasswordForm="ngForm">
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Enter your password"
-          [type]="hide ? 'password' : 'text'" name="password" ngModel minlength="8" #password="ngModel" required>
+        <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" name="password" ngModel
+          minlength="8" #password="ngModel" required>
 
         <mat-error *ngIf="password.invalid">Your password must be 8 characters long</mat-error>
       </mat-form-field>

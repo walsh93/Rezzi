@@ -165,12 +165,14 @@ export class EditProfileFormComponent implements OnInit {
       // let img = document.createElement('img')
       // img.src = user.image_url;
       // this.thePic.appendChild(img);
+      this.theUser.setImageUrl(this.theUser.image_url);
+
       this.thePic = this.theUser.image_url;
             // document.getElementById("profile").setAttribute("src", user.image_url);
     } else {
       document.addEventListener("DOMContentLoaded", function() {
         console.log("document was not ready");
-        // this.theUser.setImageUrl(this.theUser.image_url);
+        this.theUser.setImageUrl(this.theUser.image_url);
         document.getElementById("profile").setAttribute("src", user.image_url);
       });
     }
@@ -179,7 +181,6 @@ export class EditProfileFormComponent implements OnInit {
     console.log("URL: " + user.image_url);
     // }
   }
-
   onPictureSelected(event) {
     const file = event.target.files[0] as File;
     if (!file.type.startsWith('image')) {
@@ -189,7 +190,6 @@ export class EditProfileFormComponent implements OnInit {
       this.selectedPicture = file;
     }
   }
-
   onUpload(value) {
     let fileToUpload: File = null;
     let progressId: string = null;
@@ -222,7 +222,6 @@ export class EditProfileFormComponent implements OnInit {
           alert(`Something went wrong. Return with a status code ${response.status}: ${response.statusText}`);
         }
       });
-     this.loadProfilePicture(this.theUser);
     }
 
   }
