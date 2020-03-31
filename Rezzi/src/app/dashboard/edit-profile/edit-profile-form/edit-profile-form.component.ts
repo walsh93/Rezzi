@@ -46,13 +46,13 @@ export class EditProfileFormComponent implements OnInit {
     this.editUser(userInfo);
   }
 
-  onEditPassword(form: NgForm){
+  onEditPassword(form: NgForm) {
     if (form.invalid) {
       return;
     }
     let pw = {
       password: form.value.password
-    }
+    };
     this.theUser.password = pw.password;
     this.editUser(pw);
   }
@@ -65,7 +65,6 @@ export class EditProfileFormComponent implements OnInit {
   ) {
     // let user: User;
   }
-
 
   editUser(data) {
     this.http
@@ -140,6 +139,27 @@ export class EditProfileFormComponent implements OnInit {
     alert("You have requested to delete your account!");
   }
 
+  loadProfilePicture(user) {
+    if (document.readyState !== "loading") {
+      console.log("document is already ready, just execute code here");
+
+      // this.theUser.setImageUrl(this.theUser.image_url);
+      document.createElement("img").setAttribute("src",user.image_url);
+      //document.getElementById("profile").setAttribute("src", user.image_url);
+    } else {
+      document.addEventListener("DOMContentLoaded", function() {
+        console.log("document was not ready, place code here");
+
+        // this.theUser.setImageUrl(this.theUser.image_url);
+        document.getElementById("profile").setAttribute("src", user.image_url);
+      });
+    }
+    //  if (this.theUser.image_url) {
+
+    console.log("URL: " + user.image_url);
+    // }
+  }
+
   ngOnInit() {
     this.rezziService.getSession().then(response => {
       if (response.email == null) {
@@ -162,20 +182,19 @@ export class EditProfileFormComponent implements OnInit {
           response.user.bio,
           true,
           response.user.deletionRequest,
-          response.user.image_url,
+          response.user.image_url
         );
-         // Show image section
-         if (this.theUser.image_url) {
+        // Show image section
 
-          // this.theUser.setImageUrl(this.theUser.image_url);
-          document.getElementById("profile-photo").setAttribute("src", this.theUser.image_url);
-        }
         // else {
         //   document.getElementById("profile-photo").setAttribute("hidden", "true");
         //   document.getElementById("no-profile-photo").removeAttribute("hidden");
         // }
+        this.loadProfilePicture(this.theUser);
 
       });
+
+
       this.rezziService.getHDEmail().then(response => {
         this.hd = response.hd;
         // console.log("hall director:" + response.hd);
