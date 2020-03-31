@@ -178,7 +178,7 @@ export class EditProfileFormComponent implements OnInit {
     }
     //  if (this.theUser.image_url) {
 
-    console.log("URL: " + user.image_url);
+    // console.log("URL: " + user.image_url);
     // }
   }
   onPictureSelected(event) {
@@ -254,7 +254,6 @@ export class EditProfileFormComponent implements OnInit {
           response.user.image_url,
         );
         // Show image section
-        console.log("Ok:"+this.theUser.image_url)
         // else {
         //   document.getElementById("profile-photo").setAttribute("hidden", "true");
         //   document.getElementById("no-profile-photo").removeAttribute("hidden");
