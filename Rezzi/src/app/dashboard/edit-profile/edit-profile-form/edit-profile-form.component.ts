@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ElementRef, ViewChild  } from "@angular/core";
 import { User, HDUser } from "src/app/classes.model";
 import { RezziService } from "../../../rezzi.service";
 import { Router } from "@angular/router";
@@ -6,6 +6,8 @@ import { NgForm } from "@angular/forms";
 import { firestore } from "firebase";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Inject }  from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: "app-edit-profile-form",
@@ -19,6 +21,12 @@ export class EditProfileFormComponent implements OnInit {
   theHD: HDUser;
   selectedPicture: File = null;
   session: any;
+  thePic: any;
+
+
+  // @ViewChild('pic', true) pic: ElementRef;
+
+
 
 
   // fetch user data
@@ -64,9 +72,16 @@ export class EditProfileFormComponent implements OnInit {
     private http: HttpClient,
     private rezziService: RezziService,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private elementRef: ElementRef,
+    // @Inject(DOCUMENT) document,
   ) {
+    // @ViewChild("pic")  elementRef: ElementRef;
+
+    // this.thePic = this.elementRef.nativeElement.getElementById('pic');
+
     // let user: User;
+    // this.thePic = document.getElementById('pic');
   }
 
   editUser(data) {
@@ -144,15 +159,17 @@ export class EditProfileFormComponent implements OnInit {
 
   loadProfilePicture(user) {
     if (document.readyState !== "loading") {
-      console.log("document is already ready, just execute code here");
+      console.log("document is already ready");
 
       // this.theUser.setImageUrl(this.theUser.image_url);
-      document.createElement("img").setAttribute("src",user.image_url);
-      //document.getElementById("profile").setAttribute("src", user.image_url);
+      // let img = document.createElement('img')
+      // img.src = user.image_url;
+      // this.thePic.appendChild(img);
+      this.thePic = this.theUser.image_url;
+            // document.getElementById("profile").setAttribute("src", user.image_url);
     } else {
       document.addEventListener("DOMContentLoaded", function() {
-        console.log("document was not ready, place code here");
-
+        console.log("document was not ready");
         // this.theUser.setImageUrl(this.theUser.image_url);
         document.getElementById("profile").setAttribute("src", user.image_url);
       });
