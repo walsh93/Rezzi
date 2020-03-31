@@ -4,6 +4,19 @@ mat-form-field {
   margin-right: auto;
 }
 
+#rowUploadSection, .up{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.mat-card-image {
+  max-width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .edit-profile-form {
   display: block;
   margin-left: 20px;
