@@ -11,6 +11,8 @@ export class ChannelNavBarService {
   setNavTitle(title: string) {
     this.navTitle = title;
     this.setTitle.emit(this.navTitle);
+
+    // TODO pass in channel id here also
   }
 
 }
