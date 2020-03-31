@@ -25,3 +25,9 @@ mat-card-footer {
 .reactions {
   margin-left: auto;
 }
+
+.mat-divider {
+  border-top-width: 3px;
+  position: relative;
+  padding-bottom: 10px;
+}

@@ -4,6 +4,18 @@ const skt = require('../constants').socket
 const createChannelPath = require('../database').createChannelPath
 const createUserPath = require('../database').createUserPath
 
+// necessary for multimedia
+const got = require('got')
+const escapeHtml = require('escape-html')
+const linkify = require('linkifyjs')
+const linkifyHtml = require('linkifyjs/html')
+const metascraper = require('metascraper')([
+  require('metascraper-description')(),
+  require('metascraper-image')(),
+  require('metascraper-logo'),
+  require('metascraper-title')(),
+  require('metascraper-url')(),
+])
 
 module.exports.newMessage = function newMessage(socket, data) {
   const dbchannel = createChannelPath(data.rezzi, data.channelID)
@@ -14,10 +26,13 @@ module.exports.newMessage = function newMessage(socket, data) {
         messages = []
       }
       data.message.id = data.channelID + '-' + messages.length;
-      messages.push(data.message);
-      db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
-        messages: messages
-      })
+
+      processMessageContent(data).then(response => {
+        messages.push(response.message);
+        db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+          messages: messages
+        })
+      });
       // triggers a socket event in the front end; moved to firestoreListeners.js
       // socket.emit(skt.new_message_added, messages)
     })
@@ -101,31 +116,135 @@ module.exports.newPrivateMessage = function newPrivateMessage(socket, data) {
     console.log("newPrivateMessage error - socketEvents.js");
     return null;
   }
-  db.collection(senderPath).doc(data.recipient).get().then((doc) => {
-    let new_data = JSON.parse(JSON.stringify(data));
-    messages = doc.data().messages;
-    if(!messages || messages == null || messages == undefined){
-      messages = []
-    }
-    new_data.message.id = new_data.recipient + '-' + messages.length;
+  processMessageContent(data).then(data => {
+    db.collection(senderPath).doc(data.recipient).get().then((doc) => {
+      let new_data = JSON.parse(JSON.stringify(data));
+      messages = doc.data().messages;
+      if(!messages || messages == null || messages == undefined){
+        messages = []
+      }
+      new_data.message.id = new_data.recipient + '-' + messages.length;
 
-    messages.push(new_data.message)
-    db.collection(senderPath).doc(new_data.recipient).update({
-      messages: messages
-    })
-  })
-  db.collection(receiverPath).doc(data.sender).get().then((doc) => {
-    let new_data = JSON.parse(JSON.stringify(data));
-    messages = doc.data().messages;
-    if(!messages || messages == null || messages == undefined){
-      messages = []
-    }
-    new_data.message.id = new_data.sender + '-' + messages.length;
+      messages.push(new_data.message)
+      db.collection(senderPath).doc(new_data.recipient).update({
+        messages: messages
+      });
+    });
+    db.collection(receiverPath).doc(data.sender).get().then((doc) => {
+      let new_data = JSON.parse(JSON.stringify(data));
+      messages = doc.data().messages;
+      if(!messages || messages == null || messages == undefined){
+        messages = []
+      }
+      new_data.message.id = new_data.sender + '-' + messages.length;
 
-    messages.push(new_data.message)
-    db.collection(receiverPath).doc(new_data.sender).update({
-      messages: messages
-    })
-  })
+      messages.push(new_data.message)
+      db.collection(receiverPath).doc(new_data.sender).update({
+        messages: messages
+      });
+    });
+  });
 }
 //$$$conley
+
+// Checks if the given url points to an image
+// from https://stackoverflow.com/questions/19395458/check-if-a-link-is-an-image
+function isUriImage(uri_obj) {
+  let uri = uri_obj.href; 
+  //make sure we remove any nasty GET params 
+  uri = uri.split('?')[0];
+  //moving on, split the uri into parts that had dots before them
+  var parts = uri.split('.');
+  //get the last part ( should be the extension )
+  var extension = parts[parts.length-1];
+  //define some image types to test against
+  var imageTypes = ['jpg','jpeg','tiff','png','gif','bmp'];
+  //check if the extension matches anything in the list.
+  if(imageTypes.indexOf(extension) !== -1) {
+      return true;   
+  }
+}
+
+// Gets youtube video id
+function getVideoId(url) {
+  var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+  var match = url.match(regExp);
+  return (match&&match[7].length==11)? match[7] : false;
+}
+
+// Gets the the data for a url and returns html
+function getOGData(link) {
+  return new Promise((resolve, reject) => {
+    got(link).then((response) => {
+      metascraper({ html: response.body, url: response.url }).then(results => {
+        let image = (results.image !== null ? results.image : results.logo);
+        let resolve_html = '<a href="' + results.url + '">' +
+            '<strong>' + results.title + '</strong>' +
+          '</a>' + 
+          '<div style="display: flex; justify-content: flex-start;">';
+        if (image !== null && image !== undefined && image !== "") {
+          resolve_html += '<img src="' + image + '" ' +
+              'style="flex: none" ' +
+              'width="65px" ' +
+              'height="65px">';
+        }
+        resolve_html += '<p style="margin: 5px 5px 5px 10px">' + results.description + '</p></div>';
+        resolve(resolve_html);
+      });
+    });
+  });
+}
+
+function processMessageContent(data) {
+  return new Promise((resolve, reject) => {
+    let links = linkify.find(data.message.content);
+
+    // initialize image if applicable
+    if (links.length > 0) {
+      // filter the links down
+      let pic_links = links.filter(isUriImage);
+      let youtube_links = links.filter(link => link.href.includes("youtube") || link.href.includes("youtu.be"));
+      let normal_links = links.filter(link => !(isUriImage(link) || link.href.includes("youtube") || link.href.includes("youtu.be")));
+      console.log("Pic links:", pic_links);
+      console.log("Youtube links:", youtube_links);
+      console.log("Normal links:", normal_links);
+
+      if (pic_links.length > 0) {  // only display the last image
+        data.message.image = pic_links[pic_links.length - 1].href;
+        if (data.message.content.replace(pic_links[0].value, "") === "") {
+          data.message.content = null;
+        }
+      }
+
+      if (youtube_links.length > 0) { // for now they override images
+        // TODO: the last youtube link might not be a video link and should be in normal
+        let video_id = getVideoId(youtube_links[youtube_links.length - 1].href);
+        if (video_id !== false) {
+          data.message.image = "https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg";
+        }
+      }
+
+      if (normal_links.length > 0) {
+        // must get OpenGraph data
+        getOGData(normal_links[normal_links.length - 1].href).then(resolved => {
+          data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>') + "=====================" + resolved;
+          resolve(data);
+        }).catch(reject => {
+          console.log(reject);
+          data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>');
+          resolve(data);
+        });
+      }
+      else {
+        if (data.message.content !== null) {
+          data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>');
+        }
+        resolve(data);
+      }
+    }
+    else {
+      data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>');
+      resolve(data);
+    }
+  });
+}

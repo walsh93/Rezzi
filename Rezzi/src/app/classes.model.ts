@@ -107,6 +107,7 @@ export interface Message {
   time: Date;
   visible: boolean;
   reactions: ReactionData;
+  image: string;
 }
 
 export interface SocketMessageData {

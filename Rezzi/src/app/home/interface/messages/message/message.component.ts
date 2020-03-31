@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { User, ReactionData, AbbreviatedUser, Message, SocketChannelMessageData, SocketPrivateMessageData } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
 import { MessagesService } from '../messages.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-message',
@@ -26,12 +27,12 @@ export class MessageComponent implements OnInit {
 
   private reactions: ReactionData;     // Data holding the reaction (extracted from message)
   private user: AbbreviatedUser;       // The user who sent the message (extracted from message)
-  content: string;                     // The content of the message (extracted from message)
+  private content: SafeHtml[];           // The content of the message (extracted from message)
   private time: Date;                  // When the message was sent (extracted from message)
-
+  private image: string;               // Image from link in message, or webpage preview (extracted from message)
   displayName: string;
 
-  constructor(public messagesService: MessagesService) { }
+  constructor(public messagesService: MessagesService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     // console.log(this.time);
@@ -39,8 +40,20 @@ export class MessageComponent implements OnInit {
     // console.log(this.viewingUser);
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
-    this.content = this.message.content;
     this.time = this.message.time;
+    this.image = this.message.image;
+    this.content = [];
+    if (this.message.content === null) {
+      this.content.push(null);
+    }
+    else if (this.message.content.includes("=====================")) {
+      this.message.content.split("=====================").forEach(section => {
+        this.content.push(this.sanitizer.bypassSecurityTrustHtml(section));
+      });
+    }
+    else {
+      this.content.push(this.sanitizer.bypassSecurityTrustHtml(this.message.content));
+    }
     const dateAgain = new Date(this.time);
     const day = this.dayNames[dateAgain.getDay()];
     const month = this.monthNames[dateAgain.getMonth()];
@@ -60,7 +73,8 @@ export class MessageComponent implements OnInit {
       this.displayName = this.user.nickName;
     }
 
-    for (const reaction in this.reactions) {  // Set initial color values for reactions
+    // Set initial color values for reactions
+    for (const reaction in this.reactions) {
       if (this.reactions.hasOwnProperty(reaction)) {
         if (this.reactions[reaction].includes(this.viewingUser.email)) {
           this.reacted[reaction] = 'accent';
