@@ -31,6 +31,8 @@ export class ChannelNavBarComponent implements OnInit {
       }
       if (this.navTitle !== 'General') {
         this.leaveButtonDisabled = false;
+      } else {
+        this.leaveButtonDisabled = true;
       }
     });
   }
@@ -45,14 +47,10 @@ export class ChannelNavBarComponent implements OnInit {
 
     const dialogRef = this.dialog.open(LeaveChannelDialog, {
       width: '450px',
+      height: '200px',
       data: {channel: this.navChannel}
     });
 
-  }
-
-  leaveChannel() {
-    console.log('user wants to leave ' + this.navTitle);
-    // TODO also figure out how to pass in channel.id, follow join-channel.component.ts for help
   }
 
 }
@@ -77,10 +75,10 @@ export class LeaveChannelDialog {
   onConfirmClick(channel: ChannelData): void {
     console.log('user wants to leave ' + channel.channel);
     console.log('leaving channel id ' + channel.id);
-    /*this.http.post<{notification: string}>('/leave-channel', {channel_id: channel.id})
+    this.http.post<{notification: string}>('/leave-channel', {channel_id: channel.id})
     .subscribe(responseData => {
       console.log(responseData.notification);
-    });*/
+    });
   }
 
 }

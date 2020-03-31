@@ -59,6 +59,7 @@ module.exports = {
       not_hdadmin_ext: "/0/unauthorized",
     },
     join_channel: "/join-channel",
+    leave_channel: "/leave-channel",
     get_channels: "/get-channels",
     pword_reset_request: "/pword-reset-request",
     pword_reset_sent: "/pword-reset-sent",

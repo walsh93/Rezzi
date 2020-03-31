@@ -24,7 +24,7 @@ router.get('/', checkCookie, function(request, response) {
   // Remove user from channel's member list
   if (req.channel_id.indexOf("floors") !== -1) {
     db.collection(keys.rezzis + '/' + rezzi + '/floors/' + req.channel_id.split('-')[1] + '/channels')
-      .doc(req.channel_id.split('-')[2])
+      .doc(req.channel_id.split('-')[2])    // TODO find way to include everything after this dash? Also in join-channel
       .update({
         members: admin.firestore.FieldValue.arrayRemove(email)
     })

@@ -106,9 +106,9 @@ export class SidePanelComponent implements OnInit {
     let viewingChannelString = '';
     if (level != null) {
       if (level === 'hallwide' || level === 'RA') {  // Reconstruct the channel ID
-        viewingChannelString = `${level}-${channel}`;
+        viewingChannelString = `${level}-${channel.channel}`;
       } else {
-        viewingChannelString = `floors-${level}-${channel}`;
+        viewingChannelString = `floors-${level}-${channel.channel}`;
       }
     } else {
       console.log('Show category accouncements??? What are we showing here?');  // TODO @Kai
