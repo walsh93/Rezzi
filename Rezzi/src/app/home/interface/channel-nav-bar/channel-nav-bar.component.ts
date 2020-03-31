@@ -5,7 +5,7 @@ import { ChannelData } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 
 export interface DialogData {
-  channel: string;
+  channel: ChannelData;
 }
 @Component({
   selector: 'app-channel-nav-bar',
@@ -14,7 +14,7 @@ export interface DialogData {
 })
 
 export class ChannelNavBarComponent implements OnInit {
-  channel: ChannelData[];
+  navChannel: ChannelData;
   @HostBinding('class.nav-title')
   navTitle = 'Rezzi';
   channelMenuDisabled = true;
@@ -24,7 +24,8 @@ export class ChannelNavBarComponent implements OnInit {
 
   ngOnInit() {
     this.channelNavBarService.setChannel.subscribe(channelData => {
-      this.navTitle = channelData.channel;
+      this.navChannel = channelData;
+      this.navTitle = this.navChannel.channel;
       if (this.navTitle !== 'Rezzi') {
         this.channelMenuDisabled = false;
       }
@@ -44,7 +45,7 @@ export class ChannelNavBarComponent implements OnInit {
 
     const dialogRef = this.dialog.open(LeaveChannelDialog, {
       width: '450px',
-      data: {channel: this.navTitle} // pass in channel id
+      data: {channel: this.navChannel}
     });
 
   }
@@ -73,12 +74,13 @@ export class LeaveChannelDialog {
     this.dialogRef.close();
   }
 
-  onConfirmClick(channel: string): void {
-    console.log('user wants to leave ' + channel);
-    this.http.post<{notification: string}>('/leave-channel', {channel_id: id})
+  onConfirmClick(channel: ChannelData): void {
+    console.log('user wants to leave ' + channel.channel);
+    console.log('leaving channel id ' + channel.id);
+    /*this.http.post<{notification: string}>('/leave-channel', {channel_id: channel.id})
     .subscribe(responseData => {
       console.log(responseData.notification);
-    });
+    });*/
   }
 
 }
