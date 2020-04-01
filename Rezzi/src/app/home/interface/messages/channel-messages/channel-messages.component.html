@@ -1,14 +1,19 @@
 <div id="channelMessages">
   <div *ngFor="let message of messages">
     <!--{{ message.owner.firstName }}: Temporary Comment-->
-    <app-message
-      [message]="message"
-      [viewingUser]="user"
-      [channel]="currentChannel"
-      [rezzi]="session.rezzi"
-      [pm]="false"
-      [updateScrolling]="needToUpdateScroll"
-    ></app-message>
+    <div *ngIf="message.id === 'BOT_MSG'; else nonbotMessage">
+      <app-bot-message [botMessage]="message.content"></app-bot-message>
+    </div>
+    <ng-template #nonbotMessage>
+      <app-message
+        [message]="message"
+        [viewingUser]="user"
+        [channel]="currentChannel"
+        [rezzi]="session.rezzi"
+        [pm]="false"
+        [updateScrolling]="needToUpdateScroll"
+      ></app-message>
+    </ng-template>
   </div>
 </div>
 
