@@ -20,6 +20,9 @@ router.get("/", checkCookie, function(request, response) {
   const rb = request.body;
   const emailarr = rb.emailList.split(",");
 
+  //Get the current time
+  var time = Date().toString()
+
   db.collection(keys.users).doc(request.__session.email).get().then((doc) => {
     const rezzi = doc.data().rezzi  // rezzi can't be added to session later on so this will have to do for now
     //for each email in the array, need to save to the db a new user with email, role, floor, rezzi, verified = 0, and pword code
@@ -112,7 +115,8 @@ router.get("/", checkCookie, function(request, response) {
         accountType: parseInt(rb.accountType),
         floor: rb.floor,
         rezzi: rezzi,
-        channels: rb.channels
+        channels: rb.channels,
+        lastEmailSent: time
       });
 
       var smtpTransport = nodemailer.createTransport({

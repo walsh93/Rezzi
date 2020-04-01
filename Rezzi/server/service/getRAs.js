@@ -29,6 +29,7 @@ router.get('/', checkCookie, function(request, response) {
             //declare variables for each resident
             var firstName;
             var lastName;
+            var lastEmailSent;
             promises.push(db.collection('users').doc(RAs[i]).get().then((doc) => {
                 if(!doc.exists){
                     console.log('RA Email Doc not found')
@@ -50,6 +51,12 @@ router.get('/', checkCookie, function(request, response) {
                 else {
                     lastName = data.lastName;
                 }
+                if(data.lastEmailSent === undefined){
+                  lastEmailSent = "User is verified";
+                }
+                else{
+                  lastEmailSent = data.lastEmailSent;
+                }
                 //If more info is needed on the User Management page, add that here!
                 const info = {
                     email: data.email,
@@ -57,6 +64,7 @@ router.get('/', checkCookie, function(request, response) {
                     lastName: lastName,
                     verified: data.verified,
                     floor: data.floor,
+                    lastEmailSent: lastEmailSent,
                 }
                 console.log(info)
                 RAInfo.push(info)
