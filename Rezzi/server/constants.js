@@ -30,6 +30,7 @@ module.exports = {
     channels: 'channels',
     rezzis: 'residence-halls',
     private_messages: 'private-messages',
+    members: 'members'
   },
 
   // User types

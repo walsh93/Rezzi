@@ -34,15 +34,12 @@ router.get('/', checkCookie, function(request, response) {
 
       const errorMsg = 'There was an error creating your channel'
 
-      // TODO make separate functions for all of the different db updates?
-
       if (req.level == keys.ra) {
 
         /* add channel to residence-halls channel collection */
         db.collection(keys.residence_halls).doc(data.rezzi)
             .collection(keys.ra).doc(channel.title).set(channel).then((write_result) => {
           response.status(http.ok).send('Your RA channel has been successfully created!')
-//          response.status(http.ok).redirect('wherever the view-channel link is')
         }).catch((error) => {
           console.log(error)
           response.status(http.bad_request).send(errorMsg)
@@ -73,7 +70,6 @@ router.get('/', checkCookie, function(request, response) {
         db.collection(keys.residence_halls).doc(data.rezzi)
             .collection(keys.hallwide).doc(channel.title).set(channel).then((write_result) => {
           response.status(http.ok).send('Your hallwide channel has been successfully created!')
-//          response.status(http.ok).redirect('wherever the view-channel link is')
         }).catch((error) => {
           console.log(error)
           response.status(http.bad_request).send(errorMsg)
@@ -105,7 +101,6 @@ router.get('/', checkCookie, function(request, response) {
             .collection(keys.floors).doc(data.floor)
             .collection('channels').doc(channel.title).set(channel).then((write_result) => {
           response.status(http.ok).send('Your floor interest channel has been successfully created!')
-//          response.status(http.ok).redirect('wherever the view-channel link is')
         }).catch((error) => {
           console.log("Error when adding channel to residence hall channel collection", error)
 //          response.status(http.bad_request).send(errorMsg)

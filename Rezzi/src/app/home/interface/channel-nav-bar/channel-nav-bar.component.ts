@@ -172,6 +172,8 @@ export class LeaveChannelDialog {
       console.log(responseData.notification);
     });
 
+    this.leaveDialogRef.close();
+
     // Send Bot Message
     this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
   }
@@ -187,7 +189,7 @@ export class DeleteChannelDialog {
   rezzi: string;
   userName: string;
 
-  constructor(public dialogRef: MatDialogRef<DeleteChannelDialog>,
+  constructor(public deleteDialogRef: MatDialogRef<DeleteChannelDialog>,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private http: HttpClient,
               private messagesService: MessagesService) {
@@ -196,18 +198,21 @@ export class DeleteChannelDialog {
     }
 
   onCancelClick(): void {
-    this.dialogRef.close();
+    this.deleteDialogRef.close();
   }
 
   onConfirmClick(channel: ChannelData): void {
     console.log('user wants to delete ' + channel.channel);
     console.log('deleting channel id ' + channel.id);
-    /*this.http.post<{notification: string}>('/delete-channel', {channel_id: channel.id}).subscribe(responseData => {
+    const level = channel.id.split('-')[0];
+    this.http.post<{notification: string}>('/delete-channel', {channel, channel_level: level}).subscribe(responseData => {
       console.log(responseData.notification);
-    });*/
+    });
+
+    this.deleteDialogRef.close();
 
     // Send Bot Message
-    //this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
+    // this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
   }
 
 }
