@@ -25,6 +25,7 @@ import {
   MatBadgeModule,
   MatTooltipModule,
   MatDividerModule,
+  MatProgressSpinnerModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -88,6 +89,8 @@ import { ChannelMessagesComponent } from './home/interface/messages/channel-mess
 import { NewMessageComponent } from './home/interface/messages/new-message/new-message.component';
 
 import { ChannelNavBarComponent, LeaveChannelDialog } from './home/interface/channel-nav-bar/channel-nav-bar.component';
+import { MessageComponent } from './home/interface/messages/message/message.component';
+import { ImageModalComponent } from './home/interface/messages/new-message/image-modal/image-modal.component';
 
 // Header Component
 import { HeaderComponent } from './header/header.component';
@@ -103,7 +106,6 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
 import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/member-input/member-input.component';
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
-import { MessageComponent } from './home/interface/messages/message/message.component';
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 
 @NgModule({
@@ -153,7 +155,8 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
     RequestChannelComponent,
     RequestChannelFormComponent,
     RaChannelRequestsComponent,
-    LeaveChannelDialog
+    LeaveChannelDialog,
+    ImageModalComponent
   ],
   imports: [
     BrowserModule,
@@ -188,11 +191,13 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
     MatBadgeModule,
     MatTooltipModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
   ],
   entryComponents: [
     JoinChannelComponent,
     CreatePmComponent,
-    LeaveChannelDialog
+    LeaveChannelDialog,
+    ImageModalComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
+import { ImageModalComponent } from './image-modal/image-modal.component';
 import { NgForm } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 
@@ -33,7 +35,7 @@ export class NewMessageComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
 
-  constructor(public messagesService: MessagesService) { }
+  constructor(public messagesService: MessagesService, public dialog: MatDialog) { }
 
   ngOnInit() {
     // Listen for session updates
@@ -86,6 +88,13 @@ export class NewMessageComponent implements OnInit {
     // this.messagesService.addMessage(message);
     this.messagesService.sendMessageThroughSocket(scmd);
     form.resetForm();
+  }
+
+  openImageDialog() {
+    const dialogRef = this.dialog.open(ImageModalComponent, {
+      width: '600px',
+      height: 'auto'
+    });
   }
 
   ngOnDestroy() {
