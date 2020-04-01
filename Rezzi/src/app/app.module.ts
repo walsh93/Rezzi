@@ -104,6 +104,7 @@ import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/cre
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
 import { MessageComponent } from './home/interface/messages/message/message.component';
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
+import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 
 @NgModule({
   declarations: [
@@ -152,6 +153,7 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
     RequestChannelFormComponent,
     RaChannelRequestsComponent,
     LeaveChannelDialog,
+    BotMessageComponent,
   ],
   imports: [
     BrowserModule,

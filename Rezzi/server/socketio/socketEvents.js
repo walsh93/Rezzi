@@ -25,14 +25,21 @@ module.exports.newMessage = function newMessage(socket, data) {
       if (!messages || messages == null || messages == undefined) {
         messages = []
       }
-      data.message.id = data.channelID + '-' + messages.length;
 
-      processMessageContent(data).then(response => {
-        messages.push(response.message);
+      if (data.message.id == 'BOT_MSG') {
+        messages.push(data.message);
         db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
           messages: messages
         })
-      });
+      } else {
+        data.message.id = data.channelID + '-' + messages.length;
+        processMessageContent(data).then(response => {
+          messages.push(response.message);
+          db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+            messages: messages
+          })
+        })
+      }
       // triggers a socket event in the front end; moved to firestoreListeners.js
       // socket.emit(skt.new_message_added, messages)
     })

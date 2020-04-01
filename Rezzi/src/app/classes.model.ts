@@ -111,6 +111,11 @@ export interface Message {
   image: string;
 }
 
+export enum BotMessage {
+  UserHasJoinedChannel = 0,
+  UserHasLeftChannel = 1,
+}
+
 export interface SocketMessageData {
   message: Message;
 }
