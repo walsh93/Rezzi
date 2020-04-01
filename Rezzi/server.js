@@ -76,6 +76,8 @@ const getChannelRequests = require('./server/service/getChannelRequests')
 app.use(service.get_channel_requests, getChannelRequests)
 const getChannelData = require('./server/service/getChannelData')
 app.use(service.get_channel_data, getChannelData)
+const getDeletionRequests = require('./server/service/getDeletionRequests')
+app.use(service.get_deletion_requests, getDeletionRequests)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')

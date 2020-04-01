@@ -18,18 +18,29 @@ router.post('/', function(request, response) {
   const hdDocRef = db.collection(keys.users).doc(hdemail)
 
   const role = docRef.accountType
+  const floor = docRef.floor
 
   let promises = []
 
-  //Delete from list of residents or RAs in hall
+  //Delete from list of residents or RAs in hall and 
   if(role == 1){
     promises.push(rezziRef.update({
         RA_list: admin.firestore.FieldValue.arrayRemove(email),
     }))
+
+    //remove from list of RAs in the floor document
+    promises.push(db.collection(keys.rezzis + '/' + rezzi + '/floors/' + floor).update({
+        ras: admin.firestore.FieldValue.arrayRemove(email),
+    }))
+
   }
   else if(role == 2){
     promises.push(rezziRef.update({
         resident_list: admin.firestore.FieldValue.arrayRemove(email),
+    }))
+
+    promises.push(db.collection(keys.rezzis + '/' + rezzi + '/floors/' + floor).update({
+        residents: admin.firestore.FieldValue.arrayRemove(email),
     }))
   }
 
@@ -38,7 +49,20 @@ router.post('/', function(request, response) {
   channels = docRef.channels
 
   for(var i = 0; i < channels.length; i++){
-      promises.push()
+    if (channels[i].indexOf("floors") !== -1) {
+        promises.push(db.collection(keys.rezzis + '/' + rezzi + '/floors/' + channels[i].split('-')[1] + '/channels')
+          .doc(channels[i].split('-')[2])    // TODO find way to include everything after this dash? Also in join-channel
+          .update({
+            members: admin.firestore.FieldValue.arrayRemove(email)
+        }))
+      }
+      else {
+        promises.push(db.collection(keys.rezzis + '/' + rezzi + '/' + channels[i].split('-')[0])
+          .doc(channels[i].split('-')[1])
+          .update({
+            members: admin.firestore.FieldValue.arrayRemove(email)
+        }))
+      }
   }
 
 

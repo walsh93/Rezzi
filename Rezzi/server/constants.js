@@ -17,6 +17,7 @@ module.exports = {
     getRAs: "/getRAs",
     getResidents: "/getResidents",
     private_messages: "/private-messages",
+    get_deletion_requests: "/getDeletionRequests",
   },
 
   // Firebase constants

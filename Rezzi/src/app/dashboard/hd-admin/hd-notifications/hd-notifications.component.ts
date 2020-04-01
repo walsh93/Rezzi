@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { RezziService } from '../../../rezzi.service';
+import { Router } from '@angular/router';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { NgForm, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-hd-notifications',
@@ -7,11 +11,53 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HdNotificationsComponent implements OnInit {
 
+  // Class variables
+  errorMsg: string;
+  session: any;
+  deletionRequests: Array<string>;
+
   panelOpenState = false;
-  
-  constructor() { }
+
+  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
+    this.errorMsg = '';
+
+    this.rezziService.getSession().then((session) => {
+        this.session = session;
+    });
+
+    this.rezziService.getDeletionRequests().then((deletionRequests) => {
+      console.log(`Deletion request list IS ${deletionRequests.email}`);
+      if (deletionRequests == null) {
+        this.deletionRequests = ["there are no requests"];
+      } else {
+        this.deletionRequests = deletionRequests.email;
+      }
+    });
+
+  }
+
+  deleteUser(email: string) {
+    console.log("Email to be deleted: " + email)
+    const body = {
+      email: email,
+      hdemail: this.session.email,
+      rezzi: this.session.rezzi
+    }
+
+    this.http.post('/delete-user', body).toPromise().then((response) => {
+      location.reload();
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status === 200) {
+        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        location.reload();
+      } else {
+        alert('There was an error when sending deleting this user. Please try again later.');
+      }
+    });
+
   }
 
 }

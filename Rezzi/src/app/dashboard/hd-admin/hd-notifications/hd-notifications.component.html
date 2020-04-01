@@ -10,17 +10,14 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
       
-          <!--
-          <mat-form-field>
-            <mat-label>First name</mat-label>
-            <input matInput>
-          </mat-form-field>
-        
-          <mat-form-field>
-            <mat-label>Age</mat-label>
-            <input matInput type="number" min="1">
-          </mat-form-field>
-        -->
+          <p>Hi why isn't this working????</p>
+          <mat-card *ngFor="let deletionRequest of deletionRequests" (click)='deleteUser(email)'><!-- Looping the deletion requests-->
+              
+                {{ deletionRequest.email }}
+              
+            </mat-card>
+          
+
         </mat-expansion-panel>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
