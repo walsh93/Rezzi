@@ -1,7 +1,7 @@
 
 <div class="container-fluid">
     <h2 style="text-align: center;">Notifications</h2>
-    
+
     <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -9,14 +9,14 @@
               Account Deletion Requests
             </mat-panel-title>
           </mat-expansion-panel-header>
-      
+
           <p>Hi why isn't this working????</p>
-          <mat-card *ngFor="let deletionRequest of deletionRequests" (click)='deleteUser(email)'><!-- Looping the deletion requests-->
-              
-                {{ deletionRequest.email }}
-              
+          <mat-card *ngFor="let deletionRequest of deletionRequests" (click)='deleteUser(deletionRequest)'><!-- Looping the deletion requests-->
+
+                {{ deletionRequest }}
+
             </mat-card>
-          
+
 
         </mat-expansion-panel>
         <mat-expansion-panel>

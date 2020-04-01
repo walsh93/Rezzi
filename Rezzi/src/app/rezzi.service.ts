@@ -125,6 +125,7 @@ export class RezziService {
 
   getDeletionRequests(): Promise<any>{
     return this.http.get('/getDeletionRequests').toPromise().then((deletionList) => {
+      console.log(deletionList);
       return deletionList;
    }).catch((error) => {
      console.log(error);

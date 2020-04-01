@@ -27,12 +27,12 @@ export class HdNotificationsComponent implements OnInit {
         this.session = session;
     });
 
-    this.rezziService.getDeletionRequests().then((deletionRequests) => {
-      console.log(`Deletion request list IS ${deletionRequests.email}`);
+    this.rezziService.getDeletionRequests().then(deletionRequests => {
+      console.log('Deletion request list IS ' + deletionRequests.deletionRequests);
       if (deletionRequests == null) {
         this.deletionRequests = ["there are no requests"];
       } else {
-        this.deletionRequests = deletionRequests.email;
+        this.deletionRequests = deletionRequests.deletionRequests;
       }
     });
 
