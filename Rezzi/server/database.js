@@ -110,7 +110,6 @@ module.exports.updateHDArray = function updateHDArray(data,email, user) {
 }
 
 module.exports.updateHDArrayRPT = function updateHDArrayRPT(data,email, message) {
-  console.log("Report; " + message.id + " " + email);
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here

@@ -10,8 +10,8 @@ import {
 } from "src/app/classes.model";
 import { RezziService } from "src/app/rezzi.service";
 import { MessagesService } from "../messages.service";
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { HttpClient } from '@angular/common/http';
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-message",
@@ -21,7 +21,20 @@ import { HttpClient } from '@angular/common/http';
 export class MessageComponent implements OnInit {
   // Add properties as needed/implemented
   dayNames = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-  monthNames = [ "Jan.","Feb.","Mar.","Apr.", "May", "June","July", "Aug.", "Sept.","Oct.","Nov.","Dec."];
+  monthNames = [
+    "Jan.",
+    "Feb.",
+    "Mar.",
+    "Apr.",
+    "May",
+    "June",
+    "July",
+    "Aug.",
+    "Sept.",
+    "Oct.",
+    "Nov.",
+    "Dec."
+  ];
   displayTime: string;
   reacted = {};
 
@@ -40,11 +53,19 @@ export class MessageComponent implements OnInit {
   private reported: boolean;
   private theHD: HDUser;
   private hdEmail: string;
-  private content: SafeHtml[];           // The content of the message (extracted from message)
-  private image: string;               // Image from link in message, or webpage preview (extracted from message)
+  private content: SafeHtml[]; // The content of the message (extracted from message)
+  private image: string; // Image from link in message, or webpage preview (extracted from message)
   displayName: string;
+  private pmReportId: string; //syntax: userWhoReportedMessage-messageID
+  private ReportId: string;
+  private currUserEmail: string;
 
-  constructor(public messagesService: MessagesService, private http: HttpClient, private rezziService: RezziService, private sanitizer: DomSanitizer) { }
+  constructor(
+    public messagesService: MessagesService,
+    private http: HttpClient,
+    private rezziService: RezziService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit() {
     // console.log(this.time);
@@ -58,14 +79,14 @@ export class MessageComponent implements OnInit {
     this.content = [];
     if (this.message.content === null) {
       this.content.push(null);
-    }
-    else if (this.message.content.includes("=====================")) {
+    } else if (this.message.content.includes("=====================")) {
       this.message.content.split("=====================").forEach(section => {
         this.content.push(this.sanitizer.bypassSecurityTrustHtml(section));
       });
-    }
-    else {
-      this.content.push(this.sanitizer.bypassSecurityTrustHtml(this.message.content));
+    } else {
+      this.content.push(
+        this.sanitizer.bypassSecurityTrustHtml(this.message.content)
+      );
     }
     const dateAgain = new Date(this.time);
     const day = this.dayNames[dateAgain.getDay()];
@@ -80,8 +101,14 @@ export class MessageComponent implements OnInit {
     // console.log(this.displayTime);
     // this.displayTime = String(dateAgain);
 
-    if (this.user.nickName == null || this.user.nickName === undefined || this.user.nickName.length === 0) {
-      this.displayName = `${this.user.firstName} ${this.user.lastName.charAt(0)}.`;
+    if (
+      this.user.nickName == null ||
+      this.user.nickName === undefined ||
+      this.user.nickName.length === 0
+    ) {
+      this.displayName = `${this.user.firstName} ${this.user.lastName.charAt(
+        0
+      )}.`;
     } else {
       this.displayName = this.user.nickName;
     }
@@ -108,16 +135,18 @@ export class MessageComponent implements OnInit {
       if (chanMsgs != null) {
         chanMsgs.scrollTop = chanMsgs.scrollHeight;
       } else {
-        const pmMsgs = document.getElementById('privateUserMessages');
+        const pmMsgs = document.getElementById("privateUserMessages");
         pmMsgs.scrollTop = pmMsgs.scrollHeight;
       }
     }
 
     this.rezziService.getHDEmail().then(response => {
       this.hdEmail = response.hd;
-      console.log('hd:' + this.hdEmail);
     });
 
+    this.rezziService.getUserProfile().then(response => {
+      this.currUserEmail = response.user.email;
+    });
   }
 
   sendReaction(reaction) {
@@ -167,6 +196,8 @@ export class MessageComponent implements OnInit {
       };
       spmd.message.reported = this.reported;
       this.messagesService.updateMessageThroughSocket(spmd);
+      this.pmReportId = this.currUserEmail.concat("-").concat(this.message.id);
+      this.ReportId = this.pmReportId;
     } else {
       const scmd: SocketChannelMessageData = {
         message: this.message,
@@ -175,8 +206,9 @@ export class MessageComponent implements OnInit {
       };
       scmd.message.reported = this.reported;
       this.messagesService.updateMessageThroughSocket(scmd);
+      this.ReportId = this.message.id;
     }
-    alert('This message has been reported to the hall director!')
+    alert("This message has been reported to the hall director!");
     this.updateHallDirector(this.hdEmail, this.user.email);
   }
 
@@ -190,26 +222,20 @@ export class MessageComponent implements OnInit {
         response.hd.password,
         response.hd.verified,
         response.hd.deletionRequests,
-        response.hd.reportedMessages,
+        response.hd.reportedMessages
       );
       if (this.theHD.reportedMessages === undefined) {
         this.theHD.reportedMessages = [];
       }
-      if (this.theHD.reportedMessages.includes(this.message.id)) {
+      if (this.theHD.reportedMessages.includes(this.ReportId)) {
       } else {
-        this.theHD.reportedMessages.push(this.message.id);
+        this.theHD.reportedMessages.push(this.ReportId);
       }
-      let i = 0;
-      this.theHD.reportedMessages.forEach(element => {
-        console.log(`${i}` + element);
-        i++;
-      });
     });
 
-    this.updateHD(hd, this.message.id);
+    this.updateHD(hd, this.ReportId);
   }
   updateHD(hd, msg) {
-    console.log("hll: "+ hd + " msg; " + msg);
 
     this.http
       .post<{ notification: string }>(

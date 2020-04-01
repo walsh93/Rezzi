@@ -21,7 +21,6 @@ router.get('/', checkCookie, function(request, response) {
   const rb = request.body
   let email = request.query.hd;
   let msg = request.query.msg;
-  console.log("WEFDA DXV: " + email + ' '+ msg.id);
 
   // for (const key in request.query) {
   //   console.log(key, request.query[key])
