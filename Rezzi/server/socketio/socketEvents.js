@@ -42,7 +42,7 @@ module.exports.newMessage = function newMessage(socket, data) {
 module.exports.updateMessage = function updateMessage(socket, data) {
   let collectionpath = "";
   let docpath = "";
-  console.log("Data: ", data);
+  // console.log("Data: ", data);
   if (data.hasOwnProperty("sender")) {
     const paths = createUserPath(data.sender, data.recipient);
     if (paths == null) {
@@ -155,8 +155,8 @@ module.exports.newPrivateMessage = function newPrivateMessage(socket, data) {
 // Checks if the given url points to an image
 // from https://stackoverflow.com/questions/19395458/check-if-a-link-is-an-image
 function isUriImage(uri_obj) {
-  let uri = uri_obj.href; 
-  //make sure we remove any nasty GET params 
+  let uri = uri_obj.href;
+  //make sure we remove any nasty GET params
   uri = uri.split('?')[0];
   //moving on, split the uri into parts that had dots before them
   var parts = uri.split('.');
@@ -166,7 +166,7 @@ function isUriImage(uri_obj) {
   var imageTypes = ['jpg','jpeg','tiff','png','gif','bmp'];
   //check if the extension matches anything in the list.
   if(imageTypes.indexOf(extension) !== -1) {
-      return true;   
+      return true;
   }
 }
 
@@ -185,7 +185,7 @@ function getOGData(link) {
         let image = (results.image !== null ? results.image : results.logo);
         let resolve_html = '<a href="' + results.url + '">' +
             '<strong>' + results.title + '</strong>' +
-          '</a>' + 
+          '</a>' +
           '<div style="display: flex; justify-content: flex-start;">';
         if (image !== null && image !== undefined && image !== "") {
           resolve_html += '<img src="' + image + '" ' +

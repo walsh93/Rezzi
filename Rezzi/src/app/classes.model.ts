@@ -126,7 +126,7 @@ export interface SocketPrivateMessageData extends SocketMessageData {
 }
 
 export class HDUser {
-  constructor(firstName: string, lastName: string, email: string, password: string, verified: boolean, deletionRequests: String[]) {
+  constructor(firstName: string, lastName: string, email: string, password: string, verified: boolean, deletionRequests: String[], reportedMessages: String[]) {
     this.firstName = firstName;
     this. lastName = lastName;
     this.email = email;
@@ -134,6 +134,7 @@ export class HDUser {
     this.accountType = 0;
     this.verified = verified;
     this.deletionRequests = deletionRequests;
+    this.reportedMessages = reportedMessages;
 
   }
   firstName: string;
@@ -144,6 +145,7 @@ export class HDUser {
   accountType: number;
   verified: boolean;
   deletionRequests: String[];
+  reportedMessages: String[];
 }
 
 export interface ChannelData {

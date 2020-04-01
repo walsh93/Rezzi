@@ -109,6 +109,21 @@ module.exports.updateHDArray = function updateHDArray(data,email, user) {
   })
 }
 
+module.exports.updateHDArrayRPT = function updateHDArrayRPT(data,email, message) {
+  console.log("Report; " + message.id + " " + email);
+  dbstore.collection('users').doc(email).get().then(doc => {
+    if (!doc.exists) {
+      //Do something about the error here
+    } else {
+      dbstore.collection('users').doc(email).update({'reportedMessages': FieldValue.arrayUnion(message)})
+    }
+  }).catch(err => {
+    //reject(err)
+    console.log(err)
+    console.log("Error updating HD's reported messages");
+  })
+}
+
 module.exports.createChannelPath = function createChannelPath(rezzi, channelID) {
   if (channelID != null) {
     const resHallPath = `${db_keys.rezzis}/${rezzi}`

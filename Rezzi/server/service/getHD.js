@@ -13,10 +13,10 @@ router.get('/', checkCookie, function (request, response) {
 
   db.collection(keys.rezzis).doc(rezzi).get().then(doc => {
     const data = doc.data()
-    console.log(data)
+    // console.log(data)
     const hd = data.HD;
 
-    console.log('hd:' + hd);
+    // console.log('hd:' + hd);
 
     // db.collection('users').get().then((snapshot) => {
     //   let users = []
