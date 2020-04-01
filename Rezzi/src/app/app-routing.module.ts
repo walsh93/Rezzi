@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Components
-import { WelcomeComponent } from './welcome/welcome.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { SignUpHdComponent } from './sign-up-hd/sign-up-hd.component';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -22,7 +21,6 @@ import { RaChannelRequestsComponent } from './dashboard/ra-admin/ra-channel-requ
 
 // Routes
 const routes: Routes = [
-  { path: 'welcome', component: WelcomeComponent },                     // Page with all the hyperlinks
   { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-up-hd', component: SignUpHdComponent },
   { path: 'sign-in', component: SignInComponent },

@@ -1,9 +1,10 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { SidePanelService } from './side-panel.service';
-import { ChannelData } from '../../../classes.model';
+import { ChannelData, AbbreviatedUser } from '../../../classes.model';
 import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service';
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-side-panel',
@@ -12,24 +13,34 @@ import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service
   providers: [SidePanelService],
 })
 
-export class SidePanelComponent implements OnInit {
+export class SidePanelComponent implements OnInit, OnDestroy {
   public channels: ChannelData[];
   private filteredChannels: ChannelData[];
+
+  // Session data retrieved from interface.component
+  session: any;
+  private sessionUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('sessionUpdateEvent') sessionObs: Observable<any>;
+
+  // Abbreviated User data
+  user: AbbreviatedUser;
+  private userUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   // Send channels to interface.component
   @Output() channelsToSend = new EventEmitter<ChannelData[]>();
   @Output() channelToView = new EventEmitter<string>();
 
-  constructor(public dialog: MatDialog,
-              private sidePanelService: SidePanelService,
-              private channelNavBarService: ChannelNavBarService) {
+  constructor(public dialog: MatDialog, private sidePanService: SidePanelService, private chanNavBarService: ChannelNavBarService) {
     this.channels = [];
     this.filteredChannels = [];
-    this.sidePanelService.getChannels().subscribe(data => {
+    this.sidePanService.getChannels().subscribe(data => {
       for (const hall in data) {
         if (data.hasOwnProperty(hall)) {
           let tempBelongs = false;  // Set if the user doesn't belong to any chats within the category
-          let tempChannels: ChannelData[] = [];
+          const tempChannels: ChannelData[] = [];
           // tslint:disable-next-line: forin
           for (const channel in data[hall]) {
             tempChannels.push({
@@ -71,7 +82,6 @@ export class SidePanelComponent implements OnInit {
           this.channels.push(temp);
         }
       }
-//      console.log(this.channels);
       this.channelsToSend.emit(this.filteredChannels);
     });
   }
@@ -80,9 +90,14 @@ export class SidePanelComponent implements OnInit {
     const dialogRef = this.dialog.open(JoinChannelComponent, {
       width: '600px',
       height: 'auto',
-      data: this.channels,
+      data: {
+        channels: this.channels,
+        session: this.session,
+        user: this.user,
+      },
     });
-    dialogRef.componentInstance.join_channel_event.subscribe((id: string) => {
+
+    dialogRef.componentInstance.joinChannelEvent.subscribe((id: string) => {
       this.channels.forEach(hall => {
         hall.subchannels.forEach(channel => {
           if (channel.id === id) {
@@ -91,30 +106,40 @@ export class SidePanelComponent implements OnInit {
         });
       });
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    // });
   }
 
   ngOnInit() {
+    // Listen for session updates
+    this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
+      this.session = updatedSession;
+    });
+
+    // Listen for user updates
+    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
+      this.user = updatedUser;
+    });
   }
 
-  viewChannel(channel: string, level: string) {
-    this.channelNavBarService.setNavTitle(channel);
+  viewChannel(channel: ChannelData, level: string) {
+    this.chanNavBarService.setNavData(channel);
 
     let viewingChannelString = '';
     if (level != null) {
       if (level === 'hallwide' || level === 'RA') {  // Reconstruct the channel ID
-        viewingChannelString = `${level}-${channel}`;
+        viewingChannelString = `${level}-${channel.channel}`;
       } else {
-        viewingChannelString = `floors-${level}-${channel}`;
+        viewingChannelString = `floors-${level}-${channel.channel}`;
       }
     } else {
       console.log('Show category accouncements??? What are we showing here?');  // TODO @Kai
       viewingChannelString = null;
     }
     this.channelToView.emit(viewingChannelString);
+  }
+
+  ngOnDestroy() {
+    this.sessionUpdateSub.unsubscribe();
+    this.userUpdateSub.unsubscribe();
   }
 
 }

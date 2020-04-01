@@ -24,6 +24,7 @@ import {
   MatSnackBarModule,
   MatBadgeModule,
   MatTooltipModule,
+  MatDividerModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -47,7 +48,6 @@ import { SignInFormComponent } from './sign-in/sign-in-form/sign-in-form.compone
 import { InfoBlockComponent } from './sign-in/info-block/info-block.component';
 
 // Index Component (will likely change)
-import { WelcomeComponent } from './welcome/welcome.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 // Dashboard Components
@@ -105,13 +105,13 @@ import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-n
 import { MessageComponent } from './home/interface/messages/message/message.component';
 import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
+import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignUpComponent,
     SignUpHdComponent,
-    WelcomeComponent,
     SignInComponent,
     PageNotFoundComponent,
     EditProfileComponent,
@@ -155,7 +155,8 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
     RequestChannelComponent,
     RequestChannelFormComponent,
     RaChannelRequestsComponent,
-    LeaveChannelDialog
+    LeaveChannelDialog,
+    BotMessageComponent,
   ],
   imports: [
     BrowserModule,
@@ -189,6 +190,7 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
     MatSelectModule,
     MatBadgeModule,
     MatTooltipModule,
+    MatDividerModule,
   ],
   entryComponents: [
     JoinChannelComponent,

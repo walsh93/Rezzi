@@ -10,7 +10,7 @@ import { Subscription, Observable } from 'rxjs';
   styleUrls: ['./new-message.component.css']
 })
 export class NewMessageComponent implements OnInit {
-  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0);
+  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0,"");
   enteredMessage = '';
 
   // Session data
@@ -61,7 +61,7 @@ export class NewMessageComponent implements OnInit {
       return;
     }
     console.log(this.session);
-    const message: Message = {
+    let message: Message = {
       content: form.value.enteredMessage,
       owner: this.user,
       time: new Date(),
@@ -74,6 +74,7 @@ export class NewMessageComponent implements OnInit {
         sentiment_dissatisfied: [],
         whatshot: [],
       },
+      image: null,
     };
 
     const scmd: SocketChannelMessageData = {

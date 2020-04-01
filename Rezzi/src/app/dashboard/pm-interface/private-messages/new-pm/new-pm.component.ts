@@ -71,6 +71,7 @@ export class NewPmComponent implements OnInit {
         sentiment_dissatisfied: [],
         whatshot: [],
       },
+      image: null,
     };
 
     const scmd: SocketPrivateMessageData = {

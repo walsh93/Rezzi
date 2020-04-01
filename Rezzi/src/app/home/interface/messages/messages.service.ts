@@ -1,4 +1,4 @@
-import { Message, SocketMessageData } from '../../../classes.model';
+import { Message, SocketMessageData, BotMessage, SocketChannelMessageData } from '../../../classes.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -66,16 +66,42 @@ export class MessagesService {
     });
   }
 
-
   /*********************************************************************************************************************************
-   * Message sending
+   * Message sending and Message Bot
    ********************************************************************************************************************************/
-  addMessage(message: Message) {
-    this.http.post<{notification: string}>('http://localhost:4100/api/messages', message).subscribe(responseData => {
-      console.log(responseData.notification);
-      this.messages.push(message);
-      this.messagesUpdated.next([...this.messages]);
-    });
+  // addMessage(message: Message) {
+  //   this.http.post<{notification: string}>('http://localhost:4100/api/messages', message).subscribe(responseData => {
+  //     console.log(responseData.notification);
+  //     this.messages.push(message);
+  //     this.messagesUpdated.next([...this.messages]);
+  //   });
+  // }
+
+  addBotMessage(type: BotMessage, userName: string, rezzi: string, channelID: string) {
+    let messageContent: string = null;
+    if (type === BotMessage.UserHasJoinedChannel) {
+      messageContent = `${userName} has joined the channel`;
+    } else if (type === BotMessage.UserHasLeftChannel) {
+      messageContent = `${userName} has left the channel`;
+    } else {
+      alert('Our message Bot got an unexpected request. Please try again later.');
+      return;
+    }
+
+    const message: Message = {
+      id: 'BOT_MSG',
+      owner: null,
+      content: messageContent,
+      time: new Date(),
+      visible: true,
+      reactions: null,
+      image: null,
+    };
+    const scmd: SocketChannelMessageData = {
+      message, rezzi, channelID,
+    };
+
+    this.sendMessageThroughSocket(scmd);
   }
 
   /*********************************************************************************************************************************
@@ -101,9 +127,9 @@ export class MessagesService {
   updateMessageThroughSocket(data: SocketMessageData) {
     this.socket.emit('update-message', data);
   }
-  
+
   sendPrivateMessageThroughSocket(data: SocketMessageData) {
-    console.log("messages.service.ts sPMTS", data);
+    console.log('messages.service.ts sPMTS', data);
     this.socket.emit('new-private-message', data);
   }
 

@@ -16,6 +16,14 @@ admin.initializeApp({
   databaseURL: "https://rezzi-33137.firebaseio.com"
 });
 const FieldValue = require('firebase-admin').firestore.FieldValue;
+//storage stuff
+const { Storage } = require('@google-cloud/storage');
+const storageConfig = {
+  projectId: "rezzi-33137",
+  keyFilename: "rezzi-33137-firebase-adminsdk-qc1jn-c573685b72.json",
+};
+const storage = new Storage(storageConfig);
+// Get a non-default Storage bucket
 
 console.log('Database client seems to be working');
 
@@ -88,7 +96,6 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data, em
   })
 }
 module.exports.updateHDArray = function updateHDArray(data,email, user) {
-  console.log("qwwqdwqdw " + email + " " + user)
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {
       //Do something about the error here

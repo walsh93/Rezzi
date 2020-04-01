@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { RezziService } from '../../rezzi.service';
 
 @Component({
   selector: 'app-sign-out-button',  // This is the name of this component's HTML tag
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignOutButtonComponent implements OnInit {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private rezziService: RezziService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -22,6 +23,7 @@ export class SignOutButtonComponent implements OnInit {
    * Sometimes there is a parsing error in the browser, so a successful login is still "caught"
    */
   signOut() {
+    this.rezziService.signingOut();
     this.http.get('/sign-out').toPromise().then((response) => {
       this.router.navigate(['/sign-in']);
     }).catch((error) => {
