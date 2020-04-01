@@ -95,6 +95,7 @@ export class MessagesService {
       time: new Date(),
       visible: true,
       reactions: null,
+      reported: false,
       image: null,
     };
     const scmd: SocketChannelMessageData = {

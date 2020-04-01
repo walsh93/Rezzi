@@ -74,8 +74,11 @@ export class NewMessageComponent implements OnInit {
         sentiment_dissatisfied: [],
         whatshot: [],
       },
+      reported: false,
       image: null,
     };
+
+      console.log("HERE " + message.reported);
 
     const scmd: SocketChannelMessageData = {
       message,

@@ -49,7 +49,7 @@ module.exports.newMessage = function newMessage(socket, data) {
 module.exports.updateMessage = function updateMessage(socket, data) {
   let collectionpath = "";
   let docpath = "";
-  console.log("Data: ", data);
+  // console.log("Data: ", data);
   if (data.hasOwnProperty("sender")) {
     const paths = createUserPath(data.sender, data.recipient);
     if (paths == null) {
@@ -73,6 +73,7 @@ module.exports.updateMessage = function updateMessage(socket, data) {
     let messages = doc.data().messages;
     let id = parseInt(data.message.id.substring(data.message.id.lastIndexOf('-') + 1));
     let reactions = data.message.reactions;
+    let reported = data.message.reported;
     // can add more update possibilites
 
     if (!messages[id] || messages[id] == null || messages[id] == undefined) {
@@ -80,6 +81,7 @@ module.exports.updateMessage = function updateMessage(socket, data) {
     }
 
     messages[id].reactions = reactions;
+    messages[id].reported = reported;
 
     db.collection(collectionpath).doc(docpath).update({
       messages: messages
@@ -96,6 +98,7 @@ module.exports.updateMessage = function updateMessage(socket, data) {
       let messages = doc.data().messages;
       let id = parseInt(data.message.id.substring(data.message.id.lastIndexOf('-') + 1));
       let reactions = data.message.reactions;
+      let reported = data.message.reported;
       // can add more update possibilites
 
       if (!messages[id] || messages[id] == null || messages[id] == undefined) {
@@ -103,6 +106,8 @@ module.exports.updateMessage = function updateMessage(socket, data) {
       }
 
       messages[id].reactions = reactions;
+      messages[id].reported = reported;
+
 
       db.collection(collectionpath2).doc(docpath2).update({
         messages: messages
