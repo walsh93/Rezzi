@@ -53,17 +53,17 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
               public dialog: MatDialog) {}
 
   checkPermissions() {
-    if (this.navTitle !== 'Rezzi') {    // Channel not selected
+    if (this.navTitle !== 'Rezzi') {                              // Channel not selected
       this.channelMenuDisabled = false;
     }
-    if (this.navTitle !== 'General' && this.accountType === 2) {  // Cannot leave General channel
+    if (this.navTitle !== 'General') {                            // Cannot leave General channel
       this.leaveButtonDisabled = false;
     } else {
       this.leaveButtonDisabled = true;
     }
-    if (this.accountType === 1 && this.navTitle !== 'General') {    // Must be RA to delete any non-general channel
+    if (this.accountType === 1 && this.navTitle !== 'General') {  // Must be RA to delete any non-general channel
       this.deleteButtonDisabled = false;
-    } else if (this.accountType === 0) {                            // Must be HD to delete any channel
+    } else if (this.accountType === 0) {                          // Must be HD to delete any channel
       this.deleteButtonDisabled = false;
     } else {
       this.deleteButtonDisabled = true;
@@ -113,9 +113,24 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('attempting to open dialog for ' + this.navTitle);
+    const leaveDialogRef = this.dialog.open(LeaveChannelDialog, {
+      width: '450px',
+      height: '200px',
+      data: {
+        channel: this.navChannel,
+        rezzi: this.session.rezzi,
+        userName: this.userName,
+      }
+    });
+  }
 
-    const dialogRef = this.dialog.open(LeaveChannelDialog, {
+  openDeleteDialog(): void {
+    if (this.navTitle === 'Rezzi') {
+      console.error('No channel selected');
+      return;
+    }
+
+    const deleteDialogRef = this.dialog.open(DeleteChannelDialog, {
       width: '450px',
       height: '200px',
       data: {
@@ -134,19 +149,20 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 })
 // tslint:disable-next-line: component-class-suffix
 export class LeaveChannelDialog {
-
   rezzi: string;
   userName: string;
 
-  constructor(public dialogRef: MatDialogRef<LeaveChannelDialog>, @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private http: HttpClient, private messagesService: MessagesService) {
+  constructor(public leaveDialogRef: MatDialogRef<LeaveChannelDialog>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private http: HttpClient,
+              private messagesService: MessagesService) {
       this.rezzi = data.rezzi;
       this.userName = data.userName;
     }
 
   onCancelClick(): void {
     console.log('user cancelled leaving');
-    this.dialogRef.close();
+    this.leaveDialogRef.close();
   }
 
   onConfirmClick(channel: ChannelData): void {
@@ -158,6 +174,40 @@ export class LeaveChannelDialog {
 
     // Send Bot Message
     this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
+  }
+
+}
+
+@Component({
+  selector: 'app-delete-channel-dialog',
+  templateUrl: 'delete-channel-dialog.html',
+})
+// tslint:disable-next-line: component-class-suffix
+export class DeleteChannelDialog {
+  rezzi: string;
+  userName: string;
+
+  constructor(public dialogRef: MatDialogRef<DeleteChannelDialog>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private http: HttpClient,
+              private messagesService: MessagesService) {
+      this.rezzi = data.rezzi;
+      this.userName = data.userName;
+    }
+
+  onCancelClick(): void {
+    this.dialogRef.close();
+  }
+
+  onConfirmClick(channel: ChannelData): void {
+    console.log('user wants to delete ' + channel.channel);
+    console.log('deleting channel id ' + channel.id);
+    /*this.http.post<{notification: string}>('/delete-channel', {channel_id: channel.id}).subscribe(responseData => {
+      console.log(responseData.notification);
+    });*/
+
+    // Send Bot Message
+    //this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
   }
 
 }

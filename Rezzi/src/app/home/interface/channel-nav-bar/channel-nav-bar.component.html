@@ -7,7 +7,7 @@
 
     <mat-menu #channelMenu="matMenu" xPosition="before">
       <button mat-menu-item [disabled]="leaveButtonDisabled" (click)="openLeaveDialog()">Leave Channel</button>
-      <button mat-menu-item [disabled]="deleteButtonDisabled">Delete Channel</button>
+      <button mat-menu-item [disabled]="deleteButtonDisabled" (click)="openDeleteDialog()">Delete Channel</button>
     </mat-menu>
   </div>
 </mat-toolbar>

@@ -60,6 +60,7 @@ module.exports = {
     },
     join_channel: "/join-channel",
     leave_channel: "/leave-channel",
+    delete_channel: "/delete-channel",
     get_channels: "/get-channels",
     pword_reset_request: "/pword-reset-request",
     pword_reset_sent: "/pword-reset-sent",
