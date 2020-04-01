@@ -4,9 +4,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ChannelData } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 export interface DialogData {
-  channel: string;
+  channel: ChannelData;
 }
 @Component({
   selector: 'app-channel-nav-bar',
@@ -15,10 +16,10 @@ export interface DialogData {
 })
 
 export class ChannelNavBarComponent implements OnInit {
-
   user: string;
   accountType: number;
   channels: ChannelData[];
+  navChannel: ChannelData;
   @HostBinding('class.nav-title')
   navTitle = 'Rezzi';
 
@@ -36,20 +37,21 @@ export class ChannelNavBarComponent implements OnInit {
     if (this.navTitle !== 'Rezzi') {    // Channel not selected
       this.channelMenuDisabled = false;
     }
-    if (this.navTitle !== 'General') {  // Cannot leave General channel
+    if (this.navTitle !== 'General' && this.accountType === 2) {  // Cannot leave General channel
       this.leaveButtonDisabled = false;
+    } else {
+      this.leaveButtonDisabled = true;
     }
-    if (this.accountType < 2) {         // Must be RA or HD to delete
+    if (this.accountType === 1 && this.navTitle !== 'General') {    // Must be RA to delete any non-general channel
       this.deleteButtonDisabled = false;
+    } else if (this.accountType === 0) {                            // Must be HD to delete any channel
+      this.deleteButtonDisabled = false;
+    } else {
+      this.deleteButtonDisabled = true;
     }
   }
 
   ngOnInit() {
-    this.channelNavBarService.setTitle.subscribe(navTitle => {
-      this.navTitle = navTitle;
-      this.checkPermissions();
-    });
-
     this.rezziService.getSession().then((response) => {
       if (response.email == null) {
         this.router.navigate(['/sign-in']);
@@ -57,6 +59,12 @@ export class ChannelNavBarComponent implements OnInit {
         this.user = response.email;
         this.accountType = response.accountType;
       }
+    });
+
+    this.channelNavBarService.setChannel.subscribe(channelData => {
+      this.navChannel = channelData;
+      this.navTitle = this.navChannel.channel;
+      this.checkPermissions();
     });
   }
 
@@ -70,14 +78,9 @@ export class ChannelNavBarComponent implements OnInit {
 
     const dialogRef = this.dialog.open(LeaveChannelDialog, {
       width: '450px',
-      data: {channel: this.navTitle}
+      height: '200px',
+      data: {channel: this.navChannel}
     });
-
-  }
-
-  leaveChannel() {
-    console.log('user wants to leave ' + this.navTitle);
-    // TODO also figure out how to pass in channel.id, follow join-channel.component.ts for help
   }
 
 }
@@ -91,15 +94,21 @@ export class LeaveChannelDialog {
 
   constructor(
     public dialogRef: MatDialogRef<LeaveChannelDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private http: HttpClient) {}
 
   onCancelClick(): void {
     console.log('user cancelled leaving');
     this.dialogRef.close();
   }
 
-  onConfirmClick(channel: string): void {
-    console.log('user wants to leave ' + channel);
+  onConfirmClick(channel: ChannelData): void {
+    console.log('user wants to leave ' + channel.channel);
+    console.log('leaving channel id ' + channel.id);
+    this.http.post<{notification: string}>('/leave-channel', {channel_id: channel.id})
+    .subscribe(responseData => {
+      console.log(responseData.notification);
+    });
   }
 
 }

@@ -1,4 +1,4 @@
-<ng-container >
+<ng-container class="offset" >
     <ng-container *ngFor="let user of private_message_users"> <!-- Looping the chats that already exist -->
       <mat-card>
         <mat-card-content (click)='viewUser(user.recipient)' routerLink='/dashboard'> <!-- TODO add routerLink or click to view channel's chat -->

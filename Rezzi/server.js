@@ -64,6 +64,10 @@ const updateHDArray = require('./server/service/updateHDArray')
 app.use(service.update_hd, updateHDArray)
 const channelMessages = require('./server/service/channelMessages')
 app.use(service.channel_messages, channelMessages)
+const getRAs = require('./server/service/getRAs')
+app.use(service.getRAs, getRAs)
+const getResidents = require('./server/service/getResidents')
+app.use(service.getResidents, getResidents)
 const privateMessages = require('./server/service/privateMessages')
 app.use(service.private_messages, privateMessages)
 const raFromFloor = require('./server/service/getRaFromFloor')
@@ -106,6 +110,8 @@ const getchannels = require('./server/routes/get-channels')
 app.use(url.get_channels, getchannels)
 const joinchannel = require('./server/routes/join-channel')
 app.use(url.join_channel, joinchannel)
+const leavechannel = require('./server/routes/leave-channel')
+app.use(url.leave_channel, leavechannel)
 const createrezzi = require('./server/routes/create-rezzi')
 app.use(url.create_rezzi, createrezzi)
 const dashboard = require('./server/routes/dashboard')
@@ -228,11 +234,18 @@ io.on(skt.connection, (socket) => {
     socketEvents.newMessage(socket, data)
   });
 
-  // When the user begins viewing a different channel
+  /**
+   * When the user begins viewing a different channel
+   * Need to pass `io` to addListenerForChannelMessages() instead of `socket`
+   * There is one IO listener in the server, but many different sockets can connect to it (new socket connections
+   * made on reroute, reload, refresh, etc.)
+   * If `socket` is passed (and this that `socket` calls emit), if a new connection is made, this old socket can't
+   * reach the new connection, so the frontend will not respond even though the backend is emitting data
+   */
   socket.on(skt.new_channel_view, (dbpath) => {
     serverCurrentChannel = `${dbpath.channelPath}/${dbpath.channelName}`
     if (!serverChannelListeners.has(serverCurrentChannel)) {
-      const observer = dbListeners.addListenerForChannelMessages(socket, dbpath)
+      const observer = dbListeners.addListenerForChannelMessages(io, dbpath)
       serverChannelListeners.set(serverCurrentChannel, observer)
     }
   });
@@ -242,11 +255,19 @@ io.on(skt.connection, (socket) => {
     socketEvents.updateMessage(socket, data)
   });
 
+  /**
+   * When the user begins viewing a different private message channel
+   * Need to pass `io` to addListenerForChannelMessages() instead of `socket`
+   * There is one IO listener in the server, but many different sockets can connect to it (new socket connections
+   * made on reroute, reload, refresh, etc.)
+   * If `socket` is passed (and this that `socket` calls emit), if a new connection is made, this old socket can't
+   * reach the new connection, so the frontend will not respond even though the backend is emitting data
+   */
   socket.on(skt.new_private_view, (dbpath) => {
     serverCurrentPrivate = `${dbpath.userPath}/${dbpath.receiverID}`
     console.log("server.js",serverCurrentPrivate, dbpath)
     if (!serverPrivateListeners.has(serverCurrentPrivate)) {
-      const observer = dbListeners.addListenerForPrivateMessages(socket, dbpath)
+      const observer = dbListeners.addListenerForPrivateMessages(io, dbpath)
       serverPrivateListeners.set(serverCurrentPrivate, observer)
     }
   });

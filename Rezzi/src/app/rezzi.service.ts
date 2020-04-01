@@ -11,6 +11,7 @@ export class RezziService {
   private getUser = '/get-user';
 
   // Async data
+  signInSubject = new Subject<boolean>();
   chanReqIdSubj = new Subject<string[]>();
   channelRequestNames = new Map<string, number>();
   chanReqNameSubj = new Subject<Map<string, number>>();
@@ -21,6 +22,18 @@ export class RezziService {
   /*********************************************************************************************************************************
    * Events and listeners
    ********************************************************************************************************************************/
+  getSignInStatusListener() {
+    return this.signInSubject.asObservable();
+  }
+
+  signingIn() {
+    this.signInSubject.next(true);
+  }
+
+  signingOut() {
+    this.signInSubject.next(false);
+  }
+
   getChannelRequestListeners() {
     return {
       chanReqIdSubj: this.chanReqIdSubj.asObservable(),
@@ -32,12 +45,9 @@ export class RezziService {
    * Backend calls
    ********************************************************************************************************************************/
   getSession(): Promise<any> {
-    return this.http
-      .get(this.getSessionUrl)
-      .toPromise()
-      .then(response => {
-        return response;
-      }); // No error codes in getSession.js, so no need for a catch statement
+    return this.http.get(this.getSessionUrl).toPromise().then(response => {
+      return response;
+    }); // No error codes in getSession.js, so no need for a catch statement
   }
 
   getUserProfile(): Promise<any> {
@@ -47,41 +57,32 @@ export class RezziService {
       console.log(error);
     });
   }
-  findUserByEmail(hd: string, user: string): Promise<any> {
-    console.log("EWRWGED " + hd);
-    return this.http.get(`/update-hd?hd=${hd}&user=${user}`)
-    .toPromise()
 
-      .then(response => {
-        return response;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  findUserByEmail(hd: string, user: string): Promise<any> {
+    console.log('EWRWGED ' + hd);
+    return this.http.get(`/update-hd?hd=${hd}&user=${user}`).toPromise().then(response => {
+      return response;
+    }).catch(error => {
+      console.log(error);
+    });
   }
+
   getHDEmail(): Promise<any> {
-    return this.http
-      .get("/get-hd")
-      .toPromise()
-      .then(response => {
-        return response;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    return this.http.get('/get-hd').toPromise().then(response => {
+      return response;
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   getFloors(): Promise<any> {
-    return this.http
-      .get("/get-floors")
-      .toPromise()
-      .then(floors => {
-        return floors;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    return this.http.get('/get-floors').toPromise().then(floors => {
+      return floors;
+    }).catch(error => {
+      console.log(error);
+    });
   }
+
   getRaFromFloor(rezzi: string, floor: string): Promise<any> {
     return this.http.get(`/get-ra-from-floor?rezzi=${rezzi}&floor=${floor}`).toPromise().then((ra) => {
       return ra;
@@ -101,6 +102,22 @@ export class RezziService {
   getChannelData(cp: string, cn: string, i: number): Promise<any> {
     return this.http.get(`/get-channel-data?channelPath=${cp}&channelName=${cn}&index=${i}`).toPromise().then((data) => {
       return data;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  getRAs(): Promise<any> {
+    return this.http.get('/getRAs').toPromise().then((RAList) => {
+      return RAList;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  getResidents(): Promise<any> {
+    return this.http.get('/getResidents').toPromise().then((residentList) => {
+      return residentList;
     }).catch((error) => {
       console.log(error);
     });
