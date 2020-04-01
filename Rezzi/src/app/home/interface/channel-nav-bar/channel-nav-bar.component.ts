@@ -1,6 +1,8 @@
 import { Component, OnInit, HostBinding, Inject, Input, OnDestroy } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { RezziService } from 'src/app/rezzi.service';
+import { Router } from '@angular/router';
 import { ChannelData, AbbreviatedUser, BotMessage } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, Observable } from 'rxjs';
@@ -19,11 +21,17 @@ export interface DialogData {
 })
 
 export class ChannelNavBarComponent implements OnInit, OnDestroy {
+  user: string;
+  accountType: number;
+  channels: ChannelData[];
   navChannel: ChannelData;
   @HostBinding('class.nav-title')
   navTitle = 'Rezzi';
+
+  // All buttons are disabled until permissions are checked on init
   channelMenuDisabled = true;
   leaveButtonDisabled = true;
+  deleteButtonDisabled = true;
 
   private userName: string;
 
@@ -39,20 +47,43 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
-  constructor(private channelNavBarService: ChannelNavBarService, public dialog: MatDialog) {}
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private channelNavBarService: ChannelNavBarService,
+              public dialog: MatDialog) {}
+
+  checkPermissions() {
+    if (this.navTitle !== 'Rezzi') {    // Channel not selected
+      this.channelMenuDisabled = false;
+    }
+    if (this.navTitle !== 'General' && this.accountType === 2) {  // Cannot leave General channel
+      this.leaveButtonDisabled = false;
+    } else {
+      this.leaveButtonDisabled = true;
+    }
+    if (this.accountType === 1 && this.navTitle !== 'General') {    // Must be RA to delete any non-general channel
+      this.deleteButtonDisabled = false;
+    } else if (this.accountType === 0) {                            // Must be HD to delete any channel
+      this.deleteButtonDisabled = false;
+    } else {
+      this.deleteButtonDisabled = true;
+    }
+  }
 
   ngOnInit() {
+    this.rezziService.getSession().then((response) => {
+      if (response.email == null) {
+        this.router.navigate(['/sign-in']);
+      } else {
+        this.user = response.email;
+        this.accountType = response.accountType;
+      }
+    });
+
     this.channelNavBarService.setChannel.subscribe(channelData => {
       this.navChannel = channelData;
       this.navTitle = this.navChannel.channel;
-      if (this.navTitle !== 'Rezzi') {
-        this.channelMenuDisabled = false;
-      }
-      if (this.navTitle !== 'General') {
-        this.leaveButtonDisabled = false;
-      } else {
-        this.leaveButtonDisabled = true;
-      }
+      this.checkPermissions();
     });
 
     // Listen for session updates
@@ -93,7 +124,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
         userName: this.userName,
       }
     });
-
   }
 
 }
