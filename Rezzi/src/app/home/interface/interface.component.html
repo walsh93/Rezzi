@@ -1,6 +1,8 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side" disableClose="true" opened="true">  <!-- Stuff in sidebar -->
     <app-side-panel
+      [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
+      [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
       (channelsToSend)="receivedChannels($event)"
       (channelToView)="viewingNewChannel($event)"
     ></app-side-panel>
