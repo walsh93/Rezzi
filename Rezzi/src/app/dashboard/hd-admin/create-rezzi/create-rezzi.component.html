@@ -1,7 +1,7 @@
 <form class="create-rezzi-form">
   <mat-form-field>
     <mat-label>Rezzi Name</mat-label>
-    <input matInput id="rezzi-name" value="">
+    <input matInput id="rezzi-name" ngModel pattern='^[^\-]+$' value="">
   </mat-form-field>
 </form>
 <mat-tab-group>

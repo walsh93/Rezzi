@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, Inject } from '@angular/core';
+import { Component, OnInit, HostBinding, Inject, Output, EventEmitter } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ChannelData } from 'src/app/classes.model';
@@ -16,6 +16,7 @@ export interface DialogData {
 export class ChannelNavBarComponent implements OnInit {
   navChannel: ChannelData;
   @HostBinding('class.nav-title')
+  @Output() public leaveChannelEvent = new EventEmitter();
   navTitle = 'Rezzi';
   channelMenuDisabled = true;
   leaveButtonDisabled = true;
@@ -50,6 +51,16 @@ export class ChannelNavBarComponent implements OnInit {
       height: '200px',
       data: {channel: this.navChannel}
     });
+
+        // dialogRef.componentInstance.leaveChannelEvent.subscribe((id: string) => {
+    //   this.channels.forEach(hall => {
+    //     hall.subchannels.forEach(channel => {
+    //       if (channel.id === id) {
+    //         channel.belongs = false;
+    //       }
+    //     });
+    //   });
+    // });
 
   }
 

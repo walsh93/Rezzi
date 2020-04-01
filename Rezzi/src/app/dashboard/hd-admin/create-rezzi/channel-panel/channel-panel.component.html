@@ -3,7 +3,7 @@
     <div *ngIf="channel.name !== 'General'">
       <mat-form-field class="left-side">
         <mat-label>Channel Name</mat-label>
-        <input matInput value="{{channel.name}}" (blur)="onNameChange($event.target.value)">
+        <input matInput value="{{channel.name}}" ngModel pattern='^[^\-]+$' (blur)="onNameChange($event.target.value)">
       </mat-form-field>
     </div>
     <div *ngIf="channel.name === 'General'">

@@ -1,4 +1,4 @@
-<mat-expansion-panel> 
+<mat-expansion-panel>
   <mat-expansion-panel-header>
     <mat-panel-title>
       {{floor.name}}
@@ -12,7 +12,7 @@
   </mat-expansion-panel-header>
   <mat-form-field>
     <mat-label>Floor Name</mat-label>
-    <input matInput value="{{floor.name}}" (blur)="onNameChange($event.target.value)">
+    <input matInput value="{{floor.name}}" ngModel pattern='^[^\-]+$' (blur)="onNameChange($event.target.value)">
   </mat-form-field>
   <app-channel-panel *ngFor="let channel of floor.channels"
     [channel]="channel"
