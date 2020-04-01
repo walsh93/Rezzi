@@ -52,6 +52,7 @@ module.exports = {
     invite_users: "/invite-users",
     user_management: "/user-management",
     hd_notifications: "/hd-notifications",
+    deleteUser: "/deleteUser",
     error: {
       page: "/err",
       not_raadmin: "/err/1/unauthorized",
