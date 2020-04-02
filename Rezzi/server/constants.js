@@ -9,6 +9,7 @@ module.exports = {
     get_floors: "/get-floors",
     get_user: "/get-user",
     get_hd: "/get-hd",
+    update_account_type: "/update-account-type",
     update_hd: "/update-hd",
     update_hd_rpt: "/update-hd-rpt",
     get_floor_ra: "/get-ra-from-floor",

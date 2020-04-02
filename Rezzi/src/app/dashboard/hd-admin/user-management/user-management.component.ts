@@ -17,33 +17,59 @@ export class UserManagementComponent implements OnInit {
   session: any;
   RAs: MatTableDataSource<any>;
   residents: MatTableDataSource<any>;
-  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified', 'lastEmailSent'];
+  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified', 'admin', 'lastEmailSent'];
 
-  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private http: HttpClient) { }
 
   ngOnInit() {
-     // Initialize class variables
-     this.errorMsg = '';
+    // Initialize class variables
+    this.errorMsg = '';
 
-     this.rezziService.getSession().then((session) => {
+    this.rezziService.getSession().then((session) => {
       this.session = session;
     });
 
+    this.refresh();
+  }
+
+  refresh(): void {
     this.rezziService.getResidents().then((residentList) => {
-      console.log("pulling the resident list");
+      console.log('pulling the resident list');
       console.log(`Resident list is ${residentList[1]}`);
       this.residents = new MatTableDataSource(residentList.residentInfo);
     });
-    
+
     this.rezziService.getRAs().then((RAList) => {
-      console.log("pulling the RA list");
+      console.log('pulling the RA list');
       console.log(`RA List IS ${RAList.RAInfo[1]}`);
-        this.RAs = new MatTableDataSource(RAList.RAInfo);
+      this.RAs = new MatTableDataSource(RAList.RAInfo);
     });
   }
 
-  resendEmail(email: string){
-    console.log("Resend email: " + email)
+  updateAccountType(email: string, accountType: number) {
+    console.log('email ' + email + 'accountType ' + accountType);
+    if (accountType === 1) {
+      console.log('Changing accountType from 1 to 0');
+      accountType = 0;
+    } else if (accountType === 0) {
+      console.log('Changing accountType from 0 to 1');
+      accountType = 1;
+    } else if (accountType === 2) {
+      console.log('Cannot change admin rights of HD');
+    }
+
+    this.http.get<{notification: string}>(`/update-account-type?user=${email}&accountType=${accountType}`)
+      .subscribe((data) => {
+        console.log('User update data', data);
+      });
+
+    this.refresh();
+  }
+
+  resendEmail(email: string) {
+    console.log('Resend email: ' + email);
 
     const body = {
       email: email,
