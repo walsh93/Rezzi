@@ -21,7 +21,7 @@ router.get('/', checkCookie, function (request, response) {
     } else if (snapshot.docs.length == 1) {
       const data = snapshot.docs[0].data()
       //console.log(data)
-      if (req.password.length < 20 || (pass.validPassword(req.password, data.password)) || (data.verified == false && data.password == req.password)) { //check to see if password is valid        //TODOCONLEY ^ REMOVE THAT OTHERWISE ANYONE CAN LOG INTO AN ACCOUNT
+      if (req.password.length < 20 || (pass.validPassword(req.password, data.password)) || ((data.verified == false || data.tempPword == true) && data.password == req.password)) { //check to see if password is valid        //TODOCONLEY ^ REMOVE THAT OTHERWISE ANYONE CAN LOG INTO AN ACCOUNT
         // TODOCONLEY ^ remove that for live environment
         // Set session cookie before sending the response
         // TODO add other fields that need to be saved in the session
