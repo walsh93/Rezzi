@@ -221,7 +221,7 @@ function processMessageContent(data) {
       console.log("Youtube links:", youtube_links);
       console.log("Normal links:", normal_links);
 
-      if (pic_links.length > 0) {  // only display the last image
+      if (pic_links.length > 0 && data.message.image === null) {  // only display the last image
         data.message.image = pic_links[pic_links.length - 1].href;
         if (data.message.content.replace(pic_links[0].value, "") === "") {
           data.message.content = null;

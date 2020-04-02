@@ -26,6 +26,7 @@ import {
   MatTooltipModule,
   MatDividerModule,
   MatProgressSpinnerModule,
+  MatChipsModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -192,6 +193,7 @@ import { BotMessageComponent } from './home/interface/messages/bot-message/bot-m
     MatTooltipModule,
     MatDividerModule,
     MatProgressSpinnerModule,
+    MatChipsModule,
   ],
   entryComponents: [
     JoinChannelComponent,

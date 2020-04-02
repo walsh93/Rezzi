@@ -30,7 +30,7 @@ export class ImageModalComponent implements OnInit {
         console.log(res.body["url"]);
         this.selectedFile.pending = false;
         this.selectedFile.status = 'ok';
-        this.imageRefEmitter.emit(res.body["url"]);
+        this.imageRefEmitter.emit({ display_name: file.name, src: res.body["url"] });
       },
       (err) => {
         this.selectedFile.pending = false;

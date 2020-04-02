@@ -169,10 +169,10 @@ exports.uploadImage = functions.https.onRequest((request, response) => {
       }
     });
 
-    const docId = "uploaded-images/" + UUID() + extension;
-
     // Trigger this section when busboy is done parsing the entire request
     busboy.on("finish", () => {
+      const docId = "uploaded-images/" + UUID() + extension;
+      console.log("docId: " + docId);
       const bucket = storage.bucket("rezzi-33137.appspot.com");
       const download_token = UUID();
       bucket.upload(uploadData.file, {

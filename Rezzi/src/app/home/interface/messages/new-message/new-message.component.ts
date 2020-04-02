@@ -14,7 +14,7 @@ import { Subscription, Observable } from 'rxjs';
 export class NewMessageComponent implements OnInit {
   tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0,"");
   enteredMessage = '';
-  image = '';
+  image = null;
 
   // Session data
   session: any;
@@ -78,10 +78,8 @@ export class NewMessageComponent implements OnInit {
         whatshot: [],
       },
       reported: false,
-      image: null,
+      image: (this.image !== null ? this.image.src : null),
     };
-
-      console.log("HERE " + message.reported);
 
     const scmd: SocketChannelMessageData = {
       message,
@@ -91,17 +89,18 @@ export class NewMessageComponent implements OnInit {
 
     // this.messagesService.addMessage(message);
     this.messagesService.sendMessageThroughSocket(scmd);
+    this.image = null;
     form.resetForm();
   }
 
   openImageDialog() {
     const dialogRef = this.dialog.open(ImageModalComponent, {
       width: '600px',
-      height: 'auto'
+      height: '400px'
     });
 
-    dialogRef.componentInstance.imageRefEmitter.subscribe((url: string) => {
-      this.image = url;
+    dialogRef.componentInstance.imageRefEmitter.subscribe((image) => {
+      this.image = image;
     });
   }
 

@@ -2,10 +2,11 @@
 <div class="bottombar">
   <mat-card color="primary" class="box">
     <div class="box">
-      <div *ngIf="image !== ''" class="image-preview">
-        <button mat-icon-button (click)="image = ''" class="x-out"><mat-icon>clear</mat-icon></button>
-        <img src="{{ image }}">
-      </div>
+      <mat-chip-list *ngIf="image !== null" #chipList>
+        <mat-chip [removable]="true" (removed)="image = null">
+          <mat-icon>image</mat-icon> {{ image.display_name }}<mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
 
       <form (submit)=onAddMessage(textForm) #textForm="ngForm" id="message-form" class="message-box">
         <mat-form-field class="input-style">
@@ -24,6 +25,6 @@
       <button class="add-button" mat-icon-button color="accent" (click)="openImageDialog()"><mat-icon>add_a_photo</mat-icon></button>
       <button class="send-button" mat-icon-button color="accent" type="submit" form="message-form"><mat-icon>send</mat-icon></button>
     </div>
-  </mat-card >
+  </mat-card>
 </div>
 <!-- this is the text box with the "Send" button component -->
