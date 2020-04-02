@@ -17,31 +17,30 @@ export class UserManagementComponent implements OnInit {
   session: any;
   RAs: MatTableDataSource<any>;
   residents: MatTableDataSource<any>;
-  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified'];
+  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified', 'admin'];
 
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
-     // Initialize class variables
-     this.errorMsg = '';
+    // Initialize class variables
+    this.errorMsg = '';
 
-     this.rezziService.getSession().then((session) => {
+    this.rezziService.getSession().then((session) => {
       this.session = session;
     });
 
     this.rezziService.getResidents().then((residentList) => {
-      console.log("pulling the resident list");
+      console.log('pulling the resident list');
       console.log(`Resident list is ${residentList[1]}`);
       this.residents = new MatTableDataSource(residentList.residentInfo);
     });
-    
+
     this.rezziService.getRAs().then((RAList) => {
-      console.log("pulling the RA list");
+      console.log('pulling the RA list');
       console.log(`RA List IS ${RAList.RAInfo[1]}`);
-        this.RAs = new MatTableDataSource(RAList.RAInfo);
+      this.RAs = new MatTableDataSource(RAList.RAInfo);
     });
 
-    
 
 
   }

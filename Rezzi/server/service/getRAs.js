@@ -46,7 +46,7 @@ router.get('/', checkCookie, function(request, response) {
 
                 if(data.lastName === undefined){
                     lastName = "NA";
-                } 
+                }
                 else {
                     lastName = data.lastName;
                 }
@@ -57,6 +57,7 @@ router.get('/', checkCookie, function(request, response) {
                     lastName: lastName,
                     verified: data.verified,
                     floor: data.floor,
+                    accountType: data.accountType,
                 }
                 console.log(info)
                 RAInfo.push(info)
