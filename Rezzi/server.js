@@ -106,6 +106,8 @@ const hdnotifications = require('./server/routes/hd-notifications')
 app.use(url.hd_notifications, hdnotifications)
 const deleteUser = require('./server/routes/deleteUser')
 app.use(url.deleteUser, deleteUser)
+const resendEmail = require('./server/routes/resend-email')
+app.use(url.resend_email, resendEmail)
 
 const pwordResetRequest = require('./server/routes/pwordResetRequest')
 app.use(url.pword_reset_request, pwordResetRequest)

@@ -40,10 +40,27 @@ export class UserManagementComponent implements OnInit {
       console.log(`RA List IS ${RAList.RAInfo[1]}`);
         this.RAs = new MatTableDataSource(RAList.RAInfo);
     });
+  }
 
-    
+  resendEmail(email: string){
+    console.log("Resend email: " + email)
 
+    const body = {
+      email: email,
+      rezzi: this.session.rezzi
+    };
 
+    this.http.post('/resend-email', body).toPromise().then((response) => {
+      location.reload();
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status === 200) {
+        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        location.reload();
+      } else {
+        alert(`There was an error while trying to resend an email to (${res.status}). Please try again later.`);
+      }
+    });
   }
 
 }
