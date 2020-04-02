@@ -9,6 +9,7 @@ export class HdAdminComponent implements OnInit {
   showCreateRezzi = false;
   showInviteUsers = false;
   showUserManagement = false;
+  showhdNotification = false;
   constructor() { }
 
   ngOnInit(): void {

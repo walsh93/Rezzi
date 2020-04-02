@@ -18,6 +18,7 @@ module.exports = {
     getRAs: "/getRAs",
     getResidents: "/getResidents",
     private_messages: "/private-messages",
+    get_deletion_requests: "/getDeletionRequests",
   },
 
   // Firebase constants
@@ -53,6 +54,8 @@ module.exports = {
     sign_out: "/sign-out",
     invite_users: "/invite-users",
     user_management: "/user-management",
+    hd_notifications: "/hd-notifications",
+    deleteUser: "/deleteUser",
     error: {
       page: "/err",
       not_raadmin: "/err/1/unauthorized",
