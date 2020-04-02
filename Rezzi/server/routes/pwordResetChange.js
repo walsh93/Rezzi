@@ -23,7 +23,7 @@ router.get('/', checkCookie, function(request, response) {
           oldpassword = password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
           password = pass.generateHash(password);
             db.collection('users').doc(email).update({
-                oldpassword: password,
+                oldpassword: oldpassword,
                 password: password,
                 tempPword: false,
             })
