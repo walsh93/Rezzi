@@ -1,41 +1,111 @@
-import { Component, OnInit, HostBinding, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ChannelData } from 'src/app/classes.model';
+import { RezziService } from 'src/app/rezzi.service';
+import { Router } from '@angular/router';
+import { ChannelData, AbbreviatedUser, BotMessage } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
+import { Subscription, Observable } from 'rxjs';
+import { MessagesService } from '../messages/messages.service';
 
 export interface DialogData {
   channel: ChannelData;
+  rezzi: string;
+  userName: string;
 }
+
 @Component({
   selector: 'app-channel-nav-bar',
   templateUrl: './channel-nav-bar.component.html',
   styleUrls: ['./channel-nav-bar.component.css']
 })
 
-export class ChannelNavBarComponent implements OnInit {
+export class ChannelNavBarComponent implements OnInit, OnDestroy {
+  user: string;
+  accountType: number;
+  channels: ChannelData[];
   navChannel: ChannelData;
   @HostBinding('class.nav-title')
   @Output() public leaveChannelEvent = new EventEmitter();
   navTitle = 'Rezzi';
+
+  // All buttons are disabled until permissions are checked on init
   channelMenuDisabled = true;
   leaveButtonDisabled = true;
+  deleteButtonDisabled = true;
 
-  constructor(private channelNavBarService: ChannelNavBarService, public dialog: MatDialog) {}
+  private userName: string;
+
+  // Session data retrieved from interface.component
+  session: any;
+  private sessionUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('sessionUpdateEvent') sessionObs: Observable<any>;
+
+  // Abbreviated User data
+  abbrevUser: AbbreviatedUser;
+  private userUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
+
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private channelNavBarService: ChannelNavBarService,
+              public dialog: MatDialog) {}
+
+  checkPermissions() {
+    if (this.navTitle !== 'Rezzi') {                              // Channel not selected
+      this.channelMenuDisabled = false;
+    }
+    if (this.navTitle !== 'General') {                            // Cannot leave General channel
+      this.leaveButtonDisabled = false;
+    } else {
+      this.leaveButtonDisabled = true;
+    }
+    if (this.accountType === 1 && this.navTitle !== 'General') {  // Must be RA to delete any non-general channel
+      this.deleteButtonDisabled = false;
+    } else if (this.accountType === 0) {                          // Must be HD to delete any channel
+      this.deleteButtonDisabled = false;
+    } else {
+      this.deleteButtonDisabled = true;
+    }
+  }
 
   ngOnInit() {
+    this.rezziService.getSession().then((response) => {
+      if (response.email == null) {
+        this.router.navigate(['/sign-in']);
+      } else {
+        this.user = response.email;
+        this.accountType = response.accountType;
+      }
+    });
+
     this.channelNavBarService.setChannel.subscribe(channelData => {
       this.navChannel = channelData;
       this.navTitle = this.navChannel.channel;
-      if (this.navTitle !== 'Rezzi') {
-        this.channelMenuDisabled = false;
-      }
-      if (this.navTitle !== 'General') {
-        this.leaveButtonDisabled = false;
+      this.checkPermissions();
+    });
+
+    // Listen for session updates
+    this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
+      this.session = updatedSession;
+    });
+
+    // Listen for user updates
+    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
+      this.abbrevUser = updatedUser;
+      if (this.abbrevUser.nickName == null || this.abbrevUser.nickName === undefined || this.abbrevUser.nickName.length === 0) {
+        this.userName = `${this.abbrevUser.firstName} ${this.abbrevUser.lastName}`;
       } else {
-        this.leaveButtonDisabled = true;
+        this.userName = this.abbrevUser.nickName;
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.sessionUpdateSub.unsubscribe();
+    this.userUpdateSub.unsubscribe();
   }
 
   openLeaveDialog(): void {
@@ -44,13 +114,22 @@ export class ChannelNavBarComponent implements OnInit {
       return;
     }
 
-    console.log('attempting to open dialog for ' + this.navTitle);
-
-    const dialogRef = this.dialog.open(LeaveChannelDialog, {
+    const leaveDialogRef = this.dialog.open(LeaveChannelDialog, {
       width: '450px',
       height: '200px',
-      data: {channel: this.navChannel}
+      data: {
+        channel: this.navChannel,
+        rezzi: this.session.rezzi,
+        userName: this.userName,
+      }
     });
+  }
+
+  openDeleteDialog(): void {
+    if (this.navTitle === 'Rezzi') {
+      console.error('No channel selected');
+      return;
+    }
 
         // dialogRef.componentInstance.leaveChannelEvent.subscribe((id: string) => {
     //   this.channels.forEach(hall => {
@@ -62,6 +141,15 @@ export class ChannelNavBarComponent implements OnInit {
     //   });
     // });
 
+    const deleteDialogRef = this.dialog.open(DeleteChannelDialog, {
+      width: '450px',
+      height: '200px',
+      data: {
+        channel: this.navChannel,
+        rezzi: this.session.rezzi,
+        userName: this.userName,
+      }
+    });
   }
 
 }
@@ -72,24 +160,70 @@ export class ChannelNavBarComponent implements OnInit {
 })
 // tslint:disable-next-line: component-class-suffix
 export class LeaveChannelDialog {
+  rezzi: string;
+  userName: string;
 
-  constructor(
-    public dialogRef: MatDialogRef<LeaveChannelDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private http: HttpClient) {}
+  constructor(public leaveDialogRef: MatDialogRef<LeaveChannelDialog>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private http: HttpClient,
+              private messagesService: MessagesService) {
+      this.rezzi = data.rezzi;
+      this.userName = data.userName;
+    }
 
   onCancelClick(): void {
     console.log('user cancelled leaving');
-    this.dialogRef.close();
+    this.leaveDialogRef.close();
   }
 
   onConfirmClick(channel: ChannelData): void {
     console.log('user wants to leave ' + channel.channel);
     console.log('leaving channel id ' + channel.id);
-    this.http.post<{notification: string}>('/leave-channel', {channel_id: channel.id})
-    .subscribe(responseData => {
+    this.http.post<{notification: string}>('/leave-channel', {channel_id: channel.id}).subscribe(responseData => {
       console.log(responseData.notification);
     });
+
+    this.leaveDialogRef.close();
+
+    // Send Bot Message
+    this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
+  }
+
+}
+
+@Component({
+  selector: 'app-delete-channel-dialog',
+  templateUrl: 'delete-channel-dialog.html',
+})
+// tslint:disable-next-line: component-class-suffix
+export class DeleteChannelDialog {
+  rezzi: string;
+  userName: string;
+
+  constructor(public deleteDialogRef: MatDialogRef<DeleteChannelDialog>,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private http: HttpClient,
+              private messagesService: MessagesService) {
+      this.rezzi = data.rezzi;
+      this.userName = data.userName;
+    }
+
+  onCancelClick(): void {
+    this.deleteDialogRef.close();
+  }
+
+  onConfirmClick(channel: ChannelData): void {
+    console.log('user wants to delete ' + channel.channel);
+    console.log('deleting channel id ' + channel.id);
+    const level = channel.id.split('-')[0];
+    this.http.post<{notification: string}>('/delete-channel', {channel, channel_level: level}).subscribe(responseData => {
+      console.log(responseData.notification);
+    });
+
+    this.deleteDialogRef.close();
+
+    // Send Bot Message
+    // this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
   }
 
 }

@@ -10,6 +10,7 @@ module.exports = {
     get_user: "/get-user",
     get_hd: "/get-hd",
     update_hd: "/update-hd",
+    update_hd_rpt: "/update-hd-rpt",
     get_floor_ra: "/get-ra-from-floor",
     get_channel_requests: "/get-channel-requests",
     get_channel_data: "/get-channel-data",
@@ -30,6 +31,7 @@ module.exports = {
     channels: 'channels',
     rezzis: 'residence-halls',
     private_messages: 'private-messages',
+    members: 'members'
   },
 
   // User types
@@ -60,6 +62,7 @@ module.exports = {
     },
     join_channel: "/join-channel",
     leave_channel: "/leave-channel",
+    delete_channel: "/delete-channel",
     get_channels: "/get-channels",
     pword_reset_request: "/pword-reset-request",
     pword_reset_sent: "/pword-reset-sent",
