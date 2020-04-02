@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { HDUser } from '../classes.model';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'app-sign-up-hd',
@@ -26,7 +27,8 @@ export class SignUpHdComponent implements OnInit {
       form.value.email,
       form.value.password,
       true,
-      []
+      [],
+      [],
     );
     console.log(newHDUser);
 

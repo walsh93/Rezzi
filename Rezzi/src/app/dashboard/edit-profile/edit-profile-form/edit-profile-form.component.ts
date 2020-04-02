@@ -118,7 +118,8 @@ export class EditProfileFormComponent implements OnInit {
         response.hd.email,
         response.hd.password,
         response.hd.verified,
-        response.hd.deletionRequests
+        response.hd.deletionRequests,
+        response.hd.reportedMessages,
       );
       if (this.theHD.deletionRequests === undefined) {
         this.theHD.deletionRequests = [];
