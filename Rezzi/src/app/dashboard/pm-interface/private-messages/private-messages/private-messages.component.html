@@ -1,11 +1,14 @@
-<p>private-messages works!</p>
-<div *ngFor="let message of messages">
-  <!--{{ message.owner.firstName }}: Temporary Comment-->
-  <app-message
-    [message]="message"
-    [viewingUser]="user"
-    [rezzi]="session.rezzi"
-    [pm]="true"
-    [pmUser]="currentPMUser"
-  ></app-message>
+<div id="privateUserMessages">
+  <div *ngFor="let message of messages">
+    <!--{{ message.owner.firstName }}: Temporary Comment-->
+    <div *ngIf="message.visible==true">
+      <app-message
+        [message]="message"
+        [viewingUser]="user"
+        [rezzi]="session.rezzi"
+        [pm]="true"
+        [pmUser]="currentPMUser"
+        [updateScrolling]="needToUpdateScroll"></app-message>
+    </div>
+  </div>
 </div>

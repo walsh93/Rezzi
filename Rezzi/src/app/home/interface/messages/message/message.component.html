@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <div mat-card-avatar class="avatar"></div>
-    <mat-card-title>{{ user.nickName }}</mat-card-title>
+    <mat-card-title>{{ displayName }}</mat-card-title>
     <span class="reactions">
       <ng-container *ngFor="let reaction of reactions | keyvalue">
         <button mat-icon-button (click)="sendReaction(reaction.key)">

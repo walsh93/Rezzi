@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MessagesService } from '../../messages.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 class ImageSnippet {
   pending: boolean = false;
   status: string = 'init';
-
-  constructor(public src: string, public file: File) {}
 }
 
 @Component({
@@ -14,32 +13,29 @@ class ImageSnippet {
   styleUrls: ['./image-modal.component.css']
 })
 export class ImageModalComponent implements OnInit {
-
   selectedFile: ImageSnippet;
+  @Output() public imageRefEmitter = new EventEmitter();
 
-  constructor(public messagesService: MessagesService) { }
+  constructor(public dialogRef: MatDialogRef<ImageModalComponent>, public messagesService: MessagesService) { }
 
   processFile(imageInput: any) {
   	const file: File = imageInput.files[0];
-  	const reader = new FileReader();
 
-    reader.addEventListener('load', (event: any) => {
-      this.selectedFile = new ImageSnippet(event.target.result, file);
+    this.selectedFile = new ImageSnippet();
 
-      this.selectedFile.pending = true;
-      this.messagesService.uploadImage(this.selectedFile.file).subscribe(
-        (res) => {
-          this.selectedFile.pending = false;
-          this.selectedFile.status = 'ok';
-        },
-        (err) => {
-          this.selectedFile.pending = false;
-          this.selectedFile.status = 'fail';
-          this.selectedFile.src = '';
-        })
-    });
-
-    reader.readAsDataURL(file);
+    this.selectedFile.pending = true;
+    this.messagesService.uploadImage(file).subscribe(
+      (res) => {
+        console.log(res);
+        console.log(res.body["url"]);
+        this.selectedFile.pending = false;
+        this.selectedFile.status = 'ok';
+        this.imageRefEmitter.emit(res.body["url"]);
+      },
+      (err) => {
+        this.selectedFile.pending = false;
+        this.selectedFile.status = 'fail';
+      });
   }
 
   ngOnInit() {

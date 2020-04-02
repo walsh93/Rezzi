@@ -91,10 +91,6 @@ export class SidePanelComponent implements OnInit {
         });
       });
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    // });
   }
 
   ngOnInit() {

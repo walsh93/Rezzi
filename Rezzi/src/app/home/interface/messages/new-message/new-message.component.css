@@ -1,19 +1,44 @@
-.example-full-width{
-  width: 90%;
+.message-box {
+  order: 1;
+  flex-grow: 5;
+  width: 100%;
 }
 
 .send-button{
   margin-left: 1%;
+  order: 3;
 }
 
 .bottombar{
   position: absolute;
   width: 100%;
   bottom: 2px;
-  height: 90px;
+  height: 100px;
 }
 
-/* Inherits from .bottombar */
-mat-card {
-  height: inherit;
+.add-button {
+  order: 2;
+  margin-left: 1%;
+}
+
+.image-preview {
+  height: 100%;
+  order: -1;
+}
+
+.input-style {
+  width: 100%;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  width: 99.5%;
+}
+
+.x-out {
+  position: relative;
+  z-index: 1;
+  right: 0px;
+  top: 30px;
 }

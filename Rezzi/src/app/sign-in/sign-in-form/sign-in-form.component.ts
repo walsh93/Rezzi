@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { RezziService } from '../../rezzi.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +13,7 @@ export class SignInFormComponent implements OnInit {
   // Class variables
   errorMsg: string;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private rezziService: RezziService, private router: Router) { }
 
   ngOnInit() {
     // Initialize class variables
@@ -38,6 +39,7 @@ export class SignInFormComponent implements OnInit {
      * NOTE: Anything returned from sign-in.js will be accessible in res.error
      */
     this.http.post('/sign-in', body).toPromise().then((response) => {
+      this.rezziService.signingIn();
       const res = response as any;
       if (res.tempPword === true) {
         this.router.navigate(['/pword-reset-change']);
@@ -49,6 +51,7 @@ export class SignInFormComponent implements OnInit {
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
+        this.rezziService.signingIn();
         const res2 = error as any;
         if (res2.error.verified === false) {
           this.router.navigate(['/sign-up']);

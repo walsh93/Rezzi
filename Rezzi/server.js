@@ -119,8 +119,6 @@ app.use(url.request_channel, requestchannel)
 const channelrequests = require('./server/routes/channel-requests')  // RA responding to request
 app.use(url.channel_requests, channelrequests)
 
-const uploadimage = require()
-
 const get_pm_users = require('./server/routes/get-pm-users')
 app.use(url.get_pm_users, get_pm_users)
 const get_non_pm_users = require('./server/routes/get-non-pm-users')

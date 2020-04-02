@@ -30,6 +30,7 @@ export class MessageComponent implements OnInit {
   private content: SafeHtml[];           // The content of the message (extracted from message)
   private time: Date;                  // When the message was sent (extracted from message)
   private image: string;               // Image from link in message, or webpage preview (extracted from message)
+  displayName: string;
 
   constructor(public messagesService: MessagesService, private sanitizer: DomSanitizer) { }
 
@@ -66,6 +67,12 @@ export class MessageComponent implements OnInit {
     // console.log(this.displayTime);
     // this.displayTime = String(dateAgain);
 
+    if (this.user.nickName == null || this.user.nickName === undefined || this.user.nickName.length === 0) {
+      this.displayName = `${this.user.firstName} ${this.user.lastName.charAt(0)}.`;
+    } else {
+      this.displayName = this.user.nickName;
+    }
+
     // Set initial color values for reactions
     for (const reaction in this.reactions) {
       if (this.reactions.hasOwnProperty(reaction)) {
@@ -85,7 +92,12 @@ export class MessageComponent implements OnInit {
     if (this.updateScrolling) {
       console.log('Need scrolling update...');
       const chanMsgs = document.getElementById('channelMessages');
-      chanMsgs.scrollTop = chanMsgs.scrollHeight;
+      if (chanMsgs != null) {
+        chanMsgs.scrollTop = chanMsgs.scrollHeight;
+      } else {
+        const pmMsgs = document.getElementById('privateUserMessages');
+        pmMsgs.scrollTop = pmMsgs.scrollHeight;
+      }
     }
   }
 

@@ -1,23 +1,29 @@
 <!-- <p>new-message works!</p> -->
 <div class="bottombar">
-  <mat-card color="primary">
-    <form (submit)=onAddMessage(textForm) #textForm="ngForm">
-      <mat-form-field class="example-full-width">
-        <input
-          matInput
-          placeholder="Enter your message..."
-          type="text"
-          name="enteredMessage"
-          pattern=".*[^ ].*"
-          ngModel
-          >
+  <mat-card color="primary" class="box">
+    <div class="box">
+      <div *ngIf="image !== ''" class="image-preview">
+        <button mat-icon-button (click)="image = ''" class="x-out"><mat-icon>clear</mat-icon></button>
+        <img src="{{ image }}">
+      </div>
+
+      <form (submit)=onAddMessage(textForm) #textForm="ngForm" id="message-form" class="message-box">
+        <mat-form-field class="input-style">
+          <input
+            matInput
+            placeholder="Enter your message..."
+            type="text"
+            name="enteredMessage"
+            pattern=".*[^ ].*"
+            ngModel
+            >
           <mat-error>Please enter a valid message</mat-error>
-      </mat-form-field>
-        <button class= "send-button" mat-raised-button color="accent">Send</button>
-    </form>
-    <button mat-raised-button color="accent" (click)="openImageDialog()">
-      +
-    </button>
+        </mat-form-field>
+      </form>
+
+      <button class="add-button" mat-icon-button color="accent" (click)="openImageDialog()"><mat-icon>add_a_photo</mat-icon></button>
+      <button class="send-button" mat-icon-button color="accent" type="submit" form="message-form"><mat-icon>send</mat-icon></button>
+    </div>
   </mat-card >
 </div>
 <!-- this is the text box with the "Send" button component -->

@@ -1,19 +1,17 @@
 <h2 mat-dialog-title>Upload Image</h2>
 <div mat-dialog-content>
   <input #imageInput type="file" accept="image/*">
-  <div *ngIf="selectedFile" class="img-preview-container">
-	  <div class="img-preview{{selectedFile.status === 'fail' ? '-error' : ''}}"
-	       [ngStyle]="{'background-image': 'url('+ selectedFile.src + ')'}">
-	  </div>
 
-	  <div *ngIf="selectedFile.pending" class="img-loading-overlay">
+  <div *ngIf="selectedFile">
+	  <div *ngIf="selectedFile.pending">
 	    <mat-spinner></mat-spinner>
 	  </div>
 
-    <button mat-flat-button color="primary" (click)="processFile(imageInput)">Upload</button>
-    <button mat-flat-button>Cancel</button>
-
-	  <div *ngIf="selectedFile.status === 'ok'" class="alert alert-success"> Image Uploaded Succesfuly!</div>
+	  <div *ngIf="selectedFile.status === 'ok'" class="alert alert-success"> Image Uploaded Successfully!</div>
 	  <div *ngIf="selectedFile.status === 'fail'" class="alert alert-danger"> Image Upload Failed!</div>
 	</div>
+</div>
+<div mat-dialog-actions>
+  <button mat-flat-button (click)="dialogRef.close()">Close</button>
+  <button mat-flat-button color="primary" (click)="processFile(imageInput)">Upload</button>
 </div>
