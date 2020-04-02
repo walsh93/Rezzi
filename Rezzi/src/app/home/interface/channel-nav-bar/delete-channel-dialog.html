@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Delete Channel</h1>
+<div mat-dialog-content>
+  <p>Are you sure you want to delete {{ data.channel.channel }}? This change will be permanent.</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color='warn' (click)='onConfirmClick(data.channel)'>Delete Channel</button>
+  <button mat-button (click)='onCancelClick()'>Cancel</button>
+</div>

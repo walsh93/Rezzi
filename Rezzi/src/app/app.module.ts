@@ -86,7 +86,7 @@ import { JoinChannelComponent } from './home/interface/side-panel/join-channel/j
 import { ChannelMessagesComponent } from './home/interface/messages/channel-messages/channel-messages.component';
 import { NewMessageComponent } from './home/interface/messages/new-message/new-message.component';
 
-import { ChannelNavBarComponent, LeaveChannelDialog } from './home/interface/channel-nav-bar/channel-nav-bar.component';
+import { ChannelNavBarComponent, LeaveChannelDialog, DeleteChannelDialog } from './home/interface/channel-nav-bar/channel-nav-bar.component';
 
 // Header Component
 import { HeaderComponent } from './header/header.component';
@@ -156,6 +156,7 @@ import { BotMessageComponent } from './home/interface/messages/bot-message/bot-m
     RequestChannelFormComponent,
     RaChannelRequestsComponent,
     LeaveChannelDialog,
+    DeleteChannelDialog,
     BotMessageComponent,
   ],
   imports: [
@@ -195,7 +196,8 @@ import { BotMessageComponent } from './home/interface/messages/bot-message/bot-m
   entryComponents: [
     JoinChannelComponent,
     CreatePmComponent,
-    LeaveChannelDialog
+    LeaveChannelDialog,
+    DeleteChannelDialog
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]
