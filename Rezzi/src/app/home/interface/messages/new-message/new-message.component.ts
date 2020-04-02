@@ -63,7 +63,6 @@ export class NewMessageComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    console.log(this.session);
     let message: Message = {
       content: form.value.enteredMessage,
       owner: this.user,

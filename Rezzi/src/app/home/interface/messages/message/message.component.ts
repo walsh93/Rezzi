@@ -59,6 +59,7 @@ export class MessageComponent implements OnInit {
   private pmReportId: string; //syntax: userWhoReportedMessage-messageID
   private ReportId: string;
   private currUserEmail: string;
+  private avatar: string // The avatar image, extracted from message
 
   constructor(
     public messagesService: MessagesService,
@@ -70,9 +71,9 @@ export class MessageComponent implements OnInit {
   ngOnInit() {
     // console.log(this.time);
     // console.log("Message: ", this.message);
-    // console.log(this.viewingUser);
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
+    this.avatar = this.message.owner.image_url;
     this.time = this.message.time;
     this.reported = this.message.reported;
     this.image = this.message.image;
