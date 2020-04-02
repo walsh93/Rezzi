@@ -25,54 +25,88 @@ router.get('/', checkCookie, function(request, response) {
       response.status(http.bad_request).send('Your Rezzi and/or floor is not set in our database. Please contact an administrator.')
     } else {
 
-
+      /* RA-level channel */
       if (level == keys.ra) {
         //get members
         console.log(keys.residence_halls + data.rezzi + keys.ra + channel.channel);
         db.collection(keys.residence_halls).doc(data.rezzi)
           .collection(keys.ra).doc(channel.channel).get().then(doc => {
-              console.log('Here you go, your majesty', doc.data());
               channelMembers = doc.data().members;
-              console.log('channel members:', doc.data().members, channelMembers)
-            }
-          ).then(channelMembers => {
-            // remove channel from requester's channel list
-            for (member in channelMembers) {
-              console.log('member', member)
-              console.log('keys.users', keys.users)
-              console.log('channel.id', channel.id)
-              console.log('channel.channel', channel.channel)
-              db.collection(keys.users).doc(member).update({
-                channels: admin.firestore.FieldValue.arrayRemove(channel.id)
-              });
-            }}
-          ).then(channelMembers => {
-            db.collection(keys.residence_halls).doc(data.rezzi)
-              .collection(keys.ra).doc(channel.channel).delete().then((write_result) => {
-                response.status(http.ok).send('Your RA channel has been successfully deleted.')
+
+              // remove channel from members' channel list
+              channelMembers.forEach(member => {
+                db.collection(keys.users).doc(member).update({
+                  channels: admin.firestore.FieldValue.arrayRemove(channel.id)
+                })
               })
-          }).catch((error) => {
+
+              // remove channel from residence hall's channel list
+              db.collection(keys.residence_halls).doc(data.rezzi)
+                .collection(keys.ra).doc(channel.channel).delete().then((write_result) => {
+                  response.status(http.ok).send('Your RA channel has been successfully deleted.')
+                })
+            }
+          ).catch((error) => {
             console.log(error)
             response.status(http.bad_request).send(errorMsg)
           })
-        // remove channel from residence-halls channel collection
-        // console.log('keys.residence_halls', keys.residence_halls)
-        // console.log('data.rezzi', data.rezzi)
-        // console.log('keys.ra', keys.ra)
-        // console.log('channel.channel', channel.channel)
 
-
-
+      /* Hallwide-level channel */
       } else if (level == keys.hallwide) {
-        // remove channel from residence-halls channel collection
-        // remove channel from user's channel list
-        // remove channel from owner's channel list
+        //get members
+        console.log(keys.residence_halls + data.rezzi + keys.hallwide + channel.channel);
+        db.collection(keys.residence_halls).doc(data.rezzi)
+          .collection(keys.hallwide).doc(channel.channel).get().then(doc => {
+              channelMembers = doc.data().members;
+
+              // remove channel from members' channel list
+              channelMembers.forEach(member => {
+                db.collection(keys.users).doc(member).update({
+                  channels: admin.firestore.FieldValue.arrayRemove(channel.id)
+                })
+              })
+
+              // remove channel from residence hall's channel list
+              db.collection(keys.residence_halls).doc(data.rezzi)
+                .collection(keys.hallwide).doc(channel.channel).delete().then((write_result) => {
+                  response.status(http.ok).send('Your hallwide channel has been successfully deleted.')
+                })
+            }
+          ).catch((error) => {
+            console.log(error)
+            response.status(http.bad_request).send(errorMsg)
+          })
+
+      /* Floor-level channel */
       } else {
-        const floor = channel.split('-')[1];
-        const channelName = channel.split('-')[2];
-        // remove channel from residence-halls channel collection
-        // remove channel from user's channel list
-        // remove channel from owner's channel list
+        const floor = String(channel.id).split('-')[1];
+        const channelName = channel.channel;
+        console.log('floor', floor)
+        console.log('channelName', channelName)
+        //get members
+        console.log(keys.residence_halls + data.rezzi + keys.hallwide + channel.channel);
+        db.collection(keys.residence_halls).doc(data.rezzi).collection(keys.floors)
+          .doc(floor).collection('channels').doc(channelName).get().then(doc => {
+              channelMembers = doc.data().members;
+
+              // remove channel from members' channel list
+              channelMembers.forEach(member => {
+                db.collection(keys.users).doc(member).update({
+                  channels: admin.firestore.FieldValue.arrayRemove(channel.id)
+                })
+              })
+
+              // remove channel from residence hall's channel list
+              db.collection(keys.residence_halls).doc(data.rezzi)
+                .collection(keys.floors).doc(floor).collection('channels')
+                .doc(channelName).delete().then((write_result) => {
+                  response.status(http.ok).send('Your hallwide channel has been successfully deleted.')
+                })
+            }
+          ).catch((error) => {
+            console.log(error)
+            response.status(http.bad_request).send(errorMsg)
+          })
       }
     }
 
