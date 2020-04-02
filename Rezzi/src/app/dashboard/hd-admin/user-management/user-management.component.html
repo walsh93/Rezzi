@@ -103,10 +103,19 @@
         <!-- TODO: Date last email sent column-->
         <ng-container matColumnDef="lastEmailSent">
           <th mat-header-cell *matHeaderCellDef> Last Verification Email Sent</th>
+<<<<<<< HEAD
+        
+          <td mat-cell *matCellDef="let resident" (click)="resendEmail(resident.email)"> 
+            <ng-container *ngIf="resident.verified == false">
+              <button mat-button >{{resident.lastEmailSent}} </button>
+            </ng-container>
+          </td>
+=======
 
           <td mat-cell *matCellDef="let resident" (click)="resendEmail(resident.email)">
             <button mat-button >{{resident.lastEmailSent}} </button></td>
 
+>>>>>>> db7cd9339803815d84d6a1b0faf51278d7f77538
       </ng-container>
         <!-- TODO: make column for buttons-->
 
