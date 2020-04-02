@@ -74,7 +74,7 @@ module.exports = {
     create_pm: "/create-pm",
     request_channel: "/request-channel",
     channel_requests: "/channel-requests",
-    setup_test: "/setup-test"
+    setup_test: "/setup-test",
   },
 
   http_status: {

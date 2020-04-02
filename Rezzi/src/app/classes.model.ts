@@ -166,3 +166,5 @@ export interface PrivateMessageData {
   recipient: string;
   messages: Message[];
 }
+
+export const IMAGE_BASE_URL = "https://us-central1-rezzi-33137.cloudfunctions.net";

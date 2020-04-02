@@ -1,4 +1,4 @@
-import { Message, SocketMessageData, BotMessage, SocketChannelMessageData } from '../../../classes.model';
+import { Message, SocketMessageData, BotMessage, SocketChannelMessageData, IMAGE_BASE_URL } from '../../../classes.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -103,6 +103,14 @@ export class MessagesService {
     };
 
     this.sendMessageThroughSocket(scmd);
+  }
+
+  public uploadImage(image: File) {
+    const formData = new FormData();
+
+    formData.append('image', image);
+
+    return this.http.post<{url: string}>(IMAGE_BASE_URL + '/uploadImage', formData, { observe: "response" });
   }
 
   /*********************************************************************************************************************************

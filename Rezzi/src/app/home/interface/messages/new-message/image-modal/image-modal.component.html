@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Upload Image</h2>
+<div mat-dialog-content>
+  <input #imageInput type="file" accept="image/*">
+
+  <div *ngIf="selectedFile">
+    <mat-spinner *ngIf="selectedFile.pending"></mat-spinner>
+
+	  <div *ngIf="selectedFile.status === 'ok'" class="alert alert-success"> Image Uploaded Successfully!</div>
+	  <div *ngIf="selectedFile.status === 'fail'" class="alert alert-danger"> Image Upload Failed!</div>
+	</div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-flat-button [mat-dialog-close]="true">Close</button>
+  <button mat-flat-button color="primary" (click)="processFile(imageInput)">Upload</button>
+</div>

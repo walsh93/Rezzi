@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
+import { ImageModalComponent } from './image-modal/image-modal.component';
 import { NgForm } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 
@@ -12,6 +14,7 @@ import { Subscription, Observable } from 'rxjs';
 export class NewMessageComponent implements OnInit {
   tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0,"");
   enteredMessage = '';
+  image = null;
 
   // Session data
   session: any;
@@ -33,7 +36,7 @@ export class NewMessageComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
 
-  constructor(public messagesService: MessagesService) { }
+  constructor(public messagesService: MessagesService, public dialog: MatDialog) { }
 
   ngOnInit() {
     // Listen for session updates
@@ -75,10 +78,8 @@ export class NewMessageComponent implements OnInit {
         whatshot: [],
       },
       reported: false,
-      image: null,
+      image: (this.image !== null ? this.image.src : null),
     };
-
-      console.log("HERE " + message.reported);
 
     const scmd: SocketChannelMessageData = {
       message,
@@ -88,7 +89,19 @@ export class NewMessageComponent implements OnInit {
 
     // this.messagesService.addMessage(message);
     this.messagesService.sendMessageThroughSocket(scmd);
+    this.image = null;
     form.resetForm();
+  }
+
+  openImageDialog() {
+    const dialogRef = this.dialog.open(ImageModalComponent, {
+      width: '600px',
+      height: '400px'
+    });
+
+    dialogRef.componentInstance.imageRefEmitter.subscribe((image) => {
+      this.image = image;
+    });
   }
 
   ngOnDestroy() {

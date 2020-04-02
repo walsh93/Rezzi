@@ -215,25 +215,31 @@ function processMessageContent(data) {
     if (links.length > 0) {
       // filter the links down
       let pic_links = links.filter(isUriImage);
-      let youtube_links = links.filter(link => link.href.includes("youtube") || link.href.includes("youtu.be"));
-      let normal_links = links.filter(link => !(isUriImage(link) || link.href.includes("youtube") || link.href.includes("youtu.be")));
+      let youtube_links = links.filter(link => getVideoId(link.href));
+      let normal_links = links.filter(link => !(isUriImage(link) || getVideoId(link.href)));
       console.log("Pic links:", pic_links);
       console.log("Youtube links:", youtube_links);
       console.log("Normal links:", normal_links);
 
-      if (pic_links.length > 0) {  // only display the last image
+      if (pic_links.length > 0 && data.message.image === null) {  // only display the last image
         data.message.image = pic_links[pic_links.length - 1].href;
         if (data.message.content.replace(pic_links[0].value, "") === "") {
           data.message.content = null;
         }
       }
 
-      if (youtube_links.length > 0) { // for now they override images
-        // TODO: the last youtube link might not be a video link and should be in normal
+      if (youtube_links.length > 0) {  // only use last youtube video
         let video_id = getVideoId(youtube_links[youtube_links.length - 1].href);
-        if (video_id !== false) {
-          data.message.image = "https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg";
-        }
+        // data.message.image = "https://img.youtube.com/vi/" + video_id + "/maxresdefault.jpg";
+        data.message.content = linkifyHtml('<p>' + escapeHtml(data.message.content) + '</p>') + "=====================" +
+          '<div style="position: relative; width=100%; height: 0; padding-bottom: 56.45%">' +
+          '<iframe ' +
+              'style="position: absolute; top: 0; bottom: 0; width: 100%; height: 100%;" ' +
+              'width="420" height="315" allowfullscreen frameborder="0" ' + 
+              'src="https://www.youtube.com/embed/' + video_id + '">' +
+          '</iframe></div>';
+        resolve(data);
+        return;
       }
 
       if (normal_links.length > 0) {
