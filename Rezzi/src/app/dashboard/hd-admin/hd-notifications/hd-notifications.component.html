@@ -9,8 +9,6 @@
               Account Deletion Requests
             </mat-panel-title>
           </mat-expansion-panel-header>
-
-          <p>Hi why isn't this working????</p>
           <mat-card *ngFor="let deletionRequest of deletionRequests" (click)='deleteUser(deletionRequest)'><!-- Looping the deletion requests-->
 
                 {{ deletionRequest }}

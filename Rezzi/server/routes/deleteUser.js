@@ -13,14 +13,13 @@ router.post('/', function(request, response) {
   email = rb.email
   rezzi = rb.rezzi
   hdemail = rb.hdemail
-  const docRef = db.collection(keys.users).doc(email)
-  const rezziRef = db.collection(keys.rezzis).doc(rezzi)
-  const hdDocRef = db.collection(keys.users).doc(hdemail)
-
-  const role = docRef.accountType
-  const floor = docRef.floor
-
   let promises = []
+  promises.push(db.collection(keys.users).doc(email).get().then((doc) => {
+    const data = doc.data()
+    const role = data.accountType
+  const floor = data.floor
+  console.log(floor)
+  console.log(email)
 
   //Delete from list of residents or RAs in hall and 
   if(role == 1){
@@ -46,7 +45,8 @@ router.post('/', function(request, response) {
 
   //loop through each channel in their channel list and remove them from the members list
   let channels = []
-  channels = docRef.channels
+  channels = data.channels
+  console.log(channels)
 
   for(var i = 0; i < channels.length; i++){
     if (channels[i].indexOf("floors") !== -1) {
@@ -65,10 +65,15 @@ router.post('/', function(request, response) {
       }
   }
 
-
-
   //remove them from the User class
-  promises.push(docRef.delete())
+  promises.push(doc.delete())
+
+}))
+  
+  const rezziRef = db.collection(keys.rezzis).doc(rezzi)
+  const hdDocRef = db.collection(keys.users).doc(hdemail)
+
+  
 
   //remove them from the list of users to be deleted in the HD user doc
   promises.push(hdDocRef.update({

@@ -46,7 +46,7 @@ export class HdNotificationsComponent implements OnInit {
       rezzi: this.session.rezzi
     }
 
-    this.http.post('/delete-user', body).toPromise().then((response) => {
+    this.http.post('/deleteUser', body).toPromise().then((response) => {
       location.reload();
     }).catch((error) => {
       const res = error as HttpErrorResponse;
@@ -54,7 +54,7 @@ export class HdNotificationsComponent implements OnInit {
         alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
         location.reload();
       } else {
-        alert('There was an error when sending deleting this user. Please try again later.');
+        alert("There was an error when sending deleting this user. Please try again later." + res.status);
       }
     });
 
