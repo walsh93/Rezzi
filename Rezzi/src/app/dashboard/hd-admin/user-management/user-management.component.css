@@ -5,3 +5,7 @@
   .mat-cell {
     padding: 20px 20px 20px 0;
   }
+
+.manage-users-table {
+    width: 98%;
+}

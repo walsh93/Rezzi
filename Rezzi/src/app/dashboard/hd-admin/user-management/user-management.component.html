@@ -3,7 +3,7 @@
     <h2 style="text-align: center;">Manage Users</h2>
    <!-- RA info table-->
     <h3 style="text-align: left;">Resident Assistants</h3>
-    <table mat-table [dataSource]="RAs" class="mat-elevation-z8">
+    <table mat-table [dataSource]="RAs" class="mat-elevation-z8 manage-users-table">
         <!-- COLUMN INFO-->
         <!-- Email column -->
         <ng-container matColumnDef="email">
@@ -62,7 +62,7 @@
 
     <!-- Resident info table-->
     <h3 style="text-align: left;">Residents</h3>
-    <table mat-table [dataSource]="residents" class="mat-elevation-z8">
+    <table mat-table [dataSource]="residents" class="mat-elevation-z8 manage-users-table">
         <!-- COLUMN INFO-->
         <!-- Email column -->
         <ng-container matColumnDef="email">

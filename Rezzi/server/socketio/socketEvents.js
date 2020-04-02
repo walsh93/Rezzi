@@ -189,6 +189,7 @@ function getOGData(link) {
   return new Promise((resolve, reject) => {
     got(link).then((response) => {
       metascraper({ html: response.body, url: response.url }).then(results => {
+        console.log("RESULTS:", results);
         let image = (results.image !== null ? results.image : results.logo);
         let resolve_html = '<a href="' + results.url + '">' +
             '<strong>' + results.title + '</strong>' +
@@ -200,7 +201,7 @@ function getOGData(link) {
               'width="65px" ' +
               'height="65px">';
         }
-        resolve_html += '<p style="margin: 5px 5px 5px 10px">' + results.description + '</p></div>';
+        resolve_html += '<p style="margin: 5px 5px 5px 10px">' + (results.description === null ? 'No description available' : results.description) + '</p></div>';
         resolve(resolve_html);
       });
     });
