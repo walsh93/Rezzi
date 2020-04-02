@@ -30,7 +30,7 @@ export class HdNotificationsComponent implements OnInit {
     this.rezziService.getDeletionRequests().then(deletionRequests => {
       console.log('Deletion request list IS ' + deletionRequests.deletionRequests);
       if (deletionRequests == null) {
-        this.deletionRequests = ["there are no requests"];
+        this.deletionRequests = ['there are no requests'];
       } else {
         this.deletionRequests = deletionRequests.deletionRequests;
       }
@@ -39,12 +39,17 @@ export class HdNotificationsComponent implements OnInit {
   }
 
   deleteUser(email: string) {
-    console.log("Email to be deleted: " + email)
+    const confirmedDelete = confirm(`Are you sure you would like to approve the deletion of the account ${email}?`);
+    if (!confirmedDelete) {
+      return;
+    }
+
+    console.log('Email to be deleted: ' + email);
     const body = {
-      email: email,
+      email,
       hdemail: this.session.email,
       rezzi: this.session.rezzi
-    }
+    };
 
     this.http.post('/deleteUser', body).toPromise().then((response) => {
       location.reload();
@@ -54,7 +59,7 @@ export class HdNotificationsComponent implements OnInit {
         alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
         location.reload();
       } else {
-        alert("There was an error when sending deleting this user. Please try again later." + res.status);
+        alert(`There was an error while trying to delete this user (${res.status}). Please try again later.`);
       }
     });
 
