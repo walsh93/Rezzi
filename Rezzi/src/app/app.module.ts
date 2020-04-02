@@ -200,7 +200,7 @@ import { BotMessageComponent } from './home/interface/messages/bot-message/bot-m
     JoinChannelComponent,
     CreatePmComponent,
     LeaveChannelDialog,
-    DeleteChannelDialog
+    DeleteChannelDialog,
     ImageModalComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
