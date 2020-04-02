@@ -95,17 +95,6 @@ module.exports.requestAccountDeletion = function requestAccountDeletion(data, em
     console.log("Error updating deletion status on account");
   })
 }
-module.exports.updateAccountType = function updateAccountType(data, email, accountType) { //TODO I don't think I actually need this
-  dbstore.collection('users').doc(email).get().then(doc => {
-    if (!doc.exists){
-      // Ahhhhhh
-    } else {
-      dbstore.collection('users').doc(email).update({accountType: accountType})
-    }
-  }).catch(err => {
-    console.log("Error updating accountType", err);
-  })
-}
 module.exports.updateHDArray = function updateHDArray(data,email, user) {
   dbstore.collection('users').doc(email).get().then(doc => {
     if (!doc.exists) {

@@ -17,9 +17,11 @@ export class UserManagementComponent implements OnInit {
   session: any;
   RAs: MatTableDataSource<any>;
   residents: MatTableDataSource<any>;
-  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified', 'admin', 'lastEmailSent'];
+  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified', 'admin', 'adminButton', 'lastEmailSent'];
 
-  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private http: HttpClient) { }
 
   ngOnInit() {
     // Initialize class variables
@@ -41,7 +43,26 @@ export class UserManagementComponent implements OnInit {
       this.RAs = new MatTableDataSource(RAList.RAInfo);
     });
   }
-  resendEmail(email: string){
+
+  updateAccountType(email: string, accountType: number) {
+    console.log('email ' + email + 'accountType ' + accountType);
+    if (accountType === 1) {
+      console.log('Changing accountType from 1 to 0');
+      accountType = 0;
+    } else if (accountType === 0) {
+      console.log('Changing accountType from 0 to 1');
+      accountType = 1;
+    } else if (accountType === 2) {
+      console.log('Cannot change admin rights of HD');
+    }
+
+    this.http.get<{notification: string}>(`/update-account-type?user=${email}&accountType=${accountType}`)
+      .subscribe((data) => {
+        console.log('User update data', data);
+      });
+  }
+
+  resendEmail(email: string) {
     console.log('Resend email: ' + email);
 
     const body = {
