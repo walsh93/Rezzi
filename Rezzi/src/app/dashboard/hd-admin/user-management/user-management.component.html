@@ -30,11 +30,10 @@
             <th mat-header-cell *matHeaderCellDef> Verification Status</th>
             <td mat-cell *matCellDef="let RA"> {{RA.verified}} </td>
         </ng-container>
-        <ng-container matColumDef="admin">
+        <!-- Admin column-->
+        <ng-container matColumnDef="admin">
             <th mat-header-cell *matHeaderCellDef> Administrative Rights</th>
-            <mat-cell *matCellDef="let RA">
-              <mat-checkbox></mat-checkbox>
-            </mat-cell>
+            <td mat-cell *matCellDef="let RA"> {{RA.accountType}} </td>
         </ng-container>
         <!-- TODO: Date last email sent column-->
         <!-- TODO: make column for buttons-->
@@ -72,6 +71,11 @@
         <ng-container matColumnDef="verified">
             <th mat-header-cell *matHeaderCellDef> Verification Status</th>
             <td mat-cell *matCellDef="let resident"> {{resident.verified}} </td>
+        </ng-container>
+        <!-- Admin column-->
+        <ng-container matColumnDef="admin">
+          <th mat-header-cell *matHeaderCellDef> Administrative Rights</th>
+          <td mat-cell *matCellDef="let resident"> {{resident.accountType}}</td>
         </ng-container>
         <!-- TODO: Date last email sent column-->
         <!-- TODO: make column for buttons-->
