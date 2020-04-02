@@ -32,13 +32,14 @@
         </ng-container>
         <!-- Admin column-->
         <ng-container matColumnDef="admin">
-            <th mat-header-cell *matHeaderCellDef> Administrative Rights</th>
-            <td mat-cell *matCellDef="let RA"> {{RA.accountType}} </td>
-        </ng-container>
-        <ng-container matColumnDef="adminButton">
-          <th mat-header-cell *matHeaderCellDef> Admin Button</th>
+          <th mat-header-cell *matHeaderCellDef> Administrative Rights</th>
           <td mat-cell *matCellDef="let RA">
-            <button mat-button (click)="updateAccountType(RA.email, RA.accountType)">Admin</button>
+            <div *ngIf="RA.accountType === 1">
+              <mat-checkbox checked="true" (click)="updateAccountType(RA.email, RA.accountType)"></mat-checkbox>
+            </div>
+            <div *ngIf="RA.accountType === 0">
+              <mat-checkbox (click)="updateAccountType(RA.email, RA.accountType)"></mat-checkbox>
+            </div>
           </td>
         </ng-container>
         <!-- TODO: Date last email sent column-->

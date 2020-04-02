@@ -17,7 +17,7 @@ export class UserManagementComponent implements OnInit {
   session: any;
   RAs: MatTableDataSource<any>;
   residents: MatTableDataSource<any>;
-  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified', 'admin', 'adminButton', 'lastEmailSent'];
+  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified', 'admin', 'lastEmailSent'];
 
   constructor(private rezziService: RezziService,
               private router: Router,
@@ -31,6 +31,10 @@ export class UserManagementComponent implements OnInit {
       this.session = session;
     });
 
+    this.refresh();
+  }
+
+  refresh(): void {
     this.rezziService.getResidents().then((residentList) => {
       console.log('pulling the resident list');
       console.log(`Resident list is ${residentList[1]}`);
@@ -60,6 +64,8 @@ export class UserManagementComponent implements OnInit {
       .subscribe((data) => {
         console.log('User update data', data);
       });
+
+    this.refresh();
   }
 
   resendEmail(email: string) {
