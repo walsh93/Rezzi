@@ -17,7 +17,7 @@ export class UserManagementComponent implements OnInit {
   session: any;
   RAs: MatTableDataSource<any>;
   residents: MatTableDataSource<any>;
-  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified'];
+  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified', 'lastEmailSent'];
 
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
