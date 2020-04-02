@@ -18,6 +18,7 @@ module.exports = {
     getRAs: "/getRAs",
     getResidents: "/getResidents",
     private_messages: "/private-messages",
+    get_deletion_requests: "/getDeletionRequests",
   },
 
   // Firebase constants
@@ -31,6 +32,7 @@ module.exports = {
     channels: 'channels',
     rezzis: 'residence-halls',
     private_messages: 'private-messages',
+    members: 'members'
   },
 
   // User types
@@ -52,6 +54,8 @@ module.exports = {
     sign_out: "/sign-out",
     invite_users: "/invite-users",
     user_management: "/user-management",
+    hd_notifications: "/hd-notifications",
+    deleteUser: "/deleteUser",
     error: {
       page: "/err",
       not_raadmin: "/err/1/unauthorized",
@@ -61,6 +65,7 @@ module.exports = {
     },
     join_channel: "/join-channel",
     leave_channel: "/leave-channel",
+    delete_channel: "/delete-channel",
     get_channels: "/get-channels",
     pword_reset_request: "/pword-reset-request",
     pword_reset_sent: "/pword-reset-sent",
@@ -72,7 +77,7 @@ module.exports = {
     create_pm: "/create-pm",
     request_channel: "/request-channel",
     channel_requests: "/channel-requests",
-    setup_test: "/setup-test"
+    setup_test: "/setup-test",
   },
 
   http_status: {

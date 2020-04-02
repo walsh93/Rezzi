@@ -147,20 +147,20 @@ export class EditProfileFormComponent implements OnInit {
 
   loadProfilePicture(user) {
     if(this.theUser.image_url){
-    if (document.readyState !== "loading") {
-      console.log("document is already ready");
-      this.theUser.setImageUrl(this.theUser.image_url);
-      this.thePic = this.theUser.image_url;
-    } else {
-      document.addEventListener("DOMContentLoaded", function() {
-        console.log("document was not ready");
+      if (document.readyState !== "loading") {
+        console.log("document is already ready");
         this.theUser.setImageUrl(this.theUser.image_url);
-        document.getElementById("profile").setAttribute("src", user.image_url);
-      });
+        this.thePic = this.theUser.image_url;
+      } else {
+        document.addEventListener("DOMContentLoaded", function() {
+          console.log("document was not ready");
+          this.theUser.setImageUrl(this.theUser.image_url);
+          document.getElementById("profile").setAttribute("src", user.image_url);
+        });
+      }
+    } else{
+      this.thePic = '../../../../../src/assets/images/default_profile.jpg';
     }
-  } else{
-    this.thePic = '../../../../../src/assets/images/default_profile.jpg';
-  }
   }
   onPictureSelected(event) {
     const file = event.target.files[0] as File;
