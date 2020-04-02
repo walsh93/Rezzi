@@ -36,6 +36,7 @@ router.get('/', checkCookie, function(request, response) {
                     //response.status(http.bad_request).send('Error retrieving RA information')
                 }
                 const data = doc.data()
+                console.log(data)
 
                 //if a value is undefiened because it is an unregistered user, save value as "N/A"
                 if(data.firstName === undefined){
@@ -47,7 +48,7 @@ router.get('/', checkCookie, function(request, response) {
 
                 if(data.lastName === undefined){
                     lastName = "NA";
-                } 
+                }
                 else {
                     lastName = data.lastName;
                 }
@@ -64,6 +65,7 @@ router.get('/', checkCookie, function(request, response) {
                     lastName: lastName,
                     verified: data.verified,
                     floor: data.floor,
+                    accountType: data.accountType,
                     lastEmailSent: lastEmailSent,
                 }
                 console.log(info)

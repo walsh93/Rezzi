@@ -22,7 +22,7 @@ router.get('/', checkCookie, function(request, response) {
         residents = data.resident_list
         let promises = [];
 
-        for(var i = 0; i < residents.length; i++){ 
+        for(var i = 0; i < residents.length; i++){
             //declare variables for each resident
             var firstName;
             var lastName;
@@ -44,7 +44,7 @@ router.get('/', checkCookie, function(request, response) {
 
                 if(data.lastName === undefined){
                     lastName = "NA";
-                } 
+                }
                 else {
                     lastName = data.lastName;
                 }
@@ -61,6 +61,7 @@ router.get('/', checkCookie, function(request, response) {
                     lastName: lastName,
                     verified: data.verified,
                     floor: data.floor,
+                    accountType: data.accountType,
                     lastEmailSent: lastEmailSent,
                 }
                 console.log(info)
