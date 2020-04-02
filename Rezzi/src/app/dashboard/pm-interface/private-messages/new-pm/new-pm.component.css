@@ -1,13 +1,45 @@
-.example-full-width{
-  width: 85%;
+.message-box {
+  order: 1;
+  flex-grow: 5;
+  width: 100%;
 }
 
 .send-button{
-  margin-left: 10px;
+  margin-left: 1%;
+  order: 3;
 }
 
 .bottombar{
-  position: fixed;
-  width: 75%;
+  position: absolute;
+  width: 100%;
   bottom: 0px;
+  height: 100px;
+}
+
+.add-button {
+  order: 2;
+  margin-left: 1%;
+}
+
+.image-preview {
+  height: 100%;
+  order: -1;
+}
+
+.input-style {
+  width: 100%;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  width: 99.5%;
+  align-content: flex-end;
+}
+
+.x-out {
+  position: relative;
+  z-index: 1;
+  right: 0px;
+  top: 30px;
 }

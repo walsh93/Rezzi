@@ -10,6 +10,9 @@ const keys = require('../constants').db_keys
 const c = require('../constants')
 const url = require('../constants').url
 
+const Passwords = require('../passwords')
+const pass = new Passwords();
+
 router.get('/', checkCookie, function(request, response) {
     response.sendFile(indexFile)
   }).post('/', function(request, response) {

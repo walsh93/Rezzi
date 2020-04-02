@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <div mat-card-avatar class="avatar"></div>
+    <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }"></div>
     <mat-card-title>{{ displayName }}</mat-card-title>
     <span class="reactions">
       <ng-container *ngFor="let reaction of reactions | keyvalue">
