@@ -26,6 +26,9 @@ mat-card-footer {
   margin-left: auto;
 }
 
+#report {
+  font-size: 17px;
+}
 .mat-divider {
   border-top-width: 3px;
   position: relative;
