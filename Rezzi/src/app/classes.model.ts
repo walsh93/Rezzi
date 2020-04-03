@@ -91,12 +91,14 @@ export class AbbreviatedUser {
   firstName: string;
   lastName: string;
   nickName: string;
+  image_url: string;
 
-  constructor(email: string, fname: string, lname: string, nick: string) {
+  constructor(email: string, fname: string, lname: string, nick: string, url: string) {
     this.email = email;
     this.firstName = fname;
     this.lastName = lname;
     this.nickName = nick;
+    this.image_url = url;
   }
 }
 
@@ -166,3 +168,5 @@ export interface PrivateMessageData {
   recipient: string;
   messages: Message[];
 }
+
+export const IMAGE_BASE_URL = "https://us-central1-rezzi-33137.cloudfunctions.net";

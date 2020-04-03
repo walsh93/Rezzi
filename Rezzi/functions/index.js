@@ -140,6 +140,78 @@ exports.uploadFile = functions.https.onRequest((request, response) => {
   });
 });
 
+exports.uploadImage = functions.https.onRequest((request, response) => {
+  cors(request, response, () => {
+    const busboy = new Busboy({ headers: request.headers });
+    let uploadData = null;
+    let extension = '';
+
+    // Trigger this section when busboy successfully parses a file from incoming request
+    busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
+      const filepath = path.join(os.tmpdir(), filename);
+      uploadData = {
+        file: filepath,
+        type: mimetype,
+      };
+      console.log("HERE");
+      console.log(filename);
+      file.pipe(fs.createWriteStream(filepath));
+
+      let type = mimetype.split('/')[1];
+      if (type === 'x-icon') {
+        extension = 'ico';
+      }
+      else if (type === 'svg+xml') {
+        extension = '.svg';
+      }
+      else {
+        extension = '.' + type;
+      }
+    });
+
+    // Trigger this section when busboy is done parsing the entire request
+    busboy.on("finish", () => {
+      const docId = "uploaded-images/" + UUID() + extension;
+      console.log("docId: " + docId);
+      const bucket = storage.bucket("rezzi-33137.appspot.com");
+      const download_token = UUID();
+      bucket.upload(uploadData.file, {
+        uploadType: "media",
+        destination: docId,
+        metadata: {
+          metadata: {
+            contentType: uploadData.type,
+            firebaseStorageDownloadTokens: download_token,
+          }
+        }
+      }).then(() => {
+        const file = bucket.file(docId);
+        file.exists().then(function (exists) {
+          return response.status(200).json({
+            url: 'https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/' + encodeURIComponent(docId) + '?alt=media&token=' + download_token,
+          });
+        });
+        // storage.refFromURL('gs://rezzi-33137.appspot.com/' + docId).getDownloadURL().then(image_url => {
+        //   return response.status(200).json({
+        //     url: image_url,
+        //   });
+        // }).catch((error) => {
+        //   return response.status(500).json({
+        //     error: error,
+        //   });
+        // });
+      }).catch((error) => {
+        return response.status(500).json({
+          error: error,
+        });
+      });
+    });
+
+    // Kick-off the busboy stuff
+    busboy.end(request.rawBody);
+  });
+});
+
 // exports.deleteFile = functions.https.onRequest((request, response) => {
 //   cors(request, response, () => {
 //     if (request.method != "POST") {

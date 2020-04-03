@@ -25,6 +25,8 @@ import {
   MatBadgeModule,
   MatTooltipModule,
   MatDividerModule,
+  MatProgressSpinnerModule,
+  MatChipsModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -87,6 +89,8 @@ import { ChannelMessagesComponent } from './home/interface/messages/channel-mess
 import { NewMessageComponent } from './home/interface/messages/new-message/new-message.component';
 
 import { ChannelNavBarComponent, LeaveChannelDialog, DeleteChannelDialog } from './home/interface/channel-nav-bar/channel-nav-bar.component';
+import { MessageComponent } from './home/interface/messages/message/message.component';
+import { ImageModalComponent } from './home/interface/messages/new-message/image-modal/image-modal.component';
 
 // Header Component
 import { HeaderComponent } from './header/header.component';
@@ -102,7 +106,7 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
 import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/member-input/member-input.component';
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
-import { MessageComponent } from './home/interface/messages/message/message.component';
+import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 
@@ -147,6 +151,8 @@ import { BotMessageComponent } from './home/interface/messages/bot-message/bot-m
     NewPmComponent,
     PrivateMessagesComponent,
     MessageComponent,
+    UserManagementComponent,
+    HdNotificationsComponent,
     CreatePmComponent,
     UserManagementComponent,
     RequestChannelComponent,
@@ -154,6 +160,7 @@ import { BotMessageComponent } from './home/interface/messages/bot-message/bot-m
     RaChannelRequestsComponent,
     LeaveChannelDialog,
     DeleteChannelDialog,
+    ImageModalComponent,
     BotMessageComponent,
   ],
   imports: [
@@ -189,12 +196,15 @@ import { BotMessageComponent } from './home/interface/messages/bot-message/bot-m
     MatBadgeModule,
     MatTooltipModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
   ],
   entryComponents: [
     JoinChannelComponent,
     CreatePmComponent,
     LeaveChannelDialog,
-    DeleteChannelDialog
+    DeleteChannelDialog,
+    ImageModalComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pwordreset-request.component.css']
 })
 export class PwordresetRequestComponent implements OnInit {
-
+  errorMsg = 'Error!';
   constructor() { }
 
   ngOnInit() {

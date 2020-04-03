@@ -17,33 +17,76 @@ export class UserManagementComponent implements OnInit {
   session: any;
   RAs: MatTableDataSource<any>;
   residents: MatTableDataSource<any>;
-  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified'];
+  columnsToDisplay: string[] = ['email', 'fName', 'lName', 'floor', 'verified', 'admin', 'lastEmailSent'];
 
-  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private http: HttpClient) { }
 
   ngOnInit() {
-     // Initialize class variables
-     this.errorMsg = '';
+    // Initialize class variables
+    this.errorMsg = '';
 
-     this.rezziService.getSession().then((session) => {
+    this.rezziService.getSession().then((session) => {
       this.session = session;
     });
 
+    this.refresh();
+  }
+
+  refresh(): void {
     this.rezziService.getResidents().then((residentList) => {
-      console.log("pulling the resident list");
+      console.log('pulling the resident list');
       console.log(`Resident list is ${residentList[1]}`);
       this.residents = new MatTableDataSource(residentList.residentInfo);
     });
-    
+
     this.rezziService.getRAs().then((RAList) => {
-      console.log("pulling the RA list");
+      console.log('pulling the RA list');
       console.log(`RA List IS ${RAList.RAInfo[1]}`);
-        this.RAs = new MatTableDataSource(RAList.RAInfo);
+      this.RAs = new MatTableDataSource(RAList.RAInfo);
     });
+  }
 
-    
+  updateAccountType(email: string, accountType: number) {
+    console.log('email ' + email + 'accountType ' + accountType);
+    if (accountType === 1) {
+      console.log('Changing accountType from 1 to 2');
+      accountType = 2;
+    } else if (accountType === 2) {
+      console.log('Changing accountType from 2 to 1');
+      accountType = 1;
+    } else if (accountType === 0) {
+      console.log('Cannot change admin rights of HD');
+    }
 
+    this.http.get<{notification: string}>(`/update-account-type?user=${email}&accountType=${accountType}`)
+      .subscribe((data) => {
+        console.log('User update data', data);
+      });
 
+    this.refresh();
+  }
+
+  resendEmail(email: string) {
+    console.log('Resend email: ' + email);
+
+    const body = {
+      email,
+      rezzi: this.session.rezzi
+    };
+
+    this.http.post('/resend-email', body).toPromise().then((response) => {
+      location.reload();
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status === 200) {
+        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        location.reload();
+      } else {
+        alert(`There was an error while trying to resend an email to (${res.status}). Please try again later.`);
+      }
+    });
   }
 
 }

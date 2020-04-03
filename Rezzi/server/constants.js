@@ -9,6 +9,7 @@ module.exports = {
     get_floors: "/get-floors",
     get_user: "/get-user",
     get_hd: "/get-hd",
+    update_account_type: "/update-account-type",
     update_hd: "/update-hd",
     update_hd_rpt: "/update-hd-rpt",
     get_floor_ra: "/get-ra-from-floor",
@@ -18,6 +19,7 @@ module.exports = {
     getRAs: "/getRAs",
     getResidents: "/getResidents",
     private_messages: "/private-messages",
+    get_deletion_requests: "/getDeletionRequests",
   },
 
   // Firebase constants
@@ -53,6 +55,9 @@ module.exports = {
     sign_out: "/sign-out",
     invite_users: "/invite-users",
     user_management: "/user-management",
+    hd_notifications: "/hd-notifications",
+    deleteUser: "/deleteUser",
+    resend_email: "/resend-email",
     error: {
       page: "/err",
       not_raadmin: "/err/1/unauthorized",
@@ -74,7 +79,7 @@ module.exports = {
     create_pm: "/create-pm",
     request_channel: "/request-channel",
     channel_requests: "/channel-requests",
-    setup_test: "/setup-test"
+    setup_test: "/setup-test",
   },
 
   http_status: {

@@ -28,7 +28,7 @@ export class PmInterfaceComponent implements OnInit {
       if (this.session.email != null && this.session.email !== undefined) {
         this.rezziService.getUserProfile().then((response) => {
           this.abbrevUser = new AbbreviatedUser(response.user.email, response.user.firstName,
-            response.user.lastName, response.user.nickName);
+            response.user.lastName, response.user.nickName, response.user.image_url);
           this.abbrevUserUpdateSubject.next(this.abbrevUser);
         });
       }

@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, Observable } from 'rxjs';
 import { MessagesService } from 'src/app/home/interface/messages/messages.service';
 import { NgForm } from '@angular/forms';
 import { Message, SocketPrivateMessageData, AbbreviatedUser } from 'src/app/classes.model';
+import { ImageModalComponent } from 'src/app/home/interface/messages/new-message/image-modal/image-modal.component';
 
 @Component({
   selector: 'app-new-pm',
@@ -11,6 +13,7 @@ import { Message, SocketPrivateMessageData, AbbreviatedUser } from 'src/app/clas
 })
 export class NewPmComponent implements OnInit {
   enteredMessage = '';
+  image = null;
 
   // Session data
   session: any;
@@ -31,7 +34,7 @@ export class NewPmComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
 
-  constructor(public messagesService: MessagesService) { }
+  constructor(public messagesService: MessagesService, public dialog: MatDialog) { }
 
   ngOnInit() {
     // Listen for session updates
@@ -72,7 +75,7 @@ export class NewPmComponent implements OnInit {
         whatshot: [],
       },
       reported: false,
-      image: null,
+      image: (this.image !== null ? this.image.src : null),
     };
 
     const scmd: SocketPrivateMessageData = {
@@ -84,7 +87,19 @@ export class NewPmComponent implements OnInit {
     console.log("NEW-PM", scmd);
     // this.messagesService.addMessage(message);
     this.messagesService.sendPrivateMessageThroughSocket(scmd);
+    this.image = null;
     form.resetForm();
+  }
+
+  openImageDialog() {
+    const dialogRef = this.dialog.open(ImageModalComponent, {
+      width: '600px',
+      height: '400px'
+    });
+
+    dialogRef.componentInstance.imageRefEmitter.subscribe((image) => {
+      this.image = image;
+    });
   }
 
   ngOnDestroy() {

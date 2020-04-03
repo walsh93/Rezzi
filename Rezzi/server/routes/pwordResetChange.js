@@ -10,6 +10,9 @@ const keys = require('../constants').db_keys
 const c = require('../constants')
 const url = require('../constants').url
 
+const Passwords = require('../passwords')
+const pass = new Passwords();
+
 router.get('/', checkCookie, function(request, response) {
     response.sendFile(indexFile)
   }).post('/', function(request, response) {
@@ -20,7 +23,10 @@ router.get('/', checkCookie, function(request, response) {
             console.log("hi so the doc doesnt exist")
             response.send(c.EMAIL_NOT_REGISTERED)
         } else {
+          oldpassword = password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
+          password = pass.generateHash(password);
             db.collection('users').doc(email).update({
+                oldpassword: oldpassword,
                 password: password,
                 tempPword: false,
             })

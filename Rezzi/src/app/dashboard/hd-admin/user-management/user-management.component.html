@@ -3,7 +3,7 @@
     <h2 style="text-align: center;">Manage Users</h2>
    <!-- RA info table-->
     <h3 style="text-align: left;">Resident Assistants</h3>
-    <table mat-table [dataSource]="RAs" class="mat-elevation-z8">
+    <table mat-table [dataSource]="RAs" class="mat-elevation-z8 manage-users-table">
         <!-- COLUMN INFO-->
         <!-- Email column -->
         <ng-container matColumnDef="email">
@@ -30,7 +30,29 @@
             <th mat-header-cell *matHeaderCellDef> Verification Status</th>
             <td mat-cell *matCellDef="let RA"> {{RA.verified}} </td>
         </ng-container>
+        <!-- Admin column-->
+        <ng-container matColumnDef="admin">
+          <th mat-header-cell *matHeaderCellDef> Administrative Rights</th>
+          <td mat-cell *matCellDef="let RA">
+            <div *ngIf="RA.accountType === 1">
+              <mat-checkbox checked="true" (click)="updateAccountType(RA.email, RA.accountType)"></mat-checkbox>
+            </div>
+            <div *ngIf="RA.accountType === 2">
+              <mat-checkbox (click)="updateAccountType(RA.email, RA.accountType)"></mat-checkbox>
+            </div>
+          </td>
+        </ng-container>
         <!-- TODO: Date last email sent column-->
+        <ng-container matColumnDef="lastEmailSent">
+          <th mat-header-cell *matHeaderCellDef> Last Verification Email Sent</th>
+
+          <td mat-cell *matCellDef="let RA" (click)="resendEmail(RA.email)">
+            <ng-container *ngIf="RA.verified == false">
+            <button mat-button >{{RA.lastEmailSent}} </button>
+          </ng-container>
+        </td>
+
+      </ng-container>
         <!-- TODO: make column for buttons-->
 
         <!-- ROW INFO-->
@@ -40,7 +62,7 @@
 
     <!-- Resident info table-->
     <h3 style="text-align: left;">Residents</h3>
-    <table mat-table [dataSource]="residents" class="mat-elevation-z8">
+    <table mat-table [dataSource]="residents" class="mat-elevation-z8 manage-users-table">
         <!-- COLUMN INFO-->
         <!-- Email column -->
         <ng-container matColumnDef="email">
@@ -67,7 +89,27 @@
             <th mat-header-cell *matHeaderCellDef> Verification Status</th>
             <td mat-cell *matCellDef="let resident"> {{resident.verified}} </td>
         </ng-container>
+        <!-- Admin column-->
+        <ng-container matColumnDef="admin">
+          <th mat-header-cell *matHeaderCellDef> Administrative Rights</th>
+          <td mat-cell *matCellDef="let resident">
+            <div *ngIf="resident.accountType === 1">
+              <mat-checkbox checked="true" (click)="updateAccountType(resident.email, resident.accountType)"></mat-checkbox>
+            </div>
+            <div *ngIf="resident.accountType === 2">
+              <mat-checkbox (click)="updateAccountType(resident.email, resident.accountType)"></mat-checkbox>
+            </div>
+          </td>
+        </ng-container>
         <!-- TODO: Date last email sent column-->
+        <ng-container matColumnDef="lastEmailSent">
+          <th mat-header-cell *matHeaderCellDef> Last Verification Email Sent</th>
+          <td mat-cell *matCellDef="let resident" (click)="resendEmail(resident.email)">
+            <ng-container *ngIf="resident.verified == false">
+              <button mat-button >{{resident.lastEmailSent}} </button>
+            </ng-container>
+          </td>
+      </ng-container>
         <!-- TODO: make column for buttons-->
 
         <!-- ROW INFO-->
