@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-bot-message',
@@ -8,6 +8,10 @@ import { Component, OnInit, Input } from '@angular/core';
 export class BotMessageComponent implements OnInit {
 
   @Input() botMessage: string;
+  @Input() isLastMsg: boolean;  // Is this the last message?
+
+  // Data to send to channel-messages.component
+  @Output() lastMessageDisplayed = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -24,6 +28,11 @@ export class BotMessageComponent implements OnInit {
     } else {
       const pmMsgs = document.getElementById('privateUserMessages');
       pmMsgs.scrollTop = pmMsgs.scrollHeight;
+    }
+
+    // Propogate back to parent to reset the scrolling and viewing vars to `false`
+    if (this.isLastMsg) {
+      this.lastMessageDisplayed.emit(true);
     }
   }
 

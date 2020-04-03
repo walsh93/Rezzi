@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import {
   User,
   ReactionData,
@@ -46,6 +46,10 @@ export class MessageComponent implements OnInit {
   @Input() pm: boolean; // Whether or not the message is a pm
   @Input() pmUser: string; // The user being PMd
   @Input() updateScrolling: boolean; // Does the scroll depth need to update?
+  @Input() isLastMsg: boolean;  // Is this the last message?
+
+  // Data to send to channel-messages.component
+  @Output() lastMessageDisplayed = new EventEmitter<boolean>();
 
   private reactions: ReactionData; // Data holding the reaction (extracted from message)
   private user: AbbreviatedUser; // The user who sent the message (extracted from message)
@@ -139,6 +143,11 @@ export class MessageComponent implements OnInit {
         const pmMsgs = document.getElementById("privateUserMessages");
         pmMsgs.scrollTop = pmMsgs.scrollHeight;
       }
+    }
+
+    // Propogate back to parent to reset the scrolling and viewing vars to `false`
+    if (this.isLastMsg) {
+      this.lastMessageDisplayed.emit(true);
     }
 
     this.rezziService.getHDEmail().then(response => {

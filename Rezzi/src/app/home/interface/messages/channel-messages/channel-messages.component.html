@@ -1,8 +1,12 @@
 <div id="channelMessages">
-  <div *ngFor="let message of messages">
-    <!--{{ message.owner.firstName }}: Temporary Comment-->
+  <!-- https://angular.io/api/common/NgForOf#local-variables -->
+  <div *ngFor="let message of messages; last as isLast">
     <div *ngIf="message.id === 'BOT_MSG'; else nonbotMessage">
-      <app-bot-message [botMessage]="message.content"></app-bot-message>
+      <app-bot-message
+        [botMessage]="message.content"
+        [isLastMsg]="isLast"
+        (lastMessageDisplayed)="onLastMessage($event)"
+      ></app-bot-message>
     </div>
     <ng-template #nonbotMessage>
       <app-message
@@ -12,6 +16,7 @@
         [rezzi]="session.rezzi"
         [pm]="false"
         [updateScrolling]="needToUpdateScroll"
+        [isLastMsg]="isLast"
       ></app-message>
     </ng-template>
   </div>

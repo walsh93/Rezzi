@@ -1,10 +1,8 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subscription, Observable, range } from 'rxjs';
 
-import { Message, AbbreviatedUser } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
-import { ChannelData } from '../../../../classes.model';
-import { User } from '../../../../classes.model';
+import { Message, AbbreviatedUser, ChannelData } from '../../../../classes.model';
 
 @Component({
   selector: 'app-channel-messages',
@@ -53,27 +51,19 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // If testing messages/message view with `ng serve`
-    // this.initializeTestData();
-
     // Listen for user updates
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
-      console.log('user has been updated in new-message.component');
       this.user = updatedUser;
-      console.log(this.user);
     });
 
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
-      console.log('session has been updated in channel-messages.component');
       this.session = updatedSession;
     });
 
     // Listen for channel list updates
     this.channelUpdateSub = this.channelsObs.subscribe((updatedChannels) => {
-      console.log('channels have been updated');
       this.channels = updatedChannels;
-
       updatedChannels.forEach((channel) => {
         this.channelMap.set(channel.id, channel);
       });
@@ -94,7 +84,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
 
     // Listen for updated message list
     this.messagesSub = this.messagesService.getMessageUpdateListener().subscribe((updatedMessages: Message[]) => {
-      console.log('Messages are updating...');
       const diffNumberOfMessages = (this.messages.length !== updatedMessages.length);
       this.needToUpdateScroll = (this.amViewingNewChannel || diffNumberOfMessages);  // Don't scroll on reaction only
       this.messages = updatedMessages;
@@ -109,51 +98,11 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.viewingUpdateSub.unsubscribe();
   }
 
-  /*initializeTestData() {
-    const owner1 = new AbbreviatedUser('email1@purdue.edu', 'Lucky', 'McStruessel', 'Shrimpy');
-    const owner2 = new AbbreviatedUser('email2@purdue.edu', 'Doc', 'Goodman', 'Sean the Sheep');
-    const m1: Message = {
-      owner: owner1,
-      content: 'Testing 1-2-3',
-      time: new Date('2020-01-26'),
-      visible: true,
-      reactions: {
-        thumb_up: ["aa"],
-        thumb_down: ["aa", "aaaa"],
-        sentiment_very_satisfied: ["aaaa}", "aaaa"],
-        sentiment_dissatisfied: [],
-        whatshot: ["a", "b", "c", "d", "e"]
-      }
-      id: null
-    };
-    const m2: Message = {
-      owner: owner2,
-      content: 'you\'re on your own, kiddo',
-      time: new Date('2020-02-14'),
-      visible: true,
-      reactions: {
-        thumb_up: ["aa"],
-        thumb_down: ["aa", "aaaa"],
-        sentiment_very_satisfied: ["aaaa}", "aaaa"],
-        sentiment_dissatisfied: [],
-        whatshot: ["a", "b", "c", "d", "e"]
-      }
-    };
-    const m3: Message = {
-      owner: owner1,
-      content: 'frickin rip',
-      time: new Date('2020-03-05'),
-      visible: true,
-      reactions: {
-        thumb_up: ["aa"],
-        thumb_down: ["aa", "aaaa"],
-        sentiment_very_satisfied: ["conleyutz@gmail.com", "aaaa"],
-        sentiment_dissatisfied: [],
-        whatshot: ["a", "b", "c", "d", "e"]
-      }
-    };
-    this.messages.push(m1);
-    this.messages.push(m2);
-    this.messages.push(m3);
-  }*/
+  onLastMessage(isLast: boolean) {
+    if (isLast) {
+      this.amViewingNewChannel = false;
+      this.needToUpdateScroll = false;
+    }
+  }
+
 }
