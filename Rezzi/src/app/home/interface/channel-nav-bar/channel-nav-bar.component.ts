@@ -26,7 +26,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   channels: ChannelData[];
   navChannel: ChannelData;
   @HostBinding('class.nav-title')
-  @Output() public leaveChannelEvent = new EventEmitter();
   navTitle = 'Rezzi';
 
   // All buttons are disabled until permissions are checked on init
@@ -131,16 +130,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       return;
     }
 
-        // dialogRef.componentInstance.leaveChannelEvent.subscribe((id: string) => {
-    //   this.channels.forEach(hall => {
-    //     hall.subchannels.forEach(channel => {
-    //       if (channel.id === id) {
-    //         channel.belongs = false;
-    //       }
-    //     });
-    //   });
-    // });
-
     const deleteDialogRef = this.dialog.open(DeleteChannelDialog, {
       width: '450px',
       height: '200px',
@@ -154,22 +143,32 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 
 }
 
+/*  Leave Channel Dialog Component */
+
 @Component({
   selector: 'app-leave-channel-dialog',
   templateUrl: 'leave-channel-dialog.html',
 })
 // tslint:disable-next-line: component-class-suffix
-export class LeaveChannelDialog {
+export class LeaveChannelDialog implements OnInit {
   rezzi: string;
   userName: string;
+  status: boolean;
 
   constructor(public leaveDialogRef: MatDialogRef<LeaveChannelDialog>,
+              private channelNavBarService: ChannelNavBarService,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private http: HttpClient,
               private messagesService: MessagesService) {
       this.rezzi = data.rezzi;
       this.userName = data.userName;
-    }
+  }
+
+  ngOnInit() {
+    this.channelNavBarService.currentChannelUpdateStatus.subscribe(status => {
+      this.status = status;
+    });
+  }
 
   onCancelClick(): void {
     console.log('user cancelled leaving');
@@ -183,7 +182,8 @@ export class LeaveChannelDialog {
       console.log(responseData.notification);
     });
 
-    this.leaveDialogRef.close();
+    this.channelNavBarService.changeChannelUpdateStatus(true);  /* Refreshes channel list */
+    this.leaveDialogRef.close();                                /* Closes dialog */
 
     // Send Bot Message
     this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
@@ -191,22 +191,31 @@ export class LeaveChannelDialog {
 
 }
 
+/* Delete Channel Dialog Component */
 @Component({
   selector: 'app-delete-channel-dialog',
   templateUrl: 'delete-channel-dialog.html',
 })
 // tslint:disable-next-line: component-class-suffix
-export class DeleteChannelDialog {
+export class DeleteChannelDialog implements OnInit {
   rezzi: string;
   userName: string;
+  status: boolean;
 
   constructor(public deleteDialogRef: MatDialogRef<DeleteChannelDialog>,
+              private channelNavBarService: ChannelNavBarService,
               @Inject(MAT_DIALOG_DATA) public data: DialogData,
               private http: HttpClient,
               private messagesService: MessagesService) {
       this.rezzi = data.rezzi;
       this.userName = data.userName;
-    }
+  }
+
+  ngOnInit() {
+    this.channelNavBarService.currentChannelUpdateStatus.subscribe(status => {
+      this.status = status;
+    });
+  }
 
   onCancelClick(): void {
     this.deleteDialogRef.close();
@@ -220,10 +229,8 @@ export class DeleteChannelDialog {
       console.log(responseData.notification);
     });
 
+    this.channelNavBarService.changeChannelUpdateStatus(true);
     this.deleteDialogRef.close();
-
-    // Send Bot Message
-    // this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
   }
 
 }

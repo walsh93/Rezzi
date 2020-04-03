@@ -20,12 +20,6 @@ module.exports.addListenerForChannelMessages = function alfcm(io, data) {
   // returns an observer
 }
 
-//TODO add listener here
-module.exports.addListenerForChannelEdits = function alfce(io, data) {
-  console.log('addListenerForChannelEdits', data)
-  //return db.collection(data.channelPath)
-}
-
 module.exports.addListenerForPrivateMessages = function alfpm(io, data) {
   return db.collection(data.userPath).where('title', '==', data.receiverID).onSnapshot((snap) => {
     snap.docChanges().forEach((change) => {

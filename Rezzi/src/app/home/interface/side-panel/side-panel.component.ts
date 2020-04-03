@@ -16,6 +16,9 @@ import { Subscription, Observable } from 'rxjs';
 export class SidePanelComponent implements OnInit, OnDestroy {
   public channels: ChannelData[];
   private filteredChannels: ChannelData[];
+  status: boolean;
+  channelRedirect: ChannelData;
+  channelRedirectLevel: string;
 
   // Session data retrieved from interface.component
   session: any;
@@ -34,6 +37,10 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   @Output() channelToView = new EventEmitter<string>();
 
   constructor(public dialog: MatDialog, private sidePanService: SidePanelService, private chanNavBarService: ChannelNavBarService) {
+    this.refreshSidePanel();
+  }
+
+  refreshSidePanel(): void {
     this.channels = [];
     this.filteredChannels = [];
     this.sidePanService.getChannels().subscribe(data => {
@@ -82,6 +89,8 @@ export class SidePanelComponent implements OnInit, OnDestroy {
           this.channels.push(temp);
         }
       }
+      this.channelRedirect = this.filteredChannels[0];
+      this.channelRedirectLevel = this.channelRedirect.id.split('-')[0];
       this.channelsToSend.emit(this.filteredChannels);
     });
   }
@@ -117,6 +126,17 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     // Listen for user updates
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
       this.user = updatedUser;
+    });
+
+    // Listen for channel updates, redirect for less channels
+    this.chanNavBarService.currentChannelUpdateStatus.subscribe(status => {
+      this.status = status;
+      if (this.status === true) {
+        this.refreshSidePanel();
+        this.chanNavBarService.changeChannelUpdateStatus(false);
+        console.log('Redirecting to ' + this.channelRedirect.id);
+        this.viewChannel(this.channelRedirect, this.channelRedirectLevel);
+      }
     });
   }
 
