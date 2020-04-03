@@ -3,14 +3,15 @@
   <ng-container *ngFor="let channel of channels"> <!-- looping the floor channels -->
     <mat-expansion-panel *ngIf="channel.belongs">
       <mat-expansion-panel-header>
-        <mat-panel-title (click)='viewChannel(channel, null)' routerLink='/home'> <!-- TODO add routerLink or click to view channel's chat -->
+        <!-- <mat-panel-title (click)='viewChannel(channel, null)' routerLink='/home'> TODO merge general channel here -->
+        <mat-panel-title routerLink='/home'>
           {{ channel.channel }}
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <ng-container *ngFor="let interest of channel.subchannels"> <!-- Looping the interest channels-->
         <mat-card *ngIf="interest.belongs">
-          <mat-card-content (click)='viewChannel(interest, channel.channel)' routerLink='/home'> <!-- TODO add routerLink or click to view channel's chat -->
+          <mat-card-content (click)='viewChannel(interest, channel.channel)' routerLink='/home'>
             {{ interest.channel }}
           </mat-card-content>
         </mat-card>

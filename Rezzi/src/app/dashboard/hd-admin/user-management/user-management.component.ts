@@ -51,12 +51,12 @@ export class UserManagementComponent implements OnInit {
   updateAccountType(email: string, accountType: number) {
     console.log('email ' + email + 'accountType ' + accountType);
     if (accountType === 1) {
-      console.log('Changing accountType from 1 to 0');
-      accountType = 0;
-    } else if (accountType === 0) {
-      console.log('Changing accountType from 0 to 1');
-      accountType = 1;
+      console.log('Changing accountType from 1 to 2');
+      accountType = 2;
     } else if (accountType === 2) {
+      console.log('Changing accountType from 2 to 1');
+      accountType = 1;
+    } else if (accountType === 0) {
       console.log('Cannot change admin rights of HD');
     }
 
@@ -72,7 +72,7 @@ export class UserManagementComponent implements OnInit {
     console.log('Resend email: ' + email);
 
     const body = {
-      email: email,
+      email,
       rezzi: this.session.rezzi
     };
 
