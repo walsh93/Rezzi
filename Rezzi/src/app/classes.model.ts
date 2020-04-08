@@ -169,4 +169,13 @@ export interface PrivateMessageData {
   messages: Message[];
 }
 
+export interface ResidentPrivilegeInfo {
+  email: string;
+  firstName: string;
+  lastName: string;
+  floor: string;
+  accountType: number;
+  canPost: boolean;
+}
+
 export const IMAGE_BASE_URL = "https://us-central1-rezzi-33137.cloudfunctions.net";

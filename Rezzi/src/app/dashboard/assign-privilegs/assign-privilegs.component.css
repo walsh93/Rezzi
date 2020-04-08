@@ -1,0 +1,17 @@
+#tableContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#residentTable {
+  width: 85%;
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding: 20px 20px 20px 0;
+}
