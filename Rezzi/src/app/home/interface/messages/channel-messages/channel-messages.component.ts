@@ -45,6 +45,11 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEvent') viewingObs: Observable<string>;
 
+  // This user's ability to post in channels from interface.component
+  private canPostUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('canPostUpdateEvent') canPostObs: Observable<boolean>;
+
   constructor(public messagesService: MessagesService) {
     this.session = null;
     this.currentChannel = null;
@@ -90,6 +95,20 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       }
     });
 
+    // Listen for changes in user's 'canPost' tag and change the channel messages height accordingly
+    /**
+     * Header navbar height = 64px (mat-tool-bar default)
+     * Channel navbar height = 64px (mat-tool-bar default)
+     * app-new-message height = 90px (declared in new-message.component.css)
+     */
+    this.canPostUpdateSub = this.canPostObs.subscribe((canPost) => {
+      if (canPost) {
+        document.getElementById('channelMessages').style.height = 'calc(100vh - 218px)';
+      } else {
+        document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';
+      }
+    });
+
     // TODO What is the opening channel view? Do we need to call this.messagesService.emitNewChannelView on opening?
 
     // Listen for updated message list
@@ -107,6 +126,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.channelUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels
     this.viewingUpdateSub.unsubscribe();
+    this.canPostUpdateSub.unsubscribe();
   }
 
   /*initializeTestData() {

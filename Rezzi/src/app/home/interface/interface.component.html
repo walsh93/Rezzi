@@ -21,8 +21,9 @@
       [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
       [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
       [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
+      [canPostUpdateEvent]="canPostUpdate.asObservable()"
     ></app-channel-messages>
-    <app-new-message
+    <app-new-message id="newMessageBar"
       [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
       [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
       [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"

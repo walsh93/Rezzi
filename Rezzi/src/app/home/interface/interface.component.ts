@@ -19,6 +19,7 @@ export class InterfaceComponent implements OnInit {
   abbrevUserUpdateSubject: Subject<AbbreviatedUser> = new Subject<AbbreviatedUser>();
   channelsUpdateSubject: Subject<ChannelData[]> = new Subject<ChannelData[]>();
   viewingUpdateSubject: Subject<string> = new Subject<string>();
+  canPostUpdate: Subject<boolean> = new Subject<boolean>();
 
   constructor(private rezziService: RezziService) { }
 
@@ -28,6 +29,13 @@ export class InterfaceComponent implements OnInit {
       this.sessionUpdateSubject.next(session);
       this.resHall = this.session.rezzi;
       this.rezziService.getUserProfile().then(response => {
+        // Remove message bar is posting privileges have been revoked
+        if (!response.user.canPost) {
+          document.getElementById('newMessageBar').remove();
+          this.canPostUpdate.next(false);
+        } else {
+          this.canPostUpdate.next(true);
+        }
         this.user = new User(
           response.user.email,
           response.user.password,
