@@ -46,6 +46,7 @@ module.exports.addUser = function addUser(data) {
       } else if (doc.exists) {
         data.oldpassword = data.password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
         data.password = pass.generateHash(data.password);
+        data.canPost = true;
         dbstore.collection('users').doc(data.email).update(data)
         resolve(201)
       } else {
