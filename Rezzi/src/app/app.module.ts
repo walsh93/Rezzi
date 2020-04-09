@@ -114,7 +114,7 @@ import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 import { AssignPrivilegsComponent } from './dashboard/assign-privilegs/assign-privilegs.component';
-import { MuteMembersComponent } from './home/interface/channel-nav-bar/mute-members/mute-members.component';
+import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
 
 @NgModule({
   declarations: [
