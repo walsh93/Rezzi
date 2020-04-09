@@ -55,7 +55,7 @@ export class AssignPrivilegsComponent implements OnInit {
                 }
               });
               this.residents = new MatTableDataSource(Array.from(this.resPrivInfoMap.values()));
-              this.title = 'Residents in your Rezzi';
+              this.title = 'Residents on your floor';
             });
           });
         } else {

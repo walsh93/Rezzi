@@ -16,9 +16,6 @@ import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
 import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
-import { RequestChannelComponent } from './dashboard/request-channel/request-channel.component';
-import { RaChannelRequestsComponent } from './dashboard/ra-admin/ra-channel-requests/ra-channel-requests.component';
-import { AssignPrivilegsComponent } from './dashboard/assign-privilegs/assign-privilegs.component';
 
 // Routes
 const routes: Routes = [
@@ -35,12 +32,6 @@ const routes: Routes = [
   { path: 'create-channel', component: RaCreateChannelComponent },
   { path: 'err/:accountType/unauthorized', component: ErrorComponent }, // Error routes
   { path: 'dashboard', component: DashboardComponent },
-
-  // TODO @Kai remove these after done testing
-  { path: 'request-channel', component: RequestChannelComponent },
-  { path: 'channel-requests', component: RaChannelRequestsComponent },
-  { path: 'posting-privileges', component: AssignPrivilegsComponent },
-
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },              // Default path to sign-in
   { path: '**', component: PageNotFoundComponent },                     // MUST BE LAST
 ];

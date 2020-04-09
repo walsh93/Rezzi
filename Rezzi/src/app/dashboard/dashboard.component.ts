@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit {
   showRA = false;
   showHD = false;
   showReqChan = false;
+  showPostPriv = false;
   accountType: number;
 
   // Data to pass to child elements
@@ -37,6 +38,60 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
+  }
+
+  showEditProfile() {
+    this.showEdit = true;
+    this.showPM = false;
+    this.showRA = false;
+    this.showHD = false;
+    this.showReqChan = false;
+    this.showPostPriv = false;
+  }
+
+  showPrivateMessages() {
+    this.showEdit = false;
+    this.showPM = true;
+    this.showRA = false;
+    this.showHD = false;
+    this.showReqChan = false;
+    this.showPostPriv = false;
+  }
+
+  showRequestChannel() {
+    this.showEdit = false;
+    this.showPM = false;
+    this.showRA = false;
+    this.showHD = false;
+    this.showReqChan = true;
+    this.showPostPriv = false;
+  }
+
+  showRaAdmin() {
+    this.showEdit = false;
+    this.showPM = false;
+    this.showRA = true;
+    this.showHD = false;
+    this.showReqChan = false;
+    this.showPostPriv = false;
+  }
+
+  showHdAdmin() {
+    this.showEdit = false;
+    this.showPM = false;
+    this.showRA = false;
+    this.showHD = true;
+    this.showReqChan = false;
+    this.showPostPriv = false;
+  }
+
+  showPostingPrivileges() {
+    this.showEdit = false;
+    this.showPM = false;
+    this.showRA = false;
+    this.showHD = false;
+    this.showReqChan = false;
+    this.showPostPriv = true;
   }
 
 }
