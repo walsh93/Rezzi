@@ -123,8 +123,18 @@ export class RezziService {
     });
   }
 
+  /**
+   * Get residents from the specified floor.
+   * @param floor - the floor to fetch. If all floors (the entire Rezzi) is wanted, `floors` should be `null`.
+   */
   getResidentsByFloor(floor: string): Promise<any> {
-    return this.http.get(`/get-residents-by-floor/${floor}`).toPromise().then((response) => {
+    let url: string = null;
+    if (floor == null || floor === undefined) {
+      url = '/get-residents-by-floor';
+    } else {
+      url = `/get-residents-by-floor/${floor}`;
+    }
+    return this.http.get(url).toPromise().then((response) => {
       return response;
     }).catch((error) => {
       console.log(error);
