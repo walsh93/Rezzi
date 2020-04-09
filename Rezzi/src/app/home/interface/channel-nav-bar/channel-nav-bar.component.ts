@@ -5,8 +5,9 @@ import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
 import { ChannelData, AbbreviatedUser, BotMessage } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { MessagesService } from '../messages/messages.service';
+import * as c from '../interface.constants';
 
 export interface DialogData {
   channel: ChannelData;
@@ -30,6 +31,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 
   // All buttons are disabled until permissions are checked on init
   channelMenuDisabled = true;
+  muteButtonDisabled = true;
   leaveButtonDisabled = true;
   deleteButtonDisabled = true;
 
@@ -67,6 +69,9 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       this.deleteButtonDisabled = false;
     } else {
       this.deleteButtonDisabled = true;
+    }
+    if (this.accountType === 0 || this.accountType === 1) {       // Must be admin to mute members in a channel
+      this.muteButtonDisabled = false;
     }
   }
 
@@ -139,6 +144,17 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
         userName: this.userName,
       }
     });
+  }
+
+  /**
+   * Functions to trigger navbar service, and then the interface subscription
+   */
+  goToMuteMembersScreen() {
+    this.channelNavBarService.updateInterfaceView(c.VIEW_MUTE_MEMBERS);
+  }
+
+  goToChannelMessagesScreen() {
+    this.channelNavBarService.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
   }
 
 }

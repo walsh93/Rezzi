@@ -1,4 +1,4 @@
-<div id="channelMessages">
+<div id="channelMessages" [hidden]="isHidden">
   <div *ngFor="let message of messages">
     <!--{{ message.owner.firstName }}: Temporary Comment-->
     <div *ngIf="message.id === 'BOT_MSG'; else nonbotMessage">

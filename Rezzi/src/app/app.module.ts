@@ -88,7 +88,11 @@ import { JoinChannelComponent } from './home/interface/side-panel/join-channel/j
 import { ChannelMessagesComponent } from './home/interface/messages/channel-messages/channel-messages.component';
 import { NewMessageComponent } from './home/interface/messages/new-message/new-message.component';
 
-import { ChannelNavBarComponent, LeaveChannelDialog, DeleteChannelDialog } from './home/interface/channel-nav-bar/channel-nav-bar.component';
+import {
+  ChannelNavBarComponent,
+  LeaveChannelDialog,
+  DeleteChannelDialog
+} from './home/interface/channel-nav-bar/channel-nav-bar.component';
 import { MessageComponent } from './home/interface/messages/message/message.component';
 import { ImageModalComponent } from './home/interface/messages/new-message/image-modal/image-modal.component';
 
@@ -110,6 +114,7 @@ import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 import { AssignPrivilegsComponent } from './dashboard/assign-privilegs/assign-privilegs.component';
+import { MuteMembersComponent } from './home/interface/channel-nav-bar/mute-members/mute-members.component';
 
 @NgModule({
   declarations: [
@@ -164,6 +169,7 @@ import { AssignPrivilegsComponent } from './dashboard/assign-privilegs/assign-pr
     ImageModalComponent,
     BotMessageComponent,
     AssignPrivilegsComponent,
+    MuteMembersComponent,
   ],
   imports: [
     BrowserModule,

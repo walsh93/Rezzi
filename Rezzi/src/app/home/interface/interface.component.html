@@ -16,7 +16,9 @@
     <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
       ≡
     </button>
+    <app-mute-members [isHiddenObs]="viewMuteMemSubj.asObservable()"></app-mute-members>
     <app-channel-messages
+      [isHiddenObs]="viewChanMesSubj.asObservable()"
       [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
       [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
@@ -24,6 +26,7 @@
       [canPostUpdateEvent]="canPostUpdate.asObservable()"
     ></app-channel-messages>
     <app-new-message id="newMessageBar"
+      [isHiddenObs]="viewChanMesSubj.asObservable()"
       [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
       [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
       [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"

@@ -6,6 +6,11 @@
     <button mat-button [disabled]="channelMenuDisabled" [matMenuTriggerFor]="channelMenu">⋮</button>
 
     <mat-menu #channelMenu="matMenu" xPosition="before">
+      <div *ngIf="!muteButtonDisabled">
+        <button mat-menu-item (click)="goToChannelMessagesScreen()">View Channel</button>
+        <button mat-menu-item (click)="goToMuteMembersScreen()">Mute Members</button>
+        <mat-divider></mat-divider>
+      </div>
       <button mat-menu-item [disabled]="leaveButtonDisabled" (click)="openLeaveDialog()">Leave Channel</button>
       <button mat-menu-item [disabled]="deleteButtonDisabled" (click)="openDeleteDialog()">Delete Channel</button>
     </mat-menu>

@@ -4,7 +4,6 @@ import { Subscription, Observable, range } from 'rxjs';
 import { Message, AbbreviatedUser } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ChannelData } from '../../../../classes.model';
-import { User } from '../../../../classes.model';
 
 @Component({
   selector: 'app-channel-messages',
@@ -15,6 +14,10 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   private messagesSub: Subscription;
   private channelMap: Map<string, ChannelData>;
+
+  isHidden = false;  // By default, want to show channel messages and new-message component
+  private isHiddenSubsc: Subscription;
+  @Input() isHiddenObs: Observable<boolean>;
 
   amViewingNewChannel = false;
   needToUpdateScroll = false;
@@ -60,6 +63,11 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // If testing messages/message view with `ng serve`
     // this.initializeTestData();
+
+    // Listen for whether or not to view this in the interface or some other component
+    this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
+      this.isHidden = !viewNow;
+    });
 
     // Listen for user updates
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
@@ -122,6 +130,8 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.isHiddenSubsc.unsubscribe();
+    this.userUpdateSub.unsubscribe();
     this.sessionUpdateSub.unsubscribe();
     this.channelUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels

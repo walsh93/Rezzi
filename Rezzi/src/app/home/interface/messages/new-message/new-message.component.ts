@@ -11,10 +11,14 @@ import { Subscription, Observable } from 'rxjs';
   templateUrl: './new-message.component.html',
   styleUrls: ['./new-message.component.css']
 })
-export class NewMessageComponent implements OnInit {
-  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0,"");
+export class NewMessageComponent implements OnInit, OnDestroy {
+  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0, '');
   enteredMessage = '';
   image = null;
+
+  isHidden = false;  // By default, want to show channel messages and new-message component
+  private isHiddenSubsc: Subscription;
+  @Input() isHiddenObs: Observable<boolean>;
 
   // Session data
   session: any;
@@ -39,6 +43,11 @@ export class NewMessageComponent implements OnInit {
   constructor(public messagesService: MessagesService, public dialog: MatDialog) { }
 
   ngOnInit() {
+    // Listen for whether or not to view this in the interface or some other component
+    this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
+      this.isHidden = !viewNow;
+    });
+
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
       console.log('session has been updated in new-message.component');
@@ -63,7 +72,7 @@ export class NewMessageComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    let message: Message = {
+    const message: Message = {
       content: form.value.enteredMessage,
       owner: this.user,
       time: new Date(),
@@ -104,6 +113,7 @@ export class NewMessageComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.isHiddenSubsc.unsubscribe();
     this.sessionUpdateSub.unsubscribe();
     this.userUpdateSub.unsubscribe();
     this.viewingUpdateSub.unsubscribe();

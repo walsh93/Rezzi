@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RezziService } from '../../rezzi.service';
 import { ChannelData, User, AbbreviatedUser } from '../../classes.model';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { ChannelNavBarService } from './channel-nav-bar/channel-nav-bar.service';
+import * as c from './interface.constants';
 
 @Component({
   selector: 'app-interface',
@@ -21,7 +23,12 @@ export class InterfaceComponent implements OnInit {
   viewingUpdateSubject: Subject<string> = new Subject<string>();
   canPostUpdate: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private rezziService: RezziService) { }
+  // Variables to track which interface view should appear (triggered by channel navbar and service)
+  interfaceViewSubscr: Subscription;
+  viewChanMesSubj: Subject<boolean> = new Subject<boolean>();
+  viewMuteMemSubj: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private rezziService: RezziService, private cnbService: ChannelNavBarService) { }
 
   ngOnInit() {
     this.rezziService.getSession().then((session) => {
@@ -61,6 +68,19 @@ export class InterfaceComponent implements OnInit {
             this.resHall = response.user.rezzi;
           }
         });
+      }
+    });
+
+    // Listen for changes in the interface view
+    this.interfaceViewSubscr = this.cnbService.getInterfaceViewListener().subscribe(newView => {
+      if (newView === c.VIEW_CHANNEL_MESSAGES) {
+        this.viewChanMesSubj.next(true);
+        this.viewMuteMemSubj.next(false);
+      } else if (newView === c.VIEW_MUTE_MEMBERS) {
+        this.viewChanMesSubj.next(false);
+        this.viewMuteMemSubj.next(true);
+      } else {
+        console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
       }
     });
   }
