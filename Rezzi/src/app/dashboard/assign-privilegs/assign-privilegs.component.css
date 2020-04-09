@@ -2,10 +2,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
+  width: 85%;
+}
+
+h1 {
+  margin: 25px 0;
+}
+
+#filterButtonContainer {
+  align-self: flex-end;
 }
 
 #residentTable {
-  width: 85%;
+  width: -webkit-fill-available;
 }
 
 .mat-row {

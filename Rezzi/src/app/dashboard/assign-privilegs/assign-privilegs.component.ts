@@ -12,8 +12,9 @@ import { ResidentPrivilegeInfo } from 'src/app/classes.model';
 })
 export class AssignPrivilegsComponent implements OnInit {
 
-  private accountType: number;
+  accountType: number;
   title = 'Fetching residents...';
+  floors: string[] = [];
   private resPrivInfoMap = new Map<string, ResidentPrivilegeInfo>();
   residents: MatTableDataSource<ResidentPrivilegeInfo>;
   columnsToDisplay: string[] = ['fnameCol', 'lnameCol', 'emailCol', 'actTypeCol', 'buttonCol'];
@@ -31,8 +32,12 @@ export class AssignPrivilegsComponent implements OnInit {
       } else {
         this.accountType = response.accountType;
         if (this.accountType === 0) {  // if hall director, get all users in Rezzi
-          this.rezziService.getResidentsByFloor('all').then(list => {
-            list.forEach(user => {
+          this.rezziService.getResidentsByFloor('all').then(res => {
+            const infoList = res.infoList as ResidentPrivilegeInfo[];
+            if (res.floors != null && res.floors !== undefined) {
+              this.floors = res.floors as string[];
+            }
+            infoList.forEach(user => {
               this.resPrivInfoMap.set(user.email, user);
             });
             this.residents = new MatTableDataSource(Array.from(this.resPrivInfoMap.values()));
@@ -61,6 +66,10 @@ export class AssignPrivilegsComponent implements OnInit {
         console.log('error');
       }
     });
+  }
+
+  filterByFloor(floor: string) {
+    console.log(`floor to filter by is ${floor}`);
   }
 
 }

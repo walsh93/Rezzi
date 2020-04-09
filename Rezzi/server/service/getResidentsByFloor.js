@@ -10,7 +10,8 @@ const keys = require('../constants').db_keys
 
 router.get('/:floor', checkCookie, function(request, response) {
   if (request.params.floor.toLowerCase() == 'all') {  // Get all residents and RAs in entire Rezzi
-    db.collection(keys.residence_halls).doc(request.__session.rezzi).get().then((rezziDoc) => {
+    const rezziDocRef = db.collection(keys.residence_halls).doc(request.__session.rezzi)
+    rezziDocRef.get().then((rezziDoc) => {
       // Check that document exists
       if (!rezziDoc.exists) {
         response.status(http.not_found).json({ msg: 'The document for this Rezzi could not be found.' })
@@ -30,12 +31,13 @@ router.get('/:floor', checkCookie, function(request, response) {
 
       // Initialize empty arrays
       let residentAndRaInfo = [];  // This is the array to return in the response
+      let floors = [];
       let promises = [];
 
       // Combine arrays of residents and RAs, loop through each of their document and pull data
       const residentsAndRas = rezziData.RA_list.concat(rezziData.resident_list)
       for(let i = 0; i < residentsAndRas.length; i++) {
-        const promise = db.collection(keys.users).doc(residentsAndRas[i]).get().then((residentDoc) => {
+        const residentPromise = db.collection(keys.users).doc(residentsAndRas[i]).get().then((residentDoc) => {
           if (!residentDoc.exists) {
             console.log(`Firestore document for ${residentsAndRas[i]} could not be found.`)
           } else {
@@ -77,11 +79,19 @@ router.get('/:floor', checkCookie, function(request, response) {
             residentAndRaInfo.push(info)
           }
         })
-        promises.push(promise)
+        promises.push(residentPromise)
       }
 
+      // Get list of floor names
+      const floorPromise = rezziDocRef.collection(keys.floors).get().then(snapshot => {
+        for (let i = 0; i < snapshot.docs.length; i++) {
+          floors.push(snapshot.docs[i].id)
+        }
+      })
+      promises.push(floorPromise)
+
       Promise.all(promises).then((resolved) => {
-        response.status(http.ok).json({ infoList: residentAndRaInfo })
+        response.status(http.ok).json({ infoList: residentAndRaInfo, floors: floors })
       }).catch((reject) => {
         response.status(http.error).json({ reject: reject, msg: 'Something went wrong. Please try again later.' })
       })

@@ -1,5 +1,14 @@
 <div id="tableContainer">
   <h1>{{ title }}</h1>
+
+  <!-- Floor filter menu -->
+  <div id="filterButtonContainer" *ngIf="accountType==0">
+    <button mat-button [matMenuTriggerFor]="floorMenu">Filter</button>
+    <mat-menu #floorMenu="matMenu" xPosition="before">
+      <button mat-menu-item *ngFor="let floor of floors" (click)="filterByFloor(floor)">{{ floor }}</button>
+    </mat-menu>
+  </div>
+
   <table id="residentTable" class="mat-elevation-z8" mat-table [dataSource]="residents">
     <!-- First Name column-->
     <ng-container matColumnDef="fnameCol">

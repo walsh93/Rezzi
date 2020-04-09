@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { ResidentPrivilegeInfo } from './classes.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -124,9 +123,9 @@ export class RezziService {
     });
   }
 
-  getResidentsByFloor(floor: string): Promise<ResidentPrivilegeInfo[]> {
+  getResidentsByFloor(floor: string): Promise<any> {
     return this.http.get(`/get-residents-by-floor/${floor}`).toPromise().then((response) => {
-      return (response as any).infoList;
+      return response;
     }).catch((error) => {
       console.log(error);
     });
