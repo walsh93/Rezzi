@@ -1,5 +1,6 @@
 <div id="tableContainer">
   <h1>{{ title }}</h1>
+  <p>{{ message }}</p>
 
   <!-- Floor filter menu -->
   <div id="filterButtonContainer" *ngIf="accountType==0">
@@ -13,25 +14,25 @@
     <!-- First Name column-->
     <ng-container matColumnDef="fnameCol">
       <th mat-header-cell *matHeaderCellDef> First Name </th>
-      <td mat-cell *matCellDef="let resident">{{ resident.firstName }}</td>
+      <td class="fnameColumn" mat-cell *matCellDef="let resident">{{ resident.firstName }}</td>
     </ng-container>
 
     <!-- Last name column-->
     <ng-container matColumnDef="lnameCol">
       <th mat-header-cell *matHeaderCellDef> Last Name </th>
-      <td mat-cell *matCellDef="let resident">{{ resident.lastName }}</td>
+      <td class="lnameColumn" mat-cell *matCellDef="let resident">{{ resident.lastName }}</td>
     </ng-container>
 
     <!-- Email column -->
     <ng-container matColumnDef="emailCol">
       <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let resident">{{ resident.email }}</td>
+      <td class="emailColumn" mat-cell *matCellDef="let resident">{{ resident.email }}</td>
     </ng-container>
 
     <!-- Account type column -->
     <ng-container matColumnDef="actTypeCol">
       <th mat-header-cell *matHeaderCellDef> User type </th>
-      <td mat-cell *matCellDef="let resident">
+      <td class="accountColumn" mat-cell *matCellDef="let resident">
         <div *ngIf="resident.accountType==1">RA</div>
         <div *ngIf="resident.accountType==2">Resident</div>
       </td>
@@ -39,8 +40,8 @@
 
     <!-- Button column -->
     <ng-container matColumnDef="buttonCol">
-      <th mat-header-cell *matHeaderCellDef> Posting Privileges </th>
-      <td mat-cell *matCellDef="let resident">
+      <th mat-header-cell *matHeaderCellDef> Privileges </th>
+      <td class="buttonColumn" mat-cell *matCellDef="let resident">
         <div *ngIf="resident.canPost;else cantPost">
           <button mat-raised-button color="accent" (click)="setPrivileges(resident.email, 'false')">Revoke</button>
         </div>

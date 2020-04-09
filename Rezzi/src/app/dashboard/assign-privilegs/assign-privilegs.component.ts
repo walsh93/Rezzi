@@ -15,6 +15,7 @@ export class AssignPrivilegsComponent implements OnInit {
   private RESET_FILTER = 'Reset filter';
   accountType: number;
   title = 'Fetching residents...';
+  message = 'Modify user posting privileges across all channels';
   floors: string[] = [];
   private resPrivInfoMap = new Map<string, ResidentPrivilegeInfo>();
   residents: MatTableDataSource<ResidentPrivilegeInfo>;
