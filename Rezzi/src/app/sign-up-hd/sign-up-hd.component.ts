@@ -17,7 +17,7 @@ export class SignUpHdComponent implements OnInit {
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
   onSignUpHD(form: NgForm) {
-    if (form.invalid){
+    if (form.invalid) {
       return;
     }
     console.log(form);
