@@ -12,6 +12,7 @@ import { ResidentPrivilegeInfo } from 'src/app/classes.model';
 })
 export class AssignPrivilegsComponent implements OnInit {
 
+  private RESET_FILTER = 'Reset filter';
   accountType: number;
   title = 'Fetching residents...';
   floors: string[] = [];
@@ -35,7 +36,7 @@ export class AssignPrivilegsComponent implements OnInit {
           this.rezziService.getResidentsByFloor('all').then(res => {
             const infoList = res.infoList as ResidentPrivilegeInfo[];
             if (res.floors != null && res.floors !== undefined) {
-              this.floors = res.floors as string[];
+              this.floors = [this.RESET_FILTER].concat(res.floors as string[]);
             }
             infoList.forEach(user => {
               this.resPrivInfoMap.set(user.email, user);
@@ -69,7 +70,17 @@ export class AssignPrivilegsComponent implements OnInit {
   }
 
   filterByFloor(floor: string) {
-    console.log(`floor to filter by is ${floor}`);
+    if (floor === this.RESET_FILTER) {
+      this.residents = new MatTableDataSource(Array.from(this.resPrivInfoMap.values()));
+    } else {
+      const filteredList: ResidentPrivilegeInfo[] = [];
+      this.resPrivInfoMap.forEach((privInfo, email) => {
+        if (privInfo.floor === floor) {
+          filteredList.push(privInfo);
+        }
+      });
+      this.residents = new MatTableDataSource(filteredList);
+    }
   }
 
 }
