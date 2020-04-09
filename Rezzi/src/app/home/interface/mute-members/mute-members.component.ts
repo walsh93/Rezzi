@@ -32,18 +32,6 @@ export class MuteMembersComponent implements OnInit, OnDestroy {
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
-    this.rezziService.getSession().then((session) => {
-      if (session.email == null) {  // not signed in
-        this.router.navigate(['/sign-in']);
-      } else if (session.verified === false) {  // signed in but not verified
-        this.router.navigate(['/sign-up']);
-      } else if (session.accountType !== 1 && session.accountType !== 0) {  // not an RA or HD
-        this.router.navigate(['/err/1/unauthorized']);
-      } else {
-        console.log('We good');
-      }
-    });
-
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
       this.isHidden = !viewNow;
