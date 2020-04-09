@@ -21,6 +21,7 @@ module.exports = {
     private_messages: "/private-messages",
     get_deletion_requests: "/getDeletionRequests",
     get_res_by_floor: "/get-residents-by-floor",
+    update_canpost: "/update-can-post",
   },
 
   // Firebase constants
