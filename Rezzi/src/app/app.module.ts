@@ -109,6 +109,7 @@ import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-n
 import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -162,6 +163,7 @@ import { BotMessageComponent } from './home/interface/messages/bot-message/bot-m
     DeleteChannelDialog,
     ImageModalComponent,
     BotMessageComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
