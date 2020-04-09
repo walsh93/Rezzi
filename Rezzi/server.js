@@ -84,6 +84,8 @@ const getDeletionRequests = require('./server/service/getDeletionRequests')
 app.use(service.get_deletion_requests, getDeletionRequests)
 const getResByFloor = require('./server/service/getResidentsByFloor')
 app.use(service.get_res_by_floor, getResByFloor)
+const getResByChannel = require('./server/service/getResidentsByChannel')
+app.use(service.get_res_by_channel, getResByChannel)
 const updateCanPost = require('./server/service/updateCanPost')
 app.use(service.update_canpost, updateCanPost)
 

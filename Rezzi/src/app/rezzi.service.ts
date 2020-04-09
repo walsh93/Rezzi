@@ -141,6 +141,14 @@ export class RezziService {
     });
   }
 
+  getResidentsByChannel(channelID: string): Promise<any> {
+    return this.http.get(`/get-residents-by-channel/${channelID}`).toPromise().then((response) => {
+      return response;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
   getDeletionRequests(): Promise<any> {
     return this.http.get('/getDeletionRequests').toPromise().then((deletionList) => {
       console.log(deletionList);

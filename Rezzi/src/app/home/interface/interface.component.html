@@ -16,7 +16,10 @@
     <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
       ≡
     </button>
-    <app-mute-members [isHiddenObs]="viewMuteMemSubj.asObservable()"></app-mute-members>
+    <app-mute-members
+      [isHiddenObs]="viewMuteMemSubj.asObservable()"
+      [viewingObs]="viewingUpdateSubject.asObservable()"
+    ></app-mute-members>
     <app-channel-messages
       [isHiddenObs]="viewChanMesSubj.asObservable()"
       [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"

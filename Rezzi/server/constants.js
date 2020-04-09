@@ -21,6 +21,7 @@ module.exports = {
     private_messages: "/private-messages",
     get_deletion_requests: "/getDeletionRequests",
     get_res_by_floor: "/get-residents-by-floor",
+    get_res_by_channel: "/get-residents-by-channel",
     update_canpost: "/update-can-post",
   },
 

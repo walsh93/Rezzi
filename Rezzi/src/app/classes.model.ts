@@ -178,4 +178,16 @@ export interface ResidentPrivilegeInfo {
   canPost: boolean;
 }
 
-export const IMAGE_BASE_URL = "https://us-central1-rezzi-33137.cloudfunctions.net";
+export interface MemberMuteInfo {
+  email: string;
+  firstName: string;
+  lastName: string;
+  isMuted: boolean;
+}
+
+export interface ChannelMemberData {
+  email: string;
+  isMuted: boolean;
+}
+
+export const IMAGE_BASE_URL = 'https://us-central1-rezzi-33137.cloudfunctions.net';
