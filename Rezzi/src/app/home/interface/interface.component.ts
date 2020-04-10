@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RezziService } from '../../rezzi.service';
-import { ChannelData, User, AbbreviatedUser } from '../../classes.model';
+import { ChannelData, User, AbbreviatedUser, NodeSession } from '../../classes.model';
 import { Subject, Subscription } from 'rxjs';
 import { ChannelNavBarService } from './channel-nav-bar/channel-nav-bar.service';
 import * as c from './interface.constants';
+import { InterfaceService } from './interface.service';
 
 @Component({
   selector: 'app-interface',
   templateUrl: './interface.component.html',
   styleUrls: ['./interface.component.css']
 })
-export class InterfaceComponent implements OnInit {
+export class InterfaceComponent implements OnInit, OnDestroy {
   private channelMap = new Map<string, ChannelData>();
+  private nodeSession: NodeSession;
+  private nodeSessionSubsc: Subscription;
   session: any;
   resHall: string;
   user: User;
@@ -30,9 +33,11 @@ export class InterfaceComponent implements OnInit {
   viewMuteMemSubj: Subject<boolean> = new Subject<boolean>();
   hideNewMsgSubj: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private rezziService: RezziService, private cnbService: ChannelNavBarService) { }
+  constructor(private interfaceService: InterfaceService, private rezziService: RezziService, private cnbService: ChannelNavBarService) { }
 
   ngOnInit() {
+    this.initializeComponentData();
+
     this.rezziService.getSession().then((session) => {
       this.session = session;
       this.sessionUpdateSubject.next(session);
@@ -87,6 +92,22 @@ export class InterfaceComponent implements OnInit {
     });
   }
 
+  private initializeComponentData() {
+    const session1 = this.interfaceService.getNodeSession();
+    if (session1 == null) {
+      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
+        this.initializeDataFromSession(session2);
+      });
+    } else {
+      this.initializeDataFromSession(session1);
+    }
+  }
+
+  private initializeDataFromSession(nodeSession: NodeSession) {
+    this.nodeSession = nodeSession;
+    this.resHall = nodeSession.rezzi;
+  }
+
   receivedChannels(channels: ChannelData[]) {
     this.channelsUpdateSubject.next(channels);
     channels.forEach(channelData => {
@@ -98,6 +119,12 @@ export class InterfaceComponent implements OnInit {
     this.viewingUpdateSubject.next(channelID);
     if (this.channelMap.has(channelID)) {
       this.hideNewMsgSubj.next(this.channelMap.get(channelID).isMuted);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.nodeSessionSubsc != null) {
+      this.nodeSessionSubsc.unsubscribe();
     }
   }
 

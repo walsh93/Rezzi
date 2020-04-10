@@ -2,9 +2,10 @@ import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angu
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { SidePanelService } from './side-panel.service';
-import { ChannelData, AbbreviatedUser } from '../../../classes.model';
+import { ChannelData, AbbreviatedUser, NodeSession } from '../../../classes.model';
 import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service';
 import { Subscription, Observable } from 'rxjs';
+import { InterfaceService } from '../interface.service';
 
 @Component({
   selector: 'app-side-panel',
@@ -26,6 +27,9 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('sessionUpdateEvent') sessionObs: Observable<any>;
 
+  private nodeSession: NodeSession;
+  private nodeSessionSubsc: Subscription;
+
   // Abbreviated User data
   user: AbbreviatedUser;
   private userUpdateSub: Subscription;
@@ -36,7 +40,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   @Output() channelsToSend = new EventEmitter<ChannelData[]>();
   @Output() channelToView = new EventEmitter<string>();
 
-  constructor(public dialog: MatDialog, private sidePanService: SidePanelService, private chanNavBarService: ChannelNavBarService) {
+  constructor(private interfaceService: InterfaceService, public dialog: MatDialog, private sidePanService: SidePanelService, private chanNavBarService: ChannelNavBarService) {
     this.refreshSidePanel();
   }
 
@@ -121,6 +125,9 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initializeComponentData();
+
+
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
       this.session = updatedSession;
@@ -143,6 +150,17 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     });
   }
 
+  private initializeComponentData() {
+    const session1 = this.interfaceService.getNodeSession();
+    if (session1 == null) {
+      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
+        this.nodeSession = session2;
+      });
+    } else {
+      this.nodeSession = session1;
+    }
+  }
+
   viewChannel(channel: ChannelData, level: string) {
     this.chanNavBarService.setNavData(channel);
 
@@ -161,6 +179,9 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.nodeSessionSubsc != null) {
+      this.nodeSessionSubsc.unsubscribe();
+    }
     this.sessionUpdateSub.unsubscribe();
     this.userUpdateSub.unsubscribe();
   }

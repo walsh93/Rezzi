@@ -191,4 +191,12 @@ export interface ChannelMemberData {
   isMuted: boolean;
 }
 
+export interface NodeSession {
+  email: string;
+  verified: boolean;
+  tempPword: boolean;
+  accountType: number;
+  rezzi: string;
+}
+
 export const IMAGE_BASE_URL = 'https://us-central1-rezzi-33137.cloudfunctions.net';

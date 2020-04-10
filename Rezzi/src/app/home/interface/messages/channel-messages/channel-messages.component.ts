@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subscription, Observable, range } from 'rxjs';
 
-import { Message, AbbreviatedUser } from '../../../../classes.model';
+import { Message, AbbreviatedUser, NodeSession } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ChannelData } from '../../../../classes.model';
+import { InterfaceService } from '../../interface.service';
 
 @Component({
   selector: 'app-channel-messages',
@@ -29,6 +30,9 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   // Session data retrieved from interface.component
+  private nodeSession: NodeSession;
+  private nodeSessionSubsc: Subscription;
+
   session: any;
   private sessionUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
@@ -56,7 +60,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   private isMutedUpdateSub: Subscription;
   @Input() isMutedObs: Observable<boolean>;
 
-  constructor(public messagesService: MessagesService) {
+  constructor(private interfaceService: InterfaceService, public messagesService: MessagesService) {
     this.session = null;
     this.currentChannel = null;
     this.channels = [];
@@ -66,6 +70,8 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // If testing messages/message view with `ng serve`
     // this.initializeTestData();
+
+    this.initializeComponentData();
 
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
@@ -140,15 +146,15 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     }); // First function, Second error, Third when observable completed
   }
 
-  ngOnDestroy() {
-    this.isHiddenSubsc.unsubscribe();
-    this.userUpdateSub.unsubscribe();
-    this.sessionUpdateSub.unsubscribe();
-    this.channelUpdateSub.unsubscribe();
-    this.messagesSub.unsubscribe(); // useful when changing channels
-    this.viewingUpdateSub.unsubscribe();
-    this.canPostUpdateSub.unsubscribe();
-    this.isMutedUpdateSub.unsubscribe();
+  private initializeComponentData() {
+    const session1 = this.interfaceService.getNodeSession();
+    if (session1 == null) {
+      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
+        this.nodeSession = session2;
+      });
+    } else {
+      this.nodeSession = session1;
+    }
   }
 
   /*initializeTestData() {
@@ -198,4 +204,19 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.messages.push(m2);
     this.messages.push(m3);
   }*/
+
+  ngOnDestroy() {
+    if (this.nodeSessionSubsc != null) {
+      this.nodeSessionSubsc.unsubscribe();
+    }
+    this.isHiddenSubsc.unsubscribe();
+    this.userUpdateSub.unsubscribe();
+    this.sessionUpdateSub.unsubscribe();
+    this.channelUpdateSub.unsubscribe();
+    this.messagesSub.unsubscribe(); // useful when changing channels
+    this.viewingUpdateSub.unsubscribe();
+    this.canPostUpdateSub.unsubscribe();
+    this.isMutedUpdateSub.unsubscribe();
+  }
+
 }

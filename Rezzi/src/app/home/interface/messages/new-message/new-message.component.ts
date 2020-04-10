@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData } from '../../../../classes.model';
+import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData, NodeSession } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ImageModalComponent } from './image-modal/image-modal.component';
 import { NgForm } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
+import { InterfaceService } from '../../interface.service';
 
 @Component({
   selector: 'app-new-message',
@@ -33,6 +34,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('sessionUpdateEventAnm') sessionObs: Observable<any>;
 
+  private nodeSession: NodeSession;
+  private nodeSessionSubsc: Subscription;
+
 
   // Abbreviated User data
   user: AbbreviatedUser;
@@ -47,9 +51,11 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
 
-  constructor(public messagesService: MessagesService, public dialog: MatDialog) { }
+  constructor(public messagesService: MessagesService, private interfaceService: InterfaceService, public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.initializeComponentData();
+
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
       this.isHidden = !viewNow;
@@ -83,6 +89,17 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       console.log(`Now viewing channel ${updatedChannelID}`);
       this.currentChannel = updatedChannelID;
     });
+  }
+
+  private initializeComponentData() {
+    const session1 = this.interfaceService.getNodeSession();
+    if (session1 == null) {
+      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
+        this.nodeSession = session2;
+      });
+    } else {
+      this.nodeSession = session1;
+    }
   }
 
   onAddMessage(form: NgForm) {
@@ -130,6 +147,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.nodeSessionSubsc != null) {
+      this.nodeSessionSubsc.unsubscribe();
+    }
     this.isHiddenSubsc.unsubscribe();
     this.isMutedSubsc.unsubscribe();
     this.canPostUpdateSub.unsubscribe();
