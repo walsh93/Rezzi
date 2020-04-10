@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angu
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { SidePanelService } from './side-panel.service';
-import { ChannelData, AbbreviatedUser, NodeSession } from '../../../classes.model';
+import { ChannelData, AbbreviatedUser, NodeSession, AbbreviatedUserProfile } from '../../../classes.model';
 import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service';
 import { Subscription, Observable } from 'rxjs';
 import { InterfaceService } from '../interface.service';
@@ -15,6 +15,17 @@ import { InterfaceService } from '../interface.service';
 })
 
 export class SidePanelComponent implements OnInit, OnDestroy {
+  // Node session data
+  private nodeSession: NodeSession;
+  private nodeSessionSubsc: Subscription;
+
+  // User profile data
+  private userProfileAbr: AbbreviatedUserProfile;
+  private userProfileAbrSubsc: Subscription;
+
+
+
+
   public channels: ChannelData[];
   private filteredChannels: ChannelData[];
   status: boolean;
@@ -26,9 +37,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   private sessionUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
   @Input('sessionUpdateEvent') sessionObs: Observable<any>;
-
-  private nodeSession: NodeSession;
-  private nodeSessionSubsc: Subscription;
 
   // Abbreviated User data
   user: AbbreviatedUser;
@@ -127,7 +135,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeComponentData();
 
-
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
       this.session = updatedSession;
@@ -151,6 +158,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   }
 
   private initializeComponentData() {
+    // Initialize session
     const session1 = this.interfaceService.getNodeSession();
     if (session1 == null) {
       this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
@@ -158,6 +166,16 @@ export class SidePanelComponent implements OnInit, OnDestroy {
       });
     } else {
       this.nodeSession = session1;
+    }
+
+    // Initialize abbreviated user profile
+    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
+    if (userAbr1 == null) {
+      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
+        this.userProfileAbr = userAbr2;
+      });
+    } else {
+      this.userProfileAbr = userAbr1;
     }
   }
 
@@ -181,6 +199,9 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.nodeSessionSubsc != null) {
       this.nodeSessionSubsc.unsubscribe();
+    }
+    if (this.userProfileAbrSubsc != null) {
+      this.userProfileAbrSubsc.unsubscribe();
     }
     this.sessionUpdateSub.unsubscribe();
     this.userUpdateSub.unsubscribe();

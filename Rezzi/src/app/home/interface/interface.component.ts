@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RezziService } from '../../rezzi.service';
-import { ChannelData, User, AbbreviatedUser, NodeSession } from '../../classes.model';
+import { ChannelData, User, AbbreviatedUser, NodeSession, AbbreviatedUserProfile, UserProfile } from '../../classes.model';
 import { Subject, Subscription } from 'rxjs';
 import { ChannelNavBarService } from './channel-nav-bar/channel-nav-bar.service';
 import * as c from './interface.constants';
@@ -12,9 +12,17 @@ import { InterfaceService } from './interface.service';
   styleUrls: ['./interface.component.css']
 })
 export class InterfaceComponent implements OnInit, OnDestroy {
-  private channelMap = new Map<string, ChannelData>();
+  // Node session data
   private nodeSession: NodeSession;
   private nodeSessionSubsc: Subscription;
+
+  // User profile data
+  private userProfile: UserProfile;
+  private userProfileSubsc: Subscription;
+  private userProfileAbr: AbbreviatedUserProfile;
+  private userProfileAbrSubsc: Subscription;
+
+  private channelMap = new Map<string, ChannelData>();
   session: any;
   resHall: string;
   user: User;
@@ -93,6 +101,7 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   }
 
   private initializeComponentData() {
+    // Initialize session
     const session1 = this.interfaceService.getNodeSession();
     if (session1 == null) {
       this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
@@ -100,6 +109,24 @@ export class InterfaceComponent implements OnInit, OnDestroy {
       });
     } else {
       this.initializeDataFromSession(session1);
+    }
+
+    // Initialize user profiles
+    const user1 = this.interfaceService.getUserProfile();
+    if (user1 == null) {
+      this.userProfileSubsc = this.interfaceService.getUserProfileListener().subscribe(user2 => {
+        this.userProfile = user2;
+      });
+    } else {
+      this.userProfile = user1;
+    }
+    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
+    if (userAbr1 == null) {
+      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
+        this.userProfileAbr = userAbr2;
+      });
+    } else {
+      this.userProfileAbr = userAbr1;
     }
   }
 
@@ -125,6 +152,12 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.nodeSessionSubsc != null) {
       this.nodeSessionSubsc.unsubscribe();
+    }
+    if (this.userProfileSubsc != null) {
+      this.userProfileSubsc.unsubscribe();
+    }
+    if (this.userProfileAbrSubsc != null) {
+      this.userProfileAbrSubsc.unsubscribe();
     }
   }
 

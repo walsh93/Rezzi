@@ -199,4 +199,26 @@ export interface NodeSession {
   rezzi: string;
 }
 
+export interface UserProfile {
+  email: string;
+  password: string; // stored as hash in database
+  firstName: string;
+  lastName: string;
+  nickName: string;
+  age: number;
+  major: string;
+  bio: string;
+  imageUrl: string;
+  floor: string;
+  rezzi: string;
+  canPost: boolean;
+}
+
+export interface AbbreviatedUserProfile {
+  email: string;
+  firstName: string;
+  lastName: string;
+  nickName: string;
+}
+
 export const IMAGE_BASE_URL = 'https://us-central1-rezzi-33137.cloudfunctions.net';

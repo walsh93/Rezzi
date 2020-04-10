@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData, NodeSession } from '../../../../classes.model';
+import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData, NodeSession, AbbreviatedUserProfile } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ImageModalComponent } from './image-modal/image-modal.component';
 import { NgForm } from '@angular/forms';
@@ -13,6 +13,17 @@ import { InterfaceService } from '../../interface.service';
   styleUrls: ['./new-message.component.css']
 })
 export class NewMessageComponent implements OnInit, OnDestroy {
+  // Node session data
+  private nodeSession: NodeSession;
+  private nodeSessionSubsc: Subscription;
+
+  // User profile data
+  private userProfileAbr: AbbreviatedUserProfile;
+  private userProfileAbrSubsc: Subscription;
+
+
+
+
   tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0, '');
   enteredMessage = '';
   image = null;
@@ -33,10 +44,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   private sessionUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
   @Input('sessionUpdateEventAnm') sessionObs: Observable<any>;
-
-  private nodeSession: NodeSession;
-  private nodeSessionSubsc: Subscription;
-
 
   // Abbreviated User data
   user: AbbreviatedUser;
@@ -92,6 +99,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   }
 
   private initializeComponentData() {
+    // Initialize session
     const session1 = this.interfaceService.getNodeSession();
     if (session1 == null) {
       this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
@@ -99,6 +107,16 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       });
     } else {
       this.nodeSession = session1;
+    }
+
+    // Initialize abbreviated user profile
+    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
+    if (userAbr1 == null) {
+      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
+        this.userProfileAbr = userAbr2;
+      });
+    } else {
+      this.userProfileAbr = userAbr1;
     }
   }
 
@@ -149,6 +167,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.nodeSessionSubsc != null) {
       this.nodeSessionSubsc.unsubscribe();
+    }
+    if (this.userProfileAbrSubsc != null) {
+      this.userProfileAbrSubsc.unsubscribe();
     }
     this.isHiddenSubsc.unsubscribe();
     this.isMutedSubsc.unsubscribe();

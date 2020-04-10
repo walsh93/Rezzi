@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Subscription, Observable, range } from 'rxjs';
 
-import { Message, AbbreviatedUser, NodeSession } from '../../../../classes.model';
+import { Message, AbbreviatedUser, NodeSession, UserProfile, AbbreviatedUserProfile } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ChannelData } from '../../../../classes.model';
 import { InterfaceService } from '../../interface.service';
@@ -12,6 +12,17 @@ import { InterfaceService } from '../../interface.service';
   styleUrls: ['./channel-messages.component.css']
 })
 export class ChannelMessagesComponent implements OnInit, OnDestroy {
+  // Node session data
+  private nodeSession: NodeSession;
+  private nodeSessionSubsc: Subscription;
+
+  // User profile data
+  private userProfileAbr: AbbreviatedUserProfile;
+  private userProfileAbrSubsc: Subscription;
+
+
+
+
   messages: Message[] = [];
   private messagesSub: Subscription;
   private channelMap: Map<string, ChannelData>;
@@ -30,9 +41,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   // Session data retrieved from interface.component
-  private nodeSession: NodeSession;
-  private nodeSessionSubsc: Subscription;
-
   session: any;
   private sessionUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
@@ -147,6 +155,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   }
 
   private initializeComponentData() {
+    // Initialize session
     const session1 = this.interfaceService.getNodeSession();
     if (session1 == null) {
       this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
@@ -154,6 +163,16 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       });
     } else {
       this.nodeSession = session1;
+    }
+
+    // Initialize abbreviated user profile
+    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
+    if (userAbr1 == null) {
+      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
+        this.userProfileAbr = userAbr2;
+      });
+    } else {
+      this.userProfileAbr = userAbr1;
     }
   }
 
@@ -208,6 +227,9 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.nodeSessionSubsc != null) {
       this.nodeSessionSubsc.unsubscribe();
+    }
+    if (this.userProfileAbrSubsc != null) {
+      this.userProfileAbrSubsc.unsubscribe();
     }
     this.isHiddenSubsc.unsubscribe();
     this.userUpdateSub.unsubscribe();
