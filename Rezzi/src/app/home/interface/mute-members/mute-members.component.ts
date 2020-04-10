@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
 import { MemberMuteInfo } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-mute-members',
@@ -91,11 +91,34 @@ export class MuteMembersComponent implements OnInit, OnDestroy {
   }
 
   setMuteStatus(email: string, tf: string) {
-    if (tf === 'true') {
-      console.log(`I want to mute ${email}`);
-    } else {
-      console.log(`I want to unmute ${email}`);
-    }
+    const isMuted = (tf === 'true');
+    const body = { channelID: this.currentChannelID, email, isMuted };
+
+    this.http.post('/update-is-muted', body).toPromise().then((response) => {
+      const thenResponse = response as any;
+      if (thenResponse.status >= 200 && thenResponse.status < 300) {
+        const currentMap = this.channelMuteMap.get(this.currentChannelID);
+        const muteInfo = currentMap.get(email);
+        muteInfo.isMuted = isMuted;
+        currentMap.set(email, muteInfo);
+        this.channelMuteMap.set(this.currentChannelID, currentMap);
+        this.members = new MatTableDataSource(Array.from(currentMap.values()));
+      } else {
+        console.log('update unsuccessful', thenResponse.error);  // TODO change to mat-dialog
+      }
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status >= 200 && res.status < 300) {
+        const currentMap = this.channelMuteMap.get(this.currentChannelID);
+        const muteInfo = currentMap.get(email);
+        muteInfo.isMuted = isMuted;
+        currentMap.set(email, muteInfo);
+        this.channelMuteMap.set(this.currentChannelID, currentMap);
+        this.members = new MatTableDataSource(Array.from(currentMap.values()));
+      } else {
+        console.log('update unsuccessful');  // TODO change to mat-dialog
+      }
+    });
   }
 
 }

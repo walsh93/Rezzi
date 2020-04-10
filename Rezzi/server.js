@@ -88,6 +88,8 @@ const getResByChannel = require('./server/service/getResidentsByChannel')
 app.use(service.get_res_by_channel, getResByChannel)
 const updateCanPost = require('./server/service/updateCanPost')
 app.use(service.update_canpost, updateCanPost)
+const updateIsMuted = require('./server/service/updateIsMuted')
+app.use(service.update_ismuted, updateIsMuted)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')
