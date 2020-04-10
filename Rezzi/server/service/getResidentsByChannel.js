@@ -26,8 +26,9 @@ router.get('/:channelID', checkCookie, function(request, response) {
     channelDocRef = db.collection(chnPrefix).doc(channelName)
   } else {
     const firstDash = channelID.indexOf('-')  // The "only" dash in a hallwide channel ID
+    const raOrHall = channelID.substring(0, firstDash)
     const channelName = channelID.substring(firstDash + 1)
-    const rezPrefix = `${keys.residence_halls}/${request.__session.rezzi}/hallwide`
+    const rezPrefix = `${keys.residence_halls}/${request.__session.rezzi}/${raOrHall}`
     channelDocRef = db.collection(rezPrefix).doc(channelName)
   }
 
@@ -40,9 +41,9 @@ router.get('/:channelID', checkCookie, function(request, response) {
 
     // Check that resident list exists in the document
     const channelData = channelDoc.data()
-    const members = channelData.members
-    if (channelData.members == null || channelData.members === undefined) {
-      response.status(http.not_found).json({ msg: 'The list of members in this channel could not be found.' })
+    const muteStatuses = channelData.memberMuteStatuses
+    if (channelData.memberMuteStatuses == null || channelData.memberMuteStatuses === undefined) {
+      response.status(http.not_found).json({ msg: 'The list of mute statuses in this channel could not be found.' })
       return
     }
 
@@ -51,10 +52,10 @@ router.get('/:channelID', checkCookie, function(request, response) {
     let promises = [];
 
     // Loop through each resident document and pull data
-    for(let i = 0; i < members.length; i++) {
-      const memberPromise = db.collection(keys.users).doc(members[i]).get().then((memberDoc) => {
+    for(let i = 0; i < muteStatuses.length; i++) {
+      const memberPromise = db.collection(keys.users).doc(muteStatuses[i].email).get().then((memberDoc) => {
         if (!memberDoc.exists) {
-          console.log(`Firestore document for ${members[i]} could not be found.`)
+          console.log(`Firestore document for ${muteStatuses[i].email} could not be found.`)
         } else {
           const memberData = memberDoc.data()
 
@@ -77,10 +78,10 @@ router.get('/:channelID', checkCookie, function(request, response) {
 
           // Add info to info array
           const info = {
-            email: memberData.email,
+            email: muteStatuses[i].email,
             firstName: firstName,
             lastName: lastName,
-            isMuted: false,
+            isMuted: muteStatuses[i].isMuted,
           }
           memberInfo.push(info)
         }
