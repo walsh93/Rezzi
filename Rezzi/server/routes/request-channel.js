@@ -26,6 +26,7 @@ router.get('/', checkCookie, function(request, response) {
       level: channelInfo.level,
       description: channelInfo.description,
       members: [],
+      memberMuteStatuses: [],
       calendar: [],  // Copied from Riley's implementation
       messages: [],
     }

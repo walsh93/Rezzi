@@ -27,7 +27,7 @@ router.get("/", checkCookie, function(request, response) {
     const rezzi = doc.data().rezzi  // rezzi can't be added to session later on so this will have to do for now
     //for each email in the array, need to save to the db a new user with email, role, floor, rezzi, verified = 0, and pword code
 
-    //adding users to list of users in their floor
+    // Adding users to list of users in their floor
     const floorDocRef = db.collection(keys.rezzis + '/' + rezzi + '/floors').doc(rb.floor)
     floorDocRef.get().then((floorDoc) => {
       const residentsAlreadyInRezzi = floorDoc.data().residents
@@ -49,35 +49,68 @@ router.get("/", checkCookie, function(request, response) {
       }
     })
 
-    //adding users to floor general chat
+    // Adding users to floor general chat
     const floorGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/floors/' + rb.floor + '/channels').doc('General')
     floorGeneralDocRef.get().then((floorChannelsDoc) => {
       const membersAlreadyInRezzi = floorChannelsDoc.data().members
-      const fullArray = membersAlreadyInRezzi.concat(emailarr)
+      const mutesAlreadyInRezzi = floorChannelsDoc.data().memberMuteStatuses
+      const fullArrayMembers = membersAlreadyInRezzi.concat(emailarr)
+      const newMutes = []
+      for (let i = 0; i < emailarr.length; i++) {
+        const muteStatus = {
+          email: emailarr[i],
+          isMuted: false  // Set to false by default
+        }
+        newMutes.push(muteStatus)
+      }
+      const fullArrayMutes = mutesAlreadyInRezzi.concat(newMutes)
       floorGeneralDocRef.update({
-        members: fullArray
+        members: fullArrayMembers,
+        memberMuteStatuses: fullArrayMutes
       })
     })
 
-    //adding new RAs to RA general channel
+    // Adding new RAs to RA general channel
     if (rb.accountType == 1) {
       const raGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/RA').doc('General')
       raGeneralDocRef.get().then((raGeneralDoc) => {
-        const residentsAlreadyInRezzi = raGeneralDoc.data().members
-        const fullArray = residentsAlreadyInRezzi.concat(emailarr)
+        const rasAlreadyInRezzi = raGeneralDoc.data().members
+        const mutesAlreadyInRezzi = raGeneralDoc.data().memberMuteStatuses
+        const fullArrayRas = rasAlreadyInRezzi.concat(emailarr)
+        const newMutes = []
+        for (let i = 0; i < emailarr.length; i++) {
+          const muteStatus = {
+            email: emailarr[i],
+            isMuted: false  // Set to false by default
+          }
+          newMutes.push(muteStatus)
+        }
+        const fullArrayMutes = mutesAlreadyInRezzi.concat(newMutes)
         raGeneralDocRef.update({
-          members: fullArray
+          members: fullArrayRas,
+          memberMuteStatuses: fullArrayMutes
         })
       })
     }
 
-    //adds all users to hallwide general channel
+    // Adds all users to hallwide general channel
     const hallGeneralDocRef = db.collection(keys.rezzis + '/' + rezzi + '/hallwide').doc('General')
     hallGeneralDocRef.get().then((hallGeneralDoc) => {
       const membersAlreadyInRezzi = hallGeneralDoc.data().members
-      const fullArray = membersAlreadyInRezzi.concat(emailarr)
+      const mutesAlreadyInRezzi = hallGeneralDoc.data().memberMuteStatuses
+      const fullArrayMembers = membersAlreadyInRezzi.concat(emailarr)
+      const newMutes = []
+      for (let i = 0; i < emailarr.length; i++) {
+        const muteStatus = {
+          email: emailarr[i],
+          isMuted: false  // Set to false by default
+        }
+        newMutes.push(muteStatus)
+      }
+      const fullArrayMutes = mutesAlreadyInRezzi.concat(newMutes)
       hallGeneralDocRef.update({
-        members: fullArray
+        members: fullArrayMembers,
+        memberMuteStatuses: fullArrayMutes
       })
     })
 

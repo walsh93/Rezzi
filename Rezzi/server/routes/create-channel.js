@@ -20,6 +20,15 @@ router.get('/', checkCookie, function(request, response) {
     if (isEmpty(data.rezzi) || isEmpty(data.floor)) {
       response.status(http.bad_request).send('Your Rezzi and/or floor is not set in our database. Please contact an administrator.')
     } else {
+      const memberMuteStatuses = []
+      for (let i = 0; i < req.memberEmails.length; i++) {
+        const muteStatus = {
+          email: req.memberEmails[i],
+          isMuted: false  // Set to false by default
+        }
+        memberMuteStatuses.push(muteStatus)
+      }
+
       // Create channel object to save in the database
       const channel = {
         owner: req.owner,
@@ -28,6 +37,7 @@ router.get('/', checkCookie, function(request, response) {
         level: req.level,
         description: req.description,
         members: req.memberEmails,
+        memberMuteStatuses: memberMuteStatuses,
         calendar: [],  // Copied from Riley's implementation
         messages: [],
       }

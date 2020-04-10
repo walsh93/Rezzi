@@ -47,7 +47,7 @@ router.post('/', function(request, response) {
       }))
     } else if (role == 2) {
       promises.push(rezziRef.update({
-          resident_list: admin.firestore.FieldValue.arrayRemove(email),
+        resident_list: admin.firestore.FieldValue.arrayRemove(email),
       }))
     }
 
@@ -68,17 +68,40 @@ router.post('/', function(request, response) {
         const firstDash = channelID.indexOf('-')
         const secondDash = channelID.indexOf('-', firstDash + 1)
         const channelName = channelID.substring(secondDash + 1)
-        promises.push(floorDocRef.collection('channels').doc(channelName).update({
-          members: admin.firestore.FieldValue.arrayRemove(email)
-        }))
-      } else {
-        const firstDash = channelID.indexOf('-')  // The "only" dash in a hallwide channel ID
-        const channelName = channelID.substring(firstDash + 1)
-        promises.push(
-          rezziRef.collection('hallwide').doc(channelName).update({
-            members: admin.firestore.FieldValue.arrayRemove(email)
+        const floorChannelDocRef = floorDocRef.collection('channels').doc(channelName)
+        const promise = floorChannelDocRef.get().then(floorChannelDoc => {
+          const memberMuteStatuses = floorChannelDoc.data().memberMuteStatuses
+          const updatedMuteStatuses = []
+          for (let i = 0; i < memberMuteStatuses.length; i++) {
+            if (memberMuteStatuses[i].email != email) {
+              updatedMuteStatuses.push(memberMuteStatuses[i])
+            }
+          }
+          return floorChannelDocRef.update({
+            members: admin.firestore.FieldValue.arrayRemove(email),
+            memberMuteStatuses: updatedMuteStatuses
           })
-        )
+        })
+        promises.push(promise)
+      } else {
+        const firstDash = channelID.indexOf('-')  // The "only" dash in a hallwide or RA channel ID
+        const raOrHall = channelID.substring(0, firstDash)
+        const channelName = channelID.substring(firstDash + 1)
+        const raOrHallChannelDocRef = rezziRef.collection(raOrHall).doc(channelName)
+        const promise = raOrHallChannelDocRef.get().then(raOrHallChannelDoc => {
+          const memberMuteStatuses = raOrHallChannelDoc.data().memberMuteStatuses
+          const updatedMuteStatuses = []
+          for (let i = 0; i < memberMuteStatuses.length; i++) {
+            if (memberMuteStatuses[i].email != email) {
+              updatedMuteStatuses.push(memberMuteStatuses[i])
+            }
+          }
+          return raOrHallChannelDocRef.update({
+            members: admin.firestore.FieldValue.arrayRemove(email),
+            memberMuteStatuses: updatedMuteStatuses
+          })
+        })
+        promises.push(promise)
       }
     }
 
