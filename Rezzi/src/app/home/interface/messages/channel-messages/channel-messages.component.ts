@@ -49,9 +49,12 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   @Input('viewingUpdateEvent') viewingObs: Observable<string>;
 
   // This user's ability to post in channels from interface.component
+  private canPost = true;
   private canPostUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
   @Input('canPostUpdateEvent') canPostObs: Observable<boolean>;
+  private isMutedUpdateSub: Subscription;
+  @Input() isMutedObs: Observable<boolean>;
 
   constructor(public messagesService: MessagesService) {
     this.session = null;
@@ -110,10 +113,18 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
      * app-new-message height = 90px (declared in new-message.component.css)
      */
     this.canPostUpdateSub = this.canPostObs.subscribe((canPost) => {
-      if (canPost) {
-        document.getElementById('channelMessages').style.height = 'calc(100vh - 218px)';
+      this.canPost = canPost;
+    });
+
+    this.isMutedUpdateSub = this.isMutedObs.subscribe((isMuted) => {
+      if (this.canPost) {
+        if (isMuted) {
+          document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';  // account for removed msg bar
+        } else {
+          document.getElementById('channelMessages').style.height = 'calc(100vh - 218px)';  // account for msg bar
+        }
       } else {
-        document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';
+        document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';  // account for removed msg bar
       }
     });
 
@@ -137,6 +148,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.messagesSub.unsubscribe(); // useful when changing channels
     this.viewingUpdateSub.unsubscribe();
     this.canPostUpdateSub.unsubscribe();
+    this.isMutedUpdateSub.unsubscribe();
   }
 
   /*initializeTestData() {

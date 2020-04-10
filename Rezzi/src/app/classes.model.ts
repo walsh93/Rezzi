@@ -160,6 +160,7 @@ export interface ChannelData {
   channel: string;
   users: number;
   belongs: boolean;
+  isMuted: boolean;
   subchannels: ChannelData[];
   messages: Message[];
 }

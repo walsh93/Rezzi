@@ -11,6 +11,7 @@ import * as c from './interface.constants';
   styleUrls: ['./interface.component.css']
 })
 export class InterfaceComponent implements OnInit {
+  private channelMap = new Map<string, ChannelData>();
   session: any;
   resHall: string;
   user: User;
@@ -27,6 +28,7 @@ export class InterfaceComponent implements OnInit {
   interfaceViewSubscr: Subscription;
   viewChanMesSubj: Subject<boolean> = new Subject<boolean>();
   viewMuteMemSubj: Subject<boolean> = new Subject<boolean>();
+  hideNewMsgSubj: Subject<boolean> = new Subject<boolean>();
 
   constructor(private rezziService: RezziService, private cnbService: ChannelNavBarService) { }
 
@@ -87,10 +89,16 @@ export class InterfaceComponent implements OnInit {
 
   receivedChannels(channels: ChannelData[]) {
     this.channelsUpdateSubject.next(channels);
+    channels.forEach(channelData => {
+      this.channelMap.set(channelData.id, channelData);
+    });
   }
 
   viewingNewChannel(channelID: string) {
     this.viewingUpdateSubject.next(channelID);
+    if (this.channelMap.has(channelID)) {
+      this.hideNewMsgSubj.next(this.channelMap.get(channelID).isMuted);
+    }
   }
 
 }

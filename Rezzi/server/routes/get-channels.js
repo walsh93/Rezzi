@@ -32,11 +32,11 @@ router.get('/', checkCookie, function(request, response) {
           parent: name,
           channels: {}
         };
-        db.collection(collection).select('members', 'approvalStatus').get().then(function(snapshot) {
+        db.collection(collection).select('members', 'approvalStatus', 'memberMuteStatuses').get().then(function(snapshot) {
           // console.log(collection);  // Debugging (database path `residence-halls/name/...`)
           snapshot.forEach(function(doc) {
             const data = doc.data()
-            temp = {}
+            let temp = {}
 
             // Only show this channel if it has been approved by an RA
             if (data.approvalStatus == true) {
@@ -47,6 +47,17 @@ router.get('/', checkCookie, function(request, response) {
                 temp.users = 0;
                 temp.belongs = false;
               }
+
+              temp.isMuted = false
+              if (data.hasOwnProperty('memberMuteStatuses')) {
+                for (let k = 0; k < data.memberMuteStatuses.length; k++) {
+                  if (data.memberMuteStatuses[k].email == email) {
+                    temp.isMuted = data.memberMuteStatuses[k].isMuted
+                    break
+                  }
+                }
+              }
+
               if (data.hasOwnProperty('messages')) {
                 temp.messages = data.messages
               } else {
@@ -75,7 +86,7 @@ router.get('/', checkCookie, function(request, response) {
       responses.forEach((response) => {
         to_return[response.parent] = response.channels;
       });
-      console.log(to_return);  // Debugging (logs all channels to send to front end)
+      // console.log(to_return);  // Debugging (logs all channels to send to front end)
 
       // Check for channels they belong to and set flags accordingly
       // belongs_to.forEach((channel) => {

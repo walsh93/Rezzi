@@ -22,6 +22,7 @@
     ></app-mute-members>
     <app-channel-messages
       [isHiddenObs]="viewChanMesSubj.asObservable()"
+      [isMutedObs]="hideNewMsgSubj.asObservable()"
       [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
       [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
@@ -30,9 +31,11 @@
     ></app-channel-messages>
     <app-new-message id="newMessageBar"
       [isHiddenObs]="viewChanMesSubj.asObservable()"
+      [isMutedObs]="hideNewMsgSubj.asObservable()"
       [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
       [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
       [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
+      [canPostUpdateEvent]="canPostUpdate.asObservable()"
     ></app-new-message>
   </div>
 </mat-drawer-container>

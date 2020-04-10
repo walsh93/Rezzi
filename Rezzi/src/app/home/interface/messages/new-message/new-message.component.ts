@@ -20,6 +20,13 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   private isHiddenSubsc: Subscription;
   @Input() isHiddenObs: Observable<boolean>;
 
+  private canPost = true;
+  private canPostUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('canPostUpdateEvent') canPostObs: Observable<boolean>;
+  private isMutedSubsc: Subscription;
+  @Input() isMutedObs: Observable<boolean>;
+
   // Session data
   session: any;
   private sessionUpdateSub: Subscription;
@@ -46,6 +53,16 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
       this.isHidden = !viewNow;
+    });
+
+    // Listen for whether or not the user is muted
+    this.canPostUpdateSub = this.canPostObs.subscribe((canPost) => {
+      this.canPost = canPost;
+    });
+    this.isMutedSubsc = this.isMutedObs.subscribe(isMuted => {
+      if (this.canPost) {
+        this.isHidden = isMuted;
+      }
     });
 
     // Listen for session updates
@@ -114,6 +131,8 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.isHiddenSubsc.unsubscribe();
+    this.isMutedSubsc.unsubscribe();
+    this.canPostUpdateSub.unsubscribe();
     this.sessionUpdateSub.unsubscribe();
     this.userUpdateSub.unsubscribe();
     this.viewingUpdateSub.unsubscribe();
