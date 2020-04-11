@@ -23,6 +23,12 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   private userProfileAbr: AbbreviatedUserProfile;
   private userProfileAbrSubsc: Subscription;
 
+  // Channel data
+  private allChannels: ChannelData[];
+  private allChannelsSubscr: Subscription;
+  private myChannels: ChannelData[];
+  private myChannelsSubscr: Subscription;
+
 
 
 
@@ -177,11 +183,28 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     } else {
       this.userProfileAbr = userAbr1;
     }
+
+    // Initialize channel data
+    const allChannels1 = this.interfaceService.getAllChannels();
+    if (allChannels1 == null) {
+      this.allChannelsSubscr = this.interfaceService.getAllChannelsListener().subscribe(allChannels2 => {
+        this.allChannels = allChannels2;
+      });
+    } else {
+      this.allChannels = allChannels1;
+    }
+    const myChannels1 = this.interfaceService.getMyChannels();
+    if (myChannels1 == null) {
+      this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels2 => {
+        this.myChannels = myChannels2;
+      });
+    } else {
+      this.myChannels = myChannels1;
+    }
   }
 
   viewChannel(channel: ChannelData, level: string) {
     this.chanNavBarService.setNavData(channel);
-
     let viewingChannelString = '';
     if (level != null) {
       if (level === 'hallwide' || level === 'RA') {  // Reconstruct the channel ID
@@ -202,6 +225,12 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     }
     if (this.userProfileAbrSubsc != null) {
       this.userProfileAbrSubsc.unsubscribe();
+    }
+    if (this.allChannelsSubscr != null) {
+      this.allChannelsSubscr.unsubscribe();
+    }
+    if (this.myChannelsSubscr != null) {
+      this.myChannelsSubscr.unsubscribe();
     }
     this.sessionUpdateSub.unsubscribe();
     this.userUpdateSub.unsubscribe();

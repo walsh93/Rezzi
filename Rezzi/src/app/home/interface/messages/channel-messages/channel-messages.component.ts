@@ -20,6 +20,10 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   private userProfileAbr: AbbreviatedUserProfile;
   private userProfileAbrSubsc: Subscription;
 
+  // Channel data
+  private myChannels: ChannelData[];
+  private myChannelsSubscr: Subscription;
+
 
 
 
@@ -174,6 +178,16 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     } else {
       this.userProfileAbr = userAbr1;
     }
+
+    // Initialize channel data
+    const myChannels1 = this.interfaceService.getMyChannels();
+    if (myChannels1 == null) {
+      this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels2 => {
+        this.myChannels = myChannels2;
+      });
+    } else {
+      this.myChannels = myChannels1;
+    }
   }
 
   /*initializeTestData() {
@@ -230,6 +244,9 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     }
     if (this.userProfileAbrSubsc != null) {
       this.userProfileAbrSubsc.unsubscribe();
+    }
+    if (this.myChannelsSubscr != null) {
+      this.myChannelsSubscr.unsubscribe();
     }
     this.isHiddenSubsc.unsubscribe();
     this.userUpdateSub.unsubscribe();

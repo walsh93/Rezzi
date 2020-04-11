@@ -22,6 +22,15 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   private userProfileAbr: AbbreviatedUserProfile;
   private userProfileAbrSubsc: Subscription;
 
+  // Channel data
+  private allChannels: ChannelData[];
+  private allChannelsSubscr: Subscription;
+  private myChannels: ChannelData[];
+  private myChannelsSubscr: Subscription;
+
+
+
+
   private channelMap = new Map<string, ChannelData>();
   session: any;
   resHall: string;
@@ -105,10 +114,12 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     const session1 = this.interfaceService.getNodeSession();
     if (session1 == null) {
       this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
-        this.initializeDataFromSession(session2);
+        this.nodeSession = session2;
+        this.resHall = session2.rezzi;
       });
     } else {
-      this.initializeDataFromSession(session1);
+      this.nodeSession = session1;
+      this.resHall = session1.rezzi;
     }
 
     // Initialize user profiles
@@ -128,11 +139,24 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     } else {
       this.userProfileAbr = userAbr1;
     }
-  }
 
-  private initializeDataFromSession(nodeSession: NodeSession) {
-    this.nodeSession = nodeSession;
-    this.resHall = nodeSession.rezzi;
+    // Initialize channel data
+    const allChannels1 = this.interfaceService.getAllChannels();
+    if (allChannels1 == null) {
+      this.allChannelsSubscr = this.interfaceService.getAllChannelsListener().subscribe(allChannels2 => {
+        this.allChannels = allChannels2;
+      });
+    } else {
+      this.allChannels = allChannels1;
+    }
+    const myChannels1 = this.interfaceService.getMyChannels();
+    if (myChannels1 == null) {
+      this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels2 => {
+        this.myChannels = myChannels2;
+      });
+    } else {
+      this.myChannels = myChannels1;
+    }
   }
 
   receivedChannels(channels: ChannelData[]) {
@@ -158,6 +182,12 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     }
     if (this.userProfileAbrSubsc != null) {
       this.userProfileAbrSubsc.unsubscribe();
+    }
+    if (this.allChannelsSubscr != null) {
+      this.allChannelsSubscr.unsubscribe();
+    }
+    if (this.myChannelsSubscr != null) {
+      this.myChannelsSubscr.unsubscribe();
     }
   }
 
