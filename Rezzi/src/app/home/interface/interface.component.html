@@ -1,16 +1,13 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side" disableClose="true" opened="true">  <!-- Stuff in sidebar -->
     <app-side-panel
-      [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       (channelsToSend)="receivedChannels($event)"
       (channelToView)="viewingNewChannel($event)"
     ></app-side-panel>
   </mat-drawer>
 
   <div class="example-sidenav-content"> <!-- Stuff in rest of interface -->
-    <app-channel-nav-bar class="channelnavbar"
-      [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
-    ></app-channel-nav-bar>
+    <app-channel-nav-bar class="channelnavbar"></app-channel-nav-bar>
     <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
       ≡
     </button>
@@ -21,7 +18,6 @@
     <app-channel-messages
       [isHiddenObs]="viewChanMesSubj.asObservable()"
       [isMutedObs]="hideNewMsgSubj.asObservable()"
-      [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
       [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
       [canPostUpdateEvent]="canPostUpdate.asObservable()"
@@ -29,7 +25,6 @@
     <app-new-message id="newMessageBar"
       [isHiddenObs]="viewChanMesSubj.asObservable()"
       [isMutedObs]="hideNewMsgSubj.asObservable()"
-      [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
       [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
       [canPostUpdateEvent]="canPostUpdate.asObservable()"
     ></app-new-message>

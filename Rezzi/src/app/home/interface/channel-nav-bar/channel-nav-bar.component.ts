@@ -3,7 +3,7 @@ import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
-import { ChannelData, AbbreviatedUser, BotMessage, NodeSession, UserProfile, AbbreviatedUserProfile } from 'src/app/classes.model';
+import { ChannelData, BotMessage, NodeSession, AbbreviatedUserProfile } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, Observable, Subject } from 'rxjs';
 import { MessagesService } from '../messages/messages.service';
@@ -47,12 +47,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   deleteButtonDisabled = true;
 
   private userName: string;
-
-  // Session data retrieved from interface.component
-  session: any;
-  private sessionUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('sessionUpdateEvent') sessionObs: Observable<any>;
 
   constructor(private rezziService: RezziService,
               private router: Router,
@@ -99,11 +93,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       this.navTitle = this.navChannel.channel;
       this.checkPermissions();
     });
-
-    // Listen for session updates
-    this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
-      this.session = updatedSession;
-    });
   }
 
   private initializeNodeSession() {
@@ -138,16 +127,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    if (this.nodeSessionSubsc != null) {
-      this.nodeSessionSubsc.unsubscribe();
-    }
-    if (this.userProfileAbrSubsc != null) {
-      this.userProfileAbrSubsc.unsubscribe();
-    }
-    this.sessionUpdateSub.unsubscribe();
-  }
-
   openLeaveDialog(): void {
     if (this.navTitle === 'Rezzi') {
       console.error('No channel selected');
@@ -159,7 +138,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       height: '200px',
       data: {
         channel: this.navChannel,
-        rezzi: this.session.rezzi,
+        rezzi: this.nodeSession.rezzi,
         userName: this.userName,
       }
     });
@@ -176,7 +155,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       height: '200px',
       data: {
         channel: this.navChannel,
-        rezzi: this.session.rezzi,
+        rezzi: this.nodeSession.rezzi,
         userName: this.userName,
       }
     });
@@ -191,6 +170,15 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 
   goToChannelMessagesScreen() {
     this.channelNavBarService.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
+  }
+
+  ngOnDestroy() {
+    if (this.nodeSessionSubsc != null) {
+      this.nodeSessionSubsc.unsubscribe();
+    }
+    if (this.userProfileAbrSubsc != null) {
+      this.userProfileAbrSubsc.unsubscribe();
+    }
   }
 
 }

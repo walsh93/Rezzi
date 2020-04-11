@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RezziService } from '../../rezzi.service';
-import { ChannelData, User, AbbreviatedUser, NodeSession, AbbreviatedUserProfile, UserProfile } from '../../classes.model';
+import { ChannelData, NodeSession, AbbreviatedUserProfile, UserProfile } from '../../classes.model';
 import { Subject, Subscription } from 'rxjs';
 import { ChannelNavBarService } from './channel-nav-bar/channel-nav-bar.service';
 import * as c from './interface.constants';
@@ -32,12 +32,9 @@ export class InterfaceComponent implements OnInit, OnDestroy {
 
 
   private channelMap = new Map<string, ChannelData>();
-  session: any;
-  resHall: string;
-  user: User;
+  private resHall: string;
 
   // Passing channels and session to child component channel-messages every time they update
-  sessionUpdateSubject: Subject<any> = new Subject<any>();
   channelsUpdateSubject: Subject<ChannelData[]> = new Subject<ChannelData[]>();
   viewingUpdateSubject: Subject<string> = new Subject<string>();
   canPostUpdate: Subject<boolean> = new Subject<boolean>();
@@ -54,34 +51,6 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     this.initializeNodeSession();
     this.initializeUserProfiles();
     this.initializeChannels();
-
-    this.rezziService.getSession().then((session) => {
-      this.session = session;
-      this.sessionUpdateSubject.next(session);
-      this.resHall = this.session.rezzi;
-      this.rezziService.getUserProfile().then(response => {
-        // Remove message bar is posting privileges have been revoked
-        if (!response.user.canPost) {
-          document.getElementById('newMessageBar').remove();
-          this.canPostUpdate.next(false);
-        } else {
-          this.canPostUpdate.next(true);
-        }
-        this.user = new User(
-          response.user.email,
-          response.user.password,
-          response.user.firstName,
-          response.user.lastName,
-          response.user.age,
-          response.user.major,
-          response.user.nickName,
-          response.user.bio,
-          true,
-          response.user.deletionRequest,
-          response.user.image_url,
-        );
-      });
-    });
 
     // Listen for changes in the interface view
     this.interfaceViewSubscr = this.cnbService.getInterfaceViewListener().subscribe(newView => {
@@ -118,11 +87,23 @@ export class InterfaceComponent implements OnInit, OnDestroy {
         if (this.resHall == null || this.resHall === undefined) {
           this.resHall = user2.rezzi;
         }
+        if (!user2.canPost) {  // Remove message bar is posting privileges have been revoked
+          document.getElementById('newMessageBar').remove();
+          this.canPostUpdate.next(false);
+        } else {
+          this.canPostUpdate.next(true);
+        }
       });
     } else {
       this.userProfile = user1;
       if (this.resHall == null || this.resHall === undefined) {
         this.resHall = user1.rezzi;
+      }
+      if (!user1.canPost) {  // Remove message bar is posting privileges have been revoked
+        document.getElementById('newMessageBar').remove();
+        this.canPostUpdate.next(false);
+      } else {
+        this.canPostUpdate.next(true);
       }
     }
     const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();

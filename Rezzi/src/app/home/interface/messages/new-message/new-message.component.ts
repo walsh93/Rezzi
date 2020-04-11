@@ -39,12 +39,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   private isMutedSubsc: Subscription;
   @Input() isMutedObs: Observable<boolean>;
 
-  // Session data
-  session: any;
-  private sessionUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('sessionUpdateEventAnm') sessionObs: Observable<any>;
-
   // Current channel data
   currentChannel: string;
   private viewingUpdateSub: Subscription;
@@ -70,12 +64,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       if (this.canPost) {
         this.isHidden = isMuted;
       }
-    });
-
-    // Listen for session updates
-    this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
-      console.log('session has been updated in new-message.component');
-      this.session = updatedSession;
     });
 
     // Listen for changes in which channel is being viewed
@@ -131,7 +119,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
     const scmd: SocketChannelMessageData = {
       message,
-      rezzi: this.session.rezzi,
+      rezzi: this.nodeSession.rezzi,
       channelID: this.currentChannel,
     };
 
@@ -162,7 +150,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.isHiddenSubsc.unsubscribe();
     this.isMutedSubsc.unsubscribe();
     this.canPostUpdateSub.unsubscribe();
-    this.sessionUpdateSub.unsubscribe();
     this.viewingUpdateSub.unsubscribe();
   }
 

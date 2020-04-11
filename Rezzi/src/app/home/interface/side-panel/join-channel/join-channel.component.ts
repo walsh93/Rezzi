@@ -28,8 +28,6 @@ export class JoinChannelComponent implements OnInit {
   columnsToDisplay = ['channel', 'user-count', 'join-channel'];
   @Output() public joinChannelEvent = new EventEmitter();
 
-  // Session data
-  session: any;
   private userName: string;
 
   constructor(public dialogRef: MatDialogRef<JoinChannelComponent>, @Inject(MAT_DIALOG_DATA) public data,
@@ -37,7 +35,7 @@ export class JoinChannelComponent implements OnInit {
 
     console.log(data);
     this.channels = data.channels;
-    this.session = data.session;
+    this.nodeSession = data.session;
     this.userProfileAbr = data.user;
 
     if (this.userProfileAbr.nickName == null || this.userProfileAbr.nickName === undefined || this.userProfileAbr.nickName.length === 0) {
@@ -64,7 +62,7 @@ export class JoinChannelComponent implements OnInit {
       });
     });
     this.joinChannelEvent.emit(id);
-    this.messagesService.addBotMessage(BotMessage.UserHasJoinedChannel, this.userName, this.session.rezzi, id);
+    this.messagesService.addBotMessage(BotMessage.UserHasJoinedChannel, this.userName, this.nodeSession.rezzi, id);
   }
 
   ngOnInit() {}

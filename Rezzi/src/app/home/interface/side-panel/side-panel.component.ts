@@ -4,7 +4,7 @@ import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { SidePanelService } from './side-panel.service';
 import { ChannelData, NodeSession, AbbreviatedUserProfile } from '../../../classes.model';
 import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { InterfaceService } from '../interface.service';
 
 @Component({
@@ -37,12 +37,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   status: boolean;
   channelRedirect: ChannelData;
   channelRedirectLevel: string;
-
-  // Session data retrieved from interface.component
-  session: any;
-  private sessionUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('sessionUpdateEvent') sessionObs: Observable<any>;
 
   // Send channels to interface.component
   @Output() channelsToSend = new EventEmitter<ChannelData[]>();
@@ -116,7 +110,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
       height: 'auto',
       data: {
         channels: this.channels,
-        session: this.session,
+        session: this.nodeSession,
         user: this.userProfileAbr,
       },
     });
@@ -136,11 +130,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     this.initializeNodeSession();
     this.initializeAbbreviatedUserProfile();
     this.initializeChannels();
-
-    // Listen for session updates
-    this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
-      this.session = updatedSession;
-    });
 
     // Listen for channel updates, redirect for less channels
     this.chanNavBarService.currentChannelUpdateStatus.subscribe(status => {
@@ -224,7 +213,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     if (this.myChannelsSubscr != null) {
       this.myChannelsSubscr.unsubscribe();
     }
-    this.sessionUpdateSub.unsubscribe();
   }
 
 }

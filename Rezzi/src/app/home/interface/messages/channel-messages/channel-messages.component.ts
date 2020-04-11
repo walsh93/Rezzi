@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Subscription, Observable, range } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
-import { Message, AbbreviatedUser, NodeSession, UserProfile, AbbreviatedUserProfile } from '../../../../classes.model';
+import { Message, NodeSession, AbbreviatedUserProfile } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ChannelData } from '../../../../classes.model';
 import { InterfaceService } from '../../interface.service';
@@ -13,7 +13,7 @@ import { InterfaceService } from '../../interface.service';
 })
 export class ChannelMessagesComponent implements OnInit, OnDestroy {
   // Node session data
-  private nodeSession: NodeSession;
+  nodeSession: NodeSession;
   private nodeSessionSubsc: Subscription;
 
   // User profile data
@@ -38,13 +38,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   amViewingNewChannel = false;
   needToUpdateScroll = false;
 
-  // Session data retrieved from interface.component
-  session: any;
-  private sessionUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('sessionUpdateEvent') sessionObs: Observable<any>;
-
-
   // Channel list retrieved from interface.component
   channels: ChannelData[];
   private channelUpdateSub: Subscription;
@@ -67,7 +60,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   @Input() isMutedObs: Observable<boolean>;
 
   constructor(private interfaceService: InterfaceService, public messagesService: MessagesService) {
-    this.session = null;
     this.currentChannel = null;
     this.channels = [];
     this.channelMap = new Map<string, ChannelData>();
@@ -86,12 +78,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       this.isHidden = !viewNow;
     });
 
-    // Listen for session updates
-    this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
-      console.log('session has been updated in channel-messages.component');
-      this.session = updatedSession;
-    });
-
     // Listen for channel list updates
     this.channelUpdateSub = this.channelsObs.subscribe((updatedChannels) => {
       console.log('channels have been updated');
@@ -105,7 +91,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
     this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
       this.currentChannel = updatedChannelID;
-      const dbpath = this.messagesService.createChannelPath(this.session.rezzi, updatedChannelID);
+      const dbpath = this.messagesService.createChannelPath(this.nodeSession.rezzi, updatedChannelID);
       if (dbpath != null && dbpath !== undefined) {
         this.amViewingNewChannel = true;
         this.messagesService.getChannelMessages(dbpath.channelPath, dbpath.channelName);  // Triggers msg upd listener
@@ -239,7 +225,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       this.myChannelsSubscr.unsubscribe();
     }
     this.isHiddenSubsc.unsubscribe();
-    this.sessionUpdateSub.unsubscribe();
     this.channelUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels
     this.viewingUpdateSub.unsubscribe();
