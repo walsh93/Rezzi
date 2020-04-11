@@ -139,7 +139,9 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initializeComponentData();
+    this.initializeNodeSession();
+    this.initializeAbbreviatedUserProfile();
+    this.initializeChannels();
 
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
@@ -163,8 +165,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initializeComponentData() {
-    // Initialize session
+  private initializeNodeSession() {
     const session1 = this.interfaceService.getNodeSession();
     if (session1 == null) {
       this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
@@ -173,8 +174,9 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     } else {
       this.nodeSession = session1;
     }
+  }
 
-    // Initialize abbreviated user profile
+  private initializeAbbreviatedUserProfile() {
     const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
     if (userAbr1 == null) {
       this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
@@ -183,8 +185,9 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     } else {
       this.userProfileAbr = userAbr1;
     }
+  }
 
-    // Initialize channel data
+  private initializeChannels() {
     const allChannels1 = this.interfaceService.getAllChannels();
     if (allChannels1 == null) {
       this.allChannelsSubscr = this.interfaceService.getAllChannelsListener().subscribe(allChannels2 => {

@@ -83,7 +83,9 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     // If testing messages/message view with `ng serve`
     // this.initializeTestData();
 
-    this.initializeComponentData();
+    this.initializeNodeSession();
+    this.initializeAbbreviatedUserProfile();
+    this.initializeMyChannels();
 
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
@@ -158,8 +160,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     }); // First function, Second error, Third when observable completed
   }
 
-  private initializeComponentData() {
-    // Initialize session
+  private initializeNodeSession() {
     const session1 = this.interfaceService.getNodeSession();
     if (session1 == null) {
       this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
@@ -168,8 +169,9 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     } else {
       this.nodeSession = session1;
     }
+  }
 
-    // Initialize abbreviated user profile
+  private initializeAbbreviatedUserProfile() {
     const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
     if (userAbr1 == null) {
       this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
@@ -178,8 +180,9 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     } else {
       this.userProfileAbr = userAbr1;
     }
+  }
 
-    // Initialize channel data
+  private initializeMyChannels() {
     const myChannels1 = this.interfaceService.getMyChannels();
     if (myChannels1 == null) {
       this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels2 => {

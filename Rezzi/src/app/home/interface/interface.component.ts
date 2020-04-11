@@ -53,7 +53,9 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   constructor(private interfaceService: InterfaceService, private rezziService: RezziService, private cnbService: ChannelNavBarService) { }
 
   ngOnInit() {
-    this.initializeComponentData();
+    this.initializeNodeSession();
+    this.initializeUserProfiles();
+    this.initializeChannels();
 
     this.rezziService.getSession().then((session) => {
       this.session = session;
@@ -109,8 +111,7 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initializeComponentData() {
-    // Initialize session
+  private initializeNodeSession() {
     const session1 = this.interfaceService.getNodeSession();
     if (session1 == null) {
       this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
@@ -121,8 +122,9 @@ export class InterfaceComponent implements OnInit, OnDestroy {
       this.nodeSession = session1;
       this.resHall = session1.rezzi;
     }
+  }
 
-    // Initialize user profiles
+  private initializeUserProfiles() {
     const user1 = this.interfaceService.getUserProfile();
     if (user1 == null) {
       this.userProfileSubsc = this.interfaceService.getUserProfileListener().subscribe(user2 => {
@@ -139,8 +141,9 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     } else {
       this.userProfileAbr = userAbr1;
     }
+  }
 
-    // Initialize channel data
+  private initializeChannels() {
     const allChannels1 = this.interfaceService.getAllChannels();
     if (allChannels1 == null) {
       this.allChannelsSubscr = this.interfaceService.getAllChannelsListener().subscribe(allChannels2 => {

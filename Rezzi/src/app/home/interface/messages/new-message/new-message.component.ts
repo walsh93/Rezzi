@@ -61,7 +61,8 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   constructor(public messagesService: MessagesService, private interfaceService: InterfaceService, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.initializeComponentData();
+    this.initializeNodeSession();
+    this.initializeAbbreviatedUserProfile();
 
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
@@ -98,8 +99,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initializeComponentData() {
-    // Initialize session
+  private initializeNodeSession() {
     const session1 = this.interfaceService.getNodeSession();
     if (session1 == null) {
       this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
@@ -108,8 +108,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     } else {
       this.nodeSession = session1;
     }
+  }
 
-    // Initialize abbreviated user profile
+  private initializeAbbreviatedUserProfile() {
     const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
     if (userAbr1 == null) {
       this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
