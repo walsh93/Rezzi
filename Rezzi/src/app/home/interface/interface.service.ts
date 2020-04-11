@@ -68,55 +68,9 @@ export class InterfaceService {
   }
 
   private initializeChannels() {
-    this.sidePanel.getChannels().toPromise().then(data => {
-      for (const hall in data) {
-        if (data.hasOwnProperty(hall)) {
-          let tempBelongs = false;  // Set if the user doesn't belong to any chats within the category
-          const tempChannels: ChannelData[] = [];
-          // tslint:disable-next-line: forin
-          for (const channel in data[hall]) {
-            tempChannels.push({
-              id: hall + '-' + channel,
-              channel,
-              users: data[hall][channel].users,
-              belongs: data[hall][channel].belongs,
-              isMuted: data[hall][channel].isMuted,
-              subchannels: [],
-              messages: data[hall][channel].messages
-            });
-            if (data[hall][channel].belongs) {
-              tempBelongs = true;
-            }
-
-            // Filtered channels for sibling components
-            if (data[hall][channel].belongs) {
-              this.myChannels.push({
-                id: hall + '-' + channel,
-                channel,
-                users: data[hall][channel].users,
-                belongs: data[hall][channel].belongs,
-                isMuted: data[hall][channel].isMuted,
-                subchannels: [],
-                messages: data[hall][channel].messages
-              });
-            }
-          }
-          let name = hall;
-          if (hall.indexOf('floors') !== -1) {  // only use the back half of 'floors-...'
-            name = hall.split('-')[1];
-          }
-          const temp: ChannelData = {
-            id: '',
-            channel: name,
-            users: -1,
-            belongs: tempBelongs,
-            isMuted: false,
-            subchannels: tempChannels,
-            messages: []  // TODO does this temp thing have messages at any point???
-          };
-          this.allChannels.push(temp);
-        }
-      }
+    this.sidePanel.getChannels().then(arrays => {
+      this.allChannels = arrays.allChannels;
+      this.myChannels = arrays.myChannels;
     });
   }
 
