@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angu
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { SidePanelService } from './side-panel.service';
-import { ChannelData, AbbreviatedUser, NodeSession, AbbreviatedUserProfile } from '../../../classes.model';
+import { ChannelData, NodeSession, AbbreviatedUserProfile } from '../../../classes.model';
 import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service';
 import { Subscription, Observable } from 'rxjs';
 import { InterfaceService } from '../interface.service';
@@ -43,12 +43,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   private sessionUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
   @Input('sessionUpdateEvent') sessionObs: Observable<any>;
-
-  // Abbreviated User data
-  user: AbbreviatedUser;
-  private userUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   // Send channels to interface.component
   @Output() channelsToSend = new EventEmitter<ChannelData[]>();
@@ -123,7 +117,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
       data: {
         channels: this.channels,
         session: this.session,
-        user: this.user,
+        user: this.userProfileAbr,
       },
     });
 
@@ -146,11 +140,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     // Listen for session updates
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
       this.session = updatedSession;
-    });
-
-    // Listen for user updates
-    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
-      this.user = updatedUser;
     });
 
     // Listen for channel updates, redirect for less channels
@@ -236,7 +225,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
       this.myChannelsSubscr.unsubscribe();
     }
     this.sessionUpdateSub.unsubscribe();
-    this.userUpdateSub.unsubscribe();
   }
 
 }

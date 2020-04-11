@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
-import { ChannelData, BotMessage, AbbreviatedUser } from '../../../../classes.model';
+import { ChannelData, BotMessage, AbbreviatedUser, NodeSession, AbbreviatedUserProfile } from '../../../../classes.model';
 import { MessagesService } from '../../messages/messages.service';
 
 // export interface ChannelData {
@@ -18,6 +18,11 @@ import { MessagesService } from '../../messages/messages.service';
 })
 
 export class JoinChannelComponent implements OnInit {
+  // Node session data
+  private nodeSession: NodeSession;
+
+  // User profile data
+  private userProfileAbr: AbbreviatedUserProfile;
 
   channels: ChannelData[];
   columnsToDisplay = ['channel', 'user-count', 'join-channel'];
@@ -25,7 +30,6 @@ export class JoinChannelComponent implements OnInit {
 
   // Session data
   session: any;
-  abbrevUser: AbbreviatedUser;
   private userName: string;
 
   constructor(public dialogRef: MatDialogRef<JoinChannelComponent>, @Inject(MAT_DIALOG_DATA) public data,
@@ -34,12 +38,12 @@ export class JoinChannelComponent implements OnInit {
     console.log(data);
     this.channels = data.channels;
     this.session = data.session;
-    this.abbrevUser = data.user;
+    this.userProfileAbr = data.user;
 
-    if (this.abbrevUser.nickName == null || this.abbrevUser.nickName === undefined || this.abbrevUser.nickName.length === 0) {
-      this.userName = `${this.abbrevUser.firstName} ${this.abbrevUser.lastName}`;
+    if (this.userProfileAbr.nickName == null || this.userProfileAbr.nickName === undefined || this.userProfileAbr.nickName.length === 0) {
+      this.userName = `${this.userProfileAbr.firstName} ${this.userProfileAbr.lastName}`;
     } else {
-      this.userName = this.abbrevUser.nickName;
+      this.userName = this.userProfileAbr.nickName;
     }
   }
 

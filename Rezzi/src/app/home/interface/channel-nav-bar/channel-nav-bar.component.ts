@@ -3,11 +3,12 @@ import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
-import { ChannelData, AbbreviatedUser, BotMessage } from 'src/app/classes.model';
+import { ChannelData, AbbreviatedUser, BotMessage, NodeSession, UserProfile, AbbreviatedUserProfile } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, Observable, Subject } from 'rxjs';
 import { MessagesService } from '../messages/messages.service';
 import * as c from '../interface.constants';
+import { InterfaceService } from '../interface.service';
 
 export interface DialogData {
   channel: ChannelData;
@@ -22,6 +23,16 @@ export interface DialogData {
 })
 
 export class ChannelNavBarComponent implements OnInit, OnDestroy {
+  // Node session data
+  private nodeSession: NodeSession;
+  private nodeSessionSubsc: Subscription;
+
+  // User profile data
+  private userProfileAbr: AbbreviatedUserProfile;
+  private userProfileAbrSubsc: Subscription;
+
+
+
   user: string;
   accountType: number;
   channels: ChannelData[];
@@ -43,16 +54,11 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('sessionUpdateEvent') sessionObs: Observable<any>;
 
-  // Abbreviated User data
-  abbrevUser: AbbreviatedUser;
-  private userUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
-
   constructor(private rezziService: RezziService,
               private router: Router,
               private channelNavBarService: ChannelNavBarService,
-              public dialog: MatDialog) {}
+              public dialog: MatDialog,
+              private interfaceService: InterfaceService) {}
 
   checkPermissions() {
     if (this.navTitle !== 'Rezzi') {                              // Channel not selected
@@ -76,6 +82,9 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initializeNodeSession();
+    this.initializeAbbreviatedUserProfile();
+
     this.rezziService.getSession().then((response) => {
       if (response.email == null) {
         this.router.navigate(['/sign-in']);
@@ -95,21 +104,48 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
       this.session = updatedSession;
     });
+  }
 
-    // Listen for user updates
-    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
-      this.abbrevUser = updatedUser;
-      if (this.abbrevUser.nickName == null || this.abbrevUser.nickName === undefined || this.abbrevUser.nickName.length === 0) {
-        this.userName = `${this.abbrevUser.firstName} ${this.abbrevUser.lastName}`;
-      } else {
-        this.userName = this.abbrevUser.nickName;
-      }
-    });
+  private initializeNodeSession() {
+    const session1 = this.interfaceService.getNodeSession();
+    if (session1 == null) {
+      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
+        this.nodeSession = session2;
+      });
+    } else {
+      this.nodeSession = session1;
+    }
+  }
+
+  private initializeAbbreviatedUserProfile() {
+    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
+    if (userAbr1 == null) {
+      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
+        this.userProfileAbr = userAbr2;
+        this.initializeNickname();
+      });
+    } else {
+      this.userProfileAbr = userAbr1;
+      this.initializeNickname();
+    }
+  }
+
+  private initializeNickname() {
+    if (this.userProfileAbr.nickName == null || this.userProfileAbr.nickName === undefined || this.userProfileAbr.nickName.length === 0) {
+      this.userName = `${this.userProfileAbr.firstName} ${this.userProfileAbr.lastName}`;
+    } else {
+      this.userName = this.userProfileAbr.nickName;
+    }
   }
 
   ngOnDestroy() {
+    if (this.nodeSessionSubsc != null) {
+      this.nodeSessionSubsc.unsubscribe();
+    }
+    if (this.userProfileAbrSubsc != null) {
+      this.userProfileAbrSubsc.unsubscribe();
+    }
     this.sessionUpdateSub.unsubscribe();
-    this.userUpdateSub.unsubscribe();
   }
 
   openLeaveDialog(): void {

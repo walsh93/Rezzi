@@ -35,11 +35,9 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   session: any;
   resHall: string;
   user: User;
-  abbrevUser: AbbreviatedUser;
 
   // Passing channels and session to child component channel-messages every time they update
   sessionUpdateSubject: Subject<any> = new Subject<any>();
-  abbrevUserUpdateSubject: Subject<AbbreviatedUser> = new Subject<AbbreviatedUser>();
   channelsUpdateSubject: Subject<ChannelData[]> = new Subject<ChannelData[]>();
   viewingUpdateSubject: Subject<string> = new Subject<string>();
   canPostUpdate: Subject<boolean> = new Subject<boolean>();
@@ -83,18 +81,6 @@ export class InterfaceComponent implements OnInit, OnDestroy {
           response.user.image_url,
         );
       });
-
-      if (this.session.email != null && this.session.email !== undefined) {
-        this.rezziService.getUserProfile().then((response) => {
-          this.abbrevUser = new AbbreviatedUser(response.user.email, response.user.firstName,
-            response.user.lastName, response.user.nickName, response.user.image_url);
-          this.abbrevUserUpdateSubject.next(this.abbrevUser);
-
-          if (this.resHall == null || this.resHall === undefined) {
-            this.resHall = response.user.rezzi;
-          }
-        });
-      }
     });
 
     // Listen for changes in the interface view
@@ -129,9 +115,15 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     if (user1 == null) {
       this.userProfileSubsc = this.interfaceService.getUserProfileListener().subscribe(user2 => {
         this.userProfile = user2;
+        if (this.resHall == null || this.resHall === undefined) {
+          this.resHall = user2.rezzi;
+        }
       });
     } else {
       this.userProfile = user1;
+      if (this.resHall == null || this.resHall === undefined) {
+        this.resHall = user1.rezzi;
+      }
     }
     const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
     if (userAbr1 == null) {

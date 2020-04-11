@@ -52,12 +52,13 @@ export class InterfaceService {
 
   private initializeUserProfiles() {
     this.rezzi.getUserProfile().then(response => {
-      const profile = response as UserProfile;
+      const profile = response.user as UserProfile;
       const profileAbr: AbbreviatedUserProfile = {
         email: profile.email,
         firstName: profile.firstName,
         lastName: profile.lastName,
-        nickName: profile.nickName
+        nickName: profile.nickName,
+        imageUrl: profile.imageUrl
       };
       this.userProfile = profile;
       this.userProfileAbr = profileAbr;

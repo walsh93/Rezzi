@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData, NodeSession, AbbreviatedUserProfile } from '../../../../classes.model';
+import { Message, SocketChannelMessageData, NodeSession, AbbreviatedUserProfile } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ImageModalComponent } from './image-modal/image-modal.component';
 import { NgForm } from '@angular/forms';
@@ -24,7 +24,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
 
 
-  tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0, '');
+
   enteredMessage = '';
   image = null;
 
@@ -44,13 +44,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   private sessionUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
   @Input('sessionUpdateEventAnm') sessionObs: Observable<any>;
-
-  // Abbreviated User data
-  user: AbbreviatedUser;
-  private userUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
-
 
   // Current channel data
   currentChannel: string;
@@ -83,13 +76,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.sessionUpdateSub = this.sessionObs.subscribe((updatedSession) => {
       console.log('session has been updated in new-message.component');
       this.session = updatedSession;
-    });
-
-    // Listen for user updates
-    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
-      console.log('user has been updated in new-message.component');
-      this.user = updatedUser;
-      console.log(this.user);
     });
 
     // Listen for changes in which channel is being viewed
@@ -125,9 +111,10 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     if (form.invalid) {
       return;
     }
+    console.log(this.userProfileAbr);
     const message: Message = {
       content: form.value.enteredMessage,
-      owner: this.user,
+      owner: this.userProfileAbr,
       time: new Date(),
       visible: true,
       id: null, // TODO Need to change the ID
@@ -176,7 +163,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.isMutedSubsc.unsubscribe();
     this.canPostUpdateSub.unsubscribe();
     this.sessionUpdateSub.unsubscribe();
-    this.userUpdateSub.unsubscribe();
     this.viewingUpdateSub.unsubscribe();
   }
 

@@ -17,7 +17,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   private nodeSessionSubsc: Subscription;
 
   // User profile data
-  private userProfileAbr: AbbreviatedUserProfile;
+  userProfileAbr: AbbreviatedUserProfile;
   private userProfileAbrSubsc: Subscription;
 
   // Channel data
@@ -37,12 +37,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
 
   amViewingNewChannel = false;
   needToUpdateScroll = false;
-
-  // Abbreviated User data
-  user: AbbreviatedUser;
-  private userUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   // Session data retrieved from interface.component
   session: any;
@@ -90,13 +84,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
       this.isHidden = !viewNow;
-    });
-
-    // Listen for user updates
-    this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
-      console.log('user has been updated in new-message.component');
-      this.user = updatedUser;
-      console.log(this.user);
     });
 
     // Listen for session updates
@@ -252,7 +239,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       this.myChannelsSubscr.unsubscribe();
     }
     this.isHiddenSubsc.unsubscribe();
-    this.userUpdateSub.unsubscribe();
     this.sessionUpdateSub.unsubscribe();
     this.channelUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels

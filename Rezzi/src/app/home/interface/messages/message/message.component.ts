@@ -6,7 +6,8 @@ import {
   Message,
   SocketChannelMessageData,
   SocketPrivateMessageData,
-  HDUser
+  HDUser,
+  AbbreviatedUserProfile
 } from "src/app/classes.model";
 import { RezziService } from "src/app/rezzi.service";
 import { MessagesService } from "../messages.service";
@@ -48,7 +49,7 @@ export class MessageComponent implements OnInit {
   @Input() updateScrolling: boolean; // Does the scroll depth need to update?
 
   private reactions: ReactionData; // Data holding the reaction (extracted from message)
-  private user: AbbreviatedUser; // The user who sent the message (extracted from message)
+  private userProfileAbr: AbbreviatedUserProfile; // The user who sent the message (extracted from message)
   private time: Date; // When the message was sent (extracted from message)
   private reported: boolean;
   private theHD: HDUser;
@@ -72,8 +73,8 @@ export class MessageComponent implements OnInit {
     // console.log(this.time);
     // console.log("Message: ", this.message);
     this.reactions = this.message.reactions;
-    this.user = this.message.owner;
-    this.avatar = this.message.owner.image_url;
+    this.userProfileAbr = this.message.owner;
+    this.avatar = this.message.owner.imageUrl;
     this.time = this.message.time;
     this.reported = this.message.reported;
     this.image = this.message.image;
@@ -103,15 +104,15 @@ export class MessageComponent implements OnInit {
     // this.displayTime = String(dateAgain);
 
     if (
-      this.user.nickName == null ||
-      this.user.nickName === undefined ||
-      this.user.nickName.length === 0
+      this.userProfileAbr.nickName == null ||
+      this.userProfileAbr.nickName === undefined ||
+      this.userProfileAbr.nickName.length === 0
     ) {
-      this.displayName = `${this.user.firstName} ${this.user.lastName.charAt(
+      this.displayName = `${this.userProfileAbr.firstName} ${this.userProfileAbr.lastName.charAt(
         0
       )}.`;
     } else {
-      this.displayName = this.user.nickName;
+      this.displayName = this.userProfileAbr.nickName;
     }
 
     // Set initial color values for reactions
@@ -210,7 +211,7 @@ export class MessageComponent implements OnInit {
       this.ReportId = this.message.id;
     }
     alert("This message has been reported to the hall director!");
-    this.updateHallDirector(this.hdEmail, this.user.email);
+    this.updateHallDirector(this.hdEmail, this.userProfileAbr.email);
   }
 
   updateHallDirector(hd, user) {
