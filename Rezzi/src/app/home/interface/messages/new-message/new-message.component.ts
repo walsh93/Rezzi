@@ -45,12 +45,26 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
 
-  constructor(public messagesService: MessagesService, private interfaceService: InterfaceService, public dialog: MatDialog) { }
-
-  ngOnInit() {
+  constructor(public messagesService: MessagesService, private interfaceService: InterfaceService, public dialog: MatDialog) {
     this.initializeNodeSession();
     this.initializeAbbreviatedUserProfile();
+  }
 
+  private initializeNodeSession() {
+    this.nodeSession = this.interfaceService.getNodeSession();
+    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+      this.nodeSession = session;
+    });
+  }
+
+  private initializeAbbreviatedUserProfile() {
+    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
+    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+      this.userProfileAbr = userAbr;
+    });
+  }
+
+  ngOnInit() {
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
       this.isHidden = !viewNow;
@@ -71,28 +85,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       console.log(`Now viewing channel ${updatedChannelID}`);
       this.currentChannel = updatedChannelID;
     });
-  }
-
-  private initializeNodeSession() {
-    const session1 = this.interfaceService.getNodeSession();
-    if (session1 == null) {
-      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
-        this.nodeSession = session2;
-      });
-    } else {
-      this.nodeSession = session1;
-    }
-  }
-
-  private initializeAbbreviatedUserProfile() {
-    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
-    if (userAbr1 == null) {
-      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
-        this.userProfileAbr = userAbr2;
-      });
-    } else {
-      this.userProfileAbr = userAbr1;
-    }
   }
 
   onAddMessage(form: NgForm) {

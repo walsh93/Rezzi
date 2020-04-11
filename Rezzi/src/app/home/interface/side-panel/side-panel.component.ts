@@ -43,7 +43,35 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   @Output() channelToView = new EventEmitter<string>();
 
   constructor(private interfaceService: InterfaceService, public dialog: MatDialog, private sidePanService: SidePanelService, private chanNavBarService: ChannelNavBarService) {
+    this.initializeNodeSession();
+    this.initializeAbbreviatedUserProfile();
+    this.initializeChannels();
     this.refreshSidePanel();
+  }
+
+  private initializeNodeSession() {
+    this.nodeSession = this.interfaceService.getNodeSession();
+    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+      this.nodeSession = session;
+    });
+  }
+
+  private initializeAbbreviatedUserProfile() {
+    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
+    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+      this.userProfileAbr = userAbr;
+    });
+  }
+
+  private initializeChannels() {
+    this.allChannels = this.interfaceService.getAllChannels();
+    this.allChannelsSubscr = this.interfaceService.getAllChannelsListener().subscribe(allChannels => {
+      this.allChannels = allChannels;
+    });
+    this.myChannels = this.interfaceService.getMyChannels();
+    this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels => {
+      this.myChannels = myChannels;
+    });
   }
 
   refreshSidePanel(): void {
@@ -127,10 +155,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initializeNodeSession();
-    this.initializeAbbreviatedUserProfile();
-    this.initializeChannels();
-
     // Listen for channel updates, redirect for less channels
     this.chanNavBarService.currentChannelUpdateStatus.subscribe(status => {
       this.status = status;
@@ -141,47 +165,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
         this.viewChannel(this.channelRedirect, this.channelRedirectLevel);
       }
     });
-  }
-
-  private initializeNodeSession() {
-    const session1 = this.interfaceService.getNodeSession();
-    if (session1 == null) {
-      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
-        this.nodeSession = session2;
-      });
-    } else {
-      this.nodeSession = session1;
-    }
-  }
-
-  private initializeAbbreviatedUserProfile() {
-    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
-    if (userAbr1 == null) {
-      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
-        this.userProfileAbr = userAbr2;
-      });
-    } else {
-      this.userProfileAbr = userAbr1;
-    }
-  }
-
-  private initializeChannels() {
-    const allChannels1 = this.interfaceService.getAllChannels();
-    if (allChannels1 == null) {
-      this.allChannelsSubscr = this.interfaceService.getAllChannelsListener().subscribe(allChannels2 => {
-        this.allChannels = allChannels2;
-      });
-    } else {
-      this.allChannels = allChannels1;
-    }
-    const myChannels1 = this.interfaceService.getMyChannels();
-    if (myChannels1 == null) {
-      this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels2 => {
-        this.myChannels = myChannels2;
-      });
-    } else {
-      this.myChannels = myChannels1;
-    }
   }
 
   viewChannel(channel: ChannelData, level: string) {

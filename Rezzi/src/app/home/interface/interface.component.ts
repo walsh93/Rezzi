@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RezziService } from '../../rezzi.service';
 import { ChannelData, NodeSession, AbbreviatedUserProfile, UserProfile } from '../../classes.model';
 import { Subject, Subscription } from 'rxjs';
 import { ChannelNavBarService } from './channel-nav-bar/channel-nav-bar.service';
@@ -45,13 +44,66 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   viewMuteMemSubj: Subject<boolean> = new Subject<boolean>();
   hideNewMsgSubj: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private interfaceService: InterfaceService, private rezziService: RezziService, private cnbService: ChannelNavBarService) { }
-
-  ngOnInit() {
+  constructor(private interfaceService: InterfaceService, private cnbService: ChannelNavBarService) {
     this.initializeNodeSession();
     this.initializeUserProfiles();
     this.initializeChannels();
+  }
 
+  private initializeNodeSession() {
+    this.nodeSession = this.interfaceService.getNodeSession();
+    if (this.nodeSession != null) {
+      this.resHall = this.nodeSession.rezzi;
+    }
+    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+      this.nodeSession = session;
+      this.resHall = session.rezzi;
+    });
+  }
+
+  private initializeUserProfiles() {
+    this.userProfile = this.interfaceService.getUserProfile();
+    if (this.userProfile != null) {
+      if (this.resHall == null || this.resHall === undefined) {
+        this.resHall = this.userProfile.rezzi;
+      }
+      if (!this.userProfile.canPost) {  // Remove message bar is posting privileges have been revoked
+        document.getElementById('newMessageBar').remove();
+        this.canPostUpdate.next(false);
+      } else {
+        this.canPostUpdate.next(true);
+      }
+    }
+    this.userProfileSubsc = this.interfaceService.getUserProfileListener().subscribe(user => {
+      this.userProfile = user;
+      if (this.resHall == null || this.resHall === undefined) {
+        this.resHall = user.rezzi;
+      }
+      if (!user.canPost) {  // Remove message bar is posting privileges have been revoked
+        document.getElementById('newMessageBar').remove();
+        this.canPostUpdate.next(false);
+      } else {
+        this.canPostUpdate.next(true);
+      }
+    });
+    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
+    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+      this.userProfileAbr = userAbr;
+    });
+  }
+
+  private initializeChannels() {
+    this.allChannels = this.interfaceService.getAllChannels();
+    this.allChannelsSubscr = this.interfaceService.getAllChannelsListener().subscribe(allChannels => {
+      this.allChannels = allChannels;
+    });
+    this.myChannels = this.interfaceService.getMyChannels();
+    this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels => {
+      this.myChannels = myChannels;
+    });
+  }
+
+  ngOnInit() {
     // Listen for changes in the interface view
     this.interfaceViewSubscr = this.cnbService.getInterfaceViewListener().subscribe(newView => {
       if (newView === c.VIEW_CHANNEL_MESSAGES) {
@@ -64,75 +116,6 @@ export class InterfaceComponent implements OnInit, OnDestroy {
         console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
       }
     });
-  }
-
-  private initializeNodeSession() {
-    const session1 = this.interfaceService.getNodeSession();
-    if (session1 == null) {
-      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
-        this.nodeSession = session2;
-        this.resHall = session2.rezzi;
-      });
-    } else {
-      this.nodeSession = session1;
-      this.resHall = session1.rezzi;
-    }
-  }
-
-  private initializeUserProfiles() {
-    const user1 = this.interfaceService.getUserProfile();
-    if (user1 == null) {
-      this.userProfileSubsc = this.interfaceService.getUserProfileListener().subscribe(user2 => {
-        this.userProfile = user2;
-        if (this.resHall == null || this.resHall === undefined) {
-          this.resHall = user2.rezzi;
-        }
-        if (!user2.canPost) {  // Remove message bar is posting privileges have been revoked
-          document.getElementById('newMessageBar').remove();
-          this.canPostUpdate.next(false);
-        } else {
-          this.canPostUpdate.next(true);
-        }
-      });
-    } else {
-      this.userProfile = user1;
-      if (this.resHall == null || this.resHall === undefined) {
-        this.resHall = user1.rezzi;
-      }
-      if (!user1.canPost) {  // Remove message bar is posting privileges have been revoked
-        document.getElementById('newMessageBar').remove();
-        this.canPostUpdate.next(false);
-      } else {
-        this.canPostUpdate.next(true);
-      }
-    }
-    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
-    if (userAbr1 == null) {
-      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
-        this.userProfileAbr = userAbr2;
-      });
-    } else {
-      this.userProfileAbr = userAbr1;
-    }
-  }
-
-  private initializeChannels() {
-    const allChannels1 = this.interfaceService.getAllChannels();
-    if (allChannels1 == null) {
-      this.allChannelsSubscr = this.interfaceService.getAllChannelsListener().subscribe(allChannels2 => {
-        this.allChannels = allChannels2;
-      });
-    } else {
-      this.allChannels = allChannels1;
-    }
-    const myChannels1 = this.interfaceService.getMyChannels();
-    if (myChannels1 == null) {
-      this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels2 => {
-        this.myChannels = myChannels2;
-      });
-    } else {
-      this.myChannels = myChannels1;
-    }
   }
 
   receivedChannels(channels: ChannelData[]) {

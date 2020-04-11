@@ -63,15 +63,35 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.currentChannel = null;
     this.channels = [];
     this.channelMap = new Map<string, ChannelData>();
+    this.initializeNodeSession();
+    this.initializeAbbreviatedUserProfile();
+    this.initializeMyChannels();
+  }
+
+  private initializeNodeSession() {
+    this.nodeSession = this.interfaceService.getNodeSession();
+    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+      this.nodeSession = session;
+    });
+  }
+
+  private initializeAbbreviatedUserProfile() {
+    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
+    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+      this.userProfileAbr = userAbr;
+    });
+  }
+
+  private initializeMyChannels() {
+    this.myChannels = this.interfaceService.getMyChannels();
+    this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels => {
+      this.myChannels = myChannels;
+    });
   }
 
   ngOnInit() {
     // If testing messages/message view with `ng serve`
     // this.initializeTestData();
-
-    this.initializeNodeSession();
-    this.initializeAbbreviatedUserProfile();
-    this.initializeMyChannels();
 
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
@@ -131,39 +151,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       this.messages = updatedMessages;
       this.amViewingNewChannel = false;  // Need to reset once on channel
     }); // First function, Second error, Third when observable completed
-  }
-
-  private initializeNodeSession() {
-    const session1 = this.interfaceService.getNodeSession();
-    if (session1 == null) {
-      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
-        this.nodeSession = session2;
-      });
-    } else {
-      this.nodeSession = session1;
-    }
-  }
-
-  private initializeAbbreviatedUserProfile() {
-    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
-    if (userAbr1 == null) {
-      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
-        this.userProfileAbr = userAbr2;
-      });
-    } else {
-      this.userProfileAbr = userAbr1;
-    }
-  }
-
-  private initializeMyChannels() {
-    const myChannels1 = this.interfaceService.getMyChannels();
-    if (myChannels1 == null) {
-      this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels2 => {
-        this.myChannels = myChannels2;
-      });
-    } else {
-      this.myChannels = myChannels1;
-    }
   }
 
   /*initializeTestData() {

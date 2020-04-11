@@ -52,7 +52,53 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
               private router: Router,
               private channelNavBarService: ChannelNavBarService,
               public dialog: MatDialog,
-              private interfaceService: InterfaceService) {}
+              private interfaceService: InterfaceService) {
+    this.initializeNodeSession();
+    this.initializeAbbreviatedUserProfile();
+  }
+
+  private initializeNodeSession() {
+    this.nodeSession = this.interfaceService.getNodeSession();
+    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+      this.nodeSession = session;
+    });
+  }
+
+  private initializeAbbreviatedUserProfile() {
+    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
+    if (this.userProfileAbr != null) {
+      this.initializeNickname();
+    }
+    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+      this.userProfileAbr = userAbr;
+      this.initializeNickname();
+    });
+  }
+
+  private initializeNickname() {
+    if (this.userProfileAbr.nickName == null || this.userProfileAbr.nickName === undefined || this.userProfileAbr.nickName.length === 0) {
+      this.userName = `${this.userProfileAbr.firstName} ${this.userProfileAbr.lastName}`;
+    } else {
+      this.userName = this.userProfileAbr.nickName;
+    }
+  }
+
+  ngOnInit() {
+    this.rezziService.getSession().then((response) => {
+      if (response.email == null) {
+        this.router.navigate(['/sign-in']);
+      } else {
+        this.user = response.email;
+        this.accountType = response.accountType;
+      }
+    });
+
+    this.channelNavBarService.setChannel.subscribe(channelData => {
+      this.navChannel = channelData;
+      this.navTitle = this.navChannel.channel;
+      this.checkPermissions();
+    });
+  }
 
   checkPermissions() {
     if (this.navTitle !== 'Rezzi') {                              // Channel not selected
@@ -72,58 +118,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     }
     if (this.accountType === 0 || this.accountType === 1) {       // Must be admin to mute members in a channel
       this.muteButtonDisabled = false;
-    }
-  }
-
-  ngOnInit() {
-    this.initializeNodeSession();
-    this.initializeAbbreviatedUserProfile();
-
-    this.rezziService.getSession().then((response) => {
-      if (response.email == null) {
-        this.router.navigate(['/sign-in']);
-      } else {
-        this.user = response.email;
-        this.accountType = response.accountType;
-      }
-    });
-
-    this.channelNavBarService.setChannel.subscribe(channelData => {
-      this.navChannel = channelData;
-      this.navTitle = this.navChannel.channel;
-      this.checkPermissions();
-    });
-  }
-
-  private initializeNodeSession() {
-    const session1 = this.interfaceService.getNodeSession();
-    if (session1 == null) {
-      this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session2 => {
-        this.nodeSession = session2;
-      });
-    } else {
-      this.nodeSession = session1;
-    }
-  }
-
-  private initializeAbbreviatedUserProfile() {
-    const userAbr1 = this.interfaceService.getAbbreviatedUserProfile();
-    if (userAbr1 == null) {
-      this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr2 => {
-        this.userProfileAbr = userAbr2;
-        this.initializeNickname();
-      });
-    } else {
-      this.userProfileAbr = userAbr1;
-      this.initializeNickname();
-    }
-  }
-
-  private initializeNickname() {
-    if (this.userProfileAbr.nickName == null || this.userProfileAbr.nickName === undefined || this.userProfileAbr.nickName.length === 0) {
-      this.userName = `${this.userProfileAbr.firstName} ${this.userProfileAbr.lastName}`;
-    } else {
-      this.userName = this.userProfileAbr.nickName;
     }
   }
 
