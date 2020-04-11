@@ -2,7 +2,9 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 import { ChannelData } from 'src/app/classes.model';
 import { BehaviorSubject, Subject, Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ChannelNavBarService {
   channel: ChannelData;
 
