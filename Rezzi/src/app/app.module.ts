@@ -104,9 +104,9 @@ import { ErrorComponent } from './error/error.component';
 import { CreateChannelFormComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/create-channel-form.component';
 
 // Reset password components
-import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
-import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
-import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
+import { PwordresetRequestComponent } from './pwordreset/pwordreset-request/pwordreset-request.component';
+import { PwordresetSentComponent } from './pwordreset/pwordreset-sent/pwordreset-sent.component';
+import { PwordresetChangeComponent } from './pwordreset/pwordreset-change/pwordreset-change.component';
 import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/member-input/member-input.component';
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
