@@ -115,6 +115,7 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 import { AssignPrivilegsComponent } from './dashboard/assign-privilegs/assign-privilegs.component';
 import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
+import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
 
 @NgModule({
   declarations: [
@@ -170,6 +171,7 @@ import { MuteMembersComponent } from './home/interface/mute-members/mute-members
     BotMessageComponent,
     AssignPrivilegsComponent,
     MuteMembersComponent,
+    PollingComponent,
   ],
   imports: [
     BrowserModule,
@@ -212,7 +214,8 @@ import { MuteMembersComponent } from './home/interface/mute-members/mute-members
     CreatePmComponent,
     LeaveChannelDialog,
     DeleteChannelDialog,
-    ImageModalComponent
+    ImageModalComponent,
+    PollingComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]
