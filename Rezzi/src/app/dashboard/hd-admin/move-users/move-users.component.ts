@@ -12,11 +12,14 @@ import { MatTableDataSource } from '@angular/material';
 })
 export class MoveUsersComponent implements OnInit {
 
+  private MOVE_TO = 'Move to...';
   title = 'Fetching residents...';
   message = 'Move residents between floors within your Rezzi';
   private usersByFloorMap = new Map<string, Map<string, ResidentPrivilegeInfo>>();
+  floors: string[] = [];
+  floorSelectionForUser = new Map<string, string>();
   matTableDataMap = new Map<string, MatTableDataSource<ResidentPrivilegeInfo>>();  // floor --> array of users on floor
-  columnsToDisplay: string[] = ['fnameCol', 'lnameCol', 'emailCol', 'actTypeCol', /* 'moveMenu', */ 'buttonCol'];
+  columnsToDisplay: string[] = ['fnameCol', 'lnameCol', 'emailCol', 'actTypeCol', 'floorMenuCol', 'buttonCol'];
 
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
@@ -31,6 +34,9 @@ export class MoveUsersComponent implements OnInit {
       } else {
         this.rezziService.getResidentsByFloor(null).then(res => {
           const infoList = res.infoList as ResidentPrivilegeInfo[];
+          if (res.floors != null && res.floors !== undefined) {
+            this.floors = res.floors as string[];
+          }
 
           // Initializes the usersByFloorMap: floor --> Map<email, user data>
           infoList.forEach(user => {
@@ -41,6 +47,7 @@ export class MoveUsersComponent implements OnInit {
             const mapOfUsersOnThisFloor = this.usersByFloorMap.get(floor);
             mapOfUsersOnThisFloor.set(user.email, user);
             this.usersByFloorMap.set(floor, mapOfUsersOnThisFloor);
+            this.floorSelectionForUser.set(user.email, this.MOVE_TO);
           });
 
           // Initialize mat table data map
@@ -55,8 +62,18 @@ export class MoveUsersComponent implements OnInit {
     });
   }
 
+  selectFloorForUser(email: string, floor: string) {
+    this.floorSelectionForUser.set(email, floor);
+  }
+
   moveUser(email: string) {
-    console.log(`I want to move ${email}!!!`);
+    const floor = this.floorSelectionForUser.get(email);
+    if (floor == null || floor === undefined || floor === this.MOVE_TO) {
+      return;
+    }
+
+    console.log(`I want to move ${email} to ${floor}!!!`);
+    this.floorSelectionForUser.set(email, this.MOVE_TO);  // Reset floor selection
   }
 
 }
