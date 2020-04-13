@@ -7,18 +7,19 @@ const checkCookie = require('../permissions').userNeedsToBeLoggedInHD
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 
-router.get('/', checkCookie, function(request, response) {
-  const email = request.query.user
-  const newFloor = request.query.toFloor
+router.post('/', checkCookie, function(request, response) {
+  const email = request.body.email
+  const newFloor = request.body.newFloor
 
   // Promise array
   let promises = []
 
-  const userDocRef = db.collection(keys.user).doc(email)
+  const userDocRef = db.collection(keys.users).doc(email)
   userDocRef.get().then(userDoc => {
     const userData = userDoc.data()
     const floorPrefix = keys.rezzis + '/' + userData.rezzi + '/floors'
     const oldFloorDocRef = db.collection(floorPrefix).doc(userData.floor)
+    const newFloorDocRef = db.collection(floorPrefix).doc(newFloor)
 
     // Remove user from list of floor.residents array
     promises.push(oldFloorDocRef.update({
@@ -69,21 +70,27 @@ router.get('/', checkCookie, function(request, response) {
       floor: newFloor
     }))
 
+    // Add user to list of newFloor.residents array
+    promises.push(newFloorDocRef.update({
+      residents: admin.firestore.FieldValue.arrayUnion(email)
+    }))
+
+    // If RA, add to list of newfloor.ras array
+    if (userData.accountType == 1) {
+      promises.push(newFloorDocRef.update({
+        ras: admin.firestore.FieldValue.arrayUnion(email)
+      }))
+    }
+
     // Add user to new floor general chat list of members and mute statuses
-    const newGenDocRef = db.collection(floorPrefix).doc(newFloor).collection('channels').doc('General')
-    promises.push(newGenDocRef.get().then(newGenDoc => {
-      const newGenData = newGenDoc.data()
-      const updatedMembers = newGenData.members.push(email)
-      const updatedMutes = newGenData.memberMuteStatuses.push({ email: email, isMuted: false })
-      return newGenDocRef.update({
-        members: updatedMembers,
-        memberMuteStatuses: updatedMutes
-      })
+    promises.push(newFloorDocRef.collection('channels').doc('General').update({
+      members: admin.firestore.FieldValue.arrayUnion(email),
+      memberMuteStatuses: admin.firestore.FieldValue.arrayUnion({ email: email, isMuted: false })
     }))
 
     // Send response when all promises are completed
     Promise.all(promises).then((resolved) => {
-      response.status(http.ok).json({ resolved, msg: 'User has been moved' })
+      response.status(http.ok).json({ resolved, status: http.ok, msg: 'User has been moved' })
     }).catch((reject) => {
       response.status(http.error).json({ reject: reject, msg: 'Something went wrong. Please try again later.' })
     })
