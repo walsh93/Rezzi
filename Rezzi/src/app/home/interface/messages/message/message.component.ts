@@ -59,7 +59,8 @@ export class MessageComponent implements OnInit {
   private pmReportId: string; //syntax: userWhoReportedMessage-messageID
   private ReportId: string;
   private currUserEmail: string;
-  private avatar: string // The avatar image, extracted from message
+  private avatar: string; // The avatar image, extracted from message
+  private isPoll: boolean;
 
   constructor(
     public messagesService: MessagesService,

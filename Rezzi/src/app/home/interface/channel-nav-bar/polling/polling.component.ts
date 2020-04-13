@@ -1,9 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Inject, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { RezziService } from 'src/app/rezzi.service';
 import { NgForm } from '@angular/forms';
-import { PollInfo, PollResponses, Message } from '../../../../classes.model'
+import { PollInfo, PollResponses, Message, AbbreviatedUser } from '../../../../classes.model'
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-polling',
@@ -29,7 +30,9 @@ export class PollingComponent implements OnInit {
     private rezziService: RezziService,
     private http: HttpClient) { }
 
+
   ngOnInit() {
+
   }
 
   onNoClick(): void {
@@ -48,7 +51,27 @@ export class PollingComponent implements OnInit {
       question: form.value.question,
       users: []
     }
+    const message: Message = {
+      content: 'Poll!',
+      owner: null,
+      time: new Date(),
+      visible: true,
+      id: null, // TODO Need to change the ID
+      reactions: { // TODO should make this more generic for ReactionData so its easier to add icons
+        thumb_up: [],
+        thumb_down: [],
+        sentiment_very_satisfied: [],
+        sentiment_dissatisfied: [],
+        whatshot: [],
+      },
+      reported: false,
+      image: null, //should this not be null?
+      isPoll: true,
+      pollInfo: pollInfo,
 
+    };
+
+    this.create_poll.emit(message);
 
     //form should have list of users who have submitted
     //each response should have a number that increments
@@ -65,7 +88,7 @@ export class PollingComponent implements OnInit {
       count: 0,
       content: form.value.response1
     }
-    let newform: PollResponses[];
+    let newform: PollResponses[] = [];
 
     if (form.value.response2 == null || form.value.response2 == undefined) {
       console.log("2 items");

@@ -3,13 +3,13 @@ import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
-import { ChannelData, AbbreviatedUser, BotMessage } from 'src/app/classes.model';
+import { ChannelData, AbbreviatedUser, BotMessage, Message, SocketChannelMessageData } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, Observable, Subject } from 'rxjs';
 import { MessagesService } from '../messages/messages.service';
 import { PollingComponent } from './polling/polling.component';
 import * as c from '../interface.constants';
-import { CreatePmComponent } from 'src/app/dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
+
 
 export interface DialogData {
   channel: ChannelData;
@@ -55,7 +55,8 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     private router: Router,
     private channelNavBarService: ChannelNavBarService,
     public dialog: MatDialog,
-    public dialog2: MatDialog
+    public dialog2: MatDialog,
+    public messagesService: MessagesService,
   ) { }
 
   checkPermissions() {
@@ -170,10 +171,25 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog2.open(PollingComponent, {
       width: '600px',
       height: 'auto',
+      data: {
+        channel: this.navChannel,
+        rezzi: this.session.rezzi,
+        userName: this.userName,
+      }
     });
 
-    dialogRef.componentInstance.create_poll.subscribe((email: string) => {
-      // send new poll message
+    dialogRef.componentInstance.create_poll.subscribe((message: Message) => {
+      console.log("made it here in cnb.ts");
+      message.owner = this.abbrevUser;
+      console.log(message);
+      console.log(this.navChannel.id);
+      console.log(this.navChannel.channel);
+      const scmd: SocketChannelMessageData = {
+        message,
+        rezzi: this.session.rezzi,
+        channelID: this.navChannel.id
+      }
+      this.messagesService.sendMessageThroughSocket(scmd);
     });
 
 
