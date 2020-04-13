@@ -24,6 +24,11 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   private canPostSubsc: Subscription;
   private isMutedSubsc: Subscription;
 
+  // Viewing data
+  private currentChannelID: string;
+  private newChannelViewSubsc: Subscription;  // Listen for changes in which channel is being viewed
+
+
 
 
 
@@ -35,29 +40,19 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   private isHiddenSubsc: Subscription;
   @Input() isHiddenObs: Observable<boolean>;
 
-  // Current channel data
-  currentChannel: string;
-  private viewingUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
-
   constructor(public messagesService: MessagesService, private interfaceService: InterfaceService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.initializeNodeSession();
     this.initializeAbbreviatedUserProfile();
     this.initializeAbilityToPost();
+    this.initializeChannelViewListener();
+
 
 
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
       this.isHidden = !viewNow;
-    });
-
-    // Listen for changes in which channel is being viewed
-    this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
-      console.log(`Now viewing channel ${updatedChannelID}`);
-      this.currentChannel = updatedChannelID;
     });
   }
 
@@ -87,6 +82,13 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     });
   }
 
+  private initializeChannelViewListener() {
+    this.newChannelViewSubsc = this.interfaceService.getNewChannelViewListener().subscribe(newChannelViewID => {
+      console.log(`Now viewing channel ${newChannelViewID}`);
+      this.currentChannelID = newChannelViewID;
+    });
+  }
+
   onAddMessage(form: NgForm) {
     if (form.invalid) {
       return;
@@ -112,7 +114,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     const scmd: SocketChannelMessageData = {
       message,
       rezzi: this.nodeSession.rezzi,
-      channelID: this.currentChannel,
+      channelID: this.currentChannelID,
     };
 
     // this.messagesService.addMessage(message);
@@ -136,12 +138,12 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.nodeSessionSubsc.unsubscribe();
     this.userProfileAbrSubsc.unsubscribe();
     this.canPostSubsc.unsubscribe();
+    this.isMutedSubsc.unsubscribe();
+    this.newChannelViewSubsc.unsubscribe();
 
 
 
     this.isHiddenSubsc.unsubscribe();
-    this.isMutedSubsc.unsubscribe();
-    this.viewingUpdateSub.unsubscribe();
   }
 
 }

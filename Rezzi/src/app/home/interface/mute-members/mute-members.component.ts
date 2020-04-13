@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { MemberMuteInfo } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
+import { InterfaceService } from '../interface.service';
 
 @Component({
   selector: 'app-mute-members',
@@ -12,24 +13,23 @@ import { RezziService } from 'src/app/rezzi.service';
   styleUrls: ['./mute-members.component.css']
 })
 export class MuteMembersComponent implements OnInit, OnDestroy {
-
+  // UI data
   title = 'Fetching residents...';
   message = 'Modify user posting privileges for this channel only';
   private channelMuteMap = new Map<string, Map<string, MemberMuteInfo>>();
   members: MatTableDataSource<MemberMuteInfo>;
   columnsToDisplay: string[] = ['fnameCol', 'lnameCol', 'emailCol', 'buttonCol'];
 
+  // Viewing data
+  private currentChannelID: string;
+  private newChannelViewSubsc: Subscription;
+
   // Asynchronous data from parent component
   isHidden = true;  // By default, want to show channel messages and new-message component
   private isHiddenSubsc: Subscription;
   @Input() isHiddenObs: Observable<boolean>;
 
-  // Current channel retrieved from interface.component
-  private currentChannelID: string;
-  private viewingUpdateSub: Subscription;
-  @Input() viewingObs: Observable<string>;
-
-  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
+  constructor(private rezziService: RezziService, private interfaceService: InterfaceService, private http: HttpClient) { }
 
   ngOnInit() {
     // Listen for whether or not to view this in the interface or some other component
@@ -43,19 +43,18 @@ export class MuteMembersComponent implements OnInit, OnDestroy {
     });
 
     // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
-    this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
-      if (updatedChannelID !== this.currentChannelID) {
-        this.currentChannelID = updatedChannelID;
+    this.initializeChannelViewListener();
+  }
+
+  private initializeChannelViewListener() {
+    this.newChannelViewSubsc = this.interfaceService.getNewChannelViewListener().subscribe(newChannelViewID => {
+      if (newChannelViewID !== this.currentChannelID) {
+        this.currentChannelID = newChannelViewID;
         if (!this.isHidden) {
           this.updateResidentsTableData();  // Update if you are viewing the members, but the channel changed
         }
       }
     });
-  }
-
-  ngOnDestroy() {
-    this.isHiddenSubsc.unsubscribe();
-    this.viewingUpdateSub.unsubscribe();
   }
 
   private updateResidentsTableData() {
@@ -119,6 +118,11 @@ export class MuteMembersComponent implements OnInit, OnDestroy {
         console.log('update unsuccessful');  // TODO change to mat-dialog
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.isHiddenSubsc.unsubscribe();
+    this.newChannelViewSubsc.unsubscribe();
   }
 
 }

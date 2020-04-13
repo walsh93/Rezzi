@@ -31,7 +31,9 @@ export class InterfaceService {
   private allChannels: ChannelData[] = [];
   private allChannelsSubj = new Subject<ChannelData[]>();
   private myChannels: ChannelData[] = [];
+  private myChannelsMap = new Map<string, ChannelData>();
   private myChannelsSubj = new Subject<ChannelData[]>();
+  private newChannelViewSubj = new Subject<string>();
   private isMutedSubj = new Subject<boolean>();
 
   constructor(private rezzi: RezziService, private sidePanel: SidePanelService) {
@@ -76,6 +78,9 @@ export class InterfaceService {
     this.sidePanel.getChannels().then(arrays => {
       this.allChannels = arrays.allChannels;
       this.myChannels = arrays.myChannels;
+      arrays.myChannels.forEach(channelData => {
+        this.myChannelsMap.set(channelData.id, channelData);
+      });
     });
   }
 
@@ -192,6 +197,13 @@ export class InterfaceService {
   }
 
   /**
+   * Get the interface.service listener that tracks when a new channel is being viewed
+   */
+  getNewChannelViewListener(): Observable<string> {
+    return this.newChannelViewSubj.asObservable();
+  }
+
+  /**
    * Get a listener to track whether the user is currently muted or not
    */
   getIsMutedListener(): Observable<boolean> {
@@ -203,12 +215,15 @@ export class InterfaceService {
    ***********************************************************************************************/
 
   /**
-   * Set whether the user is currently muted or not
-   * This will trigger the interface.service isMutedSubj, which is subscribed to by the CHILD
-   * components
+   * Set the new channel that is being viewed in the interface
+   *
+   * @param channelID - the ID of the channel [floor/hallwide/RA]-[floor name]-[channel name]
    */
-  setIsMuted(isMuted: boolean) {
-    this.isMutedSubj.next(isMuted);
+  setNewChannelView(channelID: string) {
+    this.newChannelViewSubj.next(channelID);
+    if (this.myChannelsMap.has(channelID)) {
+      this.isMutedSubj.next(this.myChannelsMap.get(channelID).isMuted);
+    }
   }
 
 }

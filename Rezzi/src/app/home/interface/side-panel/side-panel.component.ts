@@ -40,13 +40,39 @@ export class SidePanelComponent implements OnInit, OnDestroy {
 
   // Send channels to interface.component
   @Output() channelsToSend = new EventEmitter<ChannelData[]>();
-  @Output() channelToView = new EventEmitter<string>();
 
   constructor(private interfaceService: InterfaceService, public dialog: MatDialog, private sidePanService: SidePanelService, private chanNavBarService: ChannelNavBarService) {
+    this.refreshSidePanel();
+  }
+
+  refreshSidePanel(): void {
+    this.channels = [];
+    this.filteredChannels = [];
+    this.sidePanService.getChannels().then(arrays => {
+      this.channels = arrays.allChannels;
+      this.filteredChannels = arrays.myChannels;
+      this.channelRedirect = this.filteredChannels[0];
+      this.channelRedirectLevel = this.channelRedirect.id.split('-')[0];
+      this.channelsToSend.emit(this.filteredChannels);
+    });
+  }
+
+  ngOnInit() {
     this.initializeNodeSession();
     this.initializeAbbreviatedUserProfile();
     this.initializeChannels();
-    this.refreshSidePanel();
+
+
+    // Listen for channel updates, redirect for less channels
+    this.chanNavBarService.currentChannelUpdateStatus.subscribe(status => {
+      this.status = status;
+      if (this.status === true) {
+        this.refreshSidePanel();
+        this.chanNavBarService.changeChannelUpdateStatus(false);
+        console.log('Redirecting to ' + this.channelRedirect.id);
+        this.viewChannel(this.channelRedirect, this.channelRedirectLevel);
+      }
+    });
   }
 
   private initializeNodeSession() {
@@ -74,16 +100,20 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  refreshSidePanel(): void {
-    this.channels = [];
-    this.filteredChannels = [];
-    this.sidePanService.getChannels().then(arrays => {
-      this.channels = arrays.allChannels;
-      this.filteredChannels = arrays.myChannels;
-      this.channelRedirect = this.filteredChannels[0];
-      this.channelRedirectLevel = this.channelRedirect.id.split('-')[0];
-      this.channelsToSend.emit(this.filteredChannels);
-    });
+  viewChannel(channel: ChannelData, level: string) {
+    this.chanNavBarService.setNavData(channel);
+    let viewingChannelString = '';
+    if (level != null) {
+      if (level === 'hallwide' || level === 'RA') {  // Reconstruct the channel ID
+        viewingChannelString = `${level}-${channel.channel}`;
+      } else {
+        viewingChannelString = `floors-${level}-${channel.channel}`;
+      }
+    } else {
+      console.log('Show category accouncements??? What are we showing here?');  // TODO @Kai
+      viewingChannelString = null;
+    }
+    this.interfaceService.setNewChannelView(viewingChannelString);
   }
 
   openDialog(): void {
@@ -106,35 +136,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
         });
       });
     });
-  }
-
-  ngOnInit() {
-    // Listen for channel updates, redirect for less channels
-    this.chanNavBarService.currentChannelUpdateStatus.subscribe(status => {
-      this.status = status;
-      if (this.status === true) {
-        this.refreshSidePanel();
-        this.chanNavBarService.changeChannelUpdateStatus(false);
-        console.log('Redirecting to ' + this.channelRedirect.id);
-        this.viewChannel(this.channelRedirect, this.channelRedirectLevel);
-      }
-    });
-  }
-
-  viewChannel(channel: ChannelData, level: string) {
-    this.chanNavBarService.setNavData(channel);
-    let viewingChannelString = '';
-    if (level != null) {
-      if (level === 'hallwide' || level === 'RA') {  // Reconstruct the channel ID
-        viewingChannelString = `${level}-${channel.channel}`;
-      } else {
-        viewingChannelString = `floors-${level}-${channel.channel}`;
-      }
-    } else {
-      console.log('Show category accouncements??? What are we showing here?');  // TODO @Kai
-      viewingChannelString = null;
-    }
-    this.channelToView.emit(viewingChannelString);
   }
 
   ngOnDestroy() {

@@ -27,6 +27,9 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   private myChannelsSubsc: Subscription;
   private isMutedSubsc: Subscription;
 
+  // Viewing data
+  private newChannelViewSubsc: Subscription;
+
 
 
 
@@ -47,15 +50,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('channelsUpdateEvent') channelsObs: Observable<ChannelData[]>;
 
-
-  // Current channel retrieved from interface.component
-  currentChannel: string;
-  private viewingUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('viewingUpdateEvent') viewingObs: Observable<string>;
-
   constructor(private interfaceService: InterfaceService, public messagesService: MessagesService) {
-    this.currentChannel = null;
     this.channels = [];
     this.channelMap = new Map<string, ChannelData>();
   }
@@ -65,9 +60,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.initializeAbbreviatedUserProfile();
     this.initializeCanPost();
     this.initializeChannelData();
-
-    // If testing messages/message view with `ng serve`
-    // this.initializeTestData();
+    this.initializeChannelViewListener();
 
     // Listen for whether or not to view this in the interface or some other component
     this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
@@ -82,17 +75,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       updatedChannels.forEach((channel) => {
         this.channelMap.set(channel.id, channel);
       });
-    });
-
-    // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
-    this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
-      this.currentChannel = updatedChannelID;
-      const dbpath = this.messagesService.createChannelPath(this.nodeSession.rezzi, updatedChannelID);
-      if (dbpath != null && dbpath !== undefined) {
-        this.amViewingNewChannel = true;
-        this.messagesService.getChannelMessages(dbpath.channelPath, dbpath.channelName);  // Triggers msg upd listener
-        this.messagesService.emitNewChannelView(dbpath);  // eventually triggers addListenerForChannelMessages
-      }
     });
 
     // TODO What is the opening channel view? Do we need to call this.messagesService.emitNewChannelView on opening?
@@ -142,6 +124,18 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
         this.updateComponentHeight(isMutedNow);
       });
     }
+  }
+
+  private initializeChannelViewListener() {
+    // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
+    this.newChannelViewSubsc = this.interfaceService.getNewChannelViewListener().subscribe(newChannelViewID => {
+      const dbpath = this.messagesService.createChannelPath(this.nodeSession.rezzi, newChannelViewID);
+      if (dbpath != null && dbpath !== undefined) {
+        this.amViewingNewChannel = true;
+        this.messagesService.getChannelMessages(dbpath.channelPath, dbpath.channelName);  // Triggers msg upd listener
+        this.messagesService.emitNewChannelView(dbpath);  // eventually triggers addListenerForChannelMessages
+      }
+    });
   }
 
   /**
@@ -213,12 +207,12 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     if (this.isMutedSubsc != null) {
       this.isMutedSubsc.unsubscribe();
     }
+    this.newChannelViewSubsc.unsubscribe();
 
 
     this.isHiddenSubsc.unsubscribe();
     this.channelUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels
-    this.viewingUpdateSub.unsubscribe();
   }
 
 }

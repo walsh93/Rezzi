@@ -35,7 +35,6 @@ export class InterfaceComponent implements OnInit, OnDestroy {
 
   // Passing channels and session to child component channel-messages every time they update
   channelsUpdateSubject: Subject<ChannelData[]> = new Subject<ChannelData[]>();
-  viewingUpdateSubject: Subject<string> = new Subject<string>();
 
   // Variables to track which interface view should appear (triggered by channel navbar and service)
   interfaceViewSubscr: Subscription;
@@ -116,13 +115,6 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     channels.forEach(channelData => {
       this.channelMap.set(channelData.id, channelData);
     });
-  }
-
-  viewingNewChannel(channelID: string) {
-    this.viewingUpdateSubject.next(channelID);
-    if (this.channelMap.has(channelID)) {
-      this.interfaceService.setIsMuted(this.channelMap.get(channelID).isMuted);
-    }
   }
 
   ngOnDestroy() {
