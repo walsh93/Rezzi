@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserProfile } from '../../classes.model';
+import { UserProfile, NodeSession } from '../../classes.model';
 import { Subscription } from 'rxjs';
 import { InterfaceService } from './interface.service';
+import { RezziService } from 'src/app/rezzi.service';
 
 @Component({
   selector: 'app-interface',
@@ -14,14 +15,23 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   private userProfile: UserProfile;
   private userProfileSubsc: Subscription;
 
-  constructor(private interfaceService: InterfaceService) { }
+  constructor(private rezziSrv: RezziService, private interfaceSrv: InterfaceService) { }
 
   ngOnInit() {
-    this.userProfile = this.interfaceService.getUserProfile();
+    this.initializeProfileData();
+    this.rezziSrv.getSession().then((session: NodeSession) => {
+      if (session.email !== this.userProfile.email) {
+        this.interfaceSrv.reinitializeServiceData();
+      }
+    });
+  }
+
+  private initializeProfileData() {
+    this.userProfile = this.interfaceSrv.getUserProfile();
     if (this.userProfile != null && !this.userProfile.canPost) {  // Remove message bar is posting privileges have been revoked
       document.getElementById('newMessageBar').remove();
     }
-    this.userProfileSubsc = this.interfaceService.getUserProfileListener().subscribe(user => {
+    this.userProfileSubsc = this.interfaceSrv.getUserProfileListener().subscribe(user => {
       this.userProfile = user;
       if (!user.canPost) {  // Remove message bar is posting privileges have been revoked
         document.getElementById('newMessageBar').remove();

@@ -55,7 +55,6 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     this.initializeAbbreviatedUserProfile();
     this.initializeChannels();
 
-
     // Listen for channel updates, redirect for less channels
     this.cnbSrv.currentChannelUpdateStatus.subscribe(status => {
       this.status = status;
@@ -121,13 +120,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.componentInstance.joinChannelEvent.subscribe((id: string) => {
-      this.allChannels.forEach(hall => {
-        hall.subchannels.forEach(channel => {
-          if (channel.id === id) {
-            channel.belongs = true;
-          }
-        });
-      });
+      this.interfaceSrv.joinChannel(id);
     });
   }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { RezziService } from 'src/app/rezzi.service';
-import { NodeSession, AbbreviatedUser, User, UserProfile, AbbreviatedUserProfile, ChannelData } from 'src/app/classes.model';
+import { AbbreviatedUserProfile, ChannelData, NodeSession, UserProfile } from 'src/app/classes.model';
 import { SidePanelService } from './side-panel/side-panel.service';
 
 /**
@@ -15,13 +15,15 @@ import { SidePanelService } from './side-panel/side-panel.service';
 })
 export class InterfaceService {
 
+  private constructorAlreadyRun = false;
+
   // Session data
   private nodeSession: NodeSession = null;
   private nodeSessionSubj = new Subject<NodeSession>();
 
   // User profile data
   private userProfile: UserProfile = null;
-  private userProfileSubj = new Subject<UserProfile>();
+  userProfileSubj = new Subject<UserProfile>();
   private userProfileAbr: AbbreviatedUserProfile = null;
   private userProfileAbrSubj = new Subject<AbbreviatedUserProfile>();
   private canPost: boolean = null;
@@ -29,10 +31,10 @@ export class InterfaceService {
 
   // Channel data
   private allChannels: ChannelData[] = [];
-  private allChannelsSubj = new Subject<ChannelData[]>();
+  allChannelsSubj = new Subject<ChannelData[]>();
   private myChannels: ChannelData[] = [];
   private myChannelsMap = new Map<string, ChannelData>();
-  private myChannelsSubj = new Subject<ChannelData[]>();
+  myChannelsSubj = new Subject<ChannelData[]>();
   private newChannelViewSubj = new Subject<string>();
   private isMutedSubj = new Subject<boolean>();
 
@@ -41,6 +43,7 @@ export class InterfaceService {
     this.initializeNodeSession();
     this.initializeUserData();
     this.initializeChannels();
+    this.constructorAlreadyRun = true;
   }
 
   /************************************************************************************************
@@ -82,6 +85,38 @@ export class InterfaceService {
         this.myChannelsMap.set(channelData.id, channelData);
       });
     });
+  }
+
+  /**
+   * Reset and reinitialize the interface.service data
+   * Need to call this on sign-in because if a user signs out and signs in as a difference user,
+   * the interface data is otherwise still the data of the old user. Because the interface.service
+   * constructor is only run once.
+   * If the constructor hasn't been run yet, no need to call this function. But if it has, that's
+   * when this needs to be called.
+   * UPDATE: don't call on sign-in, because the interface.component hasn't been initialized yet.
+   * Add a check in the interface.component that the rezzi.getSession() email, which gets the
+   * session live, matches the email of the interface.service. If they don't match, then you need
+   * to reinitialize the data.
+   */
+  reinitializeServiceData() {
+    if (this.constructorAlreadyRun) {
+      console.log('Resetting and reinitializing interface.service data...');
+
+      // Reset data
+      this.nodeSession = null;
+      this.userProfile = null;
+      this.userProfileAbr = null;
+      this.canPost = null;
+      this.allChannels = [];
+      this.myChannels = [];
+      this.myChannelsMap.clear();
+
+      // Reinitialize data
+      this.initializeNodeSession();
+      this.initializeUserData();
+      this.initializeChannels();
+    }
   }
 
   /************************************************************************************************
@@ -211,12 +246,11 @@ export class InterfaceService {
   }
 
   /************************************************************************************************
-   * Setter functions
+   * Setter functions and others that manipulate service data
    ***********************************************************************************************/
 
   /**
    * Set the new channel that is being viewed in the interface
-   *
    * @param channelID - the ID of the channel [floor/hallwide/RA]-[floor name]-[channel name]
    */
   setNewChannelView(channelID: string) {
@@ -224,6 +258,40 @@ export class InterfaceService {
     if (this.myChannelsMap.has(channelID)) {
       this.isMutedSubj.next(this.myChannelsMap.get(channelID).isMuted);
     }
+  }
+
+  /**
+   * Join a channel. If only executed in the side panel, the inerface data will not be updated.
+   * @param channelID - the ID of the channel [floor/hallwide/RA]-[floor name]-[channel name]
+   */
+  joinChannel(channelID: string) {
+    this.allChannels.forEach(hall => {
+      hall.subchannels.forEach(channel => {
+        if (channel.id === channelID) {
+          channel.belongs = true;
+          this.myChannels.push(channel);
+          this.myChannelsMap.set(channelID, channel);
+          this.allChannelsSubj.next(this.allChannels);
+          this.myChannelsSubj.next(this.myChannels);
+          return;
+        }
+      });
+    });
+  }
+
+  /************************************************************************************************
+   * Setter functions for data updates in the DASHBOARD
+   ***********************************************************************************************/
+
+  /**
+   * Update the user profile information.
+   * This should be called when a user submits changes on the edit-profile-form.component, which is
+   * in the DASHBOARD, not the INTERFACE.
+   */
+  updateProfile() {
+    this.userProfile = null;
+    this.userProfileAbr = null;
+    this.initializeUserData();
   }
 
 }
