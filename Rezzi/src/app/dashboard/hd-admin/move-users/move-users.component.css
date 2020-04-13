@@ -1,0 +1,48 @@
+#tableContainer, #tableContainer2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#tableContainer {
+  margin: auto;
+  margin-bottom: 75px;
+  width: 85%;
+}
+
+#tableContainer2 {
+  width: -webkit-fill-available;
+}
+
+h1, h2 {
+  margin: 25px 0;
+}
+
+#filterButtonContainer {
+  align-self: flex-end;
+}
+
+.residentTable {
+  width: -webkit-fill-available;
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding: 20px 20px 20px 0;
+}
+
+/* Make sure column widths add up to 100% */
+.fnameColumn, .lnameColumn, .emailColumn {
+  width: 25%;
+}
+
+.accountColumn {
+  width: 15%;
+}
+
+.buttonColumn {
+  width: 10%;
+}
