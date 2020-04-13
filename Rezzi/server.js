@@ -116,6 +116,8 @@ const hdnotifications = require('./server/routes/hd-notifications')
 app.use(url.hd_notifications, hdnotifications)
 const deleteUser = require('./server/routes/deleteUser')
 app.use(url.deleteUser, deleteUser)
+const moveUser = require('./server/routes/move-user')
+app.use(url.move_user, moveUser)
 const resendEmail = require('./server/routes/resend-email')
 app.use(url.resend_email, resendEmail)
 

@@ -61,6 +61,7 @@ module.exports = {
     user_management: "/user-management",
     hd_notifications: "/hd-notifications",
     deleteUser: "/deleteUser",
+    move_user: "/move-user",
     resend_email: "/resend-email",
     error: {
       page: "/err",
