@@ -32,13 +32,24 @@
         </td>
       </ng-container>
 
-      <!-- Move menu column -->
+      <!-- Floor menu column -->
+      <ng-container matColumnDef="floorMenuCol">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td class="floorMenuColumn" mat-cell *matCellDef="let resident">
+          <button mat-button [matMenuTriggerFor]="floorMenu">{{ floorSelectionForUser.get(resident.email) }}</button>
+          <mat-menu #floorMenu="matMenu" xPosition="before">
+            <button mat-menu-item *ngFor="let floor of floors" (click)="selectFloorForUser(resident.email, floor)">{{ floor }}</button>
+          </mat-menu>
+        </td>
+      </ng-container>
 
       <!-- Button column -->
       <ng-container matColumnDef="buttonCol">
         <th mat-header-cell *matHeaderCellDef></th>
         <td class="buttonColumn" mat-cell *matCellDef="let resident">
-          <button mat-raised-button color="accent" (click)="moveUser(resident.email)">Move</button>
+          <button mat-raised-button color="accent" (click)="moveUser(resident.email)"
+            [disabled]="floorSelectionForUser.get(resident.email)=='Move to...'"
+          >Move</button>
         </td>
       </ng-container>
 

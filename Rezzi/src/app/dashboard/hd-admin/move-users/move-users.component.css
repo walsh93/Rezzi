@@ -35,14 +35,18 @@ h1, h2 {
 }
 
 /* Make sure column widths add up to 100% */
-.fnameColumn, .lnameColumn, .emailColumn {
+.fnameColumn, .lnameColumn {
+  width: 17%;
+}
+
+.emailColumn {
   width: 25%;
 }
 
-.accountColumn {
-  width: 15%;
+.floorMenuColumn {
+  width: 21%;
 }
 
-.buttonColumn {
+.accountColumn, .buttonColumn {
   width: 10%;
 }
