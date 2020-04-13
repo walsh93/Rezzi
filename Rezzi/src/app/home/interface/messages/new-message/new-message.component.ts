@@ -20,6 +20,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   // User profile data
   private userProfileAbr: AbbreviatedUserProfile;
   private userProfileAbrSubsc: Subscription;
+  private canPost: boolean;
+  private canPostSubsc: Subscription;
+  private isMutedSubsc: Subscription;
 
 
 
@@ -32,22 +35,30 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   private isHiddenSubsc: Subscription;
   @Input() isHiddenObs: Observable<boolean>;
 
-  private canPost = true;
-  private canPostUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('canPostUpdateEvent') canPostObs: Observable<boolean>;
-  private isMutedSubsc: Subscription;
-  @Input() isMutedObs: Observable<boolean>;
-
   // Current channel data
   currentChannel: string;
   private viewingUpdateSub: Subscription;
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
 
-  constructor(public messagesService: MessagesService, private interfaceService: InterfaceService, public dialog: MatDialog) {
+  constructor(public messagesService: MessagesService, private interfaceService: InterfaceService, public dialog: MatDialog) { }
+
+  ngOnInit() {
     this.initializeNodeSession();
     this.initializeAbbreviatedUserProfile();
+    this.initializeAbilityToPost();
+
+
+    // Listen for whether or not to view this in the interface or some other component
+    this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
+      this.isHidden = !viewNow;
+    });
+
+    // Listen for changes in which channel is being viewed
+    this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
+      console.log(`Now viewing channel ${updatedChannelID}`);
+      this.currentChannel = updatedChannelID;
+    });
   }
 
   private initializeNodeSession() {
@@ -64,26 +75,15 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    // Listen for whether or not to view this in the interface or some other component
-    this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
-      this.isHidden = !viewNow;
+  private initializeAbilityToPost() {
+    this.canPost = this.interfaceService.getCanPost();
+    this.canPostSubsc = this.interfaceService.getCanPostListener().subscribe(canPostNow => {
+      this.canPost = canPostNow;
     });
-
-    // Listen for whether or not the user is muted
-    this.canPostUpdateSub = this.canPostObs.subscribe((canPost) => {
-      this.canPost = canPost;
-    });
-    this.isMutedSubsc = this.isMutedObs.subscribe(isMuted => {
+    this.isMutedSubsc = this.interfaceService.getIsMutedListener().subscribe(isMutedNow => {
       if (this.canPost) {
-        this.isHidden = isMuted;
+        this.isHidden = isMutedNow;
       }
-    });
-
-    // Listen for changes in which channel is being viewed
-    this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
-      console.log(`Now viewing channel ${updatedChannelID}`);
-      this.currentChannel = updatedChannelID;
     });
   }
 
@@ -133,15 +133,14 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.nodeSessionSubsc != null) {
-      this.nodeSessionSubsc.unsubscribe();
-    }
-    if (this.userProfileAbrSubsc != null) {
-      this.userProfileAbrSubsc.unsubscribe();
-    }
+    this.nodeSessionSubsc.unsubscribe();
+    this.userProfileAbrSubsc.unsubscribe();
+    this.canPostSubsc.unsubscribe();
+
+
+
     this.isHiddenSubsc.unsubscribe();
     this.isMutedSubsc.unsubscribe();
-    this.canPostUpdateSub.unsubscribe();
     this.viewingUpdateSub.unsubscribe();
   }
 

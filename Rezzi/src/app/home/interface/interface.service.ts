@@ -24,17 +24,20 @@ export class InterfaceService {
   private userProfileSubj = new Subject<UserProfile>();
   private userProfileAbr: AbbreviatedUserProfile = null;
   private userProfileAbrSubj = new Subject<AbbreviatedUserProfile>();
+  private canPost: boolean = null;
+  private canPostSubj = new Subject<boolean>();
 
   // Channel data
   private allChannels: ChannelData[] = [];
   private allChannelsSubj = new Subject<ChannelData[]>();
   private myChannels: ChannelData[] = [];
   private myChannelsSubj = new Subject<ChannelData[]>();
+  private isMutedSubj = new Subject<boolean>();
 
   constructor(private rezzi: RezziService, private sidePanel: SidePanelService) {
     console.log('interface.service constructor run');
     this.initializeNodeSession();
-    this.initializeUserProfiles();
+    this.initializeUserData();
     this.initializeChannels();
   }
 
@@ -50,7 +53,7 @@ export class InterfaceService {
     });
   }
 
-  private initializeUserProfiles() {
+  private initializeUserData() {
     this.rezzi.getUserProfile().then(response => {
       const profile = response.user as UserProfile;
       const profileAbr: AbbreviatedUserProfile = {
@@ -62,8 +65,10 @@ export class InterfaceService {
       };
       this.userProfile = profile;
       this.userProfileAbr = profileAbr;
+      this.canPost = profile.canPost;
       this.userProfileSubj.next(profile);
       this.userProfileAbrSubj.next(profileAbr);
+      this.canPostSubj.next(profile.canPost);
     });
   }
 
@@ -133,6 +138,24 @@ export class InterfaceService {
   }
 
   /**
+   * Get the logged-in user's posting privileges
+   * Will be called by the interface.component and CHILD elements of the interface.component if the
+   * logged-in user's posting privileges has already been initialized.
+   */
+  getCanPost(): boolean {
+    return this.canPost;
+  }
+
+  /**
+   * Get the interface.service logged-in user's posting privileges listener
+   * Will be called by the interface.component and CHILD elements of the interface.component if the
+   * logged-in user's posting privileges has not yet been initialized.
+   */
+  getCanPostListener(): Observable<boolean> {
+    return this.canPostSubj.asObservable();
+  }
+
+  /**
    * Get the list of all channels
    * Will be called by the interface.component and CHILD elements of the interface.component if the
    * abbreviated the list of all channels has already been initialized.
@@ -166,6 +189,26 @@ export class InterfaceService {
    */
   getMyChannelsListener(): Observable<ChannelData[]> {
     return this.myChannelsSubj.asObservable();
+  }
+
+  /**
+   * Get a listener to track whether the user is currently muted or not
+   */
+  getIsMutedListener(): Observable<boolean> {
+    return this.isMutedSubj.asObservable();
+  }
+
+  /************************************************************************************************
+   * Setter functions
+   ***********************************************************************************************/
+
+  /**
+   * Set whether the user is currently muted or not
+   * This will trigger the interface.service isMutedSubj, which is subscribed to by the CHILD
+   * components
+   */
+  setIsMuted(isMuted: boolean) {
+    this.isMutedSubj.next(isMuted);
   }
 
 }

@@ -17,16 +17,12 @@
     ></app-mute-members>
     <app-channel-messages
       [isHiddenObs]="viewChanMesSubj.asObservable()"
-      [isMutedObs]="hideNewMsgSubj.asObservable()"
       [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
       [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
-      [canPostUpdateEvent]="canPostUpdate.asObservable()"
     ></app-channel-messages>
     <app-new-message id="newMessageBar"
       [isHiddenObs]="viewChanMesSubj.asObservable()"
-      [isMutedObs]="hideNewMsgSubj.asObservable()"
       [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
-      [canPostUpdateEvent]="canPostUpdate.asObservable()"
     ></app-new-message>
   </div>
 </mat-drawer-container>

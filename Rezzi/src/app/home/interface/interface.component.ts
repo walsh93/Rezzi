@@ -36,18 +36,32 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   // Passing channels and session to child component channel-messages every time they update
   channelsUpdateSubject: Subject<ChannelData[]> = new Subject<ChannelData[]>();
   viewingUpdateSubject: Subject<string> = new Subject<string>();
-  canPostUpdate: Subject<boolean> = new Subject<boolean>();
 
   // Variables to track which interface view should appear (triggered by channel navbar and service)
   interfaceViewSubscr: Subscription;
   viewChanMesSubj: Subject<boolean> = new Subject<boolean>();
   viewMuteMemSubj: Subject<boolean> = new Subject<boolean>();
-  hideNewMsgSubj: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private interfaceService: InterfaceService, private cnbService: ChannelNavBarService) {
+  constructor(private interfaceService: InterfaceService, private cnbService: ChannelNavBarService) { }
+
+  ngOnInit() {
     this.initializeNodeSession();
     this.initializeUserProfiles();
     this.initializeChannels();
+
+
+    // Listen for changes in the interface view
+    this.interfaceViewSubscr = this.cnbService.getInterfaceViewListener().subscribe(newView => {
+      if (newView === c.VIEW_CHANNEL_MESSAGES) {
+        this.viewChanMesSubj.next(true);
+        this.viewMuteMemSubj.next(false);
+      } else if (newView === c.VIEW_MUTE_MEMBERS) {
+        this.viewChanMesSubj.next(false);
+        this.viewMuteMemSubj.next(true);
+      } else {
+        console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
+      }
+    });
   }
 
   private initializeNodeSession() {
@@ -69,9 +83,6 @@ export class InterfaceComponent implements OnInit, OnDestroy {
       }
       if (!this.userProfile.canPost) {  // Remove message bar is posting privileges have been revoked
         document.getElementById('newMessageBar').remove();
-        this.canPostUpdate.next(false);
-      } else {
-        this.canPostUpdate.next(true);
       }
     }
     this.userProfileSubsc = this.interfaceService.getUserProfileListener().subscribe(user => {
@@ -81,9 +92,6 @@ export class InterfaceComponent implements OnInit, OnDestroy {
       }
       if (!user.canPost) {  // Remove message bar is posting privileges have been revoked
         document.getElementById('newMessageBar').remove();
-        this.canPostUpdate.next(false);
-      } else {
-        this.canPostUpdate.next(true);
       }
     });
     this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
@@ -103,21 +111,6 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    // Listen for changes in the interface view
-    this.interfaceViewSubscr = this.cnbService.getInterfaceViewListener().subscribe(newView => {
-      if (newView === c.VIEW_CHANNEL_MESSAGES) {
-        this.viewChanMesSubj.next(true);
-        this.viewMuteMemSubj.next(false);
-      } else if (newView === c.VIEW_MUTE_MEMBERS) {
-        this.viewChanMesSubj.next(false);
-        this.viewMuteMemSubj.next(true);
-      } else {
-        console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
-      }
-    });
-  }
-
   receivedChannels(channels: ChannelData[]) {
     this.channelsUpdateSubject.next(channels);
     channels.forEach(channelData => {
@@ -128,7 +121,7 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   viewingNewChannel(channelID: string) {
     this.viewingUpdateSubject.next(channelID);
     if (this.channelMap.has(channelID)) {
-      this.hideNewMsgSubj.next(this.channelMap.get(channelID).isMuted);
+      this.interfaceService.setIsMuted(this.channelMap.get(channelID).isMuted);
     }
   }
 

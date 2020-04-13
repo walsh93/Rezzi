@@ -19,10 +19,13 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   // User profile data
   userProfileAbr: AbbreviatedUserProfile;
   private userProfileAbrSubsc: Subscription;
+  private canPost: boolean;
+  private canPostSubsc: Subscription;
 
   // Channel data
   private myChannels: ChannelData[];
-  private myChannelsSubscr: Subscription;
+  private myChannelsSubsc: Subscription;
+  private isMutedSubsc: Subscription;
 
 
 
@@ -51,45 +54,18 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEvent') viewingObs: Observable<string>;
 
-  // This user's ability to post in channels from interface.component
-  private canPost = true;
-  private canPostUpdateSub: Subscription;
-  // tslint:disable-next-line: no-input-rename
-  @Input('canPostUpdateEvent') canPostObs: Observable<boolean>;
-  private isMutedUpdateSub: Subscription;
-  @Input() isMutedObs: Observable<boolean>;
-
   constructor(private interfaceService: InterfaceService, public messagesService: MessagesService) {
     this.currentChannel = null;
     this.channels = [];
     this.channelMap = new Map<string, ChannelData>();
-    this.initializeNodeSession();
-    this.initializeAbbreviatedUserProfile();
-    this.initializeMyChannels();
-  }
-
-  private initializeNodeSession() {
-    this.nodeSession = this.interfaceService.getNodeSession();
-    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
-      this.nodeSession = session;
-    });
-  }
-
-  private initializeAbbreviatedUserProfile() {
-    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
-    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
-      this.userProfileAbr = userAbr;
-    });
-  }
-
-  private initializeMyChannels() {
-    this.myChannels = this.interfaceService.getMyChannels();
-    this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels => {
-      this.myChannels = myChannels;
-    });
   }
 
   ngOnInit() {
+    this.initializeNodeSession();
+    this.initializeAbbreviatedUserProfile();
+    this.initializeCanPost();
+    this.initializeChannelData();
+
     // If testing messages/message view with `ng serve`
     // this.initializeTestData();
 
@@ -119,28 +95,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Listen for changes in user's 'canPost' tag and change the channel messages height accordingly
-    /**
-     * Header navbar height = 64px (mat-tool-bar default)
-     * Channel navbar height = 64px (mat-tool-bar default)
-     * app-new-message height = 90px (declared in new-message.component.css)
-     */
-    this.canPostUpdateSub = this.canPostObs.subscribe((canPost) => {
-      this.canPost = canPost;
-    });
-
-    this.isMutedUpdateSub = this.isMutedObs.subscribe((isMuted) => {
-      if (this.canPost) {
-        if (isMuted) {
-          document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';  // account for removed msg bar
-        } else {
-          document.getElementById('channelMessages').style.height = 'calc(100vh - 218px)';  // account for msg bar
-        }
-      } else {
-        document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';  // account for removed msg bar
-      }
-    });
-
     // TODO What is the opening channel view? Do we need to call this.messagesService.emitNewChannelView on opening?
 
     // Listen for updated message list
@@ -151,6 +105,56 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       this.messages = updatedMessages;
       this.amViewingNewChannel = false;  // Need to reset once on channel
     }); // First function, Second error, Third when observable completed
+  }
+
+  private initializeNodeSession() {
+    this.nodeSession = this.interfaceService.getNodeSession();
+    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+      this.nodeSession = session;
+    });
+  }
+
+  private initializeAbbreviatedUserProfile() {
+    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
+    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+      this.userProfileAbr = userAbr;
+    });
+  }
+
+  private initializeCanPost() {
+    this.canPost = this.interfaceService.getCanPost();
+    if (this.canPost != null) {
+      this.updateComponentHeight(this.canPost);
+    }
+    this.canPostSubsc = this.interfaceService.getCanPostListener().subscribe(canPostNow => {
+      this.canPost = canPostNow;
+      this.updateComponentHeight(this.canPost);
+    });
+  }
+
+  private initializeChannelData() {
+    this.myChannels = this.interfaceService.getMyChannels();
+    this.myChannelsSubsc = this.interfaceService.getMyChannelsListener().subscribe(myChannels => {
+      this.myChannels = myChannels;
+    });
+    if (this.canPost) {
+      this.isMutedSubsc = this.interfaceService.getIsMutedListener().subscribe(isMutedNow => {
+        this.updateComponentHeight(isMutedNow);
+      });
+    }
+  }
+
+  /**
+   * Header navbar height = 64px (mat-tool-bar default)
+   * Channel navbar height = 64px (mat-tool-bar default)
+   * app-new-message height = 90px (declared in new-message.component.css)
+   */
+  private updateComponentHeight(newMsgBarIsVisible: boolean) {
+    if (newMsgBarIsVisible) {
+      document.getElementById('channelMessages').style.height = 'calc(100vh - 218px)';
+    } else {
+      document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';
+    }
   }
 
   /*initializeTestData() {
@@ -202,21 +206,19 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   }*/
 
   ngOnDestroy() {
-    if (this.nodeSessionSubsc != null) {
-      this.nodeSessionSubsc.unsubscribe();
+    this.nodeSessionSubsc.unsubscribe();
+    this.userProfileAbrSubsc.unsubscribe();
+    this.canPostSubsc.unsubscribe();
+    this.myChannelsSubsc.unsubscribe();
+    if (this.isMutedSubsc != null) {
+      this.isMutedSubsc.unsubscribe();
     }
-    if (this.userProfileAbrSubsc != null) {
-      this.userProfileAbrSubsc.unsubscribe();
-    }
-    if (this.myChannelsSubscr != null) {
-      this.myChannelsSubscr.unsubscribe();
-    }
+
+
     this.isHiddenSubsc.unsubscribe();
     this.channelUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels
     this.viewingUpdateSub.unsubscribe();
-    this.canPostUpdateSub.unsubscribe();
-    this.isMutedUpdateSub.unsubscribe();
   }
 
 }
