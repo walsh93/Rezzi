@@ -111,7 +111,7 @@ export interface Message {
   reactions: ReactionData;
   reported: boolean;
   image: string;
-  ispoll: boolean;
+  isPoll: boolean;
   pollInfo: PollInfo;
 }
 

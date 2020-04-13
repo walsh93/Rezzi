@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { RezziService } from 'src/app/rezzi.service';
 import { NgForm } from '@angular/forms';
+import { PollInfo, PollResponses, Message } from '../../../../classes.model'
 
 @Component({
   selector: 'app-polling',
@@ -42,6 +43,13 @@ export class PollingComponent implements OnInit {
     console.log(form);
     let newform2 = this.generateForm(form);
     console.log(newform2);
+    const pollInfo: PollInfo = {
+      responses: newform2,
+      question: form.value.question,
+      users: []
+    }
+
+
     //form should have list of users who have submitted
     //each response should have a number that increments
     //form
@@ -49,48 +57,45 @@ export class PollingComponent implements OnInit {
   }
 
   generateForm(form: NgForm) {
-    let response0 = {
-      responses: 0,
+    let response0: PollResponses = {
+      count: 0,
       content: form.value.response0
     }
-    let response1 = {
-      responses: 0,
+    let response1: PollResponses = {
+      count: 0,
       content: form.value.response1
     }
-    let newform = {
-      question: form.value.question,
-      responses: [],
-      users: []
-    }
+    let newform: PollResponses[];
+
     if (form.value.response2 == null || form.value.response2 == undefined) {
       console.log("2 items");
-      newform.responses.push(response0);
-      newform.responses.push(response1);
+      newform.push(response0);
+      newform.push(response1);
     }
     else if (form.value.response3 == null || form.value.response3 == undefined) {
       console.log("3 items");
-      let response2 = {
-        responses: 0,
+      let response2: PollResponses = {
+        count: 0,
         content: form.value.response2
       }
-      newform.responses.push(response0);
-      newform.responses.push(response1);
-      newform.responses.push(response2);
+      newform.push(response0);
+      newform.push(response1);
+      newform.push(response2);
     }
     else {
       console.log("4 items");
-      let response2 = {
-        responses: 0,
+      let response2: PollResponses = {
+        count: 0,
         content: form.value.response2
       }
-      let response3 = {
-        responses: 0,
+      let response3: PollResponses = {
+        count: 0,
         content: form.value.response3
       }
-      newform.responses.push(response0);
-      newform.responses.push(response1);
-      newform.responses.push(response2);
-      newform.responses.push(response3);
+      newform.push(response0);
+      newform.push(response1);
+      newform.push(response2);
+      newform.push(response3);
     }
     return newform;
   }
