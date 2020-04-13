@@ -1,11 +1,12 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material';
-import { Router } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MemberMuteInfo } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
 import { InterfaceService } from '../interface.service';
+import { ChannelNavBarService } from '../channel-nav-bar/channel-nav-bar.service';
+import * as c from '../interface.constants';
 
 @Component({
   selector: 'app-mute-members',
@@ -21,33 +22,35 @@ export class MuteMembersComponent implements OnInit, OnDestroy {
   columnsToDisplay: string[] = ['fnameCol', 'lnameCol', 'emailCol', 'buttonCol'];
 
   // Viewing data
+  isHidden = true;  // By default, want to show channel messages and new-message component
+  private interfaceViewSubsc: Subscription;
   private currentChannelID: string;
   private newChannelViewSubsc: Subscription;
 
-  // Asynchronous data from parent component
-  isHidden = true;  // By default, want to show channel messages and new-message component
-  private isHiddenSubsc: Subscription;
-  @Input() isHiddenObs: Observable<boolean>;
-
-  constructor(private rezziService: RezziService, private interfaceService: InterfaceService, private http: HttpClient) { }
+  constructor(private rezziSrv: RezziService, private interfaceSrv: InterfaceService, private cnbSrv: ChannelNavBarService,
+              private http: HttpClient) { }
 
   ngOnInit() {
-    // Listen for whether or not to view this in the interface or some other component
-    this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
-      if (this.isHidden === viewNow) {
-        this.isHidden = !viewNow;
-        if (viewNow) {
-          this.updateResidentsTableData();  // Update if you are viewing now, but you weren't before
-        }
-      }
-    });
-
-    // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
+    this.initializeInterfaceViewListener();
     this.initializeChannelViewListener();
   }
 
+  private initializeInterfaceViewListener() {
+    this.interfaceViewSubsc = this.cnbSrv.getInterfaceViewListener().subscribe(newView => {
+      if (newView === c.VIEW_CHANNEL_MESSAGES) {
+        this.isHidden = true;
+      } else if (newView === c.VIEW_MUTE_MEMBERS) {
+        this.isHidden = false;
+        this.updateResidentsTableData();
+      } else {
+        console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
+      }
+    });
+  }
+
   private initializeChannelViewListener() {
-    this.newChannelViewSubsc = this.interfaceService.getNewChannelViewListener().subscribe(newChannelViewID => {
+    // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
+    this.newChannelViewSubsc = this.interfaceSrv.getNewChannelViewListener().subscribe(newChannelViewID => {
       if (newChannelViewID !== this.currentChannelID) {
         this.currentChannelID = newChannelViewID;
         if (!this.isHidden) {
@@ -70,7 +73,7 @@ export class MuteMembersComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.rezziService.getResidentsByChannel(this.currentChannelID).then(res => {
+    this.rezziSrv.getResidentsByChannel(this.currentChannelID).then(res => {
       if (res == null || res === undefined) {
         return;
       } else if (res.msg != null && res.msg !== undefined) {
@@ -121,7 +124,7 @@ export class MuteMembersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.isHiddenSubsc.unsubscribe();
+    this.interfaceViewSubsc.unsubscribe();
     this.newChannelViewSubsc.unsubscribe();
   }
 

@@ -8,14 +8,8 @@
     <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
       ≡
     </button>
-    <app-mute-members
-      [isHiddenObs]="viewMuteMemSubj.asObservable()"
-    ></app-mute-members>
-    <app-channel-messages
-      [isHiddenObs]="viewChanMesSubj.asObservable()"
-    ></app-channel-messages>
-    <app-new-message id="newMessageBar"
-      [isHiddenObs]="viewChanMesSubj.asObservable()"
-    ></app-new-message>
+    <app-mute-members></app-mute-members>
+    <app-channel-messages></app-channel-messages>
+    <app-new-message id="newMessageBar"></app-new-message>
   </div>
 </mat-drawer-container>

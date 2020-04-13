@@ -1,11 +1,13 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Message, SocketChannelMessageData, NodeSession, AbbreviatedUserProfile } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ImageModalComponent } from './image-modal/image-modal.component';
 import { NgForm } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { InterfaceService } from '../../interface.service';
+import { ChannelNavBarService } from '../../channel-nav-bar/channel-nav-bar.service';
+import * as c from '../../interface.constants';
 
 @Component({
   selector: 'app-new-message',
@@ -22,9 +24,13 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   private userProfileAbrSubsc: Subscription;
   private canPost: boolean;
   private canPostSubsc: Subscription;
+  private isMuted: boolean;
   private isMutedSubsc: Subscription;
 
   // Viewing data
+  isHidden = false;  // By default, want to show channel messages and new-message component
+  private viewingChanMsg = true;
+  private interfaceViewSubsc: Subscription;
   private currentChannelID: string;
   private newChannelViewSubsc: Subscription;  // Listen for changes in which channel is being viewed
 
@@ -36,57 +42,66 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   enteredMessage = '';
   image = null;
 
-  isHidden = false;  // By default, want to show channel messages and new-message component
-  private isHiddenSubsc: Subscription;
-  @Input() isHiddenObs: Observable<boolean>;
 
-  constructor(public messagesService: MessagesService, private interfaceService: InterfaceService, public dialog: MatDialog) { }
+
+
+  constructor(private cnbSrv: ChannelNavBarService, public messagesSrv: MessagesService, private interfaceSrv: InterfaceService,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
     this.initializeNodeSession();
     this.initializeAbbreviatedUserProfile();
     this.initializeAbilityToPost();
+    this.initializeInterfaceViewListener();
     this.initializeChannelViewListener();
-
-
-
-    // Listen for whether or not to view this in the interface or some other component
-    this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
-      this.isHidden = !viewNow;
-    });
   }
 
   private initializeNodeSession() {
-    this.nodeSession = this.interfaceService.getNodeSession();
-    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+    this.nodeSession = this.interfaceSrv.getNodeSession();
+    this.nodeSessionSubsc = this.interfaceSrv.getNodeSessionListener().subscribe(session => {
       this.nodeSession = session;
     });
   }
 
   private initializeAbbreviatedUserProfile() {
-    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
-    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+    this.userProfileAbr = this.interfaceSrv.getAbbreviatedUserProfile();
+    this.userProfileAbrSubsc = this.interfaceSrv.getAbbreviatedUserProfileListener().subscribe(userAbr => {
       this.userProfileAbr = userAbr;
     });
   }
 
   private initializeAbilityToPost() {
-    this.canPost = this.interfaceService.getCanPost();
-    this.canPostSubsc = this.interfaceService.getCanPostListener().subscribe(canPostNow => {
+    this.canPost = this.interfaceSrv.getCanPost();
+    this.canPostSubsc = this.interfaceSrv.getCanPostListener().subscribe(canPostNow => {
       this.canPost = canPostNow;
+      this.updateMsgBarVisibility();
     });
-    this.isMutedSubsc = this.interfaceService.getIsMutedListener().subscribe(isMutedNow => {
-      if (this.canPost) {
-        this.isHidden = isMutedNow;
-      }
+    this.isMutedSubsc = this.interfaceSrv.getIsMutedListener().subscribe(isMutedNow => {
+      this.isMuted = isMutedNow;
+      this.updateMsgBarVisibility();
+    });
+  }
+
+  private initializeInterfaceViewListener() {
+    this.interfaceViewSubsc = this.cnbSrv.getInterfaceViewListener().subscribe(newView => {
+      this.viewingChanMsg = (newView === c.VIEW_CHANNEL_MESSAGES);
+      this.updateMsgBarVisibility();
     });
   }
 
   private initializeChannelViewListener() {
-    this.newChannelViewSubsc = this.interfaceService.getNewChannelViewListener().subscribe(newChannelViewID => {
+    this.newChannelViewSubsc = this.interfaceSrv.getNewChannelViewListener().subscribe(newChannelViewID => {
       console.log(`Now viewing channel ${newChannelViewID}`);
       this.currentChannelID = newChannelViewID;
     });
+  }
+
+  private updateMsgBarVisibility() {
+    if (this.canPost && !this.isMuted && this.viewingChanMsg) {
+      this.isHidden = false;
+    } else {
+      this.isHidden = true;
+    }
   }
 
   onAddMessage(form: NgForm) {
@@ -118,7 +133,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     };
 
     // this.messagesService.addMessage(message);
-    this.messagesService.sendMessageThroughSocket(scmd);
+    this.messagesSrv.sendMessageThroughSocket(scmd);
     this.image = null;
     form.resetForm();
   }
@@ -139,11 +154,8 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     this.userProfileAbrSubsc.unsubscribe();
     this.canPostSubsc.unsubscribe();
     this.isMutedSubsc.unsubscribe();
+    this.interfaceViewSubsc.unsubscribe();
     this.newChannelViewSubsc.unsubscribe();
-
-
-
-    this.isHiddenSubsc.unsubscribe();
   }
 
 }

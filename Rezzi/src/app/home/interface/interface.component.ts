@@ -33,31 +33,12 @@ export class InterfaceComponent implements OnInit, OnDestroy {
 
   private resHall: string;
 
-  // Variables to track which interface view should appear (triggered by channel navbar and service)
-  interfaceViewSubscr: Subscription;
-  viewChanMesSubj: Subject<boolean> = new Subject<boolean>();
-  viewMuteMemSubj: Subject<boolean> = new Subject<boolean>();
-
   constructor(private interfaceService: InterfaceService, private cnbService: ChannelNavBarService) { }
 
   ngOnInit() {
     this.initializeNodeSession();
     this.initializeUserProfiles();
     this.initializeChannels();
-
-
-    // Listen for changes in the interface view
-    this.interfaceViewSubscr = this.cnbService.getInterfaceViewListener().subscribe(newView => {
-      if (newView === c.VIEW_CHANNEL_MESSAGES) {
-        this.viewChanMesSubj.next(true);
-        this.viewMuteMemSubj.next(false);
-      } else if (newView === c.VIEW_MUTE_MEMBERS) {
-        this.viewChanMesSubj.next(false);
-        this.viewMuteMemSubj.next(true);
-      } else {
-        console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
-      }
-    });
   }
 
   private initializeNodeSession() {

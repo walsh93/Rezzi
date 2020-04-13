@@ -12,7 +12,7 @@ export class ChannelNavBarService {
   currentChannelUpdateStatus = this.channelUpdateStatus.asObservable();
 
   // This will trigger a subscription in interface.component.ts indicating whether to view channel messages or other
-  interfaceViewUpdate: Subject<string> = new Subject<string>();
+  interfaceViewSubj = new Subject<string>();
 
   constructor() {}
 
@@ -29,11 +29,11 @@ export class ChannelNavBarService {
   }
 
   getInterfaceViewListener(): Observable<string> {
-    return this.interfaceViewUpdate.asObservable();
+    return this.interfaceViewSubj.asObservable();
   }
 
   updateInterfaceView(viewConstant: string) {
-    this.interfaceViewUpdate.next(viewConstant);
+    this.interfaceViewSubj.next(viewConstant);
   }
 
 }

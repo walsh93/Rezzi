@@ -5,6 +5,8 @@ import { Message, NodeSession, AbbreviatedUserProfile } from '../../../../classe
 import { MessagesService } from '../messages.service';
 import { ChannelData } from '../../../../classes.model';
 import { InterfaceService } from '../../interface.service';
+import { ChannelNavBarService } from '../../channel-nav-bar/channel-nav-bar.service';
+import * as c from '../../interface.constants';
 
 @Component({
   selector: 'app-channel-messages',
@@ -25,9 +27,12 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   // Channel data
   private myChannels: ChannelData[];
   private myChannelsSubsc: Subscription;
+  private isMuted: boolean;
   private isMutedSubsc: Subscription;
 
   // Viewing data
+  isHidden = false;  // By default, want to show channel messages and new-message component
+  private interfaceViewSubsc: Subscription;
   currentChannelID: string;
   private newChannelViewSubsc: Subscription;
 
@@ -37,26 +42,19 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   private messagesSub: Subscription;
 
-  isHidden = false;  // By default, want to show channel messages and new-message component
-  private isHiddenSubsc: Subscription;
-  @Input() isHiddenObs: Observable<boolean>;
 
   amViewingNewChannel = false;
   needToUpdateScroll = false;
 
-  constructor(private interfaceService: InterfaceService, public messagesService: MessagesService) { }
+  constructor(private interfaceSrv: InterfaceService, private cnbSrv: ChannelNavBarService, public messagesService: MessagesService) { }
 
   ngOnInit() {
     this.initializeNodeSession();
     this.initializeAbbreviatedUserProfile();
     this.initializeCanPost();
     this.initializeChannelData();
+    this.initializeInterfaceViewListener();
     this.initializeChannelViewListener();
-
-    // Listen for whether or not to view this in the interface or some other component
-    this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
-      this.isHidden = !viewNow;
-    });
 
     // TODO What is the opening channel view? Do we need to call this.messagesService.emitNewChannelView on opening?
 
@@ -71,46 +69,58 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   }
 
   private initializeNodeSession() {
-    this.nodeSession = this.interfaceService.getNodeSession();
-    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+    this.nodeSession = this.interfaceSrv.getNodeSession();
+    this.nodeSessionSubsc = this.interfaceSrv.getNodeSessionListener().subscribe(session => {
       this.nodeSession = session;
     });
   }
 
   private initializeAbbreviatedUserProfile() {
-    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
-    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+    this.userProfileAbr = this.interfaceSrv.getAbbreviatedUserProfile();
+    this.userProfileAbrSubsc = this.interfaceSrv.getAbbreviatedUserProfileListener().subscribe(userAbr => {
       this.userProfileAbr = userAbr;
     });
   }
 
   private initializeCanPost() {
-    this.canPost = this.interfaceService.getCanPost();
+    this.canPost = this.interfaceSrv.getCanPost();
     if (this.canPost != null) {
-      this.updateComponentHeight(this.canPost);
+      this.updateComponentHeight();
     }
-    this.canPostSubsc = this.interfaceService.getCanPostListener().subscribe(canPostNow => {
+    this.canPostSubsc = this.interfaceSrv.getCanPostListener().subscribe(canPostNow => {
       this.canPost = canPostNow;
-      this.updateComponentHeight(this.canPost);
+      this.updateComponentHeight();
     });
   }
 
   private initializeChannelData() {
-    this.myChannels = this.interfaceService.getMyChannels();
-    this.myChannelsSubsc = this.interfaceService.getMyChannelsListener().subscribe(myChannels => {
+    this.myChannels = this.interfaceSrv.getMyChannels();
+    this.myChannelsSubsc = this.interfaceSrv.getMyChannelsListener().subscribe(myChannels => {
       this.myChannels = myChannels;
     });
-    if (this.canPost) {
-      this.isMutedSubsc = this.interfaceService.getIsMutedListener().subscribe(isMutedNow => {
-        this.updateComponentHeight(isMutedNow);
-      });
-    }
+    this.isMutedSubsc = this.interfaceSrv.getIsMutedListener().subscribe(isMutedNow => {
+      this.isMuted = isMutedNow;
+      this.updateComponentHeight();
+    });
+  }
+
+  private initializeInterfaceViewListener() {
+    this.interfaceViewSubsc = this.cnbSrv.getInterfaceViewListener().subscribe(newView => {
+      if (newView === c.VIEW_CHANNEL_MESSAGES) {
+        this.isHidden = false;
+      } else if (newView === c.VIEW_MUTE_MEMBERS) {
+        this.isHidden = true;
+      } else {
+        console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
+      }
+    });
   }
 
   private initializeChannelViewListener() {
     // Listen for changes in which channel is being viewed TODO @Kai get messages in here!
-    this.newChannelViewSubsc = this.interfaceService.getNewChannelViewListener().subscribe(newChannelViewID => {
+    this.newChannelViewSubsc = this.interfaceSrv.getNewChannelViewListener().subscribe(newChannelViewID => {
       this.currentChannelID = newChannelViewID;
+      this.updateComponentHeight();
       const dbpath = this.messagesService.createChannelPath(this.nodeSession.rezzi, newChannelViewID);
       if (dbpath != null && dbpath !== undefined) {
         this.amViewingNewChannel = true;
@@ -124,12 +134,17 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
    * Header navbar height = 64px (mat-tool-bar default)
    * Channel navbar height = 64px (mat-tool-bar default)
    * app-new-message height = 90px (declared in new-message.component.css)
+   * Partial screen if message bar is visible, which happens when I can post and I am not muted
    */
-  private updateComponentHeight(newMsgBarIsVisible: boolean) {
-    if (newMsgBarIsVisible) {
-      document.getElementById('channelMessages').style.height = 'calc(100vh - 218px)';
-    } else {
-      document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';
+  private updateComponentHeight() {
+    const chnMsg = document.getElementById('channelMessages');
+    if (chnMsg != null) {
+      if (this.canPost && !this.isMuted) {
+        console.log('HERE AGAIN!');
+        chnMsg.style.height = 'calc(100vh - 218px)';
+      } else {
+        chnMsg.style.height = 'calc(100vh - 128px)';
+      }
     }
   }
 
@@ -189,10 +204,10 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     if (this.isMutedSubsc != null) {
       this.isMutedSubsc.unsubscribe();
     }
+    this.interfaceViewSubsc.unsubscribe();
     this.newChannelViewSubsc.unsubscribe();
 
 
-    this.isHiddenSubsc.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels
   }
 
