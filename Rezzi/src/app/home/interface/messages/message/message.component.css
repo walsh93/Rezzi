@@ -34,3 +34,9 @@ mat-card-footer {
   position: relative;
   padding-bottom: 10px;
 }
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}

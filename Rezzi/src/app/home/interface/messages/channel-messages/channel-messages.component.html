@@ -4,7 +4,6 @@
     <div *ngIf="message.id === 'BOT_MSG'; else nonbotMessage">
       <app-bot-message [botMessage]="message.content"></app-bot-message>
     </div>
-    <!-- *ngIf="message.isPoll" -->
     <ng-template #nonbotMessage>
       <app-message
         [message]="message"

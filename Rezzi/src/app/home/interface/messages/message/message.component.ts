@@ -6,12 +6,16 @@ import {
   Message,
   SocketChannelMessageData,
   SocketPrivateMessageData,
-  HDUser
+  HDUser,
+  PollInfo
 } from "src/app/classes.model";
 import { RezziService } from "src/app/rezzi.service";
 import { MessagesService } from "../messages.service";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { HttpClient } from "@angular/common/http";
+import { MatRadioButton } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: "app-message",
@@ -61,6 +65,8 @@ export class MessageComponent implements OnInit {
   private currUserEmail: string;
   private avatar: string; // The avatar image, extracted from message
   private isPoll: boolean;
+  private pollInfo: PollInfo;
+
 
   constructor(
     public messagesService: MessagesService,
@@ -79,7 +85,9 @@ export class MessageComponent implements OnInit {
     this.reported = this.message.reported;
     this.image = this.message.image;
     this.content = [];
-    if (this.message.content === null) {
+    this.isPoll = this.message.isPoll;
+    this.pollInfo = this.message.pollInfo;
+    if (this.message.content === null && this.message.isPoll==false) {
       this.content.push(null);
     } else if (this.message.content.includes("=====================")) {
       this.message.content.split("=====================").forEach(section => {
@@ -247,5 +255,20 @@ export class MessageComponent implements OnInit {
       .subscribe(responseData => {
         console.log(responseData.notification);
       });
+  }
+  pollResponse;
+  formResponse(index){
+    console.log(this.message.id);
+    console.log(this.rezzi);
+    console.log(this.pollResponse);
+    this.message.pollInfo.users.push(this.user.email);
+    this.message.pollInfo.responses[this.pollResponse].count++;
+    console.log(this.message);
+    const scmd: SocketChannelMessageData = {
+      message: this.message,
+      rezzi: this.rezzi,
+      channelID: this.channel
+    };
+    this.messagesService.updateMessageThroughSocket(scmd);
   }
 }

@@ -27,7 +27,9 @@ import {
   MatDividerModule,
   MatProgressSpinnerModule,
   MatChipsModule,
+  MatRadioModule,
  } from '@angular/material';
+
 
 // Firebase Imports
 import { AngularFireModule } from '@angular/fire';
@@ -208,6 +210,7 @@ import { PollingComponent } from './home/interface/channel-nav-bar/polling/polli
     MatDividerModule,
     MatProgressSpinnerModule,
     MatChipsModule,
+    MatRadioModule
   ],
   entryComponents: [
     JoinChannelComponent,

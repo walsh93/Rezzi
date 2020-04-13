@@ -52,7 +52,7 @@ export class PollingComponent implements OnInit {
       users: []
     }
     const message: Message = {
-      content: 'Poll!',
+      content: '',
       owner: null,
       time: new Date(),
       visible: true,
@@ -76,7 +76,7 @@ export class PollingComponent implements OnInit {
     //form should have list of users who have submitted
     //each response should have a number that increments
     //form
-    // TODO this.dialogRef.close();
+    this.dialogRef.close();
   }
 
   generateForm(form: NgForm) {
