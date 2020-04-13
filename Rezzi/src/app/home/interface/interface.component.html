@@ -1,8 +1,6 @@
 <mat-drawer-container class="example-container" autosize>
   <mat-drawer #drawer class="example-sidenav" mode="side" disableClose="true" opened="true">  <!-- Stuff in sidebar -->
-    <app-side-panel
-      (channelsToSend)="receivedChannels($event)"
-    ></app-side-panel>
+    <app-side-panel></app-side-panel>
   </mat-drawer>
 
   <div class="example-sidenav-content"> <!-- Stuff in rest of interface -->
@@ -15,7 +13,6 @@
     ></app-mute-members>
     <app-channel-messages
       [isHiddenObs]="viewChanMesSubj.asObservable()"
-      [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
     ></app-channel-messages>
     <app-new-message id="newMessageBar"
       [isHiddenObs]="viewChanMesSubj.asObservable()"

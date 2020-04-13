@@ -1,6 +1,6 @@
 <!-- This component shows the floors/channels the user is in -->
-<mat-accordion *ngIf="channels.length > 0" multi="true" class="rezzi"> <!-- TODO make sure expanded channels don't appear over 'Join' button -->
-  <ng-container *ngFor="let channel of channels"> <!-- looping the floor channels -->
+<mat-accordion *ngIf="allChannels.length > 0" multi="true" class="rezzi"> <!-- TODO make sure expanded channels don't appear over 'Join' button -->
+  <ng-container *ngFor="let channel of allChannels"> <!-- looping the floor channels -->
     <mat-expansion-panel *ngIf="channel.belongs">
       <mat-expansion-panel-header>
         <!-- <mat-panel-title (click)='viewChannel(channel, null)' routerLink='/home'> TODO merge general channel here -->
@@ -22,6 +22,6 @@
   </ng-container>
 </mat-accordion>
 
-<p class="no-rezzi" *ngIf="channels.length == 0">You are currently not a member of any Rezzi channels.</p>
+<p class="no-rezzi" *ngIf="allChannels.length == 0">You are currently not a member of any Rezzi channels.</p>
 
 <button mat-button (click)="openDialog()" class="join-channel-button">Join Channel</button>

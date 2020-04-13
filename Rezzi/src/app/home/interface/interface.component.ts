@@ -30,11 +30,8 @@ export class InterfaceComponent implements OnInit, OnDestroy {
 
 
 
-  private channelMap = new Map<string, ChannelData>();
-  private resHall: string;
 
-  // Passing channels and session to child component channel-messages every time they update
-  channelsUpdateSubject: Subject<ChannelData[]> = new Subject<ChannelData[]>();
+  private resHall: string;
 
   // Variables to track which interface view should appear (triggered by channel navbar and service)
   interfaceViewSubscr: Subscription;
@@ -107,13 +104,6 @@ export class InterfaceComponent implements OnInit, OnDestroy {
     this.myChannels = this.interfaceService.getMyChannels();
     this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels => {
       this.myChannels = myChannels;
-    });
-  }
-
-  receivedChannels(channels: ChannelData[]) {
-    this.channelsUpdateSubject.next(channels);
-    channels.forEach(channelData => {
-      this.channelMap.set(channelData.id, channelData);
     });
   }
 

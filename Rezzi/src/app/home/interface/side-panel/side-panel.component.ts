@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { JoinChannelComponent } from './join-channel/join-channel.component';
 import { SidePanelService } from './side-panel.service';
@@ -24,36 +24,28 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   private userProfileAbrSubsc: Subscription;
 
   // Channel data
-  private allChannels: ChannelData[];
+  allChannels: ChannelData[];
   private allChannelsSubscr: Subscription;
   private myChannels: ChannelData[];
   private myChannelsSubscr: Subscription;
+  private channelRedirect: ChannelData;
+  private channelRedirectLevel: string;
 
-
-
-
-  public channels: ChannelData[];
-  private filteredChannels: ChannelData[];
   status: boolean;
-  channelRedirect: ChannelData;
-  channelRedirectLevel: string;
 
-  // Send channels to interface.component
-  @Output() channelsToSend = new EventEmitter<ChannelData[]>();
-
-  constructor(private interfaceService: InterfaceService, public dialog: MatDialog, private sidePanService: SidePanelService, private chanNavBarService: ChannelNavBarService) {
+  constructor(private sidePanService: SidePanelService, private interfaceService: InterfaceService,
+              private chanNavBarService: ChannelNavBarService, public dialog: MatDialog) {
     this.refreshSidePanel();
   }
 
   refreshSidePanel(): void {
-    this.channels = [];
-    this.filteredChannels = [];
+    this.allChannels = [];
+    this.myChannels = [];
     this.sidePanService.getChannels().then(arrays => {
-      this.channels = arrays.allChannels;
-      this.filteredChannels = arrays.myChannels;
-      this.channelRedirect = this.filteredChannels[0];
+      this.allChannels = arrays.allChannels;
+      this.myChannels = arrays.myChannels;
+      this.channelRedirect = this.myChannels[0];
       this.channelRedirectLevel = this.channelRedirect.id.split('-')[0];
-      this.channelsToSend.emit(this.filteredChannels);
     });
   }
 
@@ -121,14 +113,14 @@ export class SidePanelComponent implements OnInit, OnDestroy {
       width: '600px',
       height: 'auto',
       data: {
-        channels: this.channels,
+        channels: this.allChannels,
         session: this.nodeSession,
         user: this.userProfileAbr,
       },
     });
 
     dialogRef.componentInstance.joinChannelEvent.subscribe((id: string) => {
-      this.channels.forEach(hall => {
+      this.allChannels.forEach(hall => {
         hall.subchannels.forEach(channel => {
           if (channel.id === id) {
             channel.belongs = true;
