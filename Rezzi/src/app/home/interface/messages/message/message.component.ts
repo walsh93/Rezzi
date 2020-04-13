@@ -1,46 +1,32 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input } from '@angular/core';
 import {
-  User,
-  ReactionData,
-  AbbreviatedUser,
-  Message,
-  SocketChannelMessageData,
-  SocketPrivateMessageData,
+  AbbreviatedUserProfile,
   HDUser,
-  AbbreviatedUserProfile
-} from "src/app/classes.model";
-import { RezziService } from "src/app/rezzi.service";
-import { MessagesService } from "../messages.service";
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
-import { HttpClient } from "@angular/common/http";
+  Message,
+  ReactionData,
+  SocketChannelMessageData,
+  SocketPrivateMessageData
+} from 'src/app/classes.model';
+import { RezziService } from 'src/app/rezzi.service';
+import { MessagesService } from '../messages.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: "app-message",
-  templateUrl: "./message.component.html",
-  styleUrls: ["./message.component.css"]
+  selector: 'app-message',
+  templateUrl: './message.component.html',
+  styleUrls: ['./message.component.css']
 })
 export class MessageComponent implements OnInit {
+
   // Add properties as needed/implemented
-  dayNames = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-  monthNames = [
-    "Jan.",
-    "Feb.",
-    "Mar.",
-    "Apr.",
-    "May",
-    "June",
-    "July",
-    "Aug.",
-    "Sept.",
-    "Oct.",
-    "Nov.",
-    "Dec."
-  ];
+  dayNames = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+  monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
   displayTime: string;
   reacted = {};
 
   // Properties inherited from channel-messages (or whatever the parent component is)
-  @Input() viewingUser: User; // The user viewing the channel (or PM)
+  @Input() viewingUser: AbbreviatedUserProfile; // The user viewing the channel (or PM)
   @Input() message: Message; // The actual message data
   @Input() channel: string; // The channel the message is in
   @Input() rezzi: string; // The Rezzi the channel is in
@@ -57,10 +43,10 @@ export class MessageComponent implements OnInit {
   private content: SafeHtml[]; // The content of the message (extracted from message)
   private image: string; // Image from link in message, or webpage preview (extracted from message)
   displayName: string;
-  private pmReportId: string; //syntax: userWhoReportedMessage-messageID
+  private pmReportId: string; // syntax: userWhoReportedMessage-messageID
   private ReportId: string;
   private currUserEmail: string;
-  private avatar: string // The avatar image, extracted from message
+  private avatar: string; // The avatar image, extracted from message
 
   constructor(
     public messagesService: MessagesService,
@@ -70,8 +56,6 @@ export class MessageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // console.log(this.time);
-    // console.log("Message: ", this.message);
     this.reactions = this.message.reactions;
     this.userProfileAbr = this.message.owner;
     this.avatar = this.message.owner.imageUrl;
@@ -81,8 +65,8 @@ export class MessageComponent implements OnInit {
     this.content = [];
     if (this.message.content === null) {
       this.content.push(null);
-    } else if (this.message.content.includes("=====================")) {
-      this.message.content.split("=====================").forEach(section => {
+    } else if (this.message.content.includes('=====================')) {
+      this.message.content.split('=====================').forEach(section => {
         this.content.push(this.sanitizer.bypassSecurityTrustHtml(section));
       });
     } else {
@@ -98,10 +82,8 @@ export class MessageComponent implements OnInit {
     const hours = hr > 12 ? `${hr - 12}` : `${hr}`;
     const min = dateAgain.getMinutes();
     const minutes = min < 10 ? `0${min}` : `${min}`;
-    const apm = hr > 11 ? "PM" : "AM";
+    const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
-    // console.log(this.displayTime);
-    // this.displayTime = String(dateAgain);
 
     if (
       this.userProfileAbr.nickName == null ||
@@ -119,9 +101,9 @@ export class MessageComponent implements OnInit {
     for (const reaction in this.reactions) {
       if (this.reactions.hasOwnProperty(reaction)) {
         if (this.reactions[reaction].includes(this.viewingUser.email)) {
-          this.reacted[reaction] = "accent";
+          this.reacted[reaction] = 'accent';
         } else {
-          this.reacted[reaction] = "";
+          this.reacted[reaction] = '';
         }
       }
     }
@@ -132,12 +114,12 @@ export class MessageComponent implements OnInit {
      * noticable to the user...
      */
     if (this.updateScrolling) {
-      console.log("Need scrolling update...");
-      const chanMsgs = document.getElementById("channelMessages");
+      console.log('Need scrolling update...');
+      const chanMsgs = document.getElementById('channelMessages');
       if (chanMsgs != null) {
         chanMsgs.scrollTop = chanMsgs.scrollHeight;
       } else {
-        const pmMsgs = document.getElementById("privateUserMessages");
+        const pmMsgs = document.getElementById('privateUserMessages');
         pmMsgs.scrollTop = pmMsgs.scrollHeight;
       }
     }
@@ -152,12 +134,12 @@ export class MessageComponent implements OnInit {
   }
 
   sendReaction(reaction) {
-    if (this.reacted[reaction] === "") {
+    if (this.reacted[reaction] === '') {
       // If the user has not reacted
-      this.reacted[reaction] = "accent";
+      this.reacted[reaction] = 'accent';
       this.reactions[reaction].push(this.viewingUser.email);
     } else {
-      this.reacted[reaction] = "";
+      this.reacted[reaction] = '';
       this.reactions[reaction].splice(
         this.reactions[reaction].indexOf(this.viewingUser.email),
         1
@@ -184,7 +166,7 @@ export class MessageComponent implements OnInit {
   }
 
   getList(reaction) {
-    return this.reactions[reaction].join("\n");
+    return this.reactions[reaction].join('\n');
   }
 
   reportMessage() {
@@ -198,7 +180,7 @@ export class MessageComponent implements OnInit {
       };
       spmd.message.reported = this.reported;
       this.messagesService.updateMessageThroughSocket(spmd);
-      this.pmReportId = this.currUserEmail.concat("-").concat(this.message.id);
+      this.pmReportId = this.currUserEmail.concat('-').concat(this.message.id);
       this.ReportId = this.pmReportId;
     } else {
       const scmd: SocketChannelMessageData = {
@@ -210,12 +192,11 @@ export class MessageComponent implements OnInit {
       this.messagesService.updateMessageThroughSocket(scmd);
       this.ReportId = this.message.id;
     }
-    alert("This message has been reported to the hall director!");
+    alert('This message has been reported to the hall director!');
     this.updateHallDirector(this.hdEmail, this.userProfileAbr.email);
   }
 
   updateHallDirector(hd, user) {
-    // console.log("updatehd"+ hd);
     this.rezziService.findUserByEmail(hd, user).then(response => {
       this.theHD = new HDUser(
         response.hd.firstName,

@@ -15,6 +15,7 @@ import { InterfaceService } from '../interface.service';
 })
 
 export class SidePanelComponent implements OnInit, OnDestroy {
+
   // Node session data
   private nodeSession: NodeSession;
   private nodeSessionSubsc: Subscription;
@@ -33,15 +34,15 @@ export class SidePanelComponent implements OnInit, OnDestroy {
 
   status: boolean;
 
-  constructor(private sidePanService: SidePanelService, private interfaceService: InterfaceService,
-              private chanNavBarService: ChannelNavBarService, public dialog: MatDialog) {
+  constructor(private sidePanSrv: SidePanelService, private interfaceSrv: InterfaceService, private cnbSrv: ChannelNavBarService,
+              public dialog: MatDialog) {
     this.refreshSidePanel();
   }
 
   refreshSidePanel(): void {
     this.allChannels = [];
     this.myChannels = [];
-    this.sidePanService.getChannels().then(arrays => {
+    this.sidePanSrv.getChannels().then(arrays => {
       this.allChannels = arrays.allChannels;
       this.myChannels = arrays.myChannels;
       this.channelRedirect = this.myChannels[0];
@@ -56,11 +57,11 @@ export class SidePanelComponent implements OnInit, OnDestroy {
 
 
     // Listen for channel updates, redirect for less channels
-    this.chanNavBarService.currentChannelUpdateStatus.subscribe(status => {
+    this.cnbSrv.currentChannelUpdateStatus.subscribe(status => {
       this.status = status;
       if (this.status === true) {
         this.refreshSidePanel();
-        this.chanNavBarService.changeChannelUpdateStatus(false);
+        this.cnbSrv.changeChannelUpdateStatus(false);
         console.log('Redirecting to ' + this.channelRedirect.id);
         this.viewChannel(this.channelRedirect, this.channelRedirectLevel);
       }
@@ -68,32 +69,32 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   }
 
   private initializeNodeSession() {
-    this.nodeSession = this.interfaceService.getNodeSession();
-    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+    this.nodeSession = this.interfaceSrv.getNodeSession();
+    this.nodeSessionSubsc = this.interfaceSrv.getNodeSessionListener().subscribe(session => {
       this.nodeSession = session;
     });
   }
 
   private initializeAbbreviatedUserProfile() {
-    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
-    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+    this.userProfileAbr = this.interfaceSrv.getAbbreviatedUserProfile();
+    this.userProfileAbrSubsc = this.interfaceSrv.getAbbreviatedUserProfileListener().subscribe(userAbr => {
       this.userProfileAbr = userAbr;
     });
   }
 
   private initializeChannels() {
-    this.allChannels = this.interfaceService.getAllChannels();
-    this.allChannelsSubscr = this.interfaceService.getAllChannelsListener().subscribe(allChannels => {
+    this.allChannels = this.interfaceSrv.getAllChannels();
+    this.allChannelsSubscr = this.interfaceSrv.getAllChannelsListener().subscribe(allChannels => {
       this.allChannels = allChannels;
     });
-    this.myChannels = this.interfaceService.getMyChannels();
-    this.myChannelsSubscr = this.interfaceService.getMyChannelsListener().subscribe(myChannels => {
+    this.myChannels = this.interfaceSrv.getMyChannels();
+    this.myChannelsSubscr = this.interfaceSrv.getMyChannelsListener().subscribe(myChannels => {
       this.myChannels = myChannels;
     });
   }
 
   viewChannel(channel: ChannelData, level: string) {
-    this.chanNavBarService.setNavData(channel);
+    this.cnbSrv.setNavData(channel);
     let viewingChannelString = '';
     if (level != null) {
       if (level === 'hallwide' || level === 'RA') {  // Reconstruct the channel ID
@@ -105,7 +106,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
       console.log('Show category accouncements??? What are we showing here?');  // TODO @Kai
       viewingChannelString = null;
     }
-    this.interfaceService.setNewChannelView(viewingChannelString);
+    this.interfaceSrv.setNewChannelView(viewingChannelString);
   }
 
   openDialog(): void {
@@ -131,18 +132,10 @@ export class SidePanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.nodeSessionSubsc != null) {
-      this.nodeSessionSubsc.unsubscribe();
-    }
-    if (this.userProfileAbrSubsc != null) {
-      this.userProfileAbrSubsc.unsubscribe();
-    }
-    if (this.allChannelsSubscr != null) {
-      this.allChannelsSubscr.unsubscribe();
-    }
-    if (this.myChannelsSubscr != null) {
-      this.myChannelsSubscr.unsubscribe();
-    }
+    this.nodeSessionSubsc.unsubscribe();
+    this.userProfileAbrSubsc.unsubscribe();
+    this.allChannelsSubscr.unsubscribe();
+    this.myChannelsSubscr.unsubscribe();
   }
 
 }

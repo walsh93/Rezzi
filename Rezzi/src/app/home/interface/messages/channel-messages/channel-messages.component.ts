@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { Message, NodeSession, AbbreviatedUserProfile } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
-import { ChannelData } from '../../../../classes.model';
 import { InterfaceService } from '../../interface.service';
 import { ChannelNavBarService } from '../../channel-nav-bar/channel-nav-bar.service';
 import * as c from '../../interface.constants';
@@ -14,6 +13,7 @@ import * as c from '../../interface.constants';
   styleUrls: ['./channel-messages.component.css']
 })
 export class ChannelMessagesComponent implements OnInit, OnDestroy {
+
   // Node session data
   nodeSession: NodeSession;
   private nodeSessionSubsc: Subscription;
@@ -25,8 +25,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   private canPostSubsc: Subscription;
 
   // Channel data
-  private myChannels: ChannelData[];
-  private myChannelsSubsc: Subscription;
   private isMuted: boolean;
   private isMutedSubsc: Subscription;
 
@@ -36,31 +34,27 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   currentChannelID: string;
   private newChannelViewSubsc: Subscription;
 
-
-
-
+  // Message data
   messages: Message[] = [];
-  private messagesSub: Subscription;
+  private messagesSubsc: Subscription;
 
-
-  amViewingNewChannel = false;
+  // Scrolling data
+  private amViewingNewChannel = false;
   needToUpdateScroll = false;
 
-  constructor(private interfaceSrv: InterfaceService, private cnbSrv: ChannelNavBarService, public messagesService: MessagesService) { }
+  constructor(private interfaceSrv: InterfaceService, private cnbSrv: ChannelNavBarService, public messageSrv: MessagesService) { }
 
   ngOnInit() {
     this.initializeNodeSession();
     this.initializeAbbreviatedUserProfile();
-    this.initializeCanPost();
-    this.initializeChannelData();
+    this.initializeAbilityToPost();
     this.initializeInterfaceViewListener();
     this.initializeChannelViewListener();
 
     // TODO What is the opening channel view? Do we need to call this.messagesService.emitNewChannelView on opening?
 
     // Listen for updated message list
-    this.messagesSub = this.messagesService.getMessageUpdateListener().subscribe((updatedMessages: Message[]) => {
-      console.log('Messages are updating...');
+    this.messagesSubsc = this.messageSrv.getMessageUpdateListener().subscribe((updatedMessages: Message[]) => {
       const diffNumberOfMessages = (this.messages.length !== updatedMessages.length);
       this.needToUpdateScroll = (this.amViewingNewChannel || diffNumberOfMessages);  // Don't scroll on reaction only
       this.messages = updatedMessages;
@@ -82,7 +76,7 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     });
   }
 
-  private initializeCanPost() {
+  private initializeAbilityToPost() {
     this.canPost = this.interfaceSrv.getCanPost();
     if (this.canPost != null) {
       this.updateComponentHeight();
@@ -90,13 +84,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.canPostSubsc = this.interfaceSrv.getCanPostListener().subscribe(canPostNow => {
       this.canPost = canPostNow;
       this.updateComponentHeight();
-    });
-  }
-
-  private initializeChannelData() {
-    this.myChannels = this.interfaceSrv.getMyChannels();
-    this.myChannelsSubsc = this.interfaceSrv.getMyChannelsListener().subscribe(myChannels => {
-      this.myChannels = myChannels;
     });
     this.isMutedSubsc = this.interfaceSrv.getIsMutedListener().subscribe(isMutedNow => {
       this.isMuted = isMutedNow;
@@ -121,11 +108,11 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.newChannelViewSubsc = this.interfaceSrv.getNewChannelViewListener().subscribe(newChannelViewID => {
       this.currentChannelID = newChannelViewID;
       this.updateComponentHeight();
-      const dbpath = this.messagesService.createChannelPath(this.nodeSession.rezzi, newChannelViewID);
+      const dbpath = this.messageSrv.createChannelPath(this.nodeSession.rezzi, newChannelViewID);
       if (dbpath != null && dbpath !== undefined) {
         this.amViewingNewChannel = true;
-        this.messagesService.getChannelMessages(dbpath.channelPath, dbpath.channelName);  // Triggers msg upd listener
-        this.messagesService.emitNewChannelView(dbpath);  // eventually triggers addListenerForChannelMessages
+        this.messageSrv.getChannelMessages(dbpath.channelPath, dbpath.channelName);  // Triggers msg upd listener
+        this.messageSrv.emitNewChannelView(dbpath);  // eventually triggers addListenerForChannelMessages
       }
     });
   }
@@ -140,7 +127,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     const chnMsg = document.getElementById('channelMessages');
     if (chnMsg != null) {
       if (this.canPost && !this.isMuted) {
-        console.log('HERE AGAIN!');
         chnMsg.style.height = 'calc(100vh - 218px)';
       } else {
         chnMsg.style.height = 'calc(100vh - 128px)';
@@ -200,15 +186,10 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.nodeSessionSubsc.unsubscribe();
     this.userProfileAbrSubsc.unsubscribe();
     this.canPostSubsc.unsubscribe();
-    this.myChannelsSubsc.unsubscribe();
-    if (this.isMutedSubsc != null) {
-      this.isMutedSubsc.unsubscribe();
-    }
+    this.isMutedSubsc.unsubscribe();
     this.interfaceViewSubsc.unsubscribe();
     this.newChannelViewSubsc.unsubscribe();
-
-
-    this.messagesSub.unsubscribe(); // useful when changing channels
+    this.messagesSubsc.unsubscribe(); // useful when changing channels
   }
 
 }

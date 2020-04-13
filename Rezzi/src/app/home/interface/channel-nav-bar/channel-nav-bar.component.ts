@@ -1,11 +1,10 @@
-import { Component, OnInit, OnDestroy, HostBinding, Inject, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, Inject } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
 import { ChannelData, BotMessage, NodeSession, AbbreviatedUserProfile } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
-import { Subscription, Observable, Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MessagesService } from '../messages/messages.service';
 import * as c from '../interface.constants';
 import { InterfaceService } from '../interface.service';
@@ -23,6 +22,7 @@ export interface DialogData {
 })
 
 export class ChannelNavBarComponent implements OnInit, OnDestroy {
+
   // Node session data
   private nodeSession: NodeSession;
   private nodeSessionSubsc: Subscription;
@@ -30,13 +30,11 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   // User profile data
   private userProfileAbr: AbbreviatedUserProfile;
   private userProfileAbrSubsc: Subscription;
+  private userName: string;
+  private accountType: number;
 
-
-
-  user: string;
-  accountType: number;
-  channels: ChannelData[];
-  navChannel: ChannelData;
+  // Channel data
+  private navChannel: ChannelData;
   @HostBinding('class.nav-title')
   navTitle = 'Rezzi';
 
@@ -46,30 +44,32 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   leaveButtonDisabled = true;
   deleteButtonDisabled = true;
 
-  private userName: string;
+  constructor(private cnbSrv: ChannelNavBarService, public dialog: MatDialog, private interfaceSrv: InterfaceService) { }
 
-  constructor(private rezziService: RezziService,
-              private router: Router,
-              private channelNavBarService: ChannelNavBarService,
-              public dialog: MatDialog,
-              private interfaceService: InterfaceService) {
+  ngOnInit() {
     this.initializeNodeSession();
     this.initializeAbbreviatedUserProfile();
+    this.cnbSrv.setChannel.subscribe(channelData => {
+      this.navChannel = channelData;
+      this.navTitle = this.navChannel.channel;
+      this.checkPermissions();
+    });
   }
 
   private initializeNodeSession() {
-    this.nodeSession = this.interfaceService.getNodeSession();
-    this.nodeSessionSubsc = this.interfaceService.getNodeSessionListener().subscribe(session => {
+    this.nodeSession = this.interfaceSrv.getNodeSession();
+    this.nodeSessionSubsc = this.interfaceSrv.getNodeSessionListener().subscribe(session => {
       this.nodeSession = session;
+      this.accountType = session.accountType;
     });
   }
 
   private initializeAbbreviatedUserProfile() {
-    this.userProfileAbr = this.interfaceService.getAbbreviatedUserProfile();
+    this.userProfileAbr = this.interfaceSrv.getAbbreviatedUserProfile();
     if (this.userProfileAbr != null) {
       this.initializeNickname();
     }
-    this.userProfileAbrSubsc = this.interfaceService.getAbbreviatedUserProfileListener().subscribe(userAbr => {
+    this.userProfileAbrSubsc = this.interfaceSrv.getAbbreviatedUserProfileListener().subscribe(userAbr => {
       this.userProfileAbr = userAbr;
       this.initializeNickname();
     });
@@ -83,24 +83,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
-    this.rezziService.getSession().then((response) => {
-      if (response.email == null) {
-        this.router.navigate(['/sign-in']);
-      } else {
-        this.user = response.email;
-        this.accountType = response.accountType;
-      }
-    });
-
-    this.channelNavBarService.setChannel.subscribe(channelData => {
-      this.navChannel = channelData;
-      this.navTitle = this.navChannel.channel;
-      this.checkPermissions();
-    });
-  }
-
-  checkPermissions() {
+  private checkPermissions() {
     if (this.navTitle !== 'Rezzi') {                              // Channel not selected
       this.channelMenuDisabled = false;
     }
@@ -159,26 +142,25 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
    * Functions to trigger navbar service, and then the interface subscription
    */
   goToMuteMembersScreen() {
-    this.channelNavBarService.updateInterfaceView(c.VIEW_MUTE_MEMBERS);
+    this.cnbSrv.updateInterfaceView(c.VIEW_MUTE_MEMBERS);
   }
 
   goToChannelMessagesScreen() {
-    this.channelNavBarService.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
+    this.cnbSrv.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
   }
 
   ngOnDestroy() {
-    if (this.nodeSessionSubsc != null) {
-      this.nodeSessionSubsc.unsubscribe();
-    }
-    if (this.userProfileAbrSubsc != null) {
-      this.userProfileAbrSubsc.unsubscribe();
-    }
+    this.nodeSessionSubsc.unsubscribe();
+    this.userProfileAbrSubsc.unsubscribe();
   }
 
 }
 
-/*  Leave Channel Dialog Component */
 
+
+
+
+/*  Leave Channel Dialog Component */
 @Component({
   selector: 'app-leave-channel-dialog',
   templateUrl: 'leave-channel-dialog.html',
@@ -189,17 +171,14 @@ export class LeaveChannelDialog implements OnInit {
   userName: string;
   status: boolean;
 
-  constructor(public leaveDialogRef: MatDialogRef<LeaveChannelDialog>,
-              private channelNavBarService: ChannelNavBarService,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private http: HttpClient,
-              private messagesService: MessagesService) {
-      this.rezzi = data.rezzi;
-      this.userName = data.userName;
+  constructor(public leaveDialogRef: MatDialogRef<LeaveChannelDialog>, private cnbSrv: ChannelNavBarService,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData, private http: HttpClient, private messagesSrv: MessagesService) {
+    this.rezzi = data.rezzi;
+    this.userName = data.userName;
   }
 
   ngOnInit() {
-    this.channelNavBarService.currentChannelUpdateStatus.subscribe(status => {
+    this.cnbSrv.currentChannelUpdateStatus.subscribe(status => {
       this.status = status;
     });
   }
@@ -216,14 +195,18 @@ export class LeaveChannelDialog implements OnInit {
       console.log(responseData.notification);
     });
 
-    this.channelNavBarService.changeChannelUpdateStatus(true);  /* Refreshes channel list */
+    this.cnbSrv.changeChannelUpdateStatus(true);  /* Refreshes channel list */
     this.leaveDialogRef.close();                                /* Closes dialog */
 
     // Send Bot Message
-    this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
+    this.messagesSrv.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
   }
 
 }
+
+
+
+
 
 /* Delete Channel Dialog Component */
 @Component({
@@ -236,17 +219,14 @@ export class DeleteChannelDialog implements OnInit {
   userName: string;
   status: boolean;
 
-  constructor(public deleteDialogRef: MatDialogRef<DeleteChannelDialog>,
-              private channelNavBarService: ChannelNavBarService,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private http: HttpClient,
-              private messagesService: MessagesService) {
-      this.rezzi = data.rezzi;
-      this.userName = data.userName;
+  constructor(public deleteDialogRef: MatDialogRef<DeleteChannelDialog>, private cnbSrv: ChannelNavBarService,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData, private http: HttpClient) {
+    this.rezzi = data.rezzi;
+    this.userName = data.userName;
   }
 
   ngOnInit() {
-    this.channelNavBarService.currentChannelUpdateStatus.subscribe(status => {
+    this.cnbSrv.currentChannelUpdateStatus.subscribe(status => {
       this.status = status;
     });
   }
@@ -263,7 +243,7 @@ export class DeleteChannelDialog implements OnInit {
       console.log(responseData.notification);
     });
 
-    this.channelNavBarService.changeChannelUpdateStatus(true);
+    this.cnbSrv.changeChannelUpdateStatus(true);
     this.deleteDialogRef.close();
   }
 

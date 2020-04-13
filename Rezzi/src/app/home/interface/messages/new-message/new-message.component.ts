@@ -15,6 +15,7 @@ import * as c from '../../interface.constants';
   styleUrls: ['./new-message.component.css']
 })
 export class NewMessageComponent implements OnInit, OnDestroy {
+
   // Node session data
   private nodeSession: NodeSession;
   private nodeSessionSubsc: Subscription;
@@ -34,18 +35,11 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   private currentChannelID: string;
   private newChannelViewSubsc: Subscription;  // Listen for changes in which channel is being viewed
 
-
-
-
-
-
+  // Message UI data
   enteredMessage = '';
   image = null;
 
-
-
-
-  constructor(private cnbSrv: ChannelNavBarService, public messagesSrv: MessagesService, private interfaceSrv: InterfaceService,
+  constructor(private cnbSrv: ChannelNavBarService, public messageSrv: MessagesService, private interfaceSrv: InterfaceService,
               public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -91,7 +85,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
 
   private initializeChannelViewListener() {
     this.newChannelViewSubsc = this.interfaceSrv.getNewChannelViewListener().subscribe(newChannelViewID => {
-      console.log(`Now viewing channel ${newChannelViewID}`);
       this.currentChannelID = newChannelViewID;
     });
   }
@@ -108,7 +101,6 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     if (form.invalid) {
       return;
     }
-    console.log(this.userProfileAbr);
     const message: Message = {
       content: form.value.enteredMessage,
       owner: this.userProfileAbr,
@@ -133,7 +125,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     };
 
     // this.messagesService.addMessage(message);
-    this.messagesSrv.sendMessageThroughSocket(scmd);
+    this.messageSrv.sendMessageThroughSocket(scmd);
     this.image = null;
     form.resetForm();
   }
