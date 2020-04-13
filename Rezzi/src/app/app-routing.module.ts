@@ -10,9 +10,9 @@ import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-u
 import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
 import { ErrorComponent } from './error/error.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
-import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
-import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
+import { PwordresetRequestComponent } from './pwordreset/pwordreset-request/pwordreset-request.component';
+import { PwordresetSentComponent } from './pwordreset/pwordreset-sent/pwordreset-sent.component';
+import { PwordresetChangeComponent } from './pwordreset/pwordreset-change/pwordreset-change.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
 import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
