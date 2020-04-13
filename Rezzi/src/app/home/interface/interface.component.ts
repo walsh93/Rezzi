@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChannelData, NodeSession, AbbreviatedUserProfile, UserProfile } from '../../classes.model';
-import { Subject, Subscription } from 'rxjs';
-import { ChannelNavBarService } from './channel-nav-bar/channel-nav-bar.service';
-import * as c from './interface.constants';
+import { UserProfile } from '../../classes.model';
+import { Subscription } from 'rxjs';
 import { InterfaceService } from './interface.service';
 
 @Component({
@@ -16,7 +14,7 @@ export class InterfaceComponent implements OnInit, OnDestroy {
   private userProfile: UserProfile;
   private userProfileSubsc: Subscription;
 
-  constructor(private interfaceService: InterfaceService, private cnbService: ChannelNavBarService) { }
+  constructor(private interfaceService: InterfaceService) { }
 
   ngOnInit() {
     this.userProfile = this.interfaceService.getUserProfile();

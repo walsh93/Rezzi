@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, HostBinding, Inject } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Router } from '@angular/router';
 import { ChannelData, BotMessage, NodeSession, AbbreviatedUserProfile } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';

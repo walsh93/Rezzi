@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
-import { ChannelData, BotMessage, AbbreviatedUser, NodeSession, AbbreviatedUserProfile } from '../../../../classes.model';
+import { ChannelData, BotMessage, NodeSession, AbbreviatedUserProfile } from '../../../../classes.model';
 import { MessagesService } from '../../messages/messages.service';
 
 // export interface ChannelData {
