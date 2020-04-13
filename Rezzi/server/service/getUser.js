@@ -28,6 +28,7 @@ router.get('/', checkCookie, function (request, response) {
       rezzi: data.rezzi,
       floor: data.floor,  // For request-channel
       imageUrl: data.image_url,
+      image_url: data.image_url,
       canPost: canPost,
     }
     response.status(http.ok).json({ user: user })  // will be accessed as data_from_backend in prev code blocks
