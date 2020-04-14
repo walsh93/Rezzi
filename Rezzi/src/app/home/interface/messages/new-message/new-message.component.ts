@@ -116,6 +116,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       },
       reported: false,
       image: (this.image !== null ? this.image.src : null),
+      isPoll: false,
+      pollInfo: null,
+
     };
 
     const scmd: SocketChannelMessageData = {

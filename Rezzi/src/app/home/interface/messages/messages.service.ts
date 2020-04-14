@@ -98,6 +98,8 @@ export class MessagesService {
       reactions: null,
       reported: false,
       image: null,
+      isPoll: false,
+      pollInfo: null,
     };
     const scmd: SocketChannelMessageData = {
       message, rezzi, channelID,

@@ -5,12 +5,16 @@ import {
   Message,
   ReactionData,
   SocketChannelMessageData,
-  SocketPrivateMessageData
+  SocketPrivateMessageData,
+  PollInfo
 } from 'src/app/classes.model';
 import { RezziService } from 'src/app/rezzi.service';
 import { MessagesService } from '../messages.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
+import { MatRadioButton } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-message',
@@ -23,6 +27,7 @@ export class MessageComponent implements OnInit {
   dayNames = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
   monthNames = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
   displayTime: string;
+  displayPollExpiration: string;
   reacted = {};
 
   // Properties inherited from channel-messages (or whatever the parent component is)
@@ -47,13 +52,24 @@ export class MessageComponent implements OnInit {
   private ReportId: string;
   private currUserEmail: string;
   private avatar: string; // The avatar image, extracted from message
+  private isPoll: boolean;
+  private pollInfo: PollInfo;
+
+  pollResponse;
+  currentTime: number;
+  formSubmissionTime: number;
+  pollExpireTime: Date;
+  pollWinnerName: string;
+  pollWinnerCount: number;
+  pollWinnerTotal: number;
+
 
   constructor(
     public messagesService: MessagesService,
     private http: HttpClient,
     private rezziService: RezziService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.reactions = this.message.reactions;
@@ -63,7 +79,9 @@ export class MessageComponent implements OnInit {
     this.reported = this.message.reported;
     this.image = this.message.image;
     this.content = [];
-    if (this.message.content === null) {
+    this.isPoll = this.message.isPoll;
+    this.pollInfo = this.message.pollInfo;
+    if (this.message.content === null && this.message.isPoll === false) {
       this.content.push(null);
     } else if (this.message.content.includes('=====================')) {
       this.message.content.split('=====================').forEach(section => {
@@ -84,7 +102,39 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
-
+    // console.log(this.displayTime);
+    // this.displayTime = String(dateAgain);
+    this.currentTime = new Date().getTime();
+    this.formSubmissionTime = new Date(this.message.time).getTime(); // .getTime();
+    this.pollExpireTime = new Date(this.message.time);
+    this.pollExpireTime.setDate(this.pollExpireTime.getDate() + 1);
+    const day2 = this.dayNames[this.pollExpireTime.getDay()];
+    const month2 = this.monthNames[this.pollExpireTime.getMonth()];
+    const date2 = this.pollExpireTime.getDate();
+    const hr2 = this.pollExpireTime.getHours();
+    const hours2 = hr2 > 12 ? `${hr2 - 12}` : `${hr2}`;
+    const min2 = this.pollExpireTime.getMinutes();
+    const minutes2 = min2 < 10 ? `0${min2}` : `${min2}`;
+    const apm2 = hr > 11 ? 'PM' : 'AM';
+    this.displayPollExpiration = `${day2}, ${month2} ${date2} at ${hours2}:${minutes2} ${apm2}`;
+    if (this.isPoll === true && (this.currentTime - this.formSubmissionTime > 86400000)) {
+      console.log('Made it here');
+      const tempcount = 0;
+      this.pollWinnerTotal = 0;
+      this.message.pollInfo.responses.forEach(element => {
+        console.log(element);
+        console.log('Made it hereee');
+        if (element.count > tempcount) {
+          this.pollWinnerName = element.content;
+          this.pollWinnerCount = element.count;
+        }
+        this.pollWinnerTotal += element.count;
+      });
+      if (this.pollWinnerTotal === 0) {
+        this.pollWinnerName = 'Nothing';
+        this.pollWinnerCount = 0;
+      }
+    }
     if (
       this.userProfileAbr.nickName == null ||
       this.userProfileAbr.nickName === undefined ||
@@ -228,5 +278,31 @@ export class MessageComponent implements OnInit {
       .subscribe(responseData => {
         console.log(responseData.notification);
       });
+  }
+
+  //  formSubmissionTime = new Date(this.message.time).getTime();
+
+  formResponse(index) {
+    // console.log("this.message.time"+this.message.time);
+    console.log(this.currentTime);
+    console.log(this.formSubmissionTime);
+    // console.log("Time diff"+(this.currentTime-this.formSubmissionTime));
+    console.log(this.pollInfo.users.includes(this.userProfileAbr.email));
+    this.currentTime = new Date().getTime();
+    console.log('Subtraction:');
+    console.log(this.currentTime - this.formSubmissionTime);
+    if (this.currentTime - this.formSubmissionTime > 86400000) {
+      alert('Form has expired!');
+      return;
+    }
+    this.message.pollInfo.users.push(this.userProfileAbr.email);
+    this.message.pollInfo.responses[this.pollResponse].count++;
+    // console.log(this.message);
+    const scmd: SocketChannelMessageData = {
+      message: this.message,
+      rezzi: this.rezzi,
+      channelID: this.channel
+    };
+    this.messagesService.updateMessageThroughSocket(scmd);
   }
 }

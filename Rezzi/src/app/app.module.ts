@@ -27,7 +27,9 @@ import {
   MatDividerModule,
   MatProgressSpinnerModule,
   MatChipsModule,
+  MatRadioModule,
  } from '@angular/material';
+
 
 // Firebase Imports
 import { AngularFireModule } from '@angular/fire';
@@ -114,6 +116,7 @@ import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
+import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
 
 @NgModule({
   declarations: [
@@ -170,6 +173,7 @@ import { MuteMembersComponent } from './home/interface/mute-members/mute-members
     AssignPrivilegsComponent,
     MuteMembersComponent,
     MoveUsersComponent,
+    PollingComponent,
   ],
   imports: [
     BrowserModule,
@@ -206,13 +210,15 @@ import { MuteMembersComponent } from './home/interface/mute-members/mute-members
     MatDividerModule,
     MatProgressSpinnerModule,
     MatChipsModule,
+    MatRadioModule
   ],
   entryComponents: [
     JoinChannelComponent,
     CreatePmComponent,
     LeaveChannelDialog,
     DeleteChannelDialog,
-    ImageModalComponent
+    ImageModalComponent,
+    PollingComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

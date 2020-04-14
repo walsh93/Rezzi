@@ -1,12 +1,20 @@
 import { Component, OnInit, OnDestroy, HostBinding, Inject } from '@angular/core';
-import { ChannelNavBarService } from './channel-nav-bar.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ChannelData, BotMessage, NodeSession, AbbreviatedUserProfile } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs';
-import { MessagesService } from '../messages/messages.service';
-import * as c from '../interface.constants';
+import {
+  AbbreviatedUserProfile,
+  BotMessage,
+  ChannelData,
+  Message,
+  NodeSession,
+  SocketChannelMessageData
+} from 'src/app/classes.model';
+import { ChannelNavBarService } from './channel-nav-bar.service';
 import { InterfaceService } from '../interface.service';
+import { MessagesService } from '../messages/messages.service';
+import { PollingComponent } from './polling/polling.component';
+import * as c from '../interface.constants';
 
 export interface DialogData {
   channel: ChannelData;
@@ -43,7 +51,8 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   leaveButtonDisabled = true;
   deleteButtonDisabled = true;
 
-  constructor(private cnbSrv: ChannelNavBarService, public dialog: MatDialog, private interfaceSrv: InterfaceService) { }
+  constructor(private cnbSrv: ChannelNavBarService, public dialog: MatDialog, public dialog2: MatDialog,
+              public messagesService: MessagesService, private interfaceSrv: InterfaceService) { }
 
   ngOnInit() {
     this.initializeNodeSession();
@@ -153,6 +162,39 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     this.userProfileAbrSubsc.unsubscribe();
   }
 
+  openPollDialog(): void {
+    if (this.navTitle === 'Rezzi') {
+      console.error('No channel selected');
+      return;
+    }
+
+    const dialogRef = this.dialog2.open(PollingComponent, {
+      width: '600px',
+      height: 'auto',
+      data: {
+        channel: this.navChannel,
+        rezzi: this.nodeSession.rezzi,
+        userName: this.userName,
+      }
+    });
+
+    dialogRef.componentInstance.create_poll.subscribe((message: Message) => {
+      console.log('made it here in cnb.ts');
+      message.owner = this.userProfileAbr;
+      console.log(message);
+      console.log(this.navChannel.id);
+      console.log(this.navChannel.channel);
+      const scmd: SocketChannelMessageData = {
+        message,
+        rezzi: this.nodeSession.rezzi,
+        channelID: this.navChannel.id
+      };
+      this.messagesService.sendMessageThroughSocket(scmd);
+    });
+
+
+  }
+
 }
 
 
@@ -190,7 +232,7 @@ export class LeaveChannelDialog implements OnInit {
   onConfirmClick(channel: ChannelData): void {
     console.log('user wants to leave ' + channel.channel);
     console.log('leaving channel id ' + channel.id);
-    this.http.post<{notification: string}>('/leave-channel', {channel_id: channel.id}).subscribe(responseData => {
+    this.http.post<{ notification: string }>('/leave-channel', { channel_id: channel.id }).subscribe(responseData => {
       console.log(responseData.notification);
     });
 
@@ -219,7 +261,7 @@ export class DeleteChannelDialog implements OnInit {
   status: boolean;
 
   constructor(public deleteDialogRef: MatDialogRef<DeleteChannelDialog>, private cnbSrv: ChannelNavBarService,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData, private http: HttpClient) {
+              @Inject(MAT_DIALOG_DATA) public data: DialogData, private http: HttpClient, private messagesService: MessagesService) {
     this.rezzi = data.rezzi;
     this.userName = data.userName;
   }
@@ -238,7 +280,7 @@ export class DeleteChannelDialog implements OnInit {
     console.log('user wants to delete ' + channel.channel);
     console.log('deleting channel id ' + channel.id);
     const level = channel.id.split('-')[0];
-    this.http.post<{notification: string}>('/delete-channel', {channel, channel_level: level}).subscribe(responseData => {
+    this.http.post<{ notification: string }>('/delete-channel', { channel, channel_level: level }).subscribe(responseData => {
       console.log(responseData.notification);
     });
 
