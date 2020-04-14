@@ -43,6 +43,8 @@ export class PmSidePanelComponent implements OnInit {
             reported: data[index].messages.messages[index2].reported,
             id: data[index].messages.messages[index2].id,
             image: data[index].messages.messages[index2].image,
+            isPoll: false,
+            pollInfo: null,
             //will need to add more message details here
           });
         }

@@ -111,6 +111,19 @@ export interface Message {
   reactions: ReactionData;
   reported: boolean;
   image: string;
+  isPoll: boolean;
+  pollInfo: PollInfo;
+}
+
+export interface PollInfo {
+  responses: PollResponses[];
+  question: string;
+  users: string[];
+}
+
+export interface PollResponses {
+  count: number;
+  content: string;
 }
 
 export enum BotMessage {
