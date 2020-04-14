@@ -63,19 +63,17 @@
 
 
       <img *ngIf="image !== null" mat-card-image src="{{ image }}">
-      <h2>{{pollInfo.question}}</h2>
-      <h2>Poll Results:</h2>
-      <div *ngFor="let response of pollInfo.responses; let i = index">{{response.content}} has {{response.count}} votes!
+      <h2>Final Poll Results:</h2>
+      <h3>{{pollInfo.question}}</h3>
+      <h4 *ngIf="pollWinnerCount!=0">{{pollWinnerName}} has won with {{pollWinnerCount}} out of the {{pollWinnerTotal}} votes!</h4>
+      <h4 *ngIf="pollWinnerCount==0">No votes were cast, therefore there is no winner!</h4>
+      <div *ngFor="let response of pollInfo.responses; let i = index">
+        <div *ngIf="response.count>1">{{response.content}} has {{response.count}} votes!</div>
+        <div *ngIf="response.count==1">{{response.content}} has {{response.count}} vote!</div>
+        <div *ngIf="response.count==0">{{response.content}} has no votes!</div>
       </div>
-      <form #pollForm="ngForm" (submit)="formResponse(pollForm)">
-        <mat-radio-group class="radio-group"
-        [(ngModel)]="pollResponse"
-        name="response">
-          <mat-radio-button *ngFor="let response of pollInfo.responses; let i = index" [value]="i" name="{{i}}">{{response.content}}
-          </mat-radio-button>
-        </mat-radio-group>
-        <button mat-raised-button color="accent" type="submit">Vote!</button>
-      </form>
+      <br>
+      <mat-card-content>This poll expired {{ displayPollExpiration }}</mat-card-content>
       <mat-card-footer>{{ displayTime }}
         <button mat-icon-button (click)="reportMessage()">
           <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
@@ -84,6 +82,7 @@
       </mat-card-footer>
     </mat-card>
   </div>
+
   <!-- If poll has not expired, but the user has answered -->
   <div *ngIf="pollInfo.users.includes(user.email)==true && currentTime-formSubmissionTime<86400000">
     <mat-card>
@@ -115,16 +114,9 @@
         <div *ngIf="response.count>1">{{response.content}} has {{response.count}} votes!</div>
         <div *ngIf="response.count==1">{{response.content}} has {{response.count}} vote!</div>
         <div *ngIf="response.count==0">{{response.content}} has no votes!</div>
-      </div><!--
-      <form #pollForm="ngForm" (submit)="formResponse(pollForm)">
-        <mat-radio-group class="radio-group"
-        [(ngModel)]="pollResponse"
-        name="response">
-          <mat-radio-button *ngFor="let response of pollInfo.responses; let i = index" [value]="i" name="{{i}}">{{response.content}}
-          </mat-radio-button>
-        </mat-radio-group>
-        <button mat-raised-button color="accent" type="submit">Vote!</button>
-      </form>-->
+      </div>
+      <br>
+      <mat-card-content>This poll expires {{ displayPollExpiration }}</mat-card-content>
       <mat-card-footer>{{ displayTime }}
         <button mat-icon-button (click)="reportMessage()">
           <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
@@ -169,6 +161,7 @@
         </mat-radio-group>
         <button mat-raised-button color="accent" type="submit">Vote!</button>
       </form>
+      <mat-card-content>This poll expires at {{ pollExpireTime }}</mat-card-content>
       <mat-card-footer>{{ displayTime }}
         <button mat-icon-button (click)="reportMessage()">
           <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
