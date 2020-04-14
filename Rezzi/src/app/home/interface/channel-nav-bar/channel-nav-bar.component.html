@@ -2,6 +2,23 @@
   <div class="interior">
     <span class="nav-title"> {{navTitle}} </span>
   </div>
+
+    <br>
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <!-- <mat-panel-title> --> <!-- </mat-panel-title> -->
+           <mat-panel-description>
+        <!-- <button mat-icon-button (click)="viewMembers()"> -->
+    <mat-icon id="viewMembers"  aria-hidden="false" aria-label="View members"
+      matTooltip="View members">people_alt</mat-icon>
+  <!-- </button> -->
+        
+              </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>Members here</p>
+    </mat-expansion-panel>
+  </mat-accordion>
   <div class="menu-button">
     <button mat-button [disabled]="channelMenuDisabled" [matMenuTriggerFor]="channelMenu">⋮</button>
 
@@ -13,6 +30,7 @@
       </div>
       <button mat-menu-item [disabled]="leaveButtonDisabled" (click)="openLeaveDialog()">Leave Channel</button>
       <button mat-menu-item [disabled]="deleteButtonDisabled" (click)="openDeleteDialog()">Delete Channel</button>
+      
     </mat-menu>
   </div>
 </mat-toolbar>

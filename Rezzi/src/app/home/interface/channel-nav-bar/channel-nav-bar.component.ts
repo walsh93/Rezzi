@@ -37,6 +37,12 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 
   private userName: string;
 
+  //view Members
+    private currentChannelID: string;
+    private viewingUpdateSub: Subscription;
+    @Input() viewingObs: Observable<string>;
+    Members: String[];
+
   // Session data retrieved from interface.component
   session: any;
   private sessionUpdateSub: Subscription;
@@ -105,6 +111,12 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
         this.userName = this.abbrevUser.nickName;
       }
     });
+
+    this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
+      if (updatedChannelID !== this.currentChannelID) {
+        this.currentChannelID = updatedChannelID;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -146,6 +158,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     });
   }
 
+
   /**
    * Functions to trigger navbar service, and then the interface subscription
    */
@@ -156,6 +169,28 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   goToChannelMessagesScreen() {
     this.channelNavBarService.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
   }
+
+ viewMembers(){
+this.rezziService.getResidentsByChannel(this.currentChannelID).then(res => {
+      if (res == null || res === undefined) {
+        return;
+      } else if (res.msg != null && res.msg !== undefined) {
+        console.log(res.msg);
+      } else {
+        console.log(`Creating new Member map for ${this.currentChannelID}...`);
+        const infoList = res.infoList as MemberMuteInfo[];
+        const memMuteInfoMap = new Map<string, MemberMuteInfo>();
+        infoList.forEach(user => {
+          memMuteInfoMap.set(user.email, user);
+        });
+        this.channelMuteMap.set(this.currentChannelID, memMuteInfoMap);
+        this.members = new MatTableDataSource(Array.from(memMuteInfoMap.values()));
+        this.title = 'Members in this channel';
+      }
+    });
+
+ }
+
 
 }
 
