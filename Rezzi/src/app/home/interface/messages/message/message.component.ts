@@ -67,6 +67,10 @@ export class MessageComponent implements OnInit {
   private isPoll: boolean;
   private pollInfo: PollInfo;
 
+  pollResponse;
+  currentTime: number;
+  formSubmissionTime: number;
+
 
   constructor(
     public messagesService: MessagesService,
@@ -110,7 +114,8 @@ export class MessageComponent implements OnInit {
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
     // console.log(this.displayTime);
     // this.displayTime = String(dateAgain);
-
+    this.currentTime = new Date().getTime();
+    this.formSubmissionTime = new Date(this.message.time).getTime();//.getTime();
     if (
       this.user.nickName == null ||
       this.user.nickName === undefined ||
@@ -256,14 +261,23 @@ export class MessageComponent implements OnInit {
         console.log(responseData.notification);
       });
   }
-  pollResponse;
+
+//  formSubmissionTime = new Date(this.message.time).getTime();
+
   formResponse(index){
-    console.log(this.message.id);
-    console.log(this.rezzi);
-    console.log(this.pollResponse);
+    //console.log("this.message.time"+this.message.time);
+    console.log(this.currentTime);
+    console.log(this.formSubmissionTime);
+    //console.log("Time diff"+(this.currentTime-this.formSubmissionTime));
+    console.log(this.pollInfo.users.includes(this.user.email));
+    //if(this.currentTime-this.formSubmissionTime>86400000){
+      //form is invalid - refresh page?
+      //alert("Form has expired!");
+      //return;
+    //}
     this.message.pollInfo.users.push(this.user.email);
     this.message.pollInfo.responses[this.pollResponse].count++;
-    console.log(this.message);
+    //console.log(this.message);
     const scmd: SocketChannelMessageData = {
       message: this.message,
       rezzi: this.rezzi,

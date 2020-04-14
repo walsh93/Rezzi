@@ -38,45 +38,145 @@
 </div>
 
 <div *ngIf="isPoll==true">
-  <mat-card>
-    <mat-card-header>
-      <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }"></div>
-      <mat-card-title>{{ displayName }}</mat-card-title>
-      <span class="reactions">
-        <ng-container *ngFor="let reaction of reactions | keyvalue">
-          <button mat-icon-button (click)="sendReaction(reaction.key)">
-            <mat-icon *ngIf="reaction.value.length > 0" matBadge="{{ reaction.value.length }}"
-              color="{{ reacted[reaction.key] }}" matBadgeSize="small" matTooltip="{{ getList(reaction.key) }}"
-              matTooltipPosition="above">
-              {{ reaction.key }}
-            </mat-icon>
-            <mat-icon *ngIf="reaction.value.length == 0">
-              {{ reaction.key }}
-            </mat-icon>
-          </button>
-        </ng-container>
-      </span>
-    </mat-card-header>
+  <!-- If poll has expired -->
+  <div *ngIf="currentTime-formSubmissionTime>86400000">
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }"></div>
+        <mat-card-title>{{ displayName }}</mat-card-title>
+        <span class="reactions">
+          <ng-container *ngFor="let reaction of reactions | keyvalue">
+            <button mat-icon-button (click)="sendReaction(reaction.key)">
+              <mat-icon *ngIf="reaction.value.length > 0" matBadge="{{ reaction.value.length }}"
+                color="{{ reacted[reaction.key] }}" matBadgeSize="small" matTooltip="{{ getList(reaction.key) }}"
+                matTooltipPosition="above">
+                {{ reaction.key }}
+              </mat-icon>
+              <mat-icon *ngIf="reaction.value.length == 0">
+                {{ reaction.key }}
+              </mat-icon>
+            </button>
+          </ng-container>
+        </span>
+      </mat-card-header>
 
 
 
-    <img *ngIf="image !== null" mat-card-image src="{{ image }}">
-    <h2>{{pollInfo.question}}</h2>
-    <form #pollForm="ngForm" (submit)="formResponse(pollForm)">
-      <mat-radio-group class="radio-group"
-      [(ngModel)]="pollResponse"
-      name="response">
-        <mat-radio-button *ngFor="let response of pollInfo.responses; let i = index" [value]="i" name="{{i}}">{{response.content}}
-        </mat-radio-button>
-      </mat-radio-group>
-      <button mat-raised-button color="accent" type="submit">Vote!</button>
-    </form>
-    <mat-card-footer>{{ displayTime }}
-      <button mat-icon-button (click)="reportMessage()">
-        <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
-          matTooltip="report">flag</mat-icon>
-      </button>
-    </mat-card-footer>
-  </mat-card>
+      <img *ngIf="image !== null" mat-card-image src="{{ image }}">
+      <h2>{{pollInfo.question}}</h2>
+      <h2>Poll Results:</h2>
+      <div *ngFor="let response of pollInfo.responses; let i = index">{{response.content}} has {{response.count}} votes!
+      </div>
+      <form #pollForm="ngForm" (submit)="formResponse(pollForm)">
+        <mat-radio-group class="radio-group"
+        [(ngModel)]="pollResponse"
+        name="response">
+          <mat-radio-button *ngFor="let response of pollInfo.responses; let i = index" [value]="i" name="{{i}}">{{response.content}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <button mat-raised-button color="accent" type="submit">Vote!</button>
+      </form>
+      <mat-card-footer>{{ displayTime }}
+        <button mat-icon-button (click)="reportMessage()">
+          <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
+            matTooltip="report">flag</mat-icon>
+        </button>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+  <!-- If poll has not expired, but the user has answered -->
+  <div *ngIf="pollInfo.users.includes(user.email)==true && currentTime-formSubmissionTime<86400000">
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }"></div>
+        <mat-card-title>{{ displayName }}</mat-card-title>
+        <span class="reactions">
+          <ng-container *ngFor="let reaction of reactions | keyvalue">
+            <button mat-icon-button (click)="sendReaction(reaction.key)">
+              <mat-icon *ngIf="reaction.value.length > 0" matBadge="{{ reaction.value.length }}"
+                color="{{ reacted[reaction.key] }}" matBadgeSize="small" matTooltip="{{ getList(reaction.key) }}"
+                matTooltipPosition="above">
+                {{ reaction.key }}
+              </mat-icon>
+              <mat-icon *ngIf="reaction.value.length == 0">
+                {{ reaction.key }}
+              </mat-icon>
+            </button>
+          </ng-container>
+        </span>
+      </mat-card-header>
+
+
+
+      <img *ngIf="image !== null" mat-card-image src="{{ image }}">
+      <h2>Current Poll Results:</h2>
+      <h3>{{pollInfo.question}}</h3>
+      <div *ngFor="let response of pollInfo.responses; let i = index">
+        <div *ngIf="response.count>1">{{response.content}} has {{response.count}} votes!</div>
+        <div *ngIf="response.count==1">{{response.content}} has {{response.count}} vote!</div>
+        <div *ngIf="response.count==0">{{response.content}} has no votes!</div>
+      </div><!--
+      <form #pollForm="ngForm" (submit)="formResponse(pollForm)">
+        <mat-radio-group class="radio-group"
+        [(ngModel)]="pollResponse"
+        name="response">
+          <mat-radio-button *ngFor="let response of pollInfo.responses; let i = index" [value]="i" name="{{i}}">{{response.content}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <button mat-raised-button color="accent" type="submit">Vote!</button>
+      </form>-->
+      <mat-card-footer>{{ displayTime }}
+        <button mat-icon-button (click)="reportMessage()">
+          <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
+            matTooltip="report">flag</mat-icon>
+        </button>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+
+  <!-- If poll has not expired, and the user has not answered -->
+  <div *ngIf="pollInfo.users.includes(user.email)==false && currentTime-formSubmissionTime<86400000">
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }"></div>
+        <mat-card-title>{{ displayName }}</mat-card-title>
+        <span class="reactions">
+          <ng-container *ngFor="let reaction of reactions | keyvalue">
+            <button mat-icon-button (click)="sendReaction(reaction.key)">
+              <mat-icon *ngIf="reaction.value.length > 0" matBadge="{{ reaction.value.length }}"
+                color="{{ reacted[reaction.key] }}" matBadgeSize="small" matTooltip="{{ getList(reaction.key) }}"
+                matTooltipPosition="above">
+                {{ reaction.key }}
+              </mat-icon>
+              <mat-icon *ngIf="reaction.value.length == 0">
+                {{ reaction.key }}
+              </mat-icon>
+            </button>
+          </ng-container>
+        </span>
+      </mat-card-header>
+
+
+
+      <img *ngIf="image !== null" mat-card-image src="{{ image }}">
+      <h2>{{pollInfo.question}}</h2>
+      <form #pollForm="ngForm" (submit)="formResponse(pollForm)">
+        <mat-radio-group class="radio-group"
+        [(ngModel)]="pollResponse"
+        name="response">
+          <mat-radio-button *ngFor="let response of pollInfo.responses; let i = index" [value]="i" name="{{i}}">{{response.content}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <button mat-raised-button color="accent" type="submit">Vote!</button>
+      </form>
+      <mat-card-footer>{{ displayTime }}
+        <button mat-icon-button (click)="reportMessage()">
+          <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
+            matTooltip="report">flag</mat-icon>
+        </button>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+
 
 </div>
