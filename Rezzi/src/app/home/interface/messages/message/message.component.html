@@ -161,7 +161,8 @@
         </mat-radio-group>
         <button mat-raised-button color="accent" type="submit">Vote!</button>
       </form>
-      <mat-card-content>This poll expires at {{ pollExpireTime }}</mat-card-content>
+      <br>
+      <mat-card-content>This poll expires at {{ displayPollExpiration }}</mat-card-content>
       <mat-card-footer>{{ displayTime }}
         <button mat-icon-button (click)="reportMessage()">
           <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
