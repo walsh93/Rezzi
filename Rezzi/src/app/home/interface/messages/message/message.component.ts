@@ -145,7 +145,7 @@ export class MessageComponent implements OnInit {
         }
         this.pollWinnerTotal += element.count;
       });
-      if(this.pollWinnerCount==0){
+      if(this.pollWinnerTotal==0){
         this.pollWinnerName = "Nothing";
         this.pollWinnerCount = 0;
       }
@@ -304,11 +304,13 @@ export class MessageComponent implements OnInit {
     console.log(this.formSubmissionTime);
     // console.log("Time diff"+(this.currentTime-this.formSubmissionTime));
     console.log(this.pollInfo.users.includes(this.user.email));
-    // if(this.currentTime-this.formSubmissionTime>86400000){
-    // form is invalid - refresh page?
-    // alert("Form has expired!");
-    // return;
-    // }
+    this.currentTime = new Date().getTime();
+    console.log("Subtraction:");
+    console.log(this.currentTime-this.formSubmissionTime)
+    if(this.currentTime-this.formSubmissionTime>86400000){
+      alert("Form has expired!");
+      return;
+    }
     this.message.pollInfo.users.push(this.user.email);
     this.message.pollInfo.responses[this.pollResponse].count++;
     // console.log(this.message);
