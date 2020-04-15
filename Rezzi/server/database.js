@@ -38,6 +38,9 @@ module.exports = {
 
 module.exports.addUser = function addUser(data) {
   return new Promise(function (resolve, reject) {
+    console.log(data.email);
+    data.email = data.email.toLowerCase();
+    console.log(data.email);
     dbstore.collection('users').doc(data.email).get().then(doc => {
       if (doc.exists && doc.data().verified == true) {
         //Do something about the error here
