@@ -47,6 +47,8 @@ module.exports.newMessage = function newMessage(socket, data) {
 }
 
 module.exports.updateMessage = function updateMessage(socket, data) {
+  console.log("DATA" + data);
+  console.log(data);
   let collectionpath = "";
   let docpath = "";
   // console.log("Data: ", data);
@@ -82,6 +84,7 @@ module.exports.updateMessage = function updateMessage(socket, data) {
 
     messages[id].reactions = reactions;
     messages[id].reported = reported;
+    messages[id].visible = data.message.visible;
     console.log(data.message);
     if(data.message.isPoll){
       messages[id].pollInfo = data.message.pollInfo;

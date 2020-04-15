@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ɵConsole } from '@angular/core';
 import {
   User,
   ReactionData,
@@ -68,6 +68,7 @@ export class MessageComponent implements OnInit {
   private isPoll: boolean;
   private pollInfo: PollInfo;
 
+  accountType: number;
   pollResponse;
   currentTime: number;
   formSubmissionTime: number;
@@ -132,7 +133,7 @@ export class MessageComponent implements OnInit {
     const minutes2 = min2 < 10 ? `0${min2}` : `${min2}`;
     const apm2 = hr > 11 ? 'PM' : 'AM';
     this.displayPollExpiration = `${day2}, ${month2} ${date2} at ${hours2}:${minutes2} ${apm2}`;
-    if (this.isPoll == true && (this.currentTime-this.formSubmissionTime>86400000)) {
+    if (this.isPoll == true && (this.currentTime - this.formSubmissionTime > 86400000)) {
       console.log("Made it here");
       const tempcount = 0;
       this.pollWinnerTotal = 0;
@@ -145,7 +146,7 @@ export class MessageComponent implements OnInit {
         }
         this.pollWinnerTotal += element.count;
       });
-      if(this.pollWinnerTotal==0){
+      if (this.pollWinnerTotal == 0) {
         this.pollWinnerName = "Nothing";
         this.pollWinnerCount = 0;
       }
@@ -196,6 +197,10 @@ export class MessageComponent implements OnInit {
     this.rezziService.getUserProfile().then(response => {
       this.currUserEmail = response.user.email;
     });
+
+    this.rezziService.getSession().then(session => {
+      this.accountType = session.accountType;
+    })
   }
 
   sendReaction(reaction) {
@@ -235,30 +240,65 @@ export class MessageComponent implements OnInit {
   }
 
   reportMessage() {
-    this.message.reported = true;
-    this.reported = true;
-    if (this.pm) {
-      const spmd: SocketPrivateMessageData = {
-        message: this.message,
-        sender: this.viewingUser.email,
-        recipient: this.pmUser
-      };
-      spmd.message.reported = this.reported;
-      this.messagesService.updateMessageThroughSocket(spmd);
-      this.pmReportId = this.currUserEmail.concat('-').concat(this.message.id);
-      this.ReportId = this.pmReportId;
-    } else {
-      const scmd: SocketChannelMessageData = {
-        message: this.message,
-        rezzi: this.rezzi,
-        channelID: this.channel
-      };
-      scmd.message.reported = this.reported;
-      this.messagesService.updateMessageThroughSocket(scmd);
-      this.ReportId = this.message.id;
+    if (this.accountType < 2) {
+      var retVal = confirm("Are you sure you want to remove this message? This cannot be undone");
+      if(retVal!=true){
+        console.log("HERE");
+        return;
+      }
+      if (this.pm) {
+        const spmd: SocketPrivateMessageData = {
+          message: this.message,
+          sender: this.viewingUser.email,
+          recipient: this.pmUser
+        };
+        spmd.message.visible = false;
+        this.messagesService.updateMessageThroughSocket(spmd);
+      } else {
+        const scmd: SocketChannelMessageData = {
+          message: this.message,
+          rezzi: this.rezzi,
+          channelID: this.channel
+        };
+        scmd.message.visible = false;
+        this.messagesService.updateMessageThroughSocket(scmd);
+      }
+      alert("The message has been removed.");
     }
-    alert('This message has been reported to the hall director!');
-    this.updateHallDirector(this.hdEmail, this.user.email);
+    else {
+      if(this.message.reported){
+        alert("This message has already been reported!");
+        return;
+      }
+      var retVal = confirm("Are you sure you want to report this message? This cannot be undone");
+      if(retVal!=true){
+        return;
+      }
+      this.message.reported = true;
+      this.reported = true;
+      if (this.pm) {
+        const spmd: SocketPrivateMessageData = {
+          message: this.message,
+          sender: this.viewingUser.email,
+          recipient: this.pmUser
+        };
+        spmd.message.reported = this.reported;
+        this.messagesService.updateMessageThroughSocket(spmd);
+        this.pmReportId = this.currUserEmail.concat('-').concat(this.message.id);
+        this.ReportId = this.pmReportId;
+      } else {
+        const scmd: SocketChannelMessageData = {
+          message: this.message,
+          rezzi: this.rezzi,
+          channelID: this.channel
+        };
+        scmd.message.reported = this.reported;
+        this.messagesService.updateMessageThroughSocket(scmd);
+        this.ReportId = this.message.id;
+      }
+      alert('This message has been reported to the hall director!');
+      this.updateHallDirector(this.hdEmail, this.user.email);
+    }
   }
 
   updateHallDirector(hd, user) {
@@ -306,8 +346,8 @@ export class MessageComponent implements OnInit {
     console.log(this.pollInfo.users.includes(this.user.email));
     this.currentTime = new Date().getTime();
     console.log("Subtraction:");
-    console.log(this.currentTime-this.formSubmissionTime)
-    if(this.currentTime-this.formSubmissionTime>86400000){
+    console.log(this.currentTime - this.formSubmissionTime)
+    if (this.currentTime - this.formSubmissionTime > 86400000) {
       alert("Form has expired!");
       return;
     }
