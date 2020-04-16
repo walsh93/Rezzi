@@ -183,7 +183,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     this.channelNavBarService.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
   }
 
-<<<<<<< HEAD
  viewMembers(){
    this.currentChannelID = this.navChannel.channel;
    console.log('id:' + this.currentChannelID);
@@ -201,7 +200,6 @@ this.rezziService.getResidentsByChannel(this.currentChannelID).then(res => {
 
  }
 
-=======
   openPollDialog(): void {
     if (this.navTitle === 'Rezzi') {
       console.error('No channel selected');
@@ -234,7 +232,6 @@ this.rezziService.getResidentsByChannel(this.currentChannelID).then(res => {
 
 
   }
->>>>>>> 8016ab67280db9d1b76bd458c68bf22f7f2a5a50
 
 }
 
