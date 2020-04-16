@@ -15,6 +15,7 @@ router.get('/', checkCookie, function (request, response) {
   response.sendFile(indexFile)
 }).post('/', function (request, response) {
   const req = request.body
+  req.email = req.email.toLowerCase();
   db.collection(keys.users).where(keys.email, '==', req.email).get().then((snapshot) => {
     if (snapshot.empty) {
       response.status(http.bad_request).send(sign_in.email_error)

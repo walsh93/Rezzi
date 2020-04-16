@@ -17,6 +17,9 @@
         <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
       </table> -->
   <div class="interior">
+    <button mat-button (click)="openPollDialog()">Create Poll</button>
+  </div>
+  <div class="interior2">
     <span class="nav-title"> {{navTitle}} </span>
   </div>
   <!-- <div class="bs-example">
