@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy, HostBinding, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
 import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
 import { ChannelData, AbbreviatedUser, BotMessage } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, Observable, Subject } from 'rxjs';
+import { MemberMuteInfo } from 'src/app/classes.model';
 import { MessagesService } from '../messages/messages.service';
 import * as c from '../interface.constants';
 
@@ -41,7 +42,8 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     private currentChannelID: string;
     private viewingUpdateSub: Subscription;
     @Input() viewingObs: Observable<string>;
-    Members: String[];
+    private channelMuteMap = new Map<string, Map<string, MemberMuteInfo>>();
+    members: MatTableDataSource<MemberMuteInfo>;
 
   // Session data retrieved from interface.component
   session: any;
@@ -102,6 +104,8 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       this.session = updatedSession;
     });
 
+    console.log("chan:" + this.navChannel);
+
     // Listen for user updates
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
       this.abbrevUser = updatedUser;
@@ -113,15 +117,19 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     });
 
     this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
+      console.log("updated: " + updatedChannelID);
       if (updatedChannelID !== this.currentChannelID) {
         this.currentChannelID = updatedChannelID;
       }
+      console.log("curr: " + this.currentChannelID);
+
     });
   }
 
   ngOnDestroy() {
     this.sessionUpdateSub.unsubscribe();
     this.userUpdateSub.unsubscribe();
+    this.viewingUpdateSub.unsubscribe();
   }
 
   openLeaveDialog(): void {
@@ -171,22 +179,18 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   }
 
  viewMembers(){
+   this.currentChannelID = this.navChannel.channel;
+   console.log('id:' + this.currentChannelID);
 this.rezziService.getResidentsByChannel(this.currentChannelID).then(res => {
       if (res == null || res === undefined) {
+        console.log('BAD');
         return;
       } else if (res.msg != null && res.msg !== undefined) {
         console.log(res.msg);
       } else {
-        console.log(`Creating new Member map for ${this.currentChannelID}...`);
-        const infoList = res.infoList as MemberMuteInfo[];
-        const memMuteInfoMap = new Map<string, MemberMuteInfo>();
-        infoList.forEach(user => {
-          memMuteInfoMap.set(user.email, user);
-        });
-        this.channelMuteMap.set(this.currentChannelID, memMuteInfoMap);
-        this.members = new MatTableDataSource(Array.from(memMuteInfoMap.values()));
-        this.title = 'Members in this channel';
+      
       }
+    
     });
 
  }

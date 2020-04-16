@@ -1,24 +1,59 @@
 <mat-toolbar>
+  <!-- <table id="memberTable" class="mat-elevation-z8" mat-table [dataSource]="members">
+        
+        <ng-container matColumnDef="fnameCol">
+          <th mat-header-cell *matHeaderCellDef> First Name </th>
+          <td class="fnameColumn" mat-cell *matCellDef="let member">{{ member.firstName }}</td>
+        </ng-container>
+    
+     
+        <ng-container matColumnDef="lnameCol">
+          <th mat-header-cell *matHeaderCellDef> Last Name </th>
+          <td class="lnameColumn" mat-cell *matCellDef="let member">{{ member.lastName }}</td>
+        </ng-container>
+  
+      
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+      </table> -->
   <div class="interior">
     <span class="nav-title"> {{navTitle}} </span>
   </div>
-
-    <br>
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <!-- <mat-panel-title> --> <!-- </mat-panel-title> -->
-           <mat-panel-description>
-        <!-- <button mat-icon-button (click)="viewMembers()"> -->
+  <!-- <div class="bs-example">
+    <div class="panel-group" [attr.id]="'accordion_' + i" *ngFor="let member of members; let i = index;">
+        <div class="panel panel-default" >
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" [attr.data-parent]="'#accordion_' + i" [attr.href]="'#collapseOne_' + i">{{ message.firstName }} {{ message.lastName }}</a>
+                </h4>
+            </div>
+            <div [attr.id]="'collapseOne_' + i" class="panel-collapse collapse in">
+                <div class="panel-body">
+                   {{ members.firstName }} {{members.lastName}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+    <br> 
+    <button mat-icon-button (click)="viewMembers()">
     <mat-icon id="viewMembers"  aria-hidden="false" aria-label="View members"
       matTooltip="View members">people_alt</mat-icon>
-  <!-- </button> -->
+  </button>
+  <!-- <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>  </mat-panel-title>
+           <mat-panel-description>
+       
         
               </mat-panel-description>
       </mat-expansion-panel-header>
       <p>Members here</p>
+      
+     
     </mat-expansion-panel>
-  </mat-accordion>
+  </mat-accordion> -->
   <div class="menu-button">
     <button mat-button [disabled]="channelMenuDisabled" [matMenuTriggerFor]="channelMenu">⋮</button>
 
