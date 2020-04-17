@@ -169,7 +169,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     }
 
     const dialogRef = this.dialog2.open(PollingComponent, {
-      width: '600px',
+      width: 'auto',
       height: 'auto',
       data: {
         channel: this.navChannel,
