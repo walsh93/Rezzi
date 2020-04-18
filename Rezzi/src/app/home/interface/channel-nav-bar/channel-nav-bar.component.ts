@@ -109,7 +109,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       this.session = updatedSession;
     });
 
-    console.log("chan:" + this.navChannel);
 
     // Listen for user updates
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
@@ -122,11 +121,9 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     });
 
     this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
-      console.log("updated: " + updatedChannelID);
       if (updatedChannelID !== this.currentChannelID) {
         this.currentChannelID = updatedChannelID;
       }
-      console.log("curr: " + this.currentChannelID);
 
     });
   }
@@ -179,26 +176,40 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     this.channelNavBarService.updateInterfaceView(c.VIEW_MUTE_MEMBERS);
   }
 
+  goToViewMembersScreen() {
+    this.channelNavBarService.updateInterfaceView(c.VIEW_VIEW_MEMBERS);
+  }
+
   goToChannelMessagesScreen() {
     this.channelNavBarService.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
   }
 
- viewMembers(){
-   this.currentChannelID = this.navChannel.channel;
-   console.log('id:' + this.currentChannelID);
-this.rezziService.getResidentsByChannel(this.currentChannelID).then(res => {
-      if (res == null || res === undefined) {
-        console.log('BAD');
-        return;
-      } else if (res.msg != null && res.msg !== undefined) {
-        console.log(res.msg);
-      } else {
+//  viewMembers(){
+//   //  this.currentChannelID = this.navChannel.channel + '-' + this.navTitle;
+//    console.log('id:' + this.currentChannelID);
+// this.rezziService.getResidentsByChannel(this.currentChannelID).then(res => {
+//       if (res == null || res === undefined) {
+//         console.log('BAD');
+//         return;
+//       } else if (res.msg != null && res.msg !== undefined) {
+//         console.log(res.msg);
+//       } else {
+//         console.log(`Creating new Member map for ${this.currentChannelID}...`);
+//         const infoList = res.infoList;
+//         console.log('infolist: ' + res.infoList)
+//         const memMuteInfoMap = new Map<string, MemberMuteInfo>();
+//         infoList.forEach(user => {
+//           memMuteInfoMap.set(user.email, user);
+//         });
+//         this.channelMuteMap.set(this.currentChannelID, memMuteInfoMap);
+//         this.members = new MatTableDataSource(Array.from(memMuteInfoMap.values()));      
+//        console.log('members: '+ this.members);
       
-      }
+//       }
     
-    });
+//     });
 
- }
+//  }
 
   openPollDialog(): void {
     if (this.navTitle === 'Rezzi') {

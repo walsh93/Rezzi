@@ -1,0 +1,43 @@
+#tableContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 75px;
+    width: 85%;
+  }
+  
+  h1 {
+    margin: 25px 0;
+  }
+  
+  p {
+    margin-bottom: 25px;
+  }
+  
+  #filterButtonContainer {
+    align-self: flex-end;
+  }
+  
+  #memberTable {
+    width: -webkit-fill-available;
+  }
+  
+  .mat-row {
+    height: auto;
+  }
+  
+  .mat-cell {
+    padding: 20px 20px 20px 0;
+  }
+  
+  /* Make sure column widths add up to 100% */
+  .fnameColumn, .lnameColumn, .emailColumn {
+    width: 30%;
+  }
+  
+  .buttonColumn {
+    width: 10%;
+  }
+  
+  

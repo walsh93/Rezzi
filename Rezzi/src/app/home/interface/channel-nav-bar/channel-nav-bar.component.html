@@ -38,11 +38,11 @@
         </div>
     </div>
 </div> -->
-    <br> 
+    <!-- <br> 
     <button mat-icon-button (click)="viewMembers()">
     <mat-icon id="viewMembers"  aria-hidden="false" aria-label="View members"
       matTooltip="View members">people_alt</mat-icon>
-  </button>
+  </button> -->
   <!-- <mat-accordion>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -64,6 +64,7 @@
       <div *ngIf="!muteButtonDisabled">
         <button mat-menu-item (click)="goToChannelMessagesScreen()">View Channel</button>
         <button mat-menu-item (click)="goToMuteMembersScreen()">Mute Members</button>
+        <button mat-menu-item (click)="goToViewMembersScreen()">View Members</button>
         <mat-divider></mat-divider>
       </div>
       <button mat-menu-item [disabled]="leaveButtonDisabled" (click)="openLeaveDialog()">Leave Channel</button>

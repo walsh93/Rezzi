@@ -117,6 +117,7 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
 import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
+import { ViewMembersComponent } from './home/interface/view-members/view-members.component';
 
 @NgModule({
   declarations: [
@@ -174,6 +175,7 @@ import { PollingComponent } from './home/interface/channel-nav-bar/polling/polli
     MuteMembersComponent,
     MoveUsersComponent,
     PollingComponent,
+    ViewMembersComponent,
   ],
   imports: [
     BrowserModule,
