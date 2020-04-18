@@ -64,21 +64,17 @@ export class ViewMembersComponent implements OnInit {
     }
 
     if (this.channelMuteMap.has(this.currentChannelID)) {
-      console.log(`Pulling saved Member Mute Info map for ${this.currentChannelID}...`);
       const storedMap = this.channelMuteMap.get(this.currentChannelID);
       this.members = new MatTableDataSource(Array.from(storedMap.values()));
       this.title = 'Members in this channel';
       return;
     }
 this.rezziService.getResidentsByChannelNonAdmin(this.currentChannelID).then(res => {
-      console.log('HERE');
       if (res == null || res === undefined) {
-        console.log('HERE :(');
         return;
       } else if (res.msg != null && res.msg !== undefined) {
         console.log(res.msg);
       } else {
-        console.log(`Creating new View Member Info map for ${this.currentChannelID}...`);
         const infoList = res.infoList as MemberMuteInfo[];
         const memInfoMap = new Map<string, MemberMuteInfo>();
         infoList.forEach(user => {
