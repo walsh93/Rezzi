@@ -70,8 +70,7 @@ export class ViewMembersComponent implements OnInit {
       this.title = 'Members in this channel';
       return;
     }
-
-    this.rezziService.getResidentsByChannel(this.currentChannelID).then(res => {
+this.rezziService.getResidentsByChannelNonAdmin(this.currentChannelID).then(res => {
       console.log('HERE');
       if (res == null || res === undefined) {
         console.log('HERE :(');

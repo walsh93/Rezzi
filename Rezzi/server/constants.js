@@ -22,6 +22,7 @@ module.exports = {
     get_deletion_requests: "/getDeletionRequests",
     get_res_by_floor: "/get-residents-by-floor",
     get_res_by_channel: "/get-residents-by-channel",
+    get_res_by_channel_non_admin: "/get-residents-by-channel-non-admin",
     update_canpost: "/update-can-post",
     update_ismuted: "/update-is-muted",
   },

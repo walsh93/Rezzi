@@ -148,6 +148,13 @@ export class RezziService {
       console.log(error);
     });
   }
+  getResidentsByChannelNonAdmin(channelID: string): Promise<any> {
+    return this.http.get(`/get-residents-by-channel-non-admin/${channelID}`).toPromise().then((response) => {
+      return response;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 
   getDeletionRequests(): Promise<any> {
     return this.http.get('/getDeletionRequests').toPromise().then((deletionList) => {
