@@ -20,13 +20,11 @@ router.get('/', checkCookie, function (request, response) {
   let name = '';
 
   db.collection(keys.users).doc(email).get().then(doc => {
-    console.log("userss: " + doc.data().email);
     if (doc.exists) {
       user = doc.data().email;
       name = doc.data().email;
 
     }
-    console.log('user:' + user + " " + name);
 
   })
 

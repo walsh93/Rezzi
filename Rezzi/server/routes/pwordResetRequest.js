@@ -20,7 +20,6 @@ router.get('/', checkCookie, function(request, response) {
     //Source: CS408 Project https://github.com/walsh93/Callback
     let responseText = "";
     const rb = request.body
-    console.log(rb)
 
     db.collection('users').doc(rb.email).get().then(doc => {
         if(!doc.exists){

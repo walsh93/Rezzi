@@ -14,7 +14,6 @@ router.get('/', checkCookie, function(request, response) {
   response.sendFile(indexFile)
 }).post('/api/sign-up',(request,response,next) => {
   const rb = request.body
-  //console.log(rb);
   // firebase.addUser(rb);
   firebase.addUser(rb).then(function(result){
     if(result==501){

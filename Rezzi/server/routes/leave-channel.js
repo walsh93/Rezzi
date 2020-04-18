@@ -15,7 +15,6 @@ router.get('/', checkCookie, function(request, response) {
   const email = request.__session.email;
   const rezzi = request.__session.rezzi;
   const channelID = req.channel_id
-  console.log(req);
 
   // Promise array
   let promises = []

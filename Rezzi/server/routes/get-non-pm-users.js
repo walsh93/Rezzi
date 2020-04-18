@@ -7,7 +7,6 @@ const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 const keys = require('../constants').db_keys
 
 router.get('/', checkCookie, function (request, response) {
-  console.log("get-non-pm-users.js");
   const req = request.body;
   const email = request.__session.email;
   const rezzi = request.__session.rezzi;
@@ -34,31 +33,12 @@ router.get('/', checkCookie, function (request, response) {
         if(doc.id != email){
         users.push(doc.id);
         }
-        //console.log(doc.id, '=>', doc.data())
       })
-      console.log("PMUSERS",pmusers)
-      console.log("USERS",users);
       users = users.filter(function(val) {
         return pmusers.indexOf(val) == -1;
       })
-      console.log("PMUSERS",pmusers)
-      console.log("USERS",users);
       response.status(200).json(users);
     })
-  /*
-db.collection(keys.users).doc(email).collection(keys.private_messages).get()
-.then(snapshot => {
-  snapshot.forEach(doc =>{
-    temp = {};
-    temp.recipient = doc.id;
-    temp.messages = doc.data();
-    privateMessagesData[i] = temp;
-    i++;
-    //console.log(doc.id, "=>", doc.data(), "i:",i)
-  })
-  //console.log("PLZ WORK:", privateMessagesData);
-  response.status(200).json(privateMessagesData);
-})*/
 })
 
 module.exports = router;

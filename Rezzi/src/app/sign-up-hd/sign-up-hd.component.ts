@@ -20,7 +20,6 @@ export class SignUpHdComponent implements OnInit {
     if (form.invalid){
       return;
     }
-    console.log(form);
     const newHDUser = new HDUser (
       form.value.firstName,
       form.value.lastName,
@@ -30,7 +29,6 @@ export class SignUpHdComponent implements OnInit {
       [],
       [],
     );
-    console.log(newHDUser);
 
     this.addUser(newHDUser);
                // check that email doesn't exist in database

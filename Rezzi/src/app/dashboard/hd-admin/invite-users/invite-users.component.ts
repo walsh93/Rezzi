@@ -55,8 +55,7 @@ export class InviteUsersComponent implements OnInit {
       return;
     }
     const emailList = form.value.RAEmails;
-    console.log(emailList);
-    console.log(this.selectedRaFloor);
+    console.log("List of RAs invited on " + this.selectedRaFloor + " ", emailList,)
 
     // make array of channels that user will be added to
     const channelList = ['hallwide-General', 'floors-' + this.selectedRaFloor + '-General', 'RA-General'];
@@ -77,7 +76,6 @@ export class InviteUsersComponent implements OnInit {
       return;
     }
     const emailList = form.value.residentEmails;
-    console.log(emailList);
 
     // make array of channels that user will be added to
     const channelList = ['hallwide-General', 'floors-' + this.selectedResFloor + '-General'];

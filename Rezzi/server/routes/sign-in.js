@@ -21,13 +21,12 @@ router.get('/', checkCookie, function (request, response) {
       response.status(http.bad_request).send(sign_in.email_error)
     } else if (snapshot.docs.length == 1) {
       const data = snapshot.docs[0].data()
-      //console.log(data)
       if (req.password.length < 20 || (pass.validPassword(req.password, data.password)) || ((data.verified == false || data.tempPword == true) && data.password == req.password)) { //check to see if password is valid        //TODOCONLEY ^ REMOVE THAT OTHERWISE ANYONE CAN LOG INTO AN ACCOUNT
         // TODOCONLEY ^ remove that for live environment
         // Set session cookie before sending the response
         // TODO add other fields that need to be saved in the session
-        console.log(data.tempPword)
-        console.log(`THE USER'S ACCOUNT TYPE IS ${data.accountType}`)
+        // console.log(data.tempPword)
+        console.log(req.email + "'s account type is " + data.accountType);
         request.__session = {
           email: req.email,
           verified: data.verified,

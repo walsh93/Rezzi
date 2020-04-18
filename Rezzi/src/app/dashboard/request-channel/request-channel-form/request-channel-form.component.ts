@@ -102,7 +102,7 @@ export class RequestChannelFormComponent implements OnInit {
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
-        console.log(res);
+        console.log("Res information: " + res + "\n request-channel-form")
         alert((res as any).msg);
         this.router.navigate(['/home']);  // TODO change this to route to channel?
       } else {

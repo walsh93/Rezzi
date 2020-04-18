@@ -18,7 +18,6 @@ export class CreatePmComponent implements OnInit {
     private rezziService: RezziService,
     private http: HttpClient) {
     this.users = data;
-    console.log("here", data)
   }
 
   onNoClick(): void {

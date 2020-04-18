@@ -242,8 +242,7 @@ export class EditProfileFormComponent implements OnInit {
 
       this.rezziService.getHDEmail().then(response => {
         this.hd = response.hd;
-        // console.log("hall director:" + response.hd);
-        if ((this.theUser.deletionRequest = 1)) {
+        if ((this.theUser.deletionRequest = 1)) { // @Katarina: is this supposed to be ==?
           // console.log("it is 1!!");
         }
       });

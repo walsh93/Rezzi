@@ -86,8 +86,6 @@ export class MessageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // console.log(this.time);
-    // console.log("Message: ", this.message);
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
     this.avatar = this.message.owner.image_url;
@@ -118,8 +116,6 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
-    // console.log(this.displayTime);
-    // this.displayTime = String(dateAgain);
     this.currentTime = new Date().getTime();
     this.formSubmissionTime = new Date(this.message.time).getTime(); // .getTime();
     this.pollExpireTime = new Date(this.message.time);
@@ -134,12 +130,9 @@ export class MessageComponent implements OnInit {
     const apm2 = hr > 11 ? 'PM' : 'AM';
     this.displayPollExpiration = `${day2}, ${month2} ${date2} at ${hours2}:${minutes2} ${apm2}`;
     if (this.isPoll == true && (this.currentTime - this.formSubmissionTime > 86400000)) {
-      console.log("Made it here");
       const tempcount = 0;
       this.pollWinnerTotal = 0;
       this.message.pollInfo.responses.forEach(element => {
-        console.log(element);
-        console.log("Made it hereee");
         if (element.count > tempcount) {
           this.pollWinnerName = element.content;
           this.pollWinnerCount = element.count;
@@ -180,7 +173,6 @@ export class MessageComponent implements OnInit {
      * noticable to the user...
      */
     if (this.updateScrolling) {
-      console.log('Need scrolling update...');
       const chanMsgs = document.getElementById('channelMessages');
       if (chanMsgs != null) {
         chanMsgs.scrollTop = chanMsgs.scrollHeight;
@@ -242,8 +234,7 @@ export class MessageComponent implements OnInit {
   reportMessage() {
     if (this.accountType < 2) {
       var retVal = confirm("Are you sure you want to remove this message? This cannot be undone");
-      if(retVal!=true){
-        console.log("HERE");
+      if(retVal!=true){ // retVal != true if they hit cancel.
         return;
       }
       if (this.pm) {
@@ -302,7 +293,6 @@ export class MessageComponent implements OnInit {
   }
 
   updateHallDirector(hd, user) {
-    // console.log("updatehd"+ hd);
     this.rezziService.findUserByEmail(hd, user).then(response => {
       this.theHD = new HDUser(
         response.hd.firstName,
@@ -339,21 +329,13 @@ export class MessageComponent implements OnInit {
   //  formSubmissionTime = new Date(this.message.time).getTime();
 
   formResponse(index) {
-    // console.log("this.message.time"+this.message.time);
-    console.log(this.currentTime);
-    console.log(this.formSubmissionTime);
-    // console.log("Time diff"+(this.currentTime-this.formSubmissionTime));
-    console.log(this.pollInfo.users.includes(this.user.email));
     this.currentTime = new Date().getTime();
-    console.log("Subtraction:");
-    console.log(this.currentTime - this.formSubmissionTime)
     if (this.currentTime - this.formSubmissionTime > 86400000) {
       alert("Form has expired!");
       return;
     }
     this.message.pollInfo.users.push(this.user.email);
     this.message.pollInfo.responses[this.pollResponse].count++;
-    // console.log(this.message);
     const scmd: SocketChannelMessageData = {
       message: this.message,
       rezzi: this.rezzi,

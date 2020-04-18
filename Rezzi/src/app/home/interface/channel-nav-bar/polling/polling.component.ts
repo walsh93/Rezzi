@@ -91,12 +91,10 @@ export class PollingComponent implements OnInit {
     let newform: PollResponses[] = [];
 
     if (form.value.response2 == null || form.value.response2 == undefined) {
-      console.log("2 items");
       newform.push(response0);
       newform.push(response1);
     }
     else if (form.value.response3 == null || form.value.response3 == undefined) {
-      console.log("3 items");
       let response2: PollResponses = {
         count: 0,
         content: form.value.response2
@@ -106,7 +104,6 @@ export class PollingComponent implements OnInit {
       newform.push(response2);
     }
     else {
-      console.log("4 items");
       let response2: PollResponses = {
         count: 0,
         content: form.value.response2
