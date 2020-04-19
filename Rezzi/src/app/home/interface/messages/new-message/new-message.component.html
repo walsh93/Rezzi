@@ -1,5 +1,5 @@
 <!-- <p>new-message works!</p> -->
-<div class="bottombar">
+<div class="bottombar" [hidden]="isHidden">
   <mat-card color="primary" class="box">
     <div class="box">
       <mat-chip-list *ngIf="image !== null" #chipList>

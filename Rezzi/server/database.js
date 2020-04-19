@@ -38,6 +38,9 @@ module.exports = {
 
 module.exports.addUser = function addUser(data) {
   return new Promise(function (resolve, reject) {
+    console.log(data.email);
+    data.email = data.email.toLowerCase();
+    console.log(data.email);
     dbstore.collection('users').doc(data.email).get().then(doc => {
       if (doc.exists && doc.data().verified == true) {
         //Do something about the error here
@@ -46,6 +49,7 @@ module.exports.addUser = function addUser(data) {
       } else if (doc.exists) {
         data.oldpassword = data.password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
         data.password = pass.generateHash(data.password);
+        data.canPost = true;
         dbstore.collection('users').doc(data.email).update(data)
         resolve(201)
       } else {

@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>New Poll</h2>
+<div mat-dialog-content>
+  Create a poll with at least 2 responses
+</div>
+
+<form  #createPollForm="ngForm">
+  <mat-form-field>
+    <mat-label>Poll Question</mat-label>
+    <input matInput type="text" placeholder="Type your question..." ngModel name="question" pattern='^[^\-]+$' required>
+    <mat-error>Please enter a valid question (no dashes)</mat-error>
+  </mat-form-field>
+  <mat-tab-group >
+    <!-- Responses -->
+    <mat-tab label="Responses">
+      <mat-accordion>
+        <div *ngFor="let response of responses">
+          <mat-form-field>
+            <input matInput type="text" placeholder="Response" ngModel name="response{{response.id}}" pattern="^(?!\s*$).+" required>
+            <mat-error>Please enter a valid response</mat-error>
+          </mat-form-field>
+        </div>
+        <button *ngIf="responses.length > 2" mat-icon-button (click)="deleteResponse()">Delete Response</button>
+
+      </mat-accordion>
+      <div *ngIf="responses.length != 4">
+        <button mat-icon-button (click)="addResponse()">
+          <mat-icon>control_point</mat-icon>
+        </button>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+  <button mat-button type="submit" (click)="createPoll(createPollForm)" >Create Poll</button>
+
+</form>

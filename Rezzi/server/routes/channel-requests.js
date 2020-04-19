@@ -20,7 +20,8 @@ router.post('/', function(request, response) {
     // Update channel approval status and add RA as a member
     promises.push(channelDocRef.update({
       approvalStatus: true,
-      members: admin.firestore.FieldValue.arrayUnion(raEmail)
+      members: admin.firestore.FieldValue.arrayUnion(raEmail),
+      memberMuteStatuses: admin.firestore.FieldValue.arrayUnion({ email: raEmail, isMuted: false }),
     }))
 
     // Add channel to RA's list of channels

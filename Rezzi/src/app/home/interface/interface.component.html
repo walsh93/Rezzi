@@ -16,16 +16,30 @@
     <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
       ≡
     </button>
+    <app-mute-members
+      [isHiddenObs]="viewMuteMemSubj.asObservable()"
+      [viewingObs]="viewingUpdateSubject.asObservable()"
+    ></app-mute-members>
+    <app-view-members
+      [isHiddenObs]="viewViewMemSubj.asObservable()"
+      [viewingObs]="viewingUpdateSubject.asObservable()"
+    ></app-view-members>
     <app-channel-messages
+      [isHiddenObs]="viewChanMesSubj.asObservable()"
+      [isMutedObs]="hideNewMsgSubj.asObservable()"
       [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       [channelsUpdateEvent]="channelsUpdateSubject.asObservable()"
       [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
       [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
+      [canPostUpdateEvent]="canPostUpdate.asObservable()"
     ></app-channel-messages>
-    <app-new-message
+    <app-new-message id="newMessageBar"
+      [isHiddenObs]="viewChanMesSubj.asObservable()"
+      [isMutedObs]="hideNewMsgSubj.asObservable()"
       [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
       [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
       [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
+      [canPostUpdateEvent]="canPostUpdate.asObservable()"
     ></app-new-message>
   </div>
 </mat-drawer-container>

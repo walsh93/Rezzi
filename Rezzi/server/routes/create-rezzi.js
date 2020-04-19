@@ -45,6 +45,7 @@ router.post('/', checkCookie, function(request, response) {
             description: '',
             calendar: [],
             members: [],
+            memberMuteStatuses: [],
             messages: [],
             // default: channel.default
           }))
@@ -63,6 +64,7 @@ router.post('/', checkCookie, function(request, response) {
             description: '',
             calendar: [],
             members: [],
+            memberMuteStatuses: [],
             messages: [],
             // default: channel.default
           }))
@@ -77,6 +79,7 @@ router.post('/', checkCookie, function(request, response) {
             description: '',
             calendar: [],
             members: [],
+            memberMuteStatuses: [],
             messages: [],
             // default: channel.default
           }))

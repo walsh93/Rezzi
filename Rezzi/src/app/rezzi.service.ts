@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -123,7 +123,40 @@ export class RezziService {
     });
   }
 
-  getDeletionRequests(): Promise<any>{
+  /**
+   * Get residents from the specified floor.
+   * @param floor - the floor to fetch. If all floors (the entire Rezzi) is wanted, `floors` should be `null`.
+   */
+  getResidentsByFloor(floor: string): Promise<any> {
+    let url: string = null;
+    if (floor == null || floor === undefined) {
+      url = '/get-residents-by-floor';
+    } else {
+      url = `/get-residents-by-floor/${floor}`;
+    }
+    return this.http.get(url).toPromise().then((response) => {
+      return response;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  getResidentsByChannel(channelID: string): Promise<any> {
+    return this.http.get(`/get-residents-by-channel/${channelID}`).toPromise().then((response) => {
+      return response;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+  getResidentsByChannelNonAdmin(channelID: string): Promise<any> {
+    return this.http.get(`/get-residents-by-channel-non-admin/${channelID}`).toPromise().then((response) => {
+      return response;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  getDeletionRequests(): Promise<any> {
     return this.http.get('/getDeletionRequests').toPromise().then((deletionList) => {
       console.log(deletionList);
       return deletionList;

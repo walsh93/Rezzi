@@ -111,6 +111,19 @@ export interface Message {
   reactions: ReactionData;
   reported: boolean;
   image: string;
+  isPoll: boolean;
+  pollInfo: PollInfo;
+}
+
+export interface PollInfo {
+  responses: PollResponses[];
+  question: string;
+  users: string[];
+}
+
+export interface PollResponses {
+  count: number;
+  content: string;
 }
 
 export enum BotMessage {
@@ -160,6 +173,7 @@ export interface ChannelData {
   channel: string;
   users: number;
   belongs: boolean;
+  isMuted: boolean;
   subchannels: ChannelData[];
   messages: Message[];
 }
@@ -169,4 +183,25 @@ export interface PrivateMessageData {
   messages: Message[];
 }
 
-export const IMAGE_BASE_URL = "https://us-central1-rezzi-33137.cloudfunctions.net";
+export interface ResidentPrivilegeInfo {
+  email: string;
+  firstName: string;
+  lastName: string;
+  floor: string;
+  accountType: number;
+  canPost: boolean;
+}
+
+export interface MemberMuteInfo {
+  email: string;
+  firstName: string;
+  lastName: string;
+  isMuted: boolean;
+}
+
+export interface ChannelMemberData {
+  email: string;
+  isMuted: boolean;
+}
+
+export const IMAGE_BASE_URL = 'https://us-central1-rezzi-33137.cloudfunctions.net';

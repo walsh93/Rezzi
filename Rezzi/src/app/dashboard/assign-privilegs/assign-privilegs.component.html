@@ -1,0 +1,58 @@
+<div id="tableContainer">
+  <h1>{{ title }}</h1>
+  <p>{{ message }}</p>
+
+  <!-- Floor filter menu -->
+  <div id="filterButtonContainer" *ngIf="accountType==0">
+    <button mat-button [matMenuTriggerFor]="floorMenu">Filter</button>
+    <mat-menu #floorMenu="matMenu" xPosition="before">
+      <button mat-menu-item *ngFor="let floor of floors" (click)="filterByFloor(floor)">{{ floor }}</button>
+    </mat-menu>
+  </div>
+
+  <table id="residentTable" class="mat-elevation-z8" mat-table [dataSource]="residents">
+    <!-- First Name column-->
+    <ng-container matColumnDef="fnameCol">
+      <th mat-header-cell *matHeaderCellDef> First Name </th>
+      <td class="fnameColumn" mat-cell *matCellDef="let resident">{{ resident.firstName }}</td>
+    </ng-container>
+
+    <!-- Last name column-->
+    <ng-container matColumnDef="lnameCol">
+      <th mat-header-cell *matHeaderCellDef> Last Name </th>
+      <td class="lnameColumn" mat-cell *matCellDef="let resident">{{ resident.lastName }}</td>
+    </ng-container>
+
+    <!-- Email column -->
+    <ng-container matColumnDef="emailCol">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td class="emailColumn" mat-cell *matCellDef="let resident">{{ resident.email }}</td>
+    </ng-container>
+
+    <!-- Account type column -->
+    <ng-container matColumnDef="actTypeCol">
+      <th mat-header-cell *matHeaderCellDef> User type </th>
+      <td class="accountColumn" mat-cell *matCellDef="let resident">
+        <div *ngIf="resident.accountType==1">RA</div>
+        <div *ngIf="resident.accountType==2">Resident</div>
+      </td>
+    </ng-container>
+
+    <!-- Button column -->
+    <ng-container matColumnDef="buttonCol">
+      <th mat-header-cell *matHeaderCellDef> Privileges </th>
+      <td class="buttonColumn" mat-cell *matCellDef="let resident">
+        <div *ngIf="resident.canPost;else cantPost">
+          <button mat-raised-button color="accent" (click)="setPrivileges(resident.email, 'false')">Revoke</button>
+        </div>
+        <ng-template #cantPost>
+          <button mat-raised-button (click)="setPrivileges(resident.email, 'true')">Grant</button>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <!-- ROW INFO-->
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+  </table>
+</div>

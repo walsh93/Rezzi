@@ -27,7 +27,9 @@ import {
   MatDividerModule,
   MatProgressSpinnerModule,
   MatChipsModule,
+  MatRadioModule,
  } from '@angular/material';
+
 
 // Firebase Imports
 import { AngularFireModule } from '@angular/fire';
@@ -54,23 +56,23 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 // Dashboard Components
 import { DashboardComponent } from './dashboard/dashboard.component';
-
 import { EditProfileComponent } from './dashboard/edit-profile/edit-profile.component';
 import { EditProfileFormComponent } from './dashboard/edit-profile/edit-profile-form/edit-profile-form.component';
 
 import { HdAdminComponent } from './dashboard/hd-admin/hd-admin.component';
+import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-rezzi.component';
+import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
+import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
+import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
+import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
+import { AssignPrivilegsComponent } from './dashboard/assign-privilegs/assign-privilegs.component';
+import { MoveUsersComponent } from './dashboard/hd-admin/move-users/move-users.component';
 
 import { RaAdminComponent } from './dashboard/ra-admin/ra-admin.component';
 import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
 import { RaChannelRequestsComponent } from './dashboard/ra-admin/ra-channel-requests/ra-channel-requests.component';
 import { RequestChannelComponent } from './dashboard/request-channel/request-channel.component';
 import { RequestChannelFormComponent } from './dashboard/request-channel/request-channel-form/request-channel-form.component';
-
-import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-rezzi.component';
-import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
-import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
-import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
-import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
 
 import { PmInterfaceComponent } from './dashboard/pm-interface/pm-interface.component';
 import { PmSidePanelComponent } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.component';
@@ -88,7 +90,11 @@ import { JoinChannelComponent } from './home/interface/side-panel/join-channel/j
 import { ChannelMessagesComponent } from './home/interface/messages/channel-messages/channel-messages.component';
 import { NewMessageComponent } from './home/interface/messages/new-message/new-message.component';
 
-import { ChannelNavBarComponent, LeaveChannelDialog, DeleteChannelDialog } from './home/interface/channel-nav-bar/channel-nav-bar.component';
+import {
+  ChannelNavBarComponent,
+  LeaveChannelDialog,
+  DeleteChannelDialog
+} from './home/interface/channel-nav-bar/channel-nav-bar.component';
 import { MessageComponent } from './home/interface/messages/message/message.component';
 import { ImageModalComponent } from './home/interface/messages/new-message/image-modal/image-modal.component';
 
@@ -100,9 +106,9 @@ import { ErrorComponent } from './error/error.component';
 import { CreateChannelFormComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/create-channel-form.component';
 
 // Reset password components
-import { PwordresetRequestComponent } from './pwordreset-request/pwordreset-request.component';
-import { PwordresetSentComponent } from './pwordreset-sent/pwordreset-sent.component';
-import { PwordresetChangeComponent } from './pwordreset-change/pwordreset-change.component';
+import { PwordresetRequestComponent } from './pwordreset/pwordreset-request/pwordreset-request.component';
+import { PwordresetSentComponent } from './pwordreset/pwordreset-sent/pwordreset-sent.component';
+import { PwordresetChangeComponent } from './pwordreset/pwordreset-change/pwordreset-change.component';
 import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/member-input/member-input.component';
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
@@ -110,6 +116,9 @@ import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 import { ProfileComponent } from './profile/profile.component';
+import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
+import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
+import { ViewMembersComponent } from './home/interface/view-members/view-members.component';
 
 @NgModule({
   declarations: [
@@ -164,6 +173,11 @@ import { ProfileComponent } from './profile/profile.component';
     ImageModalComponent,
     BotMessageComponent,
     ProfileComponent,
+    AssignPrivilegsComponent,
+    MuteMembersComponent,
+    MoveUsersComponent,
+    PollingComponent,
+    ViewMembersComponent,
   ],
   imports: [
     BrowserModule,
@@ -200,13 +214,15 @@ import { ProfileComponent } from './profile/profile.component';
     MatDividerModule,
     MatProgressSpinnerModule,
     MatChipsModule,
+    MatRadioModule
   ],
   entryComponents: [
     JoinChannelComponent,
     CreatePmComponent,
     LeaveChannelDialog,
     DeleteChannelDialog,
-    ImageModalComponent
+    ImageModalComponent,
+    PollingComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

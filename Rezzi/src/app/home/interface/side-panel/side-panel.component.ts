@@ -55,6 +55,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
               channel,
               users: data[hall][channel].users,
               belongs: data[hall][channel].belongs,
+              isMuted: data[hall][channel].isMuted,
               subchannels: [],
               messages: data[hall][channel].messages
             });
@@ -69,6 +70,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
                 channel,
                 users: data[hall][channel].users,
                 belongs: data[hall][channel].belongs,
+                isMuted: data[hall][channel].isMuted,
                 subchannels: [],
                 messages: data[hall][channel].messages
               });
@@ -83,6 +85,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
             channel: name,
             users: -1,
             belongs: tempBelongs,
+            isMuted: false,
             subchannels: tempChannels,
             messages: []  // TODO does this temp thing have messages at any point???
           };

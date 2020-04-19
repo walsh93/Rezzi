@@ -4,7 +4,6 @@ import { Subscription, Observable, range } from 'rxjs';
 import { Message, AbbreviatedUser } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ChannelData } from '../../../../classes.model';
-import { User } from '../../../../classes.model';
 
 @Component({
   selector: 'app-channel-messages',
@@ -15,6 +14,10 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   messages: Message[] = [];
   private messagesSub: Subscription;
   private channelMap: Map<string, ChannelData>;
+
+  isHidden = false;  // By default, want to show channel messages and new-message component
+  private isHiddenSubsc: Subscription;
+  @Input() isHiddenObs: Observable<boolean>;
 
   amViewingNewChannel = false;
   needToUpdateScroll = false;
@@ -45,6 +48,14 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEvent') viewingObs: Observable<string>;
 
+  // This user's ability to post in channels from interface.component
+  private canPost = true;
+  private canPostUpdateSub: Subscription;
+  // tslint:disable-next-line: no-input-rename
+  @Input('canPostUpdateEvent') canPostObs: Observable<boolean>;
+  private isMutedUpdateSub: Subscription;
+  @Input() isMutedObs: Observable<boolean>;
+
   constructor(public messagesService: MessagesService) {
     this.session = null;
     this.currentChannel = null;
@@ -55,6 +66,11 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // If testing messages/message view with `ng serve`
     // this.initializeTestData();
+
+    // Listen for whether or not to view this in the interface or some other component
+    this.isHiddenSubsc = this.isHiddenObs.subscribe((viewNow) => {
+      this.isHidden = !viewNow;
+    });
 
     // Listen for user updates
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
@@ -90,6 +106,28 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
       }
     });
 
+    // Listen for changes in user's 'canPost' tag and change the channel messages height accordingly
+    /**
+     * Header navbar height = 64px (mat-tool-bar default)
+     * Channel navbar height = 64px (mat-tool-bar default)
+     * app-new-message height = 90px (declared in new-message.component.css)
+     */
+    this.canPostUpdateSub = this.canPostObs.subscribe((canPost) => {
+      this.canPost = canPost;
+    });
+
+    this.isMutedUpdateSub = this.isMutedObs.subscribe((isMuted) => {
+      if (this.canPost) {
+        if (isMuted) {
+          document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';  // account for removed msg bar
+        } else {
+          document.getElementById('channelMessages').style.height = 'calc(100vh - 218px)';  // account for msg bar
+        }
+      } else {
+        document.getElementById('channelMessages').style.height = 'calc(100vh - 128px)';  // account for removed msg bar
+      }
+    });
+
     // TODO What is the opening channel view? Do we need to call this.messagesService.emitNewChannelView on opening?
 
     // Listen for updated message list
@@ -103,10 +141,14 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.isHiddenSubsc.unsubscribe();
+    this.userUpdateSub.unsubscribe();
     this.sessionUpdateSub.unsubscribe();
     this.channelUpdateSub.unsubscribe();
     this.messagesSub.unsubscribe(); // useful when changing channels
     this.viewingUpdateSub.unsubscribe();
+    this.canPostUpdateSub.unsubscribe();
+    this.isMutedUpdateSub.unsubscribe();
   }
 
   /*initializeTestData() {

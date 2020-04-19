@@ -1,12 +1,16 @@
 import { Component, OnInit, OnDestroy, HostBinding, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
 import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
-import { ChannelData, AbbreviatedUser, BotMessage } from 'src/app/classes.model';
+import { ChannelData, AbbreviatedUser, BotMessage, Message, SocketChannelMessageData } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
+import { MemberMuteInfo } from 'src/app/classes.model';
 import { MessagesService } from '../messages/messages.service';
+import { PollingComponent } from './polling/polling.component';
+import * as c from '../interface.constants';
+
 
 export interface DialogData {
   channel: ChannelData;
@@ -30,10 +34,18 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 
   // All buttons are disabled until permissions are checked on init
   channelMenuDisabled = true;
+  muteButtonDisabled = true;
   leaveButtonDisabled = true;
   deleteButtonDisabled = true;
 
   private userName: string;
+
+  //view Members
+    private currentChannelID: string;
+    private viewingUpdateSub: Subscription;
+    @Input() viewingObs: Observable<string>;
+    private channelMuteMap = new Map<string, Map<string, MemberMuteInfo>>();
+    members: MatTableDataSource<MemberMuteInfo>;
 
   // Session data retrieved from interface.component
   session: any;
@@ -48,9 +60,12 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   constructor(private rezziService: RezziService,
-              private router: Router,
-              private channelNavBarService: ChannelNavBarService,
-              public dialog: MatDialog) {}
+    private router: Router,
+    private channelNavBarService: ChannelNavBarService,
+    public dialog: MatDialog,
+    public dialog2: MatDialog,
+    public messagesService: MessagesService,
+  ) { }
 
   checkPermissions() {
     if (this.navTitle !== 'Rezzi') {                              // Channel not selected
@@ -67,6 +82,9 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       this.deleteButtonDisabled = false;
     } else {
       this.deleteButtonDisabled = true;
+    }
+    if (this.accountType === 0 || this.accountType === 1) {       // Must be admin to mute members in a channel
+      this.muteButtonDisabled = false;
     }
   }
 
@@ -91,6 +109,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       this.session = updatedSession;
     });
 
+
     // Listen for user updates
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
       this.abbrevUser = updatedUser;
@@ -100,11 +119,19 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
         this.userName = this.abbrevUser.nickName;
       }
     });
+
+    this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
+      if (updatedChannelID !== this.currentChannelID) {
+        this.currentChannelID = updatedChannelID;
+      }
+
+    });
   }
 
   ngOnDestroy() {
     this.sessionUpdateSub.unsubscribe();
     this.userUpdateSub.unsubscribe();
+    this.viewingUpdateSub.unsubscribe();
   }
 
   openLeaveDialog(): void {
@@ -141,6 +168,56 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     });
   }
 
+
+  /**
+   * Functions to trigger navbar service, and then the interface subscription
+   */
+  goToMuteMembersScreen() {
+    this.channelNavBarService.updateInterfaceView(c.VIEW_MUTE_MEMBERS);
+  }
+
+  goToViewMembersScreen() {
+    this.channelNavBarService.updateInterfaceView(c.VIEW_VIEW_MEMBERS);
+  }
+
+  goToChannelMessagesScreen() {
+    this.channelNavBarService.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
+  }
+
+  openPollDialog(): void {
+    alert("You must select a channel to create a poll!");
+    if (this.navTitle === 'Rezzi') {
+      console.error('No channel selected');
+      return;
+    }
+
+    const dialogRef = this.dialog2.open(PollingComponent, {
+      width: 'auto',
+      height: 'auto',
+      data: {
+        channel: this.navChannel,
+        rezzi: this.session.rezzi,
+        userName: this.userName,
+      }
+    });
+
+    dialogRef.componentInstance.create_poll.subscribe((message: Message) => {
+      console.log("made it here in cnb.ts");
+      message.owner = this.abbrevUser;
+      console.log(message);
+      console.log(this.navChannel.id);
+      console.log(this.navChannel.channel);
+      const scmd: SocketChannelMessageData = {
+        message,
+        rezzi: this.session.rezzi,
+        channelID: this.navChannel.id
+      }
+      this.messagesService.sendMessageThroughSocket(scmd);
+    });
+
+
+  }
+
 }
 
 /*  Leave Channel Dialog Component */
@@ -156,12 +233,12 @@ export class LeaveChannelDialog implements OnInit {
   status: boolean;
 
   constructor(public leaveDialogRef: MatDialogRef<LeaveChannelDialog>,
-              private channelNavBarService: ChannelNavBarService,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private http: HttpClient,
-              private messagesService: MessagesService) {
-      this.rezzi = data.rezzi;
-      this.userName = data.userName;
+    private channelNavBarService: ChannelNavBarService,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private http: HttpClient,
+    private messagesService: MessagesService) {
+    this.rezzi = data.rezzi;
+    this.userName = data.userName;
   }
 
   ngOnInit() {
@@ -178,7 +255,7 @@ export class LeaveChannelDialog implements OnInit {
   onConfirmClick(channel: ChannelData): void {
     console.log('user wants to leave ' + channel.channel);
     console.log('leaving channel id ' + channel.id);
-    this.http.post<{notification: string}>('/leave-channel', {channel_id: channel.id}).subscribe(responseData => {
+    this.http.post<{ notification: string }>('/leave-channel', { channel_id: channel.id }).subscribe(responseData => {
       console.log(responseData.notification);
     });
 
@@ -203,12 +280,12 @@ export class DeleteChannelDialog implements OnInit {
   status: boolean;
 
   constructor(public deleteDialogRef: MatDialogRef<DeleteChannelDialog>,
-              private channelNavBarService: ChannelNavBarService,
-              @Inject(MAT_DIALOG_DATA) public data: DialogData,
-              private http: HttpClient,
-              private messagesService: MessagesService) {
-      this.rezzi = data.rezzi;
-      this.userName = data.userName;
+    private channelNavBarService: ChannelNavBarService,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private http: HttpClient,
+    private messagesService: MessagesService) {
+    this.rezzi = data.rezzi;
+    this.userName = data.userName;
   }
 
   ngOnInit() {
@@ -225,7 +302,7 @@ export class DeleteChannelDialog implements OnInit {
     console.log('user wants to delete ' + channel.channel);
     console.log('deleting channel id ' + channel.id);
     const level = channel.id.split('-')[0];
-    this.http.post<{notification: string}>('/delete-channel', {channel, channel_level: level}).subscribe(responseData => {
+    this.http.post<{ notification: string }>('/delete-channel', { channel, channel_level: level }).subscribe(responseData => {
       console.log(responseData.notification);
     });
 

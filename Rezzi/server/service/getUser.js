@@ -10,6 +10,10 @@ router.get('/', checkCookie, function (request, response) {
   db.collection('users').doc(request.__session.email).get().then((doc) => {
     const data = doc.data()
     console.log(data)
+    let canPost = data.canPost
+    if (canPost == null || canPost === undefined) {
+      canPost = true
+    }
 
     const user = {
       firstName: data.firstName,
@@ -24,6 +28,7 @@ router.get('/', checkCookie, function (request, response) {
       rezzi: data.rezzi,
       floor: data.floor,  // For request-channel
       image_url: data.image_url,
+      canPost: canPost,
     }
     response.status(http.ok).json({ user: user })  // will be accessed as data_from_backend in prev code blocks
   }).catch((error) => {

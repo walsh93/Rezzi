@@ -20,6 +20,11 @@ module.exports = {
     getResidents: "/getResidents",
     private_messages: "/private-messages",
     get_deletion_requests: "/getDeletionRequests",
+    get_res_by_floor: "/get-residents-by-floor",
+    get_res_by_channel: "/get-residents-by-channel",
+    get_res_by_channel_non_admin: "/get-residents-by-channel-non-admin",
+    update_canpost: "/update-can-post",
+    update_ismuted: "/update-is-muted",
   },
 
   // Firebase constants
@@ -57,6 +62,7 @@ module.exports = {
     user_management: "/user-management",
     hd_notifications: "/hd-notifications",
     deleteUser: "/deleteUser",
+    move_user: "/move-user",
     resend_email: "/resend-email",
     error: {
       page: "/err",

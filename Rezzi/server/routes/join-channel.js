@@ -16,26 +16,32 @@ router.get('/', checkCookie, function(request, response) {
   const req = request.body;
   const email = request.__session.email;
   const rezzi = request.__session.rezzi;
+  const channelID = req.channel_id
   console.log(req);
 
   // Add channel from user's channel list
   db.collection(keys.users).doc(email).update({
-    channels: admin.firestore.FieldValue.arrayUnion(req.channel_id)
+    channels: admin.firestore.FieldValue.arrayUnion(channelID)
   });
 
   // Add user to channel's member list
-  if (req.channel_id.indexOf("floors") !== -1) {
-    db.collection(keys.rezzis + '/' + rezzi + '/floors/' + req.channel_id.split('-')[1] + '/channels')
-      .doc(req.channel_id.split('-')[2])
-      .update({
-        members: admin.firestore.FieldValue.arrayUnion(email)
+  if (channelID.indexOf("floors") !== -1) {
+    const firstDash = channelID.indexOf('-')
+    const secondDash = channelID.indexOf('-', firstDash + 1)
+    const floorName = channelID.substring(firstDash + 1, secondDash)
+    const channelName = channelID.substring(secondDash + 1)
+    const prefix = `${keys.rezzis}/${rezzi}/floors/${floorName}/channels`
+    db.collection(prefix).doc(channelName).update({
+      members: admin.firestore.FieldValue.arrayUnion(email),
+      memberMuteStatuses: admin.firestore.FieldValue.arrayUnion({ email: email, isMuted: false }),
     })
-  }
-  else {
-    db.collection(keys.rezzis + '/' + rezzi + '/' + req.channel_id.split('-')[0])
-      .doc(req.channel_id.split('-')[1])
-      .update({
-        members: admin.firestore.FieldValue.arrayUnion(email)
+  } else {
+    const firstDash = channelID.indexOf('-')  // The "only" dash in a hallwide channel ID
+    const channelName = channelID.substring(firstDash + 1)
+    const prefix = `${keys.rezzis}/${rezzi}/${req.channel_id.split('-')[0]}`
+    db.collection(prefix).doc(channelName).update({
+      members: admin.firestore.FieldValue.arrayUnion(email),
+      memberMuteStatuses: admin.firestore.FieldValue.arrayUnion({ email: email, isMuted: false }),
     })
   }
   response.status(http.ok)

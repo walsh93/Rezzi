@@ -47,6 +47,8 @@ module.exports.newMessage = function newMessage(socket, data) {
 }
 
 module.exports.updateMessage = function updateMessage(socket, data) {
+  console.log("DATA" + data);
+  console.log(data);
   let collectionpath = "";
   let docpath = "";
   // console.log("Data: ", data);
@@ -82,6 +84,11 @@ module.exports.updateMessage = function updateMessage(socket, data) {
 
     messages[id].reactions = reactions;
     messages[id].reported = reported;
+    messages[id].visible = data.message.visible;
+    console.log(data.message);
+    if(data.message.isPoll){
+      messages[id].pollInfo = data.message.pollInfo;
+    }
 
     db.collection(collectionpath).doc(docpath).update({
       messages: messages
@@ -236,7 +243,7 @@ function processMessageContent(data) {
           '<div style="position: relative; width=100%; height: 0; padding-bottom: 56.45%">' +
           '<iframe ' +
               'style="position: absolute; top: 0; bottom: 0; width: 100%; height: 100%;" ' +
-              'width="420" height="315" allowfullscreen frameborder="0" ' + 
+              'width="420" height="315" allowfullscreen frameborder="0" ' +
               'src="https://www.youtube.com/embed/' + video_id + '">' +
           '</iframe></div>';
         resolve(data);
