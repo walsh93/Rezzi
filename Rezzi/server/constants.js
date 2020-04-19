@@ -8,6 +8,7 @@ module.exports = {
     get_user_by_email: "/get-user-by-email",
     get_floors: "/get-floors",
     get_user: "/get-user",
+    get_profile: "/get-profile",
     get_hd: "/get-hd",
     update_account_type: "/update-account-type",
     update_hd: "/update-hd",
