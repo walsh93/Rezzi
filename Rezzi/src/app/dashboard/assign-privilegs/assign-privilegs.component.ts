@@ -13,6 +13,7 @@ import { ResidentPrivilegeInfo } from 'src/app/classes.model';
 export class AssignPrivilegsComponent implements OnInit {
 
   private RESET_FILTER = 'Reset filter';
+  private currentFloorFilter = 'Reset filter';
   accountType: number;
   title = 'Fetching residents...';
   message = 'Modify user posting privileges across all channels';
@@ -72,7 +73,7 @@ export class AssignPrivilegsComponent implements OnInit {
         const privInfo = this.resPrivInfoMap.get(email);
         privInfo.canPost = (tf === 'true');
         this.resPrivInfoMap.set(email, privInfo);
-        this.residents = new MatTableDataSource(Array.from(this.resPrivInfoMap.values()));
+        this.filterByFloor(this.currentFloorFilter);
       } else {
         console.log('update unsuccessful');  // TODO change to mat-dialog
       }
@@ -87,6 +88,7 @@ export class AssignPrivilegsComponent implements OnInit {
   }
 
   filterByFloor(floor: string) {
+    this.currentFloorFilter = floor;
     if (floor === this.RESET_FILTER) {
       this.residents = new MatTableDataSource(Array.from(this.resPrivInfoMap.values()));
     } else {
