@@ -163,8 +163,8 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   }
 
   openPollDialog(): void {
-    alert("You must select a channel to create a poll!");
     if (this.navTitle === 'Rezzi') {
+      alert("You must select a channel to create a poll!");
       console.error('No channel selected');
       return;
     }
