@@ -22,9 +22,6 @@ router.get('/', checkCookie, function(request, response) {
   let email = request.query.hd;
   let msg = request.query.msg;
 
-  // for (const key in request.query) {
-  //   console.log(key, request.query[key])
-  // }
 
   firebase.updateHDArrayRPT(rb, email,msg);
   response.status(201).json({

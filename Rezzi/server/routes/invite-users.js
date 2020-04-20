@@ -13,12 +13,16 @@ const c = require("../constants");
 const randomstring = require("randomstring");
 const nodemailer = require("nodemailer");
 
-router.get("/", checkCookie, function(request, response) {
+router.get("/", checkCookie, function (request, response) {
   response.sendFile(indexFile);
-}).post("/", function(request, response) {
-  console.log(request.body);
+}).post("/", function (request, response) {
   const rb = request.body;
-  const emailarr = rb.emailList.split(",");
+  var emailListTemp = rb.emailList.replace(/\s/g,'')
+  var emailarrtemp = emailListTemp.split(",");
+  var emailarr = [];
+  for (var i = 0; i < emailarrtemp.length; i++) {
+    emailarr.push(emailarrtemp[i].toLowerCase());
+  }
 
   //Get the current time
   var time = Date().toString()
@@ -119,7 +123,7 @@ router.get("/", checkCookie, function(request, response) {
     rezziDocRef.get().then((rezziDoc) => {
 
       //if user is RA, add to RA list
-      if(rb.accountType == 1){
+      if (rb.accountType == 1) {
         const listofRAs = rezziDoc.data().RA_list
         const fullArray = listofRAs.concat(emailarr)
         rezziDocRef.update({
@@ -127,7 +131,7 @@ router.get("/", checkCookie, function(request, response) {
         })
 
       }
-      else if(rb.accountType == 2){
+      else if (rb.accountType == 2) {
         const listofResidents = rezziDoc.data().resident_list
         const fullArray = listofResidents.concat(emailarr)
         rezziDocRef.update({
@@ -139,7 +143,6 @@ router.get("/", checkCookie, function(request, response) {
     for (var i = 0; i < emailarr.length; i++) {
       var tempPword = randomstring.generate();
       var currentEmail = emailarr[i];
-      console.log(rb.floor);
 
       db.collection(keys.users).doc(currentEmail.trim()).set({
         email: currentEmail.trim(),
@@ -171,7 +174,7 @@ router.get("/", checkCookie, function(request, response) {
           "Have fun connecting with your friends in " + rezzi + " this year!"
       };
 
-      smtpTransport.sendMail(mailOptions, function(error, res) {
+      smtpTransport.sendMail(mailOptions, function (error, res) {
         if (error) {
           console.log(`There was an error sending email to ${currentEmail}`)
         } else {

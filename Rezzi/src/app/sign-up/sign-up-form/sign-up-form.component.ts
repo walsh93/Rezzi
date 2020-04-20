@@ -52,22 +52,9 @@ export class SignUpFormComponent implements OnInit {
       //document.getElementById("profile-picture").setAttribute("src", user.image_url);
     }
 
-
-    console.log(user);
-
     this.addUser(user);
-    /*
-    console.log(this.newUser);
-    // check that email doesn't exist in database
 
-    if (this.newUser.password !== this.newUser.confirmPassword) {
-       alert('Your passwords do not match');
-    } else {
-      this.userCreatedHD.emit(this.newUser);
-       // create account
-       // send data to backend
-       // account created successfully
-    }*/
+
   }
 
   addUser(user: User) {

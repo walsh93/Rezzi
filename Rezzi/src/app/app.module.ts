@@ -115,8 +115,10 @@ import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-n
 import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
+import { ProfileComponent } from './profile/profile.component';
 import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
 import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
+import { ViewMembersComponent } from './home/interface/view-members/view-members.component';
 
 @NgModule({
   declarations: [
@@ -170,10 +172,12 @@ import { PollingComponent } from './home/interface/channel-nav-bar/polling/polli
     DeleteChannelDialog,
     ImageModalComponent,
     BotMessageComponent,
+    ProfileComponent,
     AssignPrivilegsComponent,
     MuteMembersComponent,
     MoveUsersComponent,
     PollingComponent,
+    ViewMembersComponent,
   ],
   imports: [
     BrowserModule,

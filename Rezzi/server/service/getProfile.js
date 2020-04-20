@@ -1,3 +1,5 @@
+/* This is different from getUser, which returns the current user of a session */
+
 const express = require('express')
 const router = express.Router()
 const admin = require('firebase-admin')
@@ -7,12 +9,12 @@ const http = require('../constants').http_status;
 const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 
 router.get('/', checkCookie, function (request, response) {
-  db.collection('users').doc(request.__session.email).get().then((doc) => {
+  /* TODO check that user is within same rezzi */
+
+  const profile = request.query.profile
+
+  db.collection('users').doc(profile).get().then((doc) => {
     const data = doc.data()
-    let canPost = data.canPost
-    if (canPost == null || canPost === undefined) {
-      canPost = true
-    }
 
     const user = {
       firstName: data.firstName,
@@ -25,14 +27,14 @@ router.get('/', checkCookie, function (request, response) {
       deletionRequest: data.deletionRequest,
       email: data.email,
       rezzi: data.rezzi,
-      floor: data.floor,  // For request-channel
-      imageUrl: data.image_url,
+      floor: data.floor,
       image_url: data.image_url,
-      canPost: canPost,
+      verified: data.verified
     }
+
     response.status(http.ok).json({ user: user })  // will be accessed as data_from_backend in prev code blocks
   }).catch((error) => {
-    console.log('Error getting documents', error)
+    console.log('Error getting user', error)
     response.status(http.conflict).json(null)
   })
 });

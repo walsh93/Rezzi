@@ -12,7 +12,6 @@ router.get('/', checkCookie, function(request, response) {
   response.sendFile(indexFile)
 }).post('/', function(request, response) {
   const req = request.body
-  console.log(req)
 
   db.collection(keys.users).doc(request.__session.email).get().then((doc) => {
     const data = doc.data()

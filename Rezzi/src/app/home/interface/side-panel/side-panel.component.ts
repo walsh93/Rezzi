@@ -61,7 +61,7 @@ export class SidePanelComponent implements OnInit, OnDestroy {
       if (this.status === true) {
         this.refreshSidePanel();
         this.cnbSrv.changeChannelUpdateStatus(false);
-        console.log('Redirecting to ' + this.channelRedirect.id);
+        console.log('Redirecting to ' + this.channelRedirect.id + 'in side-panel.component.ts');
         this.viewChannel(this.channelRedirect, this.channelRedirectLevel);
       }
     });

@@ -134,54 +134,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     }
   }
 
-  /*initializeTestData() {
-    const owner1 = new AbbreviatedUser('email1@purdue.edu', 'Lucky', 'McStruessel', 'Shrimpy');
-    const owner2 = new AbbreviatedUser('email2@purdue.edu', 'Doc', 'Goodman', 'Sean the Sheep');
-    const m1: Message = {
-      owner: owner1,
-      content: 'Testing 1-2-3',
-      time: new Date('2020-01-26'),
-      visible: true,
-      reactions: {
-        thumb_up: ["aa"],
-        thumb_down: ["aa", "aaaa"],
-        sentiment_very_satisfied: ["aaaa}", "aaaa"],
-        sentiment_dissatisfied: [],
-        whatshot: ["a", "b", "c", "d", "e"]
-      }
-      id: null
-    };
-    const m2: Message = {
-      owner: owner2,
-      content: 'you\'re on your own, kiddo',
-      time: new Date('2020-02-14'),
-      visible: true,
-      reactions: {
-        thumb_up: ["aa"],
-        thumb_down: ["aa", "aaaa"],
-        sentiment_very_satisfied: ["aaaa}", "aaaa"],
-        sentiment_dissatisfied: [],
-        whatshot: ["a", "b", "c", "d", "e"]
-      }
-    };
-    const m3: Message = {
-      owner: owner1,
-      content: 'frickin rip',
-      time: new Date('2020-03-05'),
-      visible: true,
-      reactions: {
-        thumb_up: ["aa"],
-        thumb_down: ["aa", "aaaa"],
-        sentiment_very_satisfied: ["conleyutz@gmail.com", "aaaa"],
-        sentiment_dissatisfied: [],
-        whatshot: ["a", "b", "c", "d", "e"]
-      }
-    };
-    this.messages.push(m1);
-    this.messages.push(m2);
-    this.messages.push(m3);
-  }*/
-
   ngOnDestroy() {
     this.nodeSessionSubsc.unsubscribe();
     this.userProfileAbrSubsc.unsubscribe();

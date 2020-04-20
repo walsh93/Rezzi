@@ -16,12 +16,16 @@ import { PwordresetChangeComponent } from './pwordreset/pwordreset-change/pwordr
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
 import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
+import { RequestChannelComponent } from './dashboard/request-channel/request-channel.component';
+import { RaChannelRequestsComponent } from './dashboard/ra-admin/ra-channel-requests/ra-channel-requests.component';
+import { ProfileComponent } from './profile/profile.component';
 
 // Routes
 const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'sign-up-hd', component: SignUpHdComponent },
   { path: 'sign-in', component: SignInComponent },
+  { path: 'profile', component: ProfileComponent }, // this is temporary so it's easier to access the page. Probably remove later
   { path: 'home', component: HomeComponent },
   { path: 'invite-users', component: InviteUsersComponent },
   { path: 'user-management', component: UserManagementComponent},

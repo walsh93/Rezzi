@@ -43,9 +43,6 @@ router.get('/', checkCookie, function (request, response) {
     let email = request.query.hd;
     let user = request.query.user;
 
-    // for (const key in request.query) {
-    //   console.log(key, request.query[key])
-    // }
 
     firebase.updateHDArray(rb, email,user);
     response.status(201).json({

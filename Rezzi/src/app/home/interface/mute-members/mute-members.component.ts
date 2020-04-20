@@ -37,13 +37,11 @@ export class MuteMembersComponent implements OnInit, OnDestroy {
 
   private initializeInterfaceViewListener() {
     this.interfaceViewSubsc = this.cnbSrv.getInterfaceViewListener().subscribe(newView => {
-      if (newView === c.VIEW_CHANNEL_MESSAGES) {
-        this.isHidden = true;
-      } else if (newView === c.VIEW_MUTE_MEMBERS) {
+      if (newView === c.VIEW_MUTE_MEMBERS) {
         this.isHidden = false;
         this.updateResidentsTableData();
       } else {
-        console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
+        this.isHidden = true;
       }
     });
   }

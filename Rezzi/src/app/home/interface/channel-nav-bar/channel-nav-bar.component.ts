@@ -146,11 +146,16 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     });
   }
 
+
   /**
    * Functions to trigger navbar service, and then the interface subscription
    */
   goToMuteMembersScreen() {
     this.cnbSrv.updateInterfaceView(c.VIEW_MUTE_MEMBERS);
+  }
+
+  goToViewMembersScreen() {
+    this.cnbSrv.updateInterfaceView(c.VIEW_VIEW_MEMBERS);
   }
 
   goToChannelMessagesScreen() {
@@ -164,12 +169,13 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 
   openPollDialog(): void {
     if (this.navTitle === 'Rezzi') {
+      alert('You must select a channel to create a poll!');
       console.error('No channel selected');
       return;
     }
 
     const dialogRef = this.dialog2.open(PollingComponent, {
-      width: '600px',
+      width: 'auto',
       height: 'auto',
       data: {
         channel: this.navChannel,

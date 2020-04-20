@@ -12,8 +12,6 @@ import { RezziService } from 'src/app/rezzi.service';
 import { MessagesService } from '../messages.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { MatRadioButton } from '@angular/material';
-import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -55,6 +53,7 @@ export class MessageComponent implements OnInit {
   private isPoll: boolean;
   private pollInfo: PollInfo;
 
+  accountType: number;
   pollResponse;
   currentTime: number;
   formSubmissionTime: number;
@@ -102,8 +101,6 @@ export class MessageComponent implements OnInit {
     const minutes = min < 10 ? `0${min}` : `${min}`;
     const apm = hr > 11 ? 'PM' : 'AM';
     this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
-    // console.log(this.displayTime);
-    // this.displayTime = String(dateAgain);
     this.currentTime = new Date().getTime();
     this.formSubmissionTime = new Date(this.message.time).getTime(); // .getTime();
     this.pollExpireTime = new Date(this.message.time);
@@ -118,12 +115,9 @@ export class MessageComponent implements OnInit {
     const apm2 = hr > 11 ? 'PM' : 'AM';
     this.displayPollExpiration = `${day2}, ${month2} ${date2} at ${hours2}:${minutes2} ${apm2}`;
     if (this.isPoll === true && (this.currentTime - this.formSubmissionTime > 86400000)) {
-      console.log('Made it here');
       const tempcount = 0;
       this.pollWinnerTotal = 0;
       this.message.pollInfo.responses.forEach(element => {
-        console.log(element);
-        console.log('Made it hereee');
         if (element.count > tempcount) {
           this.pollWinnerName = element.content;
           this.pollWinnerCount = element.count;
@@ -164,7 +158,6 @@ export class MessageComponent implements OnInit {
      * noticable to the user...
      */
     if (this.updateScrolling) {
-      console.log('Need scrolling update...');
       const chanMsgs = document.getElementById('channelMessages');
       if (chanMsgs != null) {
         chanMsgs.scrollTop = chanMsgs.scrollHeight;
@@ -180,6 +173,10 @@ export class MessageComponent implements OnInit {
 
     this.rezziService.getUserProfile().then(response => {
       this.currUserEmail = response.user.email;
+    });
+
+    this.rezziService.getSession().then(session => {
+      this.accountType = session.accountType;
     });
   }
 
@@ -220,30 +217,63 @@ export class MessageComponent implements OnInit {
   }
 
   reportMessage() {
-    this.message.reported = true;
-    this.reported = true;
-    if (this.pm) {
-      const spmd: SocketPrivateMessageData = {
-        message: this.message,
-        sender: this.viewingUser.email,
-        recipient: this.pmUser
-      };
-      spmd.message.reported = this.reported;
-      this.messagesService.updateMessageThroughSocket(spmd);
-      this.pmReportId = this.currUserEmail.concat('-').concat(this.message.id);
-      this.ReportId = this.pmReportId;
+    if (this.accountType < 2) {
+      const retVal = confirm('Are you sure you want to remove this message? This cannot be undone');
+      if (retVal !== true) { // retVal != true if they hit cancel.
+        return;
+      }
+      if (this.pm) {
+        const spmd: SocketPrivateMessageData = {
+          message: this.message,
+          sender: this.viewingUser.email,
+          recipient: this.pmUser
+        };
+        spmd.message.visible = false;
+        this.messagesService.updateMessageThroughSocket(spmd);
+      } else {
+        const scmd: SocketChannelMessageData = {
+          message: this.message,
+          rezzi: this.rezzi,
+          channelID: this.channel
+        };
+        scmd.message.visible = false;
+        this.messagesService.updateMessageThroughSocket(scmd);
+      }
+      alert('The message has been removed.');
     } else {
-      const scmd: SocketChannelMessageData = {
-        message: this.message,
-        rezzi: this.rezzi,
-        channelID: this.channel
-      };
-      scmd.message.reported = this.reported;
-      this.messagesService.updateMessageThroughSocket(scmd);
-      this.ReportId = this.message.id;
+      if (this.message.reported) {
+        alert('This message has already been reported!');
+        return;
+      }
+      const retVal = confirm('Are you sure you want to report this message? This cannot be undone');
+      if (retVal !== true) {
+        return;
+      }
+      this.message.reported = true;
+      this.reported = true;
+      if (this.pm) {
+        const spmd: SocketPrivateMessageData = {
+          message: this.message,
+          sender: this.viewingUser.email,
+          recipient: this.pmUser
+        };
+        spmd.message.reported = this.reported;
+        this.messagesService.updateMessageThroughSocket(spmd);
+        this.pmReportId = this.currUserEmail.concat('-').concat(this.message.id);
+        this.ReportId = this.pmReportId;
+      } else {
+        const scmd: SocketChannelMessageData = {
+          message: this.message,
+          rezzi: this.rezzi,
+          channelID: this.channel
+        };
+        scmd.message.reported = this.reported;
+        this.messagesService.updateMessageThroughSocket(scmd);
+        this.ReportId = this.message.id;
+      }
+      alert('This message has been reported to the hall director!');
+      this.updateHallDirector(this.hdEmail, this.userProfileAbr.email);
     }
-    alert('This message has been reported to the hall director!');
-    this.updateHallDirector(this.hdEmail, this.userProfileAbr.email);
   }
 
   updateHallDirector(hd, user) {
@@ -283,21 +313,13 @@ export class MessageComponent implements OnInit {
   //  formSubmissionTime = new Date(this.message.time).getTime();
 
   formResponse(index) {
-    // console.log("this.message.time"+this.message.time);
-    console.log(this.currentTime);
-    console.log(this.formSubmissionTime);
-    // console.log("Time diff"+(this.currentTime-this.formSubmissionTime));
-    console.log(this.pollInfo.users.includes(this.userProfileAbr.email));
     this.currentTime = new Date().getTime();
-    console.log('Subtraction:');
-    console.log(this.currentTime - this.formSubmissionTime);
     if (this.currentTime - this.formSubmissionTime > 86400000) {
       alert('Form has expired!');
       return;
     }
     this.message.pollInfo.users.push(this.userProfileAbr.email);
     this.message.pollInfo.responses[this.pollResponse].count++;
-    // console.log(this.message);
     const scmd: SocketChannelMessageData = {
       message: this.message,
       rezzi: this.rezzi,

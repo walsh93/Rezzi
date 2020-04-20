@@ -60,6 +60,8 @@ const getUser = require('./server/service/getUser')
 app.use(service.get_user, getUser)
 const getHD = require('./server/service/getHD')
 app.use(service.get_hd, getHD)
+const getProfile = require('./server/service/getProfile')
+app.use(service.get_profile, getProfile)
 const updateAccountType = require('./server/service/updateAccountType')
 app.use(service.update_account_type, updateAccountType)
 const updateHDArray = require('./server/service/updateHDArray')
@@ -86,6 +88,8 @@ const getResByFloor = require('./server/service/getResidentsByFloor')
 app.use(service.get_res_by_floor, getResByFloor)
 const getResByChannel = require('./server/service/getResidentsByChannel')
 app.use(service.get_res_by_channel, getResByChannel)
+const getResByChannelNonAdmin = require('./server/service/getResidentsByChannelNonAdmin')
+app.use(service.get_res_by_channel_non_admin, getResByChannelNonAdmin)
 const updateCanPost = require('./server/service/updateCanPost')
 app.use(service.update_canpost, updateCanPost)
 const updateIsMuted = require('./server/service/updateIsMuted')
@@ -190,7 +194,6 @@ app.use('/api/messages',(request,response,next) => {
 
 app.post('/api/sign-up',(request,response,next) => {
   const rb = request.body
-  console.log(rb);
   firebase.addUser(rb)
   response.status(201).json({
     notification: 'User may be signed up?'
@@ -198,11 +201,7 @@ app.post('/api/sign-up',(request,response,next) => {
   //add user here
 })
 
-// app.post('api/edit-profile', (request, response, next) => {
-//   const rb = request.body;
-//   console.log(rb);
-//   firebase.getUser();
-// })
+
 
 
 

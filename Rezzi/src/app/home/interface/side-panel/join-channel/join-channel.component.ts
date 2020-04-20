@@ -32,7 +32,6 @@ export class JoinChannelComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<JoinChannelComponent>, @Inject(MAT_DIALOG_DATA) public data,
               private http: HttpClient, private messagesService: MessagesService) {
 
-    console.log(data);
     this.channels = data.channels;
     this.nodeSession = data.session;
     this.userProfileAbr = data.user;
