@@ -1,0 +1,29 @@
+<div id="tableContainer" [hidden]="isHidden">
+    <h1>{{ title }}</h1>
+      
+    <table id="memberTable" class="mat-elevation-z8" mat-table [dataSource]="members">
+      <!-- First Name column-->
+      <ng-container matColumnDef="fnameCol">
+        <th mat-header-cell *matHeaderCellDef> First Name </th>
+        <td class="fnameColumn" mat-cell *matCellDef="let member">{{ member.firstName }}</td>
+      </ng-container>
+  
+      <!-- Last name column-->
+      <ng-container matColumnDef="lnameCol">
+        <th mat-header-cell *matHeaderCellDef> Last Name </th>
+        <td class="lnameColumn" mat-cell *matCellDef="let member">{{ member.lastName }}</td>
+      </ng-container>
+  
+      <!-- Email column -->
+      <ng-container matColumnDef="emailCol">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td class="emailColumn" mat-cell *matCellDef="let member">{{ member.email }}</td>
+      </ng-container>
+  
+  
+      <!-- ROW INFO-->
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+    </table>
+  </div>
+  

@@ -12,6 +12,7 @@
     <app-channel-nav-bar class="channelnavbar"
       [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
+      [viewingObs]="viewingUpdateSubject.asObservable()"
     ></app-channel-nav-bar>
     <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
       ≡
@@ -20,6 +21,10 @@
       [isHiddenObs]="viewMuteMemSubj.asObservable()"
       [viewingObs]="viewingUpdateSubject.asObservable()"
     ></app-mute-members>
+    <app-view-members
+      [isHiddenObs]="viewViewMemSubj.asObservable()"
+      [viewingObs]="viewingUpdateSubject.asObservable()"
+    ></app-view-members>
     <app-channel-messages
       [isHiddenObs]="viewChanMesSubj.asObservable()"
       [isMutedObs]="hideNewMsgSubj.asObservable()"

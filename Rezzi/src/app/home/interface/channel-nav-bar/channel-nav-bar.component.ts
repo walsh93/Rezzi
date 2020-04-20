@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy, HostBinding, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
 import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
 import { ChannelData, AbbreviatedUser, BotMessage, Message, SocketChannelMessageData } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 import { Subscription, Observable, Subject } from 'rxjs';
+import { MemberMuteInfo } from 'src/app/classes.model';
 import { MessagesService } from '../messages/messages.service';
 import { PollingComponent } from './polling/polling.component';
 import * as c from '../interface.constants';
@@ -38,6 +39,13 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   deleteButtonDisabled = true;
 
   private userName: string;
+
+  //view Members
+    private currentChannelID: string;
+    private viewingUpdateSub: Subscription;
+    @Input() viewingObs: Observable<string>;
+    private channelMuteMap = new Map<string, Map<string, MemberMuteInfo>>();
+    members: MatTableDataSource<MemberMuteInfo>;
 
   // Session data retrieved from interface.component
   session: any;
@@ -101,6 +109,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
       this.session = updatedSession;
     });
 
+
     // Listen for user updates
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
       this.abbrevUser = updatedUser;
@@ -110,11 +119,19 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
         this.userName = this.abbrevUser.nickName;
       }
     });
+
+    this.viewingUpdateSub = this.viewingObs.subscribe((updatedChannelID) => {
+      if (updatedChannelID !== this.currentChannelID) {
+        this.currentChannelID = updatedChannelID;
+      }
+
+    });
   }
 
   ngOnDestroy() {
     this.sessionUpdateSub.unsubscribe();
     this.userUpdateSub.unsubscribe();
+    this.viewingUpdateSub.unsubscribe();
   }
 
   openLeaveDialog(): void {
@@ -151,11 +168,16 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     });
   }
 
+
   /**
    * Functions to trigger navbar service, and then the interface subscription
    */
   goToMuteMembersScreen() {
     this.channelNavBarService.updateInterfaceView(c.VIEW_MUTE_MEMBERS);
+  }
+
+  goToViewMembersScreen() {
+    this.channelNavBarService.updateInterfaceView(c.VIEW_VIEW_MEMBERS);
   }
 
   goToChannelMessagesScreen() {
