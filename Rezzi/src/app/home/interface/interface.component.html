@@ -12,6 +12,7 @@
     <app-channel-nav-bar class="channelnavbar"
       [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
       [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"
+      [viewingObs]="viewingUpdateSubject.asObservable()"
     ></app-channel-nav-bar>
     <button class="hambutton" type="button" mat-button (click)="drawer.toggle()">
       ≡
