@@ -70,9 +70,33 @@
         <img *ngIf="image !== null" mat-card-image src="{{ image }}">
         <h2>Final Poll Results:</h2>
         <h3>{{pollInfo.question}}</h3>
-        <h4 *ngIf="pollWinnerCount!=0">{{pollWinnerName}} has won with {{pollWinnerCount}} out of the
+        <h4 *ngIf="pollWinnerCount!=0 && pollTieInfo.length==1">{{pollWinnerName}} has won with {{pollWinnerCount}} out
+          of the
           {{pollWinnerTotal}}
           votes!</h4>
+        <h4 *ngIf="pollWinnerCount!=0 && pollTieInfo.length!=1">
+          <span>
+            There has been a tie between <div *ngFor="let winner of pollTieInfo; let i = index"
+              style="display: inline-block;">
+              <div *ngIf="pollTieInfo.length>2">
+                <div *ngIf="i!=pollTieInfo.length-1">
+                  <div *ngIf="i!=pollTieInfo.length-2">
+                    {{winner}},&nbsp;
+                  </div>
+                  <div *ngIf="i==pollTieInfo.length-2">
+                    {{ winner }}, and&nbsp;
+                  </div>
+                </div>
+                <div *ngIf="i==pollTieInfo.length-1"> {{ winner }} </div>
+              </div>
+              <div *ngIf="pollTieInfo.length<=2">
+                <div *ngIf="i!=pollTieInfo.length-1"> {{ winner }} and&nbsp;</div>
+                <div *ngIf="i==pollTieInfo.length-1"> {{ winner }} </div>
+              </div>
+            </div> each having {{pollWinnerCount}} votes out
+            of the
+            {{pollWinnerTotal}}
+            votes!</span></h4>
         <h4 *ngIf="pollWinnerCount==0">No votes were cast, therefore there is no winner!</h4>
         <div *ngFor="let response of pollInfo.responses; let i = index">
           <div *ngIf="response.count>1">{{response.content}} has {{response.count}} votes!</div>

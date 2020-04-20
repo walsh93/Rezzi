@@ -67,6 +67,8 @@ export class MessageComponent implements OnInit {
   private avatar: string; // The avatar image, extracted from message
   private isPoll: boolean;
   private pollInfo: PollInfo;
+  private pollTie: boolean;
+  pollTieInfo: string[];
 
   accountType: number;
   pollResponse;
@@ -130,10 +132,20 @@ export class MessageComponent implements OnInit {
     const apm2 = hr > 11 ? 'PM' : 'AM';
     this.displayPollExpiration = `${day2}, ${month2} ${date2} at ${hours2}:${minutes2} ${apm2}`;
     if (this.isPoll == true && (this.currentTime - this.formSubmissionTime > 86400000)) {
-      const tempcount = 0;
+      let tempcount = 0;
       this.pollWinnerTotal = 0;
       this.message.pollInfo.responses.forEach(element => {
-        if (element.count > tempcount) {
+        if (element.count >= tempcount){
+          if(element.count==tempcount){
+            //push into array
+            this.pollTieInfo.push(element.content);
+          }
+          else{
+            //clear array
+            this.pollTieInfo = [];
+            this.pollTieInfo.push(element.content);
+          }
+          tempcount = element.count
           this.pollWinnerName = element.content;
           this.pollWinnerCount = element.count;
         }
