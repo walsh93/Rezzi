@@ -76,9 +76,13 @@ module.exports.editUser = function editUser(data, email) {
       //new password
       //run it through the hash
       //set password
+      if(data.password==undefined || data.password==null){
+        dbstore.collection('users').doc(email).update(data)
+      }
+      else{
       data.oldpassword = data.password; //TODO REMOVE THIS ON LIVE ENVIRONMENT
       data.password = pass.generateHash(data.password);
-      dbstore.collection('users').doc(email).update(data)
+    }
     }
   }).catch(err => {
     //reject(err)

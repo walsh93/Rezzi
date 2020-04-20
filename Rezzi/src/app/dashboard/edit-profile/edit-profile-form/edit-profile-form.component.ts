@@ -210,6 +210,19 @@ export class EditProfileFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.theUser = new User(
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    );
     this.rezziService.getSession().then(response => {
       if (response.email == null) {
         // not signed in
