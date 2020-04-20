@@ -32,7 +32,6 @@ export class EditProfileFormComponent implements OnInit {
       return;
     }
 
-    console.log(form);
     let userInfo = {
       firstName: form.value.firstName,
       lastName: form.value.lastName,
