@@ -1,6 +1,29 @@
 <div id="outer-component" class="container">
   <div id="inner-component">
-    <app-info-block></app-info-block>
+    <mat-horizontal-stepper [linear]="!isLinear" #stepper>
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel>Welcome!</ng-template>
+          <br>
+          <app-info-block></app-info-block>
+          <br>
+          <div>
+            <button  mat-stroked-button matStepperNext color="primary">Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="secondFormGroup">
+        <ng-template matStepLabel>Sign in</ng-template>
+        <br>
+        <app-sign-in-form></app-sign-in-form>
+        <br>
+        <div>
+          <button  mat-stroked-button matStepperPrevious color="primary">Back</button>
+          <button  mat-stroked-button matStepperNext color="primary">Next</button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+    <!-- <app-info-block></app-info-block> -->
 
     <!-- <div class="row">
       <div class="col-md component-column">
@@ -13,7 +36,9 @@
   </div>
 </div>
 
-  <!-- <div  layout="column" flex>
+
+
+<!-- <div  layout="column" flex>
     <div layout="row" flex>
       <div layout="column" flex="50">
         <app-info-block></app-info-block>

@@ -28,6 +28,8 @@ import {
   MatProgressSpinnerModule,
   MatChipsModule,
   MatRadioModule,
+  MatStepperModule,
+  MatAutocompleteModule,
  } from '@angular/material';
 
 
@@ -214,7 +216,10 @@ import { ViewMembersComponent } from './home/interface/view-members/view-members
     MatDividerModule,
     MatProgressSpinnerModule,
     MatChipsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatAutocompleteModule,
+    MatStepperModule,
+
   ],
   entryComponents: [
     JoinChannelComponent,
