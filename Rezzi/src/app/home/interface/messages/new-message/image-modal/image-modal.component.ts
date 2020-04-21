@@ -26,8 +26,6 @@ export class ImageModalComponent implements OnInit {
     this.selectedFile.pending = true;
     this.messagesService.uploadImage(file).subscribe(
       (res) => {
-        console.log(res);
-        console.log(res.body["url"]);
         this.selectedFile.pending = false;
         this.selectedFile.status = 'ok';
         this.imageRefEmitter.emit({ display_name: file.name, src: res.body["url"] });

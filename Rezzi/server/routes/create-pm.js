@@ -9,9 +9,7 @@ const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 
 router.post('/', checkCookie, function (request, response) {
-  console.log("WORK DUMBASS");
   const req = request.body
-  console.log(request.body);
   message = [];
   db.collection(keys.users).doc(request.body.from).collection(keys.private_messages).doc(request.body.to).set(
     {

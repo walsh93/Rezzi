@@ -32,7 +32,6 @@ export class EditProfileFormComponent implements OnInit {
       return;
     }
 
-    console.log(form);
     let userInfo = {
       firstName: form.value.firstName,
       lastName: form.value.lastName,
@@ -211,6 +210,19 @@ export class EditProfileFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.theUser = new User(
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    );
     this.rezziService.getSession().then(response => {
       if (response.email == null) {
         // not signed in
@@ -242,8 +254,7 @@ export class EditProfileFormComponent implements OnInit {
 
       this.rezziService.getHDEmail().then(response => {
         this.hd = response.hd;
-        // console.log("hall director:" + response.hd);
-        if ((this.theUser.deletionRequest = 1)) {
+        if ((this.theUser.deletionRequest = 1)) { // @Katarina: is this supposed to be ==?
           // console.log("it is 1!!");
         }
       });

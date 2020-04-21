@@ -67,7 +67,7 @@ export class RezziService {
   }
 
   findUserByEmail(hd: string, user: string): Promise<any> {
-    console.log('EWRWGED ' + hd);
+    console.log('Find user by email: ' + hd);
     return this.http.get(`/update-hd?hd=${hd}&user=${user}`).toPromise().then(response => {
       return response;
     }).catch(error => {
@@ -166,7 +166,7 @@ export class RezziService {
 
   getDeletionRequests(): Promise<any> {
     return this.http.get('/getDeletionRequests').toPromise().then((deletionList) => {
-      console.log(deletionList);
+      console.log("Deletion List: ", deletionList);
       return deletionList;
    }).catch((error) => {
      console.log(error);

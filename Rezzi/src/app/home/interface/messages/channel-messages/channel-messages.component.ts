@@ -76,7 +76,6 @@ export class ChannelMessagesComponent implements OnInit, OnDestroy {
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
       console.log('user has been updated in new-message.component');
       this.user = updatedUser;
-      console.log(this.user);
     });
 
     // Listen for session updates

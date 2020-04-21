@@ -53,7 +53,7 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
 
     // Listen for user updates
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
-      console.log('user has been updated in new-message.component');
+      console.log('user has been updated in private-messages.component');
       this.user = updatedUser;
       console.log(this.user);
     });
@@ -66,7 +66,7 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
 
     // Listen for user list updates
     this.pmUserUpdateSub = this.pmUsersObs.subscribe((updatedPMUsers) => {
-      console.log('private messages have been updated');
+      console.log('private messages have been updated in private-messages.component');
       this.pmUsers = updatedPMUsers;
 
       updatedPMUsers.forEach((user) => {
@@ -92,7 +92,6 @@ export class PrivateMessagesComponent implements OnInit, OnDestroy {
       this.needToUpdateScroll = (this.amViewingNewPM || diffNumberOfMessages);
       this.messages = updatedMessages;
       this.amViewingNewPM = false;
-      console.log("MESSAGES" + this.messages)
     }
     )
   }

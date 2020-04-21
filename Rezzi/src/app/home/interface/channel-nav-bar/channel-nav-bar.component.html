@@ -1,8 +1,5 @@
 <mat-toolbar>
   <div class="interior">
-    <button mat-button (click)="openPollDialog()">Create Poll</button>
-  </div>
-  <div class="interior2">
     <span class="nav-title"> {{navTitle}} </span>
   </div>
   <div class="menu-button">
@@ -15,6 +12,7 @@
         <button mat-menu-item (click)="goToMuteMembersScreen()">Mute Members</button>
         <mat-divider></mat-divider>
       </div>
+      <button mat-menu-item (click)="openPollDialog()">Create Poll</button>
       <button mat-menu-item [disabled]="leaveButtonDisabled" (click)="openLeaveDialog()">Leave Channel</button>
       <button mat-menu-item [disabled]="deleteButtonDisabled" (click)="openDeleteDialog()">Delete Channel</button>
       

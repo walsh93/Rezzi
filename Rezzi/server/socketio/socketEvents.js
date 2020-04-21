@@ -47,11 +47,8 @@ module.exports.newMessage = function newMessage(socket, data) {
 }
 
 module.exports.updateMessage = function updateMessage(socket, data) {
-  console.log("DATA" + data);
-  console.log(data);
   let collectionpath = "";
   let docpath = "";
-  // console.log("Data: ", data);
   if (data.hasOwnProperty("sender")) {
     const paths = createUserPath(data.sender, data.recipient);
     if (paths == null) {
@@ -85,11 +82,10 @@ module.exports.updateMessage = function updateMessage(socket, data) {
     messages[id].reactions = reactions;
     messages[id].reported = reported;
     messages[id].visible = data.message.visible;
-    console.log(data.message);
     if(data.message.isPoll){
       messages[id].pollInfo = data.message.pollInfo;
     }
-
+    console.log('Updated Message: ', messages[id]);
     db.collection(collectionpath).doc(docpath).update({
       messages: messages
     })
@@ -127,7 +123,7 @@ module.exports.updateMessage = function updateMessage(socket, data) {
 
 //$$$conley
 module.exports.newPrivateMessage = function newPrivateMessage(socket, data) {
-  console.log("In socketEvents.js");
+  console.log("newPrivateMessage() in socketEvents.js");
   const paths = createUserPath(data.sender, data.recipient);
   const senderPath = paths.senderPath;
   const receiverPath = paths.receiverPath;

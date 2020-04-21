@@ -16,7 +16,6 @@ const nodemailer = require("nodemailer");
 router.get("/", checkCookie, function (request, response) {
   response.sendFile(indexFile);
 }).post("/", function (request, response) {
-  console.log(request.body);
   const rb = request.body;
   var emailListTemp = rb.emailList.replace(/\s/g,'')
   var emailarrtemp = emailListTemp.split(",");
@@ -144,7 +143,6 @@ router.get("/", checkCookie, function (request, response) {
     for (var i = 0; i < emailarr.length; i++) {
       var tempPword = randomstring.generate();
       var currentEmail = emailarr[i];
-      console.log(rb.floor);
 
       db.collection(keys.users).doc(currentEmail.trim()).set({
         email: currentEmail.trim(),

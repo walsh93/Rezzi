@@ -91,12 +91,10 @@ export class PollingComponent implements OnInit {
     let newform: PollResponses[] = [];
 
     if (form.value.response2 == null || form.value.response2 == undefined) {
-      console.log("2 items");
       newform.push(response0);
       newform.push(response1);
     }
     else if (form.value.response3 == null || form.value.response3 == undefined) {
-      console.log("3 items");
       let response2: PollResponses = {
         count: 0,
         content: form.value.response2
@@ -105,8 +103,7 @@ export class PollingComponent implements OnInit {
       newform.push(response1);
       newform.push(response2);
     }
-    else {
-      console.log("4 items");
+    else if (form.value.response4 == null || form.value.response4 == undefined) {
       let response2: PollResponses = {
         count: 0,
         content: form.value.response2
@@ -120,6 +117,195 @@ export class PollingComponent implements OnInit {
       newform.push(response2);
       newform.push(response3);
     }
+    else if (form.value.response5 == null || form.value.response5 == undefined){
+      let response2: PollResponses = {
+        count: 0,
+        content: form.value.response2
+      }
+      let response3: PollResponses = {
+        count: 0,
+        content: form.value.response3
+      }
+      let response4: PollResponses = {
+        count: 0,
+        content: form.value.response4
+      }
+      newform.push(response0);
+      newform.push(response1);
+      newform.push(response2);
+      newform.push(response3);
+      newform.push(response4);
+    }
+    else if (form.value.response6 == null || form.value.response6 == undefined){
+      let response2: PollResponses = {
+        count: 0,
+        content: form.value.response2
+      }
+      let response3: PollResponses = {
+        count: 0,
+        content: form.value.response3
+      }
+      let response4: PollResponses = {
+        count: 0,
+        content: form.value.response4
+      }
+      let response5: PollResponses = {
+        count: 0,
+        content: form.value.response5
+      }
+      newform.push(response0);
+      newform.push(response1);
+      newform.push(response2);
+      newform.push(response3);
+      newform.push(response4);
+      newform.push(response5);
+    }
+    else if (form.value.response7 == null || form.value.response7 == undefined){
+      let response2: PollResponses = {
+        count: 0,
+        content: form.value.response2
+      }
+      let response3: PollResponses = {
+        count: 0,
+        content: form.value.response3
+      }
+      let response4: PollResponses = {
+        count: 0,
+        content: form.value.response4
+      }
+      let response5: PollResponses = {
+        count: 0,
+        content: form.value.response5
+      }
+      let response6: PollResponses = {
+        count: 0,
+        content: form.value.response6
+      }
+      newform.push(response0);
+      newform.push(response1);
+      newform.push(response2);
+      newform.push(response3);
+      newform.push(response4);
+      newform.push(response5);
+      newform.push(response6);
+    }
+    else if (form.value.response8 == null || form.value.response8 == undefined){
+      let response2: PollResponses = {
+        count: 0,
+        content: form.value.response2
+      }
+      let response3: PollResponses = {
+        count: 0,
+        content: form.value.response3
+      }
+      let response4: PollResponses = {
+        count: 0,
+        content: form.value.response4
+      }
+      let response5: PollResponses = {
+        count: 0,
+        content: form.value.response5
+      }
+      let response6: PollResponses = {
+        count: 0,
+        content: form.value.response6
+      }
+      let response7: PollResponses = {
+        count: 0,
+        content: form.value.response7
+      }
+      newform.push(response0);
+      newform.push(response1);
+      newform.push(response2);
+      newform.push(response3);
+      newform.push(response4);
+      newform.push(response5);
+      newform.push(response6);
+      newform.push(response7);
+    }
+    else if (form.value.response9 == null || form.value.response9 == undefined){
+      let response2: PollResponses = {
+        count: 0,
+        content: form.value.response2
+      }
+      let response3: PollResponses = {
+        count: 0,
+        content: form.value.response3
+      }
+      let response4: PollResponses = {
+        count: 0,
+        content: form.value.response4
+      }
+      let response5: PollResponses = {
+        count: 0,
+        content: form.value.response5
+      }
+      let response6: PollResponses = {
+        count: 0,
+        content: form.value.response6
+      }
+      let response7: PollResponses = {
+        count: 0,
+        content: form.value.response7
+      }
+      let response8: PollResponses = {
+        count: 0,
+        content: form.value.response8
+      }
+      newform.push(response0);
+      newform.push(response1);
+      newform.push(response2);
+      newform.push(response3);
+      newform.push(response4);
+      newform.push(response5);
+      newform.push(response6);
+      newform.push(response7);
+      newform.push(response8);
+    }
+    else {
+      let response2: PollResponses = {
+        count: 0,
+        content: form.value.response2
+      }
+      let response3: PollResponses = {
+        count: 0,
+        content: form.value.response3
+      }
+      let response4: PollResponses = {
+        count: 0,
+        content: form.value.response4
+      }
+      let response5: PollResponses = {
+        count: 0,
+        content: form.value.response5
+      }
+      let response6: PollResponses = {
+        count: 0,
+        content: form.value.response6
+      }
+      let response7: PollResponses = {
+        count: 0,
+        content: form.value.response7
+      }
+      let response8: PollResponses = {
+        count: 0,
+        content: form.value.response8
+      }
+      let response9: PollResponses = {
+        count: 0,
+        content: form.value.response9
+      }
+      newform.push(response0);
+      newform.push(response1);
+      newform.push(response2);
+      newform.push(response3);
+      newform.push(response4);
+      newform.push(response5);
+      newform.push(response6);
+      newform.push(response7);
+      newform.push(response8);
+      newform.push(response9);
+    }
     return newform;
   }
 
@@ -128,12 +314,8 @@ export class PollingComponent implements OnInit {
       id: -1,
       response: 'Example Response',
     }
-    if (this.responses.length == 2) {
-      to_add.id = 2;
-    }
-    else {
-      to_add.id = 3;
-    }
+    to_add.id = this.responses.length;
+
     this.responses.push(to_add);
 
     /*

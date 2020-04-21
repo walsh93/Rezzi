@@ -20,7 +20,7 @@ router.get('/', checkCookie, function(request, response) {
     const password = request.body.password
     db.collection('users').doc(email).get().then(doc => {
         if(!doc.exists){
-            console.log("hi so the doc doesnt exist")
+            console.log("doc doesnt exist")
             response.send(c.EMAIL_NOT_REGISTERED)
         } else {
           oldpassword = password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
