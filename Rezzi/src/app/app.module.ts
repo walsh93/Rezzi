@@ -119,6 +119,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
 import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
 import { ViewMembersComponent } from './home/interface/view-members/view-members.component';
+import { NotificationsComponent } from './dashboard/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -178,6 +179,7 @@ import { ViewMembersComponent } from './home/interface/view-members/view-members
     MoveUsersComponent,
     PollingComponent,
     ViewMembersComponent,
+    NotificationsComponent,
   ],
   imports: [
     BrowserModule,

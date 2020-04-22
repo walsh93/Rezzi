@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   showHD = false;
   showReqChan = false;
   showPostPriv = false;
+  showNotify = false;
   accountType: number;
 
   // Data to pass to child elements
@@ -47,6 +48,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = false;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showPrivateMessages() {
@@ -56,6 +58,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = false;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showRequestChannel() {
@@ -65,6 +68,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = true;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showRaAdmin() {
@@ -74,6 +78,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = false;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showHdAdmin() {
@@ -83,6 +88,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = true;
     this.showReqChan = false;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showPostingPrivileges() {
@@ -92,6 +98,17 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = false;
     this.showPostPriv = true;
+    this.showNotify = false;
+  }
+
+  showNotifications() {
+    this.showEdit = false;
+    this.showPM = false;
+    this.showRA = false;
+    this.showHD = false;
+    this.showReqChan = false;
+    this.showPostPriv = false;
+    this.showNotify = true;
   }
 
 }

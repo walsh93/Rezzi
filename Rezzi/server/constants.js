@@ -65,6 +65,7 @@ module.exports = {
     deleteUser: "/deleteUser",
     move_user: "/move-user",
     resend_email: "/resend-email",
+    notifications: "/notifications",
     error: {
       page: "/err",
       not_raadmin: "/err/1/unauthorized",
