@@ -250,7 +250,7 @@ export class LeaveChannelDialog implements OnInit {
 
     this.rezziService.getSession().then((session) => {
       this.session = session;
-  }); 
+    }); 
   }
 
   onCancelClick(): void {
@@ -286,10 +286,10 @@ export class LeaveChannelDialog implements OnInit {
           emails.push(user.email)
         });
         console.log(emails)
-        console.log("First Name: " + this.session.firstName)
+        console.log("User name: " + this.userName)
 
         const body = {
-          message: this.session.firstName + " " + this.session.lastName + " has left the channel",
+          message: this.userName + " has left the channel",
           channel: channel.id,
           recipients: emails,
         }

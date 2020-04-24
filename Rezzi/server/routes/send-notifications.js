@@ -24,13 +24,14 @@ router.get('/', checkCookie, function(request, response) {
 
   //for each user, if muted == false, add message to array at currentEmail > Notifications > channel
 
-  
+  console.log(message)
   for(let i = 0; i < recipients.length; i++){
       console.log(recipients[i])
       
-      promises.push(db.collection(keys.users + '/' + recipients[i] + '/Notificaitons').doc(channel).get().then((doc) => {
+      promises.push(db.collection(keys.users).doc(recipients[i]).collection("Notificaitons").doc(channel).get().then((doc) => {
         console.log("before doc.data")
         const data = doc.data()
+        console.log("data: " + data)
         console.log(data.muted)
         if(data.muted == false){
           doc.update({
@@ -49,7 +50,7 @@ router.get('/', checkCookie, function(request, response) {
     console.log('all promises pushed')
     response.status(http.ok).json({ resolved, msg: 'Your notifications have been sent' })
   }).catch((reject) => {
-    console.log("jinkies scoob")
+   console.log("jinkies scoob")
     response.status(http.error).json({ reject: reject, msg: 'Something went wrong in sending notifications.' })
   }) 
 })
