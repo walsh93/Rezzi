@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
+const FieldValue = require('firebase-admin').firestore.FieldValue;
 
 const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 const indexFile = require('../constants').indexFile
@@ -17,42 +18,35 @@ router.get('/', checkCookie, function(request, response) {
   const channel = rb.channel;
   console.log(channel)
   const recipients = rb.recipients;
+  // array of emails
   const rezzi = request.__session.rezzi;
   let promises = [];
 
-  
+
 
   //for each user, if muted == false, add message to array at currentEmail > Notifications > channel
 
-  console.log(message)
-  for(let i = 0; i < recipients.length; i++){
-      console.log(recipients[i])
-      
-      promises.push(db.collection(keys.users).doc(recipients[i]).collection("Notificaitons").doc(channel).get().then((doc) => {
-        console.log("before doc.data")
-        const data = doc.data()
-        console.log("data: " + data)
-        console.log(data.muted)
-        if(data.muted == false){
-          doc.update({
-            notifications: FieldValue.arrayUnion(message),
-          });
-        }
-      })
-      )
-      
-      console.log("pushed a promise?")
-      
-  }
+  rb.recipients.forEach(element => {
+    promises.push(db.collection(keys.users).doc(element).collection("Notifications").doc(channel).get().then((doc) => {
+      console.log("before doc.data")
+      const data = doc.data()
+      console.log("data: ", data)
+      console.log(data.muted)
+      if(data.muted == false){
+        db.collection(keys.users).doc(element).collection("Notifications").doc(channel).update({'notifications': FieldValue.arrayUnion(message)})
+      }
+    })
+    )
+  });
 
   // Handler after all promises have completed
   Promise.all(promises).then((resolved) => {
     console.log('all promises pushed')
     response.status(http.ok).json({ resolved, msg: 'Your notifications have been sent' })
   }).catch((reject) => {
-   console.log("jinkies scoob")
+   console.log(reject);
     response.status(http.error).json({ reject: reject, msg: 'Something went wrong in sending notifications.' })
-  }) 
+  })
 })
 
 
