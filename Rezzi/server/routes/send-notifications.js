@@ -9,9 +9,9 @@ const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 
-router.get('/', checkCookie, function(request, response) {
+router.get('/', checkCookie, function (request, response) {
   response.sendFile(indexFile)
-}).post('/', function(request, response) {
+}).post('/', function (request, response) {
   const rb = request.body;
   const message = rb.message;
   //channel is whatever the notification document is called. For channels, it is in the format of floors-1N-General
@@ -21,6 +21,7 @@ router.get('/', checkCookie, function(request, response) {
   // array of emails
   const rezzi = request.__session.rezzi;
   let promises = [];
+  console.log(rb)
 
 
 
@@ -28,12 +29,28 @@ router.get('/', checkCookie, function(request, response) {
 
   rb.recipients.forEach(element => {
     promises.push(db.collection(keys.users).doc(element).collection("Notifications").doc(channel).get().then((doc) => {
+
       console.log("before doc.data")
       const data = doc.data()
       console.log("data: ", data)
-      console.log(data.muted)
-      if(data.muted == false){
-        db.collection(keys.users).doc(element).collection("Notifications").doc(channel).update({'notifications': FieldValue.arrayUnion(message)})
+      
+      if (doc.exists) {
+        if (data.muted == false) {
+          if (rb.isPM) {
+            db.collection(keys.users).doc(element).collection("Notifications").doc(channel).update({ 'notifications': [message] })
+          }
+          else {
+            db.collection(keys.users).doc(element).collection("Notifications").doc(channel).update({ 'notifications': FieldValue.arrayUnion(message) })
+          }
+        }
+      }
+      else {
+        if (rb.isPM) {
+          db.collection(keys.users).doc(element).collection("Notifications").doc(channel).set({ 'notifications': [message], 'muted': false })
+        }
+        else {
+          db.collection(keys.users).doc(element).collection("Notifications").doc(channel).set({ 'notifications': FieldValue.arrayUnion(message), 'muted': false})
+        }
       }
     })
     )
@@ -45,7 +62,7 @@ router.get('/', checkCookie, function(request, response) {
     console.log('all promises pushed')
     response.status(http.ok).json({ resolved, msg: 'Your notifications have been sent' })
   }).catch((reject) => {
-   console.log(reject);
+    console.log(reject);
     response.status(http.error).json({ reject: reject, msg: 'Something went wrong in sending notifications.' })
   })
 })
