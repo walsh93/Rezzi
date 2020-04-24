@@ -78,7 +78,7 @@ export class JoinChannelComponent implements OnInit {
         console.log(emails)
 
         const body = {
-          message: this.session.firstName + " " + this.session.lastName + " has joined the channel",
+          message: this.userName + " has joined the channel",
           channel: id,
           recipients: emails,
         }
