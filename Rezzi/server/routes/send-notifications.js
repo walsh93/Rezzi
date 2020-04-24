@@ -38,6 +38,7 @@ router.get('/', checkCookie, function(request, response) {
     })
     )
   });
+  //fixing error
 
   // Handler after all promises have completed
   Promise.all(promises).then((resolved) => {
