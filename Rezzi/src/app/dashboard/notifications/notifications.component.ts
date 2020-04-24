@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { RezziService } from '../../rezzi.service';
+import { Router } from '@angular/router';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-notifications',
@@ -7,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotificationsComponent implements OnInit {
 
-  constructor() { }
+  // Class variables
+  errorMsg: string;
+  session: any;
+  panelOpenState = false;
+
+  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
   ngOnInit() {
+    this.errorMsg = '';
+
+    this.rezziService.getSession().then((session) => {
+        this.session = session;
+    });
+
+    
   }
 
 }

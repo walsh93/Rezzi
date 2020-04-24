@@ -156,8 +156,8 @@ app.use(url.get_non_pm_users, get_non_pm_users)
 const create_pm = require('./server/routes/create-pm')
 app.use(url.create_pm, create_pm);
 
-const notifications = require('./server/routes/notifications')
-app.use(url.notifications, notifications)
+const send_notifications = require('./server/routes/send-notifications')
+app.use(url.send_notifications, send_notifications)
 
 const setup_test = require('./server/routes/setup-test')
 app.use(url.setup_test, setup_test)

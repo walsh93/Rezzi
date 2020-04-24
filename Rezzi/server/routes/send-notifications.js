@@ -8,39 +8,48 @@ const indexFile = require('../constants').indexFile
 const http = require('../constants').http_status
 const keys = require('../constants').db_keys
 
-router.post('/', function(request, response) {
+router.get('/', checkCookie, function(request, response) {
+  response.sendFile(indexFile)
+}).post('/', function(request, response) {
   const rb = request.body;
   const message = rb.message;
   //channel is whatever the notification document is called. For channels, it is in the format of floors-1N-General
   const channel = rb.channel;
+  console.log(channel)
   const recipients = rb.recipients;
   const rezzi = request.__session.rezzi;
   let promises = [];
 
-  //get reference to channel from channel variable
+  
 
   //for each user, if muted == false, add message to array at currentEmail > Notifications > channel
 
   
-  for(var i = 0; i < recipients.length; i++){
-      currentEmail = recipients[i];
-      const channelNotificaitonDocRef = db.collection(keys.users + '/' + currentEmail + '/' + 'Notificaitons').doc(channel)
-      promises.push(
-      channelNotificaitonDocRef.get().then((doc => {
+  for(let i = 0; i < recipients.length; i++){
+      console.log(recipients[i])
+      
+      promises.push(db.collection(keys.users + '/' + recipients[i] + '/Notificaitons').doc(channel).get().then((doc) => {
+        console.log("before doc.data")
         const data = doc.data()
+        console.log(data.muted)
         if(data.muted == false){
-          channelNotificaitonDocRef.update({
+          doc.update({
             notifications: FieldValue.arrayUnion(message),
           });
         }
-      }))
+      })
       )
+      
+      console.log("pushed a promise?")
+      
   }
 
   // Handler after all promises have completed
   Promise.all(promises).then((resolved) => {
+    console.log('all promises pushed')
     response.status(http.ok).json({ resolved, msg: 'Your notifications have been sent' })
   }).catch((reject) => {
+    console.log("jinkies scoob")
     response.status(http.error).json({ reject: reject, msg: 'Something went wrong in sending notifications.' })
   }) 
 })
