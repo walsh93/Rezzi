@@ -62,6 +62,12 @@ router.get('/', checkCookie, function(request, response) {
           response.status(http.bad_request).send(errorMsg)
         });
 
+        /*add Notification document for channel owner*/
+        db.collection(keys.users + '/' + channel.owner + '/' + 'Notifications').doc(channel.level + "-" + channel.title).set({
+          muted: false,
+          notifications: [],
+        });
+
         /* add channel to user(s)'s channel list */
         for (member in channel.members){
           var userAdd = channel.members[member]
@@ -70,6 +76,15 @@ router.get('/', checkCookie, function(request, response) {
           }).catch((error) => {
             console.log(error)
             response.status(http.bad_request).send(errorMsg)
+          });
+        }
+
+        /*add notification document for users */
+        for(member in channel.members){
+          var userAdd = channel.members[member]
+          db.collection(keys.users + '/' + userAdd + '/' + 'Notifications').doc(channel.level + "-" + channel.title).set({
+            muted: false,
+            notifications: [],
           });
         }
 
@@ -92,6 +107,12 @@ router.get('/', checkCookie, function(request, response) {
           response.status(http.bad_request).send(errorMsg)
         });
 
+        /*add Notification document for channel owner*/
+        db.collection(keys.users + '/' + channel.owner + '/' + 'Notifications').doc(channel.level + "-" + channel.title).set({
+          muted: false,
+          notifications: [],
+        });
+
         /* add channel to user(s)'s channel list */
         for (member in channel.members){
           var userAdd = channel.members[member]
@@ -100,6 +121,15 @@ router.get('/', checkCookie, function(request, response) {
           }).catch((error) => {
             console.log(error)
             response.status(http.bad_request).send(errorMsg)
+          });
+        }
+
+        /*add notification document for users */
+        for(member in channel.members){
+          var userAdd = channel.members[member]
+          db.collection(keys.users + '/' + userAdd + '/' + 'Notifications').doc(channel.level + "-" + channel.title).set({
+            muted: false,
+            notifications: [],
           });
         }
 
@@ -123,6 +153,12 @@ router.get('/', checkCookie, function(request, response) {
 //          response.status(http.bad_request).send(errorMsg)
         });
 
+        /*add Notification document for channel owner*/
+        db.collection(keys.users + '/' + channel.owner + '/' + 'Notifications').doc("floors-" + data.floor + "-" + channel.title).set({
+          muted: false,
+          notifications: [],
+        });
+
         /* add channel to user(s)'s channel list */
         for (member in channel.members) {
           var userAdd = channel.members[member]
@@ -131,6 +167,15 @@ router.get('/', checkCookie, function(request, response) {
           }).catch((error) => {
             console.log("Error when adding channel user(s)'s channel list", error)
 //            response.status(http.bad_request).send(errorMsg)
+          });
+        }
+
+        /*add notification document for users */
+        for(member in channel.members){
+          var userAdd = channel.members[member]
+          db.collection(keys.users + '/' + userAdd + '/' + 'Notifications').doc("floors-" + data.floor + "-" + channel.title).set({
+            muted: false,
+            notifications: [],
           });
         }
 
