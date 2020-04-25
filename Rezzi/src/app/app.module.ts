@@ -28,6 +28,8 @@ import {
   MatProgressSpinnerModule,
   MatChipsModule,
   MatRadioModule,
+  MatStepperModule,
+  MatAutocompleteModule,
  } from '@angular/material';
 
 
@@ -216,7 +218,10 @@ import { NotificationsComponent } from './dashboard/notifications/notifications.
     MatDividerModule,
     MatProgressSpinnerModule,
     MatChipsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatAutocompleteModule,
+    MatStepperModule,
+
   ],
   entryComponents: [
     JoinChannelComponent,

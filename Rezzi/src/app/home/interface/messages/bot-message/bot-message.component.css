@@ -1,7 +1,6 @@
 mat-card {
   display: flex;
   margin: 5px;
-  background-color: lightgrey;
 }
 
 mat-card-content {
