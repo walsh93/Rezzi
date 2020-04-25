@@ -12,7 +12,7 @@ import {
 import { RezziService } from 'src/app/rezzi.service';
 import { MessagesService } from '../messages.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatRadioButton } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
@@ -228,6 +228,28 @@ export class MessageComponent implements OnInit {
       };
       spmd.message.reactions = this.reactions;
       this.messagesService.updateMessageThroughSocket(spmd);
+
+      //send notification
+      const body = {
+        message: this.viewingUser.email + " reacted to your message",
+        channel: this.viewingUser.email,
+        recipients: [this.pmUser],
+        isPM: true,
+      }
+  
+      this.http.post('/send-notifications', body).toPromise().then((response) => {
+        
+      }).catch((error) => {
+        const res = error as HttpErrorResponse;
+        if (res.status === 200) {
+          alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+          location.reload();
+        } else {
+          console.log(res.error.text)
+          alert(`There was an error while trying to send notifications. Please try again later.`);
+        }
+      });
+
     } else {
       const scmd: SocketChannelMessageData = {
         message: this.message,
@@ -236,6 +258,27 @@ export class MessageComponent implements OnInit {
       };
       scmd.message.reactions = this.reactions;
       this.messagesService.updateMessageThroughSocket(scmd);
+
+      //send notificaiton
+      const body = {
+        message: this.viewingUser.firstName + " reacted to your message",
+        channel: this.channel,
+        recipients: [this.message.owner.email],
+      }
+      console.log("viewing user first name: ", this.message.owner.firstName)
+  
+      this.http.post('/send-notifications', body).toPromise().then((response) => {
+        
+      }).catch((error) => {
+        const res = error as HttpErrorResponse;
+        if (res.status === 200) {
+          alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+          location.reload();
+        } else {
+          console.log(res.error.text)
+          alert(`There was an error while trying to send notifications. Please try again later.`);
+        }
+      });
     }
   }
 

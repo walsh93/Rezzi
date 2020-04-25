@@ -16,12 +16,12 @@ router.get('/', checkCookie, function (request, response) {
   const message = rb.message;
   //channel is whatever the notification document is called. For channels, it is in the format of floors-1N-General
   const channel = rb.channel;
-  console.log(channel)
+  //console.log(channel)
   const recipients = rb.recipients;
   // array of emails
   const rezzi = request.__session.rezzi;
   let promises = [];
-  console.log(rb)
+  //console.log(rb)
 
 
 
@@ -30,9 +30,9 @@ router.get('/', checkCookie, function (request, response) {
   rb.recipients.forEach(element => {
     promises.push(db.collection(keys.users).doc(element).collection("Notifications").doc(channel).get().then((doc) => {
 
-      console.log("before doc.data")
+      //console.log("before doc.data")
       const data = doc.data()
-      console.log("data: ", data)
+      //console.log("data: ", data)
       
       if (doc.exists) {
         if (data.muted == false) {
@@ -59,7 +59,7 @@ router.get('/', checkCookie, function (request, response) {
 
   // Handler after all promises have completed
   Promise.all(promises).then((resolved) => {
-    console.log('all promises pushed')
+    //console.log('all promises pushed')
     response.status(http.ok).json({ resolved, msg: 'Your notifications have been sent' })
   }).catch((reject) => {
     console.log(reject);
