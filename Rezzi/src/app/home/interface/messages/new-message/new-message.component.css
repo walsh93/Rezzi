@@ -6,7 +6,7 @@
 
 .send-button{
   margin-left: 1%;
-  order: 3;
+  order: 4;
 }
 
 .bottombar{
@@ -16,7 +16,12 @@
   height: 100px;
 }
 
-.add-button {
+.add-photo-button {
+  order: 3;
+  margin-left: 1%;
+}
+
+.add-event-button {
   order: 2;
   margin-left: 1%;
 }

@@ -1,4 +1,5 @@
 <mat-card>
+  <!-- All header stuff -->
   <mat-card-header>
     <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }"></div>
     <mat-card-title>{{ displayName }}</mat-card-title>
@@ -17,16 +18,35 @@
       </ng-container>
     </span>
   </mat-card-header>
-
-
-
+  
+  <!-- Image, if there is one -->
   <img *ngIf="image !== null" mat-card-image src="{{ image }}">
-  <mat-card-content *ngIf="content[0] !== null && content.length > 1">
-    <div [innerHTML]="content[0]"></div>
-    <mat-divider></mat-divider>
-    <div [innerHTML]="content[1]"></div>
-  </mat-card-content>
-  <mat-card-content *ngIf="content.length === 1 && content[0] !== null" [innerHTML]="content[0]"></mat-card-content>
+  
+  <!-- Ordinary content, including potential link content -->
+  <ng-container *ngIf="event === null">
+    <mat-card-content *ngIf="content[0] !== null && content.length > 1">
+      <div [innerHTML]="content[0]"></div>
+      <mat-divider></mat-divider>
+      <div [innerHTML]="content[1]"></div>
+    </mat-card-content>
+    <mat-card-content *ngIf="content.length === 1 && content[0] !== null" [innerHTML]="content[0]"></mat-card-content>
+  </ng-container>
+
+  <!-- Event content if the message is an event -->
+  <ng-container *ngIf="event !== null">
+    <mat-card-content>
+      <h3>{{ event.name }}</h3>
+      <b>What is it?</b> {{ event.description }}<br>
+      <b>When is it?</b> {{ event.date }} at {{ event.time }}<br>
+      <mat-button-toggle-group>
+        <mat-button-toggle value="going" (click)="respondToEvent('going')">Going</mat-button-toggle>
+        <mat-button-toggle value="interested" (click)="respondToEvent('interested')">Interested</mat-button-toggle>
+        <mat-button-toggle value="not going" (click)="respondToEvent('not going')">Not Going</mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-card-content>
+  </ng-container>
+
+  <!-- footer with date and report button -->
   <mat-card-footer>{{ displayTime }}
     <button mat-icon-button (click)="reportMessage()">
       <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"

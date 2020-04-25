@@ -149,7 +149,8 @@ router.get("/", checkCookie, function(request, response) {
         floor: rb.floor,
         rezzi: rezzi,
         channels: rb.channels,
-        lastEmailSent: time
+        lastEmailSent: time,
+        calendar: [],
       });
 
       var smtpTransport = nodemailer.createTransport({

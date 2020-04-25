@@ -86,6 +86,15 @@ export interface ReactionData {
   whatshot: string[];
 }
 
+export interface EventData {
+  id: string;
+  owner: string;
+  name: string;
+  description: string;
+  date: Date;
+  time: string;
+}
+
 export class AbbreviatedUser {
   email: string;
   firstName: string;
@@ -111,6 +120,7 @@ export interface Message {
   reactions: ReactionData;
   reported: boolean;
   image: string;
+  event: EventData;
 }
 
 export enum BotMessage {

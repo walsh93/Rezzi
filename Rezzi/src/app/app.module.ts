@@ -27,6 +27,9 @@ import {
   MatDividerModule,
   MatProgressSpinnerModule,
   MatChipsModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatButtonToggleModule,
  } from '@angular/material';
 
 // Firebase Imports
@@ -115,6 +118,7 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 import { AssignPrivilegsComponent } from './dashboard/assign-privilegs/assign-privilegs.component';
 import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
+import { CreateEventComponent } from './home/interface/messages/new-message/create-event/create-event.component';
 
 @NgModule({
   declarations: [
@@ -170,6 +174,7 @@ import { MuteMembersComponent } from './home/interface/mute-members/mute-members
     BotMessageComponent,
     AssignPrivilegsComponent,
     MuteMembersComponent,
+    CreateEventComponent,
   ],
   imports: [
     BrowserModule,
@@ -206,13 +211,17 @@ import { MuteMembersComponent } from './home/interface/mute-members/mute-members
     MatDividerModule,
     MatProgressSpinnerModule,
     MatChipsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonToggleModule,
   ],
   entryComponents: [
     JoinChannelComponent,
     CreatePmComponent,
     LeaveChannelDialog,
     DeleteChannelDialog,
-    ImageModalComponent
+    ImageModalComponent,
+    CreateEventComponent,
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

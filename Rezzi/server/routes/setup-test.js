@@ -33,7 +33,8 @@ router.get('/users/:userCount', function(request, response) {
         "hallwide-General",
         "floors-" + FLOOR_NAME + "-General",
         "RA-General"
-      ]
+      ],
+      calendar: [],
   };
   // Creating HD
   db.collection(keys.users).doc(ADMIN_EMAIL).set(JSON.parse(JSON.stringify(data))).then(response => {

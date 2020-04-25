@@ -6,7 +6,8 @@ import {
   Message,
   SocketChannelMessageData,
   SocketPrivateMessageData,
-  HDUser
+  HDUser,
+  EventData
 } from "src/app/classes.model";
 import { RezziService } from "src/app/rezzi.service";
 import { MessagesService } from "../messages.service";
@@ -60,6 +61,7 @@ export class MessageComponent implements OnInit {
   private ReportId: string;
   private currUserEmail: string;
   private avatar: string // The avatar image, extracted from message
+  private event: EventData; // The event in the message, if it has one
 
   constructor(
     public messagesService: MessagesService,
@@ -77,6 +79,7 @@ export class MessageComponent implements OnInit {
     this.time = this.message.time;
     this.reported = this.message.reported;
     this.image = this.message.image;
+    this.event = this.message.event;
     this.content = [];
     if (this.message.content === null) {
       this.content.push(null);
@@ -211,6 +214,10 @@ export class MessageComponent implements OnInit {
     }
     alert("This message has been reported to the hall director!");
     this.updateHallDirector(this.hdEmail, this.user.email);
+  }
+
+  respondToEvent(response) {
+    this.messagesService.respondToEvent(this.viewingUser, this.event, response);
   }
 
   updateHallDirector(hd, user) {
