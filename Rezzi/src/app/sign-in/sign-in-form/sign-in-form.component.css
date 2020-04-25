@@ -8,14 +8,23 @@
 .mat-card{
   background-color: rgba(66,66,66, 0.521);
   max-width: 75%;
-  /* display: block; */
+  display: block;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
 }
-
+.form-row{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 .vspace {
   padding-bottom: 2em;
+}
+
+mat-form-field{
+  width: 100%;
 }
 
 #error-msg {

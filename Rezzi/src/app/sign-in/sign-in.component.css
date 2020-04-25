@@ -17,6 +17,13 @@
   padding: 3em;
 }
 
+button{
+  display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center
+}
+
 
 .mat-stepper-horizontal, .mat-stepper-vertical {
   display: inline;

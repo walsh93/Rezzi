@@ -1,9 +1,13 @@
 mat-card {
   
   background-color: rgba(66,66,66, 0.521);
-  padding: 1em;
+  /* padding: 1em; */
+  padding-top: 50px;
+  padding-left: 20px;
+  padding-right:20px;
+  padding-bottom: 75px;
 
   /* Dimensions */
-  height: 90%;
+  height: 100%;
   width: 90%;
 }
