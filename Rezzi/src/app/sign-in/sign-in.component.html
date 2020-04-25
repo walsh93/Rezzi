@@ -1,39 +1,51 @@
 <!-- <div id="outer-component" class="container">
   <div id="inner-component"> -->
-    <mat-horizontal-stepper [linear]="!isLinear" #stepper>
-      <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
-          <ng-template matStepLabel>Welcome!</ng-template>
-          <br>
-          <app-info-block></app-info-block>
-          <br>
-          <div>
-            <button  mat-stroked-button matStepperNext color="primary">Next</button>
-          </div>
-        </form>
-      </mat-step>
-      <mat-step [stepControl]="secondFormGroup">
-        <ng-template matStepLabel>Sign in</ng-template>
-        <br>
-        <app-sign-in-form></app-sign-in-form>
-        <br>
-        <div>
-          <button  mat-stroked-button matStepperPrevious color="primary">Back</button>
-          <button  mat-stroked-button matStepperNext color="primary">Next</button>
-        </div>
-      </mat-step>
-    </mat-horizontal-stepper>
-    <!-- <app-info-block></app-info-block> -->
+    <div class="bg"></div>
+<div class="bg bg2"></div>
+<div class="bg bg3"></div>
+<mat-horizontal-stepper [linear]="!isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Welcome!</ng-template>
+      <br>
+      <app-info-block></app-info-block>
+      <br>
+      <div>
+        <button mat-icon-button  color="primary" matStepperNext>
+          <mat-icon aria-hidden="false" aria-label="next" matTooltip="Next">arrow_forward_ios</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="firstFormGroup">
+    <ng-template matStepLabel>Sign in</ng-template>
+    <br>
+    <app-sign-in-form></app-sign-in-form>
+    <br>
+    <button color="primary" mat-icon-button matStepperPrevious>
+      <mat-icon aria-hidden="false" aria-label="back" matTooltip="Back">arrow_back_ios</mat-icon>
+    </button>
+    <!-- <button mat-raised-button matStepperPrevious color="accent">Back</button> -->
 
-    <!-- <div class="row">
+
+
+    <!-- [ngStyle]="{'color':'red'}" -->
+    <!-- <button mat-raised-button matStepperNext color="primary">Next</button> -->
+  </form>
+  </mat-step>
+</mat-horizontal-stepper>
+<!-- <app-info-block></app-info-block> -->
+
+<!-- <div class="row">
       <div class="col-md component-column">
         <app-info-block></app-info-block>
       </div>
       <div class="col-md-6 component-column">
         <app-sign-in-form></app-sign-in-form>
       </div> -->
-    <!-- </div> -->
-  <!-- </div>
+<!-- </div> -->
+<!-- </div>
 </div> -->
 
 

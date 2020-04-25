@@ -1,8 +1,9 @@
 mat-card {
   
+  background-color: rgba(66,66,66, 0.521);
   padding: 1em;
 
   /* Dimensions */
-  height: 100%;
-  width: 100%;
+  height: 90%;
+  width: 90%;
 }

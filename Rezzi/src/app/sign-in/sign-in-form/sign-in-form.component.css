@@ -5,6 +5,14 @@
   height: 100%;
   width: 100%;
 }
+.mat-card{
+  background-color: rgba(66,66,66, 0.521);
+  max-width: 75%;
+  /* display: block; */
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 
 .vspace {
   padding-bottom: 2em;
