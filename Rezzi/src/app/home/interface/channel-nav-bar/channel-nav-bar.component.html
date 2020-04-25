@@ -12,10 +12,10 @@
         <button mat-menu-item (click)="goToMuteMembersScreen()">Mute Members</button>
         <mat-divider></mat-divider>
       </div>
-      <button mat-menu-item (click)="openPollDialog()">Create Poll</button>
+      <button mat-menu-item [disabled]="pollButtonDisabled" (click)="openPollDialog()">Create Poll</button>
       <button mat-menu-item [disabled]="leaveButtonDisabled" (click)="openLeaveDialog()">Leave Channel</button>
       <button mat-menu-item [disabled]="deleteButtonDisabled" (click)="openDeleteDialog()">Delete Channel</button>
-      
+
     </mat-menu>
   </div>
 </mat-toolbar>

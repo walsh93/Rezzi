@@ -37,6 +37,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   muteButtonDisabled = true;
   leaveButtonDisabled = true;
   deleteButtonDisabled = true;
+  pollButtonDisabled = true;
 
   private userName: string;
 
@@ -86,6 +87,12 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     if (this.accountType === 0 || this.accountType === 1) {       // Must be admin to mute members in a channel
       this.muteButtonDisabled = false;
     }
+    if(this.navChannel.isMuted){
+      this.pollButtonDisabled = true;
+    }
+    else{
+      this.pollButtonDisabled = false;
+    }
   }
 
   ngOnInit() {
@@ -97,7 +104,6 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
         this.accountType = response.accountType;
       }
     });
-
     this.channelNavBarService.setChannel.subscribe(channelData => {
       this.navChannel = channelData;
       this.navTitle = this.navChannel.channel;
