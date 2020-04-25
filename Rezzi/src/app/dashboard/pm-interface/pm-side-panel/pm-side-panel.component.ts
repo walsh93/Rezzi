@@ -23,14 +23,8 @@ export class PmSidePanelComponent implements OnInit {
     private privateSidePanelService: PMSidePanelService) {
     this.private_message_users = [];
     this.privateSidePanelService.getPrivateMessageUsers().subscribe(data => {
-      console.log('We out here: ', data);
       // tslint:disable-next-line: forin
       for (const index in data) {
-        // console.log(data[index]);
-        //console.log(index);
-        //console.log(data[index].recipient);
-        //let tempData: PrivateMessageData;
-        //tempData.recipient = data[index].recipient;
         let messageContent: Message[] = [];
         // tslint:disable-next-line: forin
         for (const index2 in data[index].messages.messages) {
@@ -44,12 +38,11 @@ export class PmSidePanelComponent implements OnInit {
             id: data[index].messages.messages[index2].id,
             image: data[index].messages.messages[index2].image,
             event: null,
+            isPoll: false,
+            pollInfo: null,
             //will need to add more message details here
           });
         }
-        //console.log(messageContent);
-        // tempData.messages = data[index].messages;
-        // console.log("Temp Data: ", tempData);
 
         this.private_message_users.push({
           recipient: data[index].recipient,
@@ -57,7 +50,7 @@ export class PmSidePanelComponent implements OnInit {
         });
 
       }
-      console.log(this.private_message_users);
+      //console.log(this.private_message_users);
       this.pmUsersToSend.emit(this.private_message_users)
 
     });
@@ -66,8 +59,7 @@ export class PmSidePanelComponent implements OnInit {
       for (const index in data) {
         this.non_pm_users.push(data[index])
       }
-      console.log("MADE IT HERE");
-      console.log(this.non_pm_users);
+      //console.log(this.non_pm_users);
     })
   }
 
@@ -92,7 +84,7 @@ export class PmSidePanelComponent implements OnInit {
   }
 
   viewUser(user: string) {
-    console.log("View User", user);
+    console.log("Viewing user ", user);
     this.pmUserToView.emit(user);
   }
 

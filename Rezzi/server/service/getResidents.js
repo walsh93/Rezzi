@@ -18,7 +18,6 @@ router.get('/', checkCookie, function(request, response) {
         //response.status(http.bad_request).send('Error retrieving resident information')
       } else  {
         const data = doc.data()
-        console.log(data)
         residents = data.resident_list
         let promises = [];
 
@@ -64,9 +63,7 @@ router.get('/', checkCookie, function(request, response) {
                     accountType: data.accountType,
                     lastEmailSent: lastEmailSent,
                 }
-                console.log(info)
                 residentInfo.push(info)
-                //console.log(RAInfo.length)
             }))
         }
 

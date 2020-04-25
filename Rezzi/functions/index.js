@@ -153,8 +153,6 @@ exports.uploadImage = functions.https.onRequest((request, response) => {
         file: filepath,
         type: mimetype,
       };
-      console.log("HERE");
-      console.log(filename);
       file.pipe(fs.createWriteStream(filepath));
 
       let type = mimetype.split('/')[1];
@@ -172,7 +170,6 @@ exports.uploadImage = functions.https.onRequest((request, response) => {
     // Trigger this section when busboy is done parsing the entire request
     busboy.on("finish", () => {
       const docId = "uploaded-images/" + UUID() + extension;
-      console.log("docId: " + docId);
       const bucket = storage.bucket("rezzi-33137.appspot.com");
       const download_token = UUID();
       bucket.upload(uploadData.file, {

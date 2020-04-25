@@ -10,7 +10,6 @@ const keys = require('../constants').db_keys
 router.post('/', checkCookie, function(request, response) {
   const req = request.body;
   const email = request.__session.email;
-  // console.log(req);
   db.collection(keys.users).doc(email).update({
     rezzi: req.name
   });

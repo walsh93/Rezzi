@@ -7,7 +7,6 @@ const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 const keys = require('../constants').db_keys
 
 router.get('/', checkCookie, function(request, response) {
-  console.log("get-pm-users.js");
   const req = request.body;
   const email = request.__session.email;
   i = 0;
@@ -21,9 +20,7 @@ router.get('/', checkCookie, function(request, response) {
       temp.messages = doc.data();
       privateMessagesData[i] = temp;
       i++;
-      //console.log(doc.id, "=>", doc.data(), "i:",i)
     })
-    //console.log("PLZ WORK:", privateMessagesData);
     response.status(200).json(privateMessagesData);
   })
 })

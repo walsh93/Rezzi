@@ -28,6 +28,7 @@ export class InterfaceComponent implements OnInit {
   interfaceViewSubscr: Subscription;
   viewChanMesSubj: Subject<boolean> = new Subject<boolean>();
   viewMuteMemSubj: Subject<boolean> = new Subject<boolean>();
+  viewViewMemSubj: Subject<boolean> = new Subject<boolean>();
   hideNewMsgSubj: Subject<boolean> = new Subject<boolean>();
 
   constructor(private rezziService: RezziService, private cnbService: ChannelNavBarService) { }
@@ -77,10 +78,16 @@ export class InterfaceComponent implements OnInit {
     this.interfaceViewSubscr = this.cnbService.getInterfaceViewListener().subscribe(newView => {
       if (newView === c.VIEW_CHANNEL_MESSAGES) {
         this.viewChanMesSubj.next(true);
+        this.viewViewMemSubj.next(false);
         this.viewMuteMemSubj.next(false);
       } else if (newView === c.VIEW_MUTE_MEMBERS) {
         this.viewChanMesSubj.next(false);
         this.viewMuteMemSubj.next(true);
+        this.viewViewMemSubj.next(false);
+      } else if (newView === c.VIEW_VIEW_MEMBERS) {
+        this.viewViewMemSubj.next(true);
+        this.viewChanMesSubj.next(false);
+        this.viewMuteMemSubj.next(false);
       } else {
         console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
       }

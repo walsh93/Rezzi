@@ -58,8 +58,16 @@ export class RezziService {
     });
   }
 
+  getProfile(profile: string): Promise<any> {
+    return this.http.get(`/get-profile?profile=${profile}`).toPromise().then(response => {
+      return response;
+    }).catch(error => {
+      console.log(error);
+    });
+  }
+
   findUserByEmail(hd: string, user: string): Promise<any> {
-    console.log('EWRWGED ' + hd);
+    console.log('Find user by email: ' + hd);
     return this.http.get(`/update-hd?hd=${hd}&user=${user}`).toPromise().then(response => {
       return response;
     }).catch(error => {
@@ -148,10 +156,17 @@ export class RezziService {
       console.log(error);
     });
   }
+  getResidentsByChannelNonAdmin(channelID: string): Promise<any> {
+    return this.http.get(`/get-residents-by-channel-non-admin/${channelID}`).toPromise().then((response) => {
+      return response;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
 
   getDeletionRequests(): Promise<any> {
     return this.http.get('/getDeletionRequests').toPromise().then((deletionList) => {
-      console.log(deletionList);
+      console.log("Deletion List: ", deletionList);
       return deletionList;
    }).catch((error) => {
      console.log(error);

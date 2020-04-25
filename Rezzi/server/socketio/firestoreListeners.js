@@ -3,7 +3,6 @@ const db = admin.firestore()
 const skt = require('../constants').socket
 
 module.exports.addListenerForChannelMessages = function alfcm(io, data) {
-  // console.log('addListenerForChannelMessages',data)
   return db.collection(data.channelPath).where('title', '==', data.channelName).onSnapshot((snap) => {
     snap.docChanges().forEach((change) => {
       if (serverCurrentChannel == `${data.channelPath}/${data.channelName}`) {

@@ -47,7 +47,6 @@ export class NewPmComponent implements OnInit {
     this.userUpdateSub = this.userObs.subscribe((updatedUser) => {
       console.log('user has been updated in new-pm.component');
       this.user = updatedUser;
-      console.log(this.user);
     });
 
     // Listen for changes in which channel is being viewed
@@ -77,6 +76,8 @@ export class NewPmComponent implements OnInit {
       reported: false,
       image: (this.image !== null ? this.image.src : null),
       event: null,
+      isPoll: false,
+      pollInfo: null,
     };
 
     const scmd: SocketPrivateMessageData = {
@@ -85,7 +86,7 @@ export class NewPmComponent implements OnInit {
       sender: this.session.email
     };
 
-    console.log("NEW-PM", scmd);
+    console.log("new-pm.comp.ts", scmd);
     // this.messagesService.addMessage(message);
     this.messagesService.sendPrivateMessageThroughSocket(scmd);
     this.image = null;

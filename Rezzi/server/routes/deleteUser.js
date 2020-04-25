@@ -29,9 +29,6 @@ router.post('/', function(request, response) {
     const floor = data.floor
     const floorDocRef = db.collection(keys.rezzis + '/' + rezzi + '/floors').doc(floor)
 
-    // Debugging
-    console.log(floor)
-    console.log(email)
 
     /**
      * if RA; else resident
@@ -58,7 +55,6 @@ router.post('/', function(request, response) {
     // Loop through each channel in their channel list and remove them from the members list
     let channels = []
     channels = data.channels
-    console.log(channels)
 
     // if floor channel; else hallwide channel
     for (let i = 0; i < channels.length; i++) {

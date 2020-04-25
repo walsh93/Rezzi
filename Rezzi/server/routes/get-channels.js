@@ -33,7 +33,6 @@ router.get('/', checkCookie, function(request, response) {
           channels: {}
         };
         db.collection(collection).select('members', 'approvalStatus', 'memberMuteStatuses').get().then(function(snapshot) {
-          // console.log(collection);  // Debugging (database path `residence-halls/name/...`)
           snapshot.forEach(function(doc) {
             const data = doc.data()
             let temp = {}
@@ -68,7 +67,6 @@ router.get('/', checkCookie, function(request, response) {
               console.log(`Skipping unapproved channel ${doc.id}...`)
             }
           });
-          // console.log(to_add);  // Debugging (logs all channels to send to front end)
           resolve(to_add);
         }).catch(function(rejection) {
           console.log(collection + " --- ERROR:", rejection);  // Debugging output
@@ -86,18 +84,6 @@ router.get('/', checkCookie, function(request, response) {
       responses.forEach((response) => {
         to_return[response.parent] = response.channels;
       });
-      // console.log(to_return);  // Debugging (logs all channels to send to front end)
-
-      // Check for channels they belong to and set flags accordingly
-      // belongs_to.forEach((channel) => {
-      //   var parent = channel.split('-')[0];
-      //   var name = channel.split('-')[1];
-      //   if (channel.includes('floors')) {
-      //     parent = 'floors-' + name;
-      //     name = channel.replace(parent + '-', '');
-      //   }
-      //   to_return[parent][name].belongs = true;
-      // })
       response.status(200).json(to_return);
     })
   });

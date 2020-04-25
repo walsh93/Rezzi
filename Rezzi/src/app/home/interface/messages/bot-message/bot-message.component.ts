@@ -17,7 +17,6 @@ export class BotMessageComponent implements OnInit {
    * noticable to the user...
    */
   ngOnInit() {
-    console.log('Need scrolling update...');
     const chanMsgs = document.getElementById('channelMessages');
     if (chanMsgs != null) {
       chanMsgs.scrollTop = chanMsgs.scrollHeight;

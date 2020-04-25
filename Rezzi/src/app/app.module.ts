@@ -30,7 +30,9 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatButtonToggleModule,
+  MatRadioModule,
  } from '@angular/material';
+
 
 // Firebase Imports
 import { AngularFireModule } from '@angular/fire';
@@ -57,23 +59,23 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 // Dashboard Components
 import { DashboardComponent } from './dashboard/dashboard.component';
-
 import { EditProfileComponent } from './dashboard/edit-profile/edit-profile.component';
 import { EditProfileFormComponent } from './dashboard/edit-profile/edit-profile-form/edit-profile-form.component';
 
 import { HdAdminComponent } from './dashboard/hd-admin/hd-admin.component';
+import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-rezzi.component';
+import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
+import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
+import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
+import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
+import { AssignPrivilegsComponent } from './dashboard/assign-privilegs/assign-privilegs.component';
+import { MoveUsersComponent } from './dashboard/hd-admin/move-users/move-users.component';
 
 import { RaAdminComponent } from './dashboard/ra-admin/ra-admin.component';
 import { RaCreateChannelComponent } from './dashboard/ra-admin/ra-create-channel/ra-create-channel.component';
 import { RaChannelRequestsComponent } from './dashboard/ra-admin/ra-channel-requests/ra-channel-requests.component';
 import { RequestChannelComponent } from './dashboard/request-channel/request-channel.component';
 import { RequestChannelFormComponent } from './dashboard/request-channel/request-channel-form/request-channel-form.component';
-
-import { CreateRezziComponent } from './dashboard/hd-admin/create-rezzi/create-rezzi.component';
-import { ChannelPanelComponent } from './dashboard/hd-admin/create-rezzi/channel-panel/channel-panel.component';
-import { FloorDrawerComponent } from './dashboard/hd-admin/create-rezzi/floor-drawer/floor-drawer.component';
-import { InviteUsersComponent } from './dashboard/hd-admin/invite-users/invite-users.component';
-import { UserManagementComponent } from './dashboard/hd-admin/user-management/user-management.component';
 
 import { PmInterfaceComponent } from './dashboard/pm-interface/pm-interface.component';
 import { PmSidePanelComponent } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.component';
@@ -116,9 +118,11 @@ import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-n
 import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
-import { AssignPrivilegsComponent } from './dashboard/assign-privilegs/assign-privilegs.component';
+import { ProfileComponent } from './profile/profile.component';
 import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
 import { CreateEventComponent } from './home/interface/messages/new-message/create-event/create-event.component';
+import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
+import { ViewMembersComponent } from './home/interface/view-members/view-members.component';
 
 @NgModule({
   declarations: [
@@ -172,9 +176,13 @@ import { CreateEventComponent } from './home/interface/messages/new-message/crea
     DeleteChannelDialog,
     ImageModalComponent,
     BotMessageComponent,
+    ProfileComponent,
     AssignPrivilegsComponent,
     MuteMembersComponent,
     CreateEventComponent,
+    MoveUsersComponent,
+    PollingComponent,
+    ViewMembersComponent,
   ],
   imports: [
     BrowserModule,
@@ -214,6 +222,7 @@ import { CreateEventComponent } from './home/interface/messages/new-message/crea
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonToggleModule,
+    MatRadioModule
   ],
   entryComponents: [
     JoinChannelComponent,
@@ -222,6 +231,7 @@ import { CreateEventComponent } from './home/interface/messages/new-message/crea
     DeleteChannelDialog,
     ImageModalComponent,
     CreateEventComponent,
+    PollingComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

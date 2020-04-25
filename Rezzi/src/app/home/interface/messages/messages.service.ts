@@ -25,7 +25,7 @@ export class MessagesService {
     });
 
     this.socket.on('added-new-private-message', (updatedMessages) => {
-      console.log('added new private message triggered');
+      console.log('added-new-private-message triggered');
       this.messages = updatedMessages;
       this.messagesUpdated.next([...this.messages]);
     });
@@ -60,7 +60,7 @@ export class MessagesService {
 
   getPrivateMessages(pmUserPath: string, pmUser: string) {
     this.http.get<{messages: Message[]}>(`/private-messages?pmUserPath=${pmUserPath}&pmUser=${pmUser}`).subscribe((data) => {
-      console.log('RETRIEVED messages', data);
+      console.log('RETRIEVED private messages', data);
       this.messages = data.messages;
       this.messagesUpdated.next([...this.messages]);
     });
@@ -69,13 +69,6 @@ export class MessagesService {
   /*********************************************************************************************************************************
    * Message sending and Message Bot
    ********************************************************************************************************************************/
-  // addMessage(message: Message) {
-  //   this.http.post<{notification: string}>('http://localhost:4100/api/messages', message).subscribe(responseData => {
-  //     console.log(responseData.notification);
-  //     this.messages.push(message);
-  //     this.messagesUpdated.next([...this.messages]);
-  //   });
-  // }
 
   addBotMessage(type: BotMessage, userName: string, rezzi: string, channelID: string) {
     let messageContent: string = null;
@@ -98,6 +91,8 @@ export class MessagesService {
       reported: false,
       image: null,
       event: null,
+      isPoll: false,
+      pollInfo: null,
     };
     const scmd: SocketChannelMessageData = {
       message, rezzi, channelID,
@@ -151,7 +146,6 @@ export class MessagesService {
   }
 
   sendPrivateMessageThroughSocket(data: SocketMessageData) {
-    console.log('messages.service.ts sPMTS', data);
     this.socket.emit('new-private-message', data);
   }
 
