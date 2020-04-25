@@ -1,6 +1,9 @@
 <div class="container-fluid">
   <div class="example-form">
+    <br>
+    <br>
     <mat-card color="primary">
+      <mat-card-title>Enter Profile Information</mat-card-title>
 
       <!-- <picture>
         <source media='(min-width:0px)' srcset="/Rezzi/images/default_profile.jpg">
@@ -10,11 +13,20 @@
 
 
       <div class="row upload-section">
-        <p style="padding-left: 15px; padding-top: 30px;"> Upload profile photo</p>
+        <div id="upload_button">
+          <label>
+            <input type="file" ngf-select ng-change="onPictureSelected($event)" multiple>
+            <span class="mat-raised-button" style="background-color: #607d8b;">Choose photo</span>
+          </label>
+        </div>
+        <!-- <p style="padding-left: 15px; padding-top: 30px;"> Upload profile photo</p> -->
+        <!-- <div id="hide">
         <input style="padding-left: 15px;" type="file" accept="image/*"
           (change)="onPictureSelected($event)">
-        <div style="padding-left: 15px; padding-top: 10px; padding-bottom: 20px;">
-          <button (click)="onUpload('image')"> Upload</button></div>
+          <label>Upload</label>
+        </div> -->
+        <div style="padding-left: 15px; padding-bottom: 20px;">
+          <button mat-raised-button color="accent" (click)="onUpload('image')"> Upload</button></div>
       </div>
 
       <form (submit)="onSignUp(signUpForm)" #signUpForm="ngForm">
@@ -57,7 +69,9 @@
         </textarea>
           <mat-hint>{{bio.value?.length || 0}}/100</mat-hint>
         </mat-form-field>
-        <button mat-raised-button color="accent" type="submit">Signup</button>
+        <br>
+        <br>
+        <button mat-raised-button color="primary" type="submit">Signup!</button>
       </form>
     </mat-card>
   </div>
