@@ -362,9 +362,13 @@ export class MessageComponent implements OnInit {
   }
 
   openProfileDialog(profile: string) { // TODO pop up profile dialog
+    console.log('profile dialog', profile);
     const profileDialogRef = this.profileDialog.open(ProfileComponent, {
-      height: '400px',
-      width: '600px'
+      height: 'auto',
+      width: '500px',
+      data: {
+        p: profile,
+      }
     });
   }
 }

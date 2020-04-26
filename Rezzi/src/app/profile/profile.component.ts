@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { RezziService } from '../rezzi.service';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { Profile } from '../classes.model';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
   session: any;
@@ -16,10 +16,14 @@ export class ProfileComponent implements OnInit {
   userFound: boolean;
   sameRezzi: boolean;
   prof: Profile;
+  profToGet: string;
 
   constructor(private rezziService: RezziService,
               private router: Router,
-              private http: HttpClient) { }
+              public dialog: MatDialogRef<ProfileComponent>,
+              @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
+                console.log('data', this.data);
+              }
 
   ngOnInit() {
     this.rezziService.getSession().then((response) => {
@@ -36,11 +40,15 @@ export class ProfileComponent implements OnInit {
         this.session = session;
       });
 
-      const query = window.location.search;
-      const urlParam = new URLSearchParams(query);
-      const profToGet = urlParam.get('u');
+      if (this.data === null) {
+        const query = window.location.search;
+        const urlParam = new URLSearchParams(query);
+        this.profToGet = urlParam.get('u');
+      } else {
+        this.profToGet = this.data.p;
+      }
 
-      this.rezziService.getProfile(profToGet).then(data => {
+      this.rezziService.getProfile(this.profToGet).then(data => {
         if (data) {
           this.userFound = true;
           if (data.user.image_url == null) {
