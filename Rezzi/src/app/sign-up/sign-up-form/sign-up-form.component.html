@@ -23,10 +23,17 @@
         <!-- <div id="hide">
         <input style="padding-left: 15px;" type="file" accept="image/*"
           (change)="onPictureSelected($event)">
+<<<<<<< HEAD
           <label>Upload</label>
         </div> -->
         <div style="padding-left: 15px; padding-bottom: 20px;">
           <button mat-raised-button color="accent" (click)="onUpload('image')"> 2. Upload</button></div>
+=======
+        <div style="padding-left: 15px; padding-top: 10px; padding-bottom: 20px;">
+          <button (click)="onUpload('image')"> Upload</button></div>
+          <div *ngIf="duringUpload==true" ><img style="max-width: 30px;" src="https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/uploaded-images%2Fgiphy.gif?alt=media&token=49354b47-d75b-4315-ab1e-1a52dd664f53" alt="Image is uploading...">
+          </div>
+>>>>>>> 89bc1a2df07186b82323a9fe0278de22ca9ace01
       </div>
 
       <form (submit)="onSignUp(signUpForm)" #signUpForm="ngForm">
