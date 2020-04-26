@@ -14,6 +14,7 @@ export class NotificationsComponent implements OnInit {
   errorMsg: string;
   session: any;
   panelOpenState = false;
+  panelInfo: Array<any>;
 
   constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
 
@@ -24,7 +25,14 @@ export class NotificationsComponent implements OnInit {
         this.session = session;
     });
 
-    
+    this.rezziService.getNotifications().then(panelInfo => {
+      if (panelInfo == null) {
+        console.log("Panel info does not exist");
+        return;
+      } else {
+        this.panelInfo = panelInfo.panelInfo;
+      }
+    });
   }
 
 }

@@ -2,22 +2,33 @@ const express = require('express')
 const router = express.Router()
 const admin = require('firebase-admin')
 const db = admin.firestore()
-const http = require('../constants').http_status;
+const http = require('../constants').http_status
+const keys = require('../constants').db_keys
 
-const checkCookie = require('../permissions').userNeedsToBeLoggedInHD
+const checkCookie = require('../permissions').userNeedsToBeLoggedInAndVerified
 
 router.get('/', checkCookie, function (request, response) {
-  /*db.collection('users').doc(request.__session.email).get().then((doc) => {
-    let deletionRequests = doc.data().deletionRequests
-    if (deletionRequests == null || deletionRequests == undefined) {
-      deletionRequests = ["there are no deletion requests"]
-    }
-    console.log("deletion requests: " + deletionRequests)
-    response.status(http.ok).json({ deletionRequests: deletionRequests })
-  }).catch((error) => {
-    console.log('Error deletion requests', error)
+    let panelInfo = [];
+    let promises = [];
+    const email = request.__session.email;
+
+    db.collection(keys.users).doc(email).collection('Notifications').get().then((snapshot) => {
+        snapshot.forEach((channelDoc) => {
+            const docData = channelDoc.data()
+            
+            const info = {
+                channel: channelDoc.id,
+                muted: docData.muted,
+                notifications: docData.notifications,
+            }
+            console.log(info)
+            panelInfo.push(info)
+        })
+        response.status(200).json({panelInfo: panelInfo});
+    }).catch((error) => {
+    console.log('Error fetching panel info', error)
     response.status(http.conflict).json(null)
-  })*/
+  })
 });
 
 module.exports = router;

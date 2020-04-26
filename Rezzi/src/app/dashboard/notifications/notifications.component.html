@@ -2,18 +2,18 @@
     <h2 style="text-align: center;">Notifications</h2>
 
     <mat-accordion>
-        <mat-expansion-panel>
+        <mat-expansion-panel *ngFor="let panel of panelInfo">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              Channel Name
+              {{panel.channel}}
             </mat-panel-title>
             <mat-panel-description >
                 <button (click)="fakeFuncion()" mat-railed-button> Mute Notificaitons for this Channel </button> 
               </mat-panel-description>
           </mat-expansion-panel-header>
-          <mat-card *ngFor="let deletionRequest of deletionRequests" (click)='deleteUser(deletionRequest)'><!-- Looping the deletion requests-->
+          <mat-card *ngFor="let notification of panel.notifications"><!-- Looping the deletion requests-->
 
-                {{ deletionRequest }}
+                {{notification}}
 
             </mat-card>
         </mat-expansion-panel>

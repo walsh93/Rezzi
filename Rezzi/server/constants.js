@@ -26,6 +26,7 @@ module.exports = {
     get_res_by_channel_non_admin: "/get-residents-by-channel-non-admin",
     update_canpost: "/update-can-post",
     update_ismuted: "/update-is-muted",
+    getNotifications: "/getNotifications",
   },
 
   // Firebase constants
