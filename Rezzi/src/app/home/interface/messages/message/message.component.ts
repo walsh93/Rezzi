@@ -13,8 +13,9 @@ import { RezziService } from 'src/app/rezzi.service';
 import { MessagesService } from '../messages.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { MatRadioButton } from '@angular/material';
+import { MatRadioButton, MatDialog } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { ProfileComponent } from 'src/app/profile/profile.component';
 
 
 @Component({
@@ -54,6 +55,7 @@ export class MessageComponent implements OnInit {
 
   private reactions: ReactionData; // Data holding the reaction (extracted from message)
   private user: AbbreviatedUser; // The user who sent the message (extracted from message)
+  userEmail: string;  // Email of user who sent the message (used for profile lookup)
   private time: Date; // When the message was sent (extracted from message)
   private reported: boolean;
   private theHD: HDUser;
@@ -84,12 +86,14 @@ export class MessageComponent implements OnInit {
     public messagesService: MessagesService,
     private http: HttpClient,
     private rezziService: RezziService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public profileDialog: MatDialog,
   ) { }
 
   ngOnInit() {
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
+    this.userEmail = this.message.owner.email;
     this.avatar = this.message.owner.image_url;
     this.time = this.message.time;
     this.reported = this.message.reported;
@@ -355,5 +359,12 @@ export class MessageComponent implements OnInit {
       channelID: this.channel
     };
     this.messagesService.updateMessageThroughSocket(scmd);
+  }
+
+  openProfileDialog(profile: string) { // TODO pop up profile dialog
+    const profileDialogRef = this.profileDialog.open(ProfileComponent, {
+      height: '400px',
+      width: '600px'
+    });
   }
 }

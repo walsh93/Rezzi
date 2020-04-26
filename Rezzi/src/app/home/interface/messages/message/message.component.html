@@ -4,7 +4,7 @@
       <mat-card-header>
         <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
         </div>
-        <mat-card-title>{{ displayName }}</mat-card-title>
+        <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
         <span class="reactions">
           <ng-container *ngFor="let reaction of reactions | keyvalue">
             <button mat-icon-button (click)="sendReaction(reaction.key)">
@@ -48,7 +48,7 @@
         <mat-card-header>
           <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
           </div>
-          <mat-card-title>{{ displayName }}</mat-card-title>
+          <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
           <span class="reactions">
             <ng-container *ngFor="let reaction of reactions | keyvalue">
               <button mat-icon-button (click)="sendReaction(reaction.key)">
@@ -131,7 +131,7 @@
         <mat-card-header>
           <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
           </div>
-          <mat-card-title>{{ displayName }}</mat-card-title>
+          <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
           <span class="reactions">
             <ng-container *ngFor="let reaction of reactions | keyvalue">
               <button mat-icon-button (click)="sendReaction(reaction.key)">
@@ -177,7 +177,7 @@
         <mat-card-header>
           <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
           </div>
-          <mat-card-title>{{ displayName }}</mat-card-title>
+          <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
           <span class="reactions">
             <ng-container *ngFor="let reaction of reactions | keyvalue">
               <button mat-icon-button (click)="sendReaction(reaction.key)">
