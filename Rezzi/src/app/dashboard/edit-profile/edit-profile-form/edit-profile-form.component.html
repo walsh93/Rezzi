@@ -11,7 +11,10 @@
         <p class = "up"> Upload new profile photo</p>
         <input class = "up" type="file" accept="image/*" (change)="onPictureSelected($event)">
         <div >
-          <button  class = "up" (click)="onUpload('image')"> Upload</button></div>
+          <button  class = "up" (click)="onUpload('image')"> Upload</button>
+          </div>
+          <div class = "up"> <img *ngIf="duringUpload==true"style="max-width: 30px;" src="https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/uploaded-images%2Fgiphy.gif?alt=media&token=49354b47-d75b-4315-ab1e-1a52dd664f53" alt="Image is uploading..."></div>
+
       </div>
     <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
 
