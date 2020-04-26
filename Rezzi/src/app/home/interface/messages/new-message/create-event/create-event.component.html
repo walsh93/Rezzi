@@ -8,15 +8,28 @@
     <br>
 
     <mat-form-field>
-      <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="eventDate" [(ngModel)]="date" name="date">
-      <mat-datepicker-toggle matSuffix [for]="eventDate"></mat-datepicker-toggle>
-      <mat-datepicker #eventDate></mat-datepicker>
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="eventStartDate" [(ngModel)]="start_date" name="date">
+      <mat-datepicker-toggle matSuffix [for]="eventStartDate"></mat-datepicker-toggle>
+      <mat-datepicker #eventStartDate></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Time</mat-label>
-      <input type="time" matInput [(ngModel)]="time" name="time">
+      <mat-label>Start Time</mat-label>
+      <input type="time" matInput [(ngModel)]="start_time" name="time">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field>
+      <mat-label>End Date</mat-label>
+      <input matInput [matDatepicker]="eventEndDate" [(ngModel)]="end_date" name="date">
+      <mat-datepicker-toggle matSuffix [for]="eventEndDate"></mat-datepicker-toggle>
+      <mat-datepicker #eventEndDate></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>End Time</mat-label>
+      <input type="time" matInput [(ngModel)]="end_time" name="time">
     </mat-form-field>
     <br>
 

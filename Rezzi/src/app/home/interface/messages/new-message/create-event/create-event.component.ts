@@ -8,8 +8,10 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent implements OnInit {
-  private date: Date;
-  private time: string;
+  private start_date: Date;
+  private end_date: Date;
+  private start_time: string;
+  private end_time: string;
   private name: string;
   private description: string;
   @Output() public eventEmitter = new EventEmitter();
@@ -24,8 +26,8 @@ export class CreateEventComponent implements OnInit {
       id: null,
       owner: null,
       name: this.name,
-      time: this.time,
-      date: this.date,
+      start_time: new Date(this.start_date.toDateString() + " " + this.start_time),
+      end_time: new Date(this.end_date.toDateString() + " " + this.end_time),
       description: this.description
     });
   }

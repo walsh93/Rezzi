@@ -190,6 +190,10 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     this.channelNavBarService.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
   }
 
+  goToCalendarScreen() {
+    this.channelNavBarService.updateInterfaceView(c.VIEW_CALENDAR);
+  }
+
   openPollDialog(): void {
     if (this.navTitle === 'Rezzi') {
       alert("You must select a channel to create a poll!");

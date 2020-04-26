@@ -142,6 +142,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.componentInstance.eventEmitter.subscribe((event) => {
+      console.log(event);
       this.event = event;
       this.event.owner = this.user;
     });

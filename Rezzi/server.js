@@ -158,6 +158,8 @@ app.use(url.create_pm, create_pm);
 
 const respond_to_event = require('./server/routes/respond-event')
 app.use(url.respond_to_event, respond_to_event)
+const get_events = require('./server/routes/get-events')
+app.use(url.get_events, get_events)
 
 const setup_test = require('./server/routes/setup-test')
 app.use(url.setup_test, setup_test)

@@ -68,7 +68,7 @@ export class PollingComponent implements OnInit {
       image: null, //should this not be null?
       isPoll: true,
       pollInfo: pollInfo,
-
+      event: null,
     };
 
     this.create_poll.emit(message);

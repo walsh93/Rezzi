@@ -88,6 +88,7 @@ module.exports = {
     channel_requests: "/channel-requests",
     setup_test: "/setup-test",
     respond_to_event: "/respond-event",
+    get_events: "/get-events"
   },
 
   http_status: {

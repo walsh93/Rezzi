@@ -123,6 +123,9 @@ import { MuteMembersComponent } from './home/interface/mute-members/mute-members
 import { CreateEventComponent } from './home/interface/messages/new-message/create-event/create-event.component';
 import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
 import { ViewMembersComponent } from './home/interface/view-members/view-members.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calendar-panel/calendar-panel.component';
 
 @NgModule({
   declarations: [
@@ -183,6 +186,7 @@ import { ViewMembersComponent } from './home/interface/view-members/view-members
     MoveUsersComponent,
     PollingComponent,
     ViewMembersComponent,
+    CalendarPanelComponent,
   ],
   imports: [
     BrowserModule,
@@ -222,7 +226,8 @@ import { ViewMembersComponent } from './home/interface/view-members/view-members
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonToggleModule,
-    MatRadioModule
+    MatRadioModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ],
   entryComponents: [
     JoinChannelComponent,
