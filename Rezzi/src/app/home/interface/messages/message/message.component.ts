@@ -24,7 +24,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class MessageComponent implements OnInit {
   // Add properties as needed/implemented
-  dayNames = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+  dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
   monthNames = [
     'Jan.',
     'Feb.',
@@ -97,6 +97,7 @@ export class MessageComponent implements OnInit {
     this.content = [];
     this.isPoll = this.message.isPoll;
     this.pollInfo = this.message.pollInfo;
+    this.pollTieInfo = [];
     if (this.message.content === null && this.message.isPoll == false) {
       this.content.push(null);
     } else if (this.message.content.includes('=====================')) {
@@ -142,7 +143,7 @@ export class MessageComponent implements OnInit {
           }
           else{
             //clear array
-            this.pollTieInfo = [];
+            this.pollTieInfo.length = 0;
             this.pollTieInfo.push(element.content);
           }
           tempcount = element.count

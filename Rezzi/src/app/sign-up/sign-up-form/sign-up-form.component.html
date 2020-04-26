@@ -15,6 +15,8 @@
           (change)="onPictureSelected($event)">
         <div style="padding-left: 15px; padding-top: 10px; padding-bottom: 20px;">
           <button (click)="onUpload('image')"> Upload</button></div>
+          <div *ngIf="duringUpload==true" ><img style="max-width: 30px;" src="https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/uploaded-images%2Fgiphy.gif?alt=media&token=49354b47-d75b-4315-ab1e-1a52dd664f53" alt="Image is uploading...">
+          </div>
       </div>
 
       <form (submit)="onSignUp(signUpForm)" #signUpForm="ngForm">
