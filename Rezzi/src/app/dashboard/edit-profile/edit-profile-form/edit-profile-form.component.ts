@@ -158,7 +158,7 @@ export class EditProfileFormComponent implements OnInit {
         });
       }
     } else{
-      this.thePic = '../../../../../src/assets/images/default_profile.jpg';
+      this.thePic = '../../../../../src/assets/images/logoSmall.png';
     }
   }
   onPictureSelected(event) {

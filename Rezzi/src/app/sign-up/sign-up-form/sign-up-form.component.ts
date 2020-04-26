@@ -50,6 +50,8 @@ export class SignUpFormComponent implements OnInit {
     if (user.image_url) {
       user.setImageUrl(user.image_url);
       //document.getElementById("profile-picture").setAttribute("src", user.image_url);
+    } else{
+      user.setImageUrl('../../../../src/assets/images/logoSmall.png');
     }
 
     this.addUser(user);
