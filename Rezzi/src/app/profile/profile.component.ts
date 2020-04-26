@@ -13,6 +13,7 @@ export class ProfileComponent implements OnInit {
   session: any;
   currentUserRezzi: any;
   profile: Profile;
+  userFound: boolean;
   sameRezzi: boolean;
   prof: Profile;
 
@@ -29,8 +30,7 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['/sign-up']);
       }
 
-      this.currentUserRezzi = response.rezzi;
-      console.log('currentUserRezzi', this.currentUserRezzi);
+      this.currentUserRezzi = response.rezzi;   /* used to compare user and profile's Rezzis */
 
       this.rezziService.getSession().then(session => {
         this.session = session;
@@ -40,41 +40,40 @@ export class ProfileComponent implements OnInit {
       const urlParam = new URLSearchParams(query);
       const profToGet = urlParam.get('u');
 
-      // TODO ensure users can't view users outside of their own Rezzi
-      // TODO add error handling if can't find user
-
       this.rezziService.getProfile(profToGet).then(data => {
-        if (data.user.image_url == null) {
-          this.prof = new Profile (
-            data.user.email,
-            data.user.firstName,
-            data.user.lastName,
-            data.user.rezzi,
-            data.user.floor,
-            data.user.major,
-            data.user.nickName,
-            data.user.bio,
-            'Rezzi/src/assets/images/default_profile.jpg',
-          );
+        if (data) {
+          this.userFound = true;
+          if (data.user.image_url == null) {
+            this.prof = new Profile (
+              data.user.email,
+              data.user.firstName,
+              data.user.lastName,
+              data.user.rezzi,
+              data.user.floor,
+              data.user.major,
+              data.user.nickName,
+              data.user.bio,
+              '../../../assets/images/default_profile.jpg',
+            );
+          } else {
+            this.prof = new Profile (
+              data.user.email,
+              data.user.firstName,
+              data.user.lastName,
+              data.user.rezzi,
+              data.user.floor,
+              data.user.major,
+              data.user.nickName,
+              data.user.bio,
+              data.user.image_url,
+            );
+          }
         } else {
-          this.prof = new Profile (
-            data.user.email,
-            data.user.firstName,
-            data.user.lastName,
-            data.user.rezzi,
-            data.user.floor,
-            data.user.major,
-            data.user.nickName,
-            data.user.bio,
-            data.user.image_url,
-          );
+          this.userFound = false;
         }
-        console.log(this.prof);
       }).then(prof => {
         if (this.currentUserRezzi !== this.prof.rezzi) {
           this.sameRezzi = false;
-          console.log('not in same rezzi');
-          // throw error
         } else {
           this.sameRezzi = true;
           this.profile = this.prof;
@@ -83,24 +82,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // loadProfilePicture() {
-  //   if (this.profile.imageUrl) {
-  //     if (document.readyState !== 'loading') {
-  //       // console.log('document is already ready');
-  //       // this.profile.setImageUrl(this.profile.imageUrl);
-  //       this.picture = this.profile.imageUrl;
-  //     } else {
-  //       document.addEventListener('DOMContentLoaded', function() {
-  //         // console.log('document was not ready');
-  //         this.picture = 'Rezzi/src/assets/images/default_profile.jpg';
-  //         // this.viewingUser.setImageUrl(this.viewingUser.image_url);
-  //         // document.getElementById('profile').setAttribute('src', this.viewingUser.image_url);
-  //       });
-  //     }
-  //   } else {
+  navigateHome() {
+    this.router.navigate(['/home']);
+  }
 
-  //     this.picture = 'Rezzi/src/assets/images/default_profile.jpg';
-  //   }
-  // }
-
+  navigatePMs() {
+    this.router.navigate(['/dashboard']);
+    // TODO pass in user to pm
+  }
 }
