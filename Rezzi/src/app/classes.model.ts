@@ -88,15 +88,15 @@ export interface ReactionData {
 
 export interface EventData {
   id: string;
-  owner: AbbreviatedUser;
+  owner: User;
   name: string;
   description: string;
   start_time: string;
   end_time: string;
   attending: {
-    going: AbbreviatedUser[];
-    interested: AbbreviatedUser[];
-    "not going": AbbreviatedUser[];
+    going: User[];
+    interested: User[];
+    "not going": User[];
   };
 }
 

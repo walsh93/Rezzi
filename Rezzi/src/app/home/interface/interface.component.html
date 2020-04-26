@@ -36,7 +36,8 @@
     ></app-channel-messages>
     <app-calendar-panel
       [isHiddenObs]="viewCalSubj.asObservable()"
-      [viewingObs]="viewingUpdateSubject.asObservable()">
+      [viewingObs]="viewingUpdateSubject.asObservable()"
+      [user]="user">
     </app-calendar-panel>
     <app-new-message id="newMessageBar"
       [isHiddenObs]="viewChanMesSubj.asObservable()"

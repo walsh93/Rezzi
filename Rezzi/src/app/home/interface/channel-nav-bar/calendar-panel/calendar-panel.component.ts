@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { ChannelNavBarService } from '../channel-nav-bar.service';
+import { EventModalComponent } from './event-modal/event-modal.component';
 import { MessagesService } from '../../messages/messages.service';
 import { RezziService } from 'src/app/rezzi.service';
-import { EventData } from 'src/app/classes.model';
+import { EventData, User } from 'src/app/classes.model';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   CalendarEvent,
   CalendarEventAction,
@@ -50,7 +52,8 @@ export class CalendarPanelComponent implements OnInit {
   private channel_colors = {};
   private attending: EventData[] = [];
   private available: EventData[] = [];
-  private user: string;
+
+  @Input() user: User;
 
   // Asynchronous data from parent component
   isHidden = true;  // By default, want to show channel messages and new-message component
@@ -71,7 +74,8 @@ export class CalendarPanelComponent implements OnInit {
 
   events: CalendarEventExt[] = [];              // The events in the calendar
 
-  constructor(private navbarService: ChannelNavBarService,
+  constructor(public dialog: MatDialog,
+    private navbarService: ChannelNavBarService,
     public messagesService: MessagesService,
     public rezziService: RezziService) { }
 
@@ -103,6 +107,7 @@ export class CalendarPanelComponent implements OnInit {
 
   updateEvents(): void {
     this.navbarService.getEventsForChannel().subscribe(data => {
+      this.events = [];
       data.channels.forEach((channel, i) => {
         this.channel_colors[channel] = colors[i];
       });
@@ -115,18 +120,8 @@ export class CalendarPanelComponent implements OnInit {
           end: parseISO(ev.end_time),
           title: ev.name,
           color: this.channel_colors[ev.id.substring(0, ev.id.lastIndexOf('-'))],
-          cssClass: '', // TODO: add custom css-class for attending events
+          // cssClass: '', // TODO: add custom css-class for attending events
           data: ev
-        }
-
-        if (ev.owner.email === this.user) {
-          to_push.actions = [{
-            label: '<i class="fa fa-fw fa-pencil"></i>',  // TODO change to material-icon for cancellation
-            a11yLabel: 'Cancel',
-            onClick: ({ event }: { event: CalendarEvent }): void => {
-              this.handleEvent('Canceled', event);
-            },
-          }]
         }
 
         this.events.push(to_push);
@@ -138,18 +133,8 @@ export class CalendarPanelComponent implements OnInit {
           end: parseISO(ev.end_time),
           title: ev.name,
           color: this.channel_colors[ev.id.substring(0, ev.id.lastIndexOf('-'))],
-          cssClass: '', // TODO: add custom css-class for unattended events
+          // cssClass: '', // TODO: add custom css-class for unattended events
           data: ev
-        }
-
-        if (ev.owner.email === this.user) {
-          to_push.actions = [{
-            label: '<i class="fa fa-fw fa-pencil"></i>',  // TODO change to material-icon for cancellation
-            a11yLabel: 'Cancel',
-            onClick: ({ event }: { event: CalendarEvent }): void => {
-              this.handleEvent('Canceled', event);
-            },
-          }]
         }
 
         this.events.push(to_push);
@@ -173,12 +158,19 @@ export class CalendarPanelComponent implements OnInit {
   }
 
   // Handles a clicking event on an Event (cancelation or click)
-  handleEvent(action: string, event: CalendarEvent): void {
+  handleEvent(action: string, event: CalendarEventExt): void {
     if (action === 'Canceled') {
-
+      
     }
     else if (action === 'Clicked') {
-
+      const dialogRef = this.dialog.open(EventModalComponent, {
+        width: 'auto',
+        height: 'auto',
+        data: {
+          event: event.data,
+          user: this.user
+        },
+      });
     }
   }
 

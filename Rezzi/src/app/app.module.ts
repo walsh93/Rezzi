@@ -33,6 +33,7 @@ import {
   MatRadioModule,
   MatStepperModule,
   MatAutocompleteModule,
+  MatPaginatorModule,
  } from '@angular/material';
 
 
@@ -128,6 +129,7 @@ import { ViewMembersComponent } from './home/interface/view-members/view-members
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calendar-panel/calendar-panel.component';
+import { EventModalComponent } from './home/interface/channel-nav-bar/calendar-panel/event-modal/event-modal.component';
 
 @NgModule({
   declarations: [
@@ -189,6 +191,7 @@ import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calenda
     PollingComponent,
     ViewMembersComponent,
     CalendarPanelComponent,
+    EventModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -229,10 +232,11 @@ import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calenda
     MatNativeDateModule,
     MatButtonToggleModule,
     MatRadioModule,
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
     MatRadioModule,
     MatAutocompleteModule,
     MatStepperModule,
+    MatPaginatorModule,
   ],
   entryComponents: [
     JoinChannelComponent,
@@ -241,7 +245,8 @@ import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calenda
     DeleteChannelDialog,
     ImageModalComponent,
     CreateEventComponent,
-    PollingComponent
+    PollingComponent,
+    EventModalComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]
