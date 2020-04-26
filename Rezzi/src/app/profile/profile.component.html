@@ -1,11 +1,21 @@
 <!-- Information to display -->
-<ul>Picture</ul>
-<ul>Preferred Name (in bold)</ul>
-<ul>Bio</ul>
-<ul>About this user...</ul>
-<ul>First and Last Name</ul>
-<ul>Major</ul>
-<ul>Floor</ul>
+<div *ngIf="this.sameRezzi == true">
+<picture>
+  <source media='(max-width:200px)' srcset="{{ this.profile.imageUrl }}">
+  <img mat-card-image src="{{ this.profile.imageUrl }}" alt="Profile Image">
+</picture>
+<ul>{{ this.profile.nickName }}</ul>
+<ul>{{ this.profile.bio }}</ul>
+<ul>About</ul>
+<ul>{{ this.profile.firstName + " " + this.profile.lastName}}</ul>
+<ul>Major: {{ this.profile.major }}</ul>
+<ul>Rezzi: {{ this.profile.rezzi }}</ul>
+<ul>Floor: {{ this.profile.floor }}</ul>
 
 <!-- Other items to add -->
 <button>Private Message</button>
+
+</div>
+<div *ngIf="this.sameRezzi == false">
+  <h1>You may not view this user's profile. You are not in the same Rezzi.</h1>
+</div>
