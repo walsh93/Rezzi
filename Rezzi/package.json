@@ -40,6 +40,7 @@
     "got": "^10.7.0",
     "hammerjs": "^2.0.8",
     "html-metadata-parser": "^1.0.1",
+    "jquery": "^3.5.0",
     "linkifyjs": "^2.1.9",
     "metascraper": "^5.11.6",
     "metascraper-description": "^5.11.6",

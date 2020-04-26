@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RezziService } from '../rezzi.service';
 import { Router } from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+
 
 @Component({
   selector: 'app-sign-in',
@@ -8,8 +10,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
+  isLinear = true;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
 
-  constructor(private rezziService: RezziService, private router: Router) { }
+
+  constructor(private rezziService: RezziService, private router: Router, private _formBuilder: FormBuilder) { }
 
   /**
    * Get session data and determine whether or not you need to reroute
@@ -17,6 +23,12 @@ export class SignInComponent implements OnInit {
    * manually putting it in, the middleware function in permissions.js won't run
    */
   ngOnInit() {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
     this.rezziService.getSession().then((response) => {
       if (response.email != null) {  // already signed in
         if (response.tempPword === true) {  // user has temp password; needs to redirect to change password

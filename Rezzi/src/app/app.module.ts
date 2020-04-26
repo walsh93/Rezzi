@@ -31,6 +31,8 @@ import {
   MatNativeDateModule,
   MatButtonToggleModule,
   MatRadioModule,
+  MatStepperModule,
+  MatAutocompleteModule,
  } from '@angular/material';
 
 
@@ -228,6 +230,9 @@ import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calenda
     MatButtonToggleModule,
     MatRadioModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
+    MatRadioModule,
+    MatAutocompleteModule,
+    MatStepperModule,
   ],
   entryComponents: [
     JoinChannelComponent,
