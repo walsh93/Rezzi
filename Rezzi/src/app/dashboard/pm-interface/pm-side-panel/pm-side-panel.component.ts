@@ -14,6 +14,7 @@ import { CreatePmComponent } from './create-pm/create-pm.component';
 export class PmSidePanelComponent implements OnInit {
   public non_pm_users = [];
   public private_message_users: PrivateMessageData[];
+  oldUser;
 
   @Output() pmUsersToSend = new EventEmitter<PrivateMessageData[]>();
   @Output() pmUserToView = new EventEmitter<string>();
@@ -80,9 +81,19 @@ export class PmSidePanelComponent implements OnInit {
 
 
   ngOnInit() {
+    this.oldUser = null;
   }
 
   viewUser(user: string) {
+    if(this.oldUser==null){
+      this.oldUser = user;
+    }
+    else{
+      //get old user by ID and set back to regular
+      document.getElementById(this.oldUser).style.background = document.getElementById(user).style.color
+    }
+    document.getElementById(user).style.background = "#607d8b"
+    this.oldUser = user;
     console.log("Viewing user ", user);
     this.pmUserToView.emit(user);
   }
