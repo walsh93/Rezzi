@@ -203,6 +203,7 @@ export class EditProfileFormComponent implements OnInit {
             // location.reload();
             this.duringUpload = false;
             alert(`Your photo has been uploaded...`);
+            window.location.reload();
           } else {
             alert(
               `Something went wrong. Return with a status code ${response.status}: ${response.statusText}`
