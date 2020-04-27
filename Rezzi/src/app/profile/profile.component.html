@@ -1,11 +1,49 @@
-<!-- Information to display -->
-<ul>Picture</ul>
-<ul>Preferred Name (in bold)</ul>
-<ul>Bio</ul>
-<ul>About this user...</ul>
-<ul>First and Last Name</ul>
-<ul>Major</ul>
-<ul>Floor</ul>
+<div *ngIf="this.sameRezzi == true && this.userFound == true">
+  <div class="profile">
+    <br>
+    <mat-card color="primary">
+      <mat-card-title> {{ this.profile.nickName }} </mat-card-title>
+      <picture>
+        <source media='(max-width:500px)' srcset="{{this.profile.imageUrl}}">
+        <img mat-card-image src="{{this.profile.imageUrl}}" alt="Profile Image">
+      </picture>
+      <mat-card-subtitle> {{ this.profile.firstName + " " + this.profile.lastName}} </mat-card-subtitle>
+      <mat-grid-list cols="2" rowHeight="200px">
+        <mat-grid-tile>
+          <div class="bio">
+            <mat-card-subtitle>Bio</mat-card-subtitle>
+            <mat-card-content>{{ this.profile.bio }}</mat-card-content>
+            <mat-card-subtitle>Rezzi</mat-card-subtitle>
+            <mat-card-content>{{ this.profile.rezzi }}</mat-card-content>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="about">
+            <mat-card-subtitle>Major</mat-card-subtitle>
+            <mat-card-content>{{ this.profile.major }}</mat-card-content>
+            <mat-card-subtitle>Floor</mat-card-subtitle>
+            <mat-card-content>{{ this.profile.floor }}</mat-card-content>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
 
-<!-- Other items to add -->
-<button>Private Message</button>
+      <button mat-stroked-button (click)="navigatePMs(this.profile.email)">Private Message</button>
+    </mat-card>
+  </div>
+</div>
+
+<div *ngIf="this.sameRezzi == false && this.userFound == true">
+  <mat-card color="primary">
+    <mat-card-title>You may not view this user's profile. You are not in the same Rezzi.</mat-card-title>
+
+    <button mat-stroked-button (click)="navigateHome()">Return to Home</button>
+  </mat-card>
+</div>
+
+<div *ngIf="this.userFound == false">
+  <mat-card color="primary">
+    <mat-card-title>User Not Found</mat-card-title>
+
+    <button mat-stroked-button (click)="navigateHome()">Return to Home</button>
+  </mat-card>
+</div>

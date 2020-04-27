@@ -27,10 +27,10 @@ router.get('/', checkCookie, function(request, response) {
     // get events the user is going to and add them to events
     function getEventData(event) {
       return new Promise((resolve, reject) => {
-        channel_id = event.substring(0, event.lastIndexOf('-'));
-        event_index = event.split('-').slice(-1)[0];
+        let channel_id = event.substring(0, event.lastIndexOf('-'));
+        let event_index = event.split('-').slice(-1)[0];
 
-        dbchannel = createChannelPath(rezzi, channel_id);
+        let dbchannel = createChannelPath(rezzi, channel_id);
         db.collection(dbchannel.channelPath).doc(dbchannel.channelName).get().then(doc2 => {
           var calendar = doc2.data().calendar;
           resolve(calendar[event_index]);
@@ -62,8 +62,8 @@ router.get('/', checkCookie, function(request, response) {
       // get the events in the channel that the user is viewing that the user could go to, but currently isn't
       dbchannel = createChannelPath(rezzi, eventChannel);
 
-      db.collection(dbchannel.channelPath).doc(dbchannel.channelName).get().then(doc2 => {
-        var available = doc2.data().calendar;
+      db.collection(dbchannel.channelPath).doc(dbchannel.channelName).get().then(doc3 => {
+        var available = doc3.data().calendar;
         for (i = 0; i < available.length; i++) {
           if (available[i].canceled !== true && !going_to.includes(available[i].id)) {  // check if the user is going to the event already
             events.available.push(available[i]);

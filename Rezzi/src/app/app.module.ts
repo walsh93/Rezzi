@@ -130,6 +130,8 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calendar-panel/calendar-panel.component';
 import { EventModalComponent, ConfirmCancelEventDialogComponent } from './home/interface/channel-nav-bar/calendar-panel/event-modal/event-modal.component';
+import { NotificationsComponent } from './dashboard/notifications/notifications.component';
+import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.service';
 
 @NgModule({
   declarations: [
@@ -193,6 +195,7 @@ import { EventModalComponent, ConfirmCancelEventDialogComponent } from './home/i
     CalendarPanelComponent,
     EventModalComponent,
     ConfirmCancelEventDialogComponent,
+    NotificationsComponent,
   ],
   imports: [
     BrowserModule,
@@ -250,7 +253,7 @@ import { EventModalComponent, ConfirmCancelEventDialogComponent } from './home/i
     EventModalComponent,
     ConfirmCancelEventDialogComponent
   ],
-  providers: [MessagesService, ChannelNavBarService],
+  providers: [MessagesService, ChannelNavBarService, PMSidePanelService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

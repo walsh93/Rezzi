@@ -3,8 +3,9 @@
     <mat-card>
       <!-- All header stuff -->
       <mat-card-header>
-        <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }"></div>
-        <mat-card-title>{{ displayName }}</mat-card-title>
+        <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
+        </div>
+        <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
         <span class="reactions">
           <ng-container *ngFor="let reaction of reactions | keyvalue">
             <button mat-icon-button (click)="sendReaction(reaction.key)">
@@ -50,9 +51,11 @@
 
       <!-- footer with date and report button -->
       <mat-card-footer>{{ displayTime }}
-        <button mat-icon-button (click)="reportMessage()">
-          <mat-icon id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false" aria-label="report"
-            matTooltip="report">flag</mat-icon>
+        <button *ngIf="pm!=true" mat-icon-button (click)="reportMessage()">
+          <mat-icon *ngIf="accountType>=2" id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false"
+            aria-label="report" matTooltip="Report Message">flag</mat-icon>
+          <mat-icon *ngIf="accountType<2" id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false"
+            aria-label="report" matTooltip="Delete Message">delete_forever</mat-icon>
         </button>
       </mat-card-footer>
     </mat-card>
@@ -66,7 +69,7 @@
         <mat-card-header>
           <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
           </div>
-          <mat-card-title>{{ displayName }}</mat-card-title>
+          <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
           <span class="reactions">
             <ng-container *ngFor="let reaction of reactions | keyvalue">
               <button mat-icon-button (click)="sendReaction(reaction.key)">
@@ -149,7 +152,7 @@
         <mat-card-header>
           <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
           </div>
-          <mat-card-title>{{ displayName }}</mat-card-title>
+          <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
           <span class="reactions">
             <ng-container *ngFor="let reaction of reactions | keyvalue">
               <button mat-icon-button (click)="sendReaction(reaction.key)">
@@ -195,7 +198,7 @@
         <mat-card-header>
           <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
           </div>
-          <mat-card-title>{{ displayName }}</mat-card-title>
+          <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
           <span class="reactions">
             <ng-container *ngFor="let reaction of reactions | keyvalue">
               <button mat-icon-button (click)="sendReaction(reaction.key)">

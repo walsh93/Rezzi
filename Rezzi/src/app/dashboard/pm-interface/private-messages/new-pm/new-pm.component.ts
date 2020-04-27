@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, Observable } from 'rxjs';
 import { MessagesService } from 'src/app/home/interface/messages/messages.service';
 import { NgForm } from '@angular/forms';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Message, SocketPrivateMessageData, AbbreviatedUser } from 'src/app/classes.model';
 import { ImageModalComponent } from 'src/app/home/interface/messages/new-message/image-modal/image-modal.component';
 
@@ -34,7 +35,7 @@ export class NewPmComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
 
-  constructor(public messagesService: MessagesService, public dialog: MatDialog) { }
+  constructor(private http: HttpClient, public messagesService: MessagesService, public dialog: MatDialog) { }
 
   ngOnInit() {
     // Listen for session updates
@@ -90,7 +91,57 @@ export class NewPmComponent implements OnInit {
     // this.messagesService.addMessage(message);
     this.messagesService.sendPrivateMessageThroughSocket(scmd);
     this.image = null;
+
+    const dayNames = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+   const monthNames = [
+    'Jan.',
+    'Feb.',
+    'Mar.',
+    'Apr.',
+    'May',
+    'June',
+    'July',
+    'Aug.',
+    'Sept.',
+    'Oct.',
+    'Nov.',
+    'Dec.'
+  ];
+  var displayTime;
+    const dateAgain = new Date();
+    const day = dayNames[dateAgain.getDay()];
+    const month = monthNames[dateAgain.getMonth()];
+    const date = dateAgain.getDate();
+    const hr = dateAgain.getHours();
+    const hours = hr > 12 ? `${hr - 12}` : `${hr}`;
+    const min = dateAgain.getMinutes();
+    const minutes = min < 10 ? `0${min}` : `${min}`;
+    const apm = hr > 11 ? 'PM' : 'AM';
+    displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
+
+    const body = {
+      message: "You have been sent a new private message at " + displayTime,
+      channel: this.session.email,
+      recipients: [this.currentPMUser],
+      isPM: true,
+    }
+
+    this.http.post('/send-notifications', body).toPromise().then((response) => {
+      
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status === 200) {
+        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        location.reload();
+      } else {
+        console.log(res.error.text)
+        alert(`There was an error while trying to send notifications. Please try again later.`);
+      }
+    });
+
     form.resetForm();
+
+    
   }
 
   openImageDialog() {

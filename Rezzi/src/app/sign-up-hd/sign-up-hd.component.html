@@ -1,6 +1,9 @@
 <div class="container-fluid">
+  <br>
+  <br>
   <div class="example-form">
-    <mat-card color="primary">
+    <mat-card>
+      <mat-card-title>Hall director sign up</mat-card-title>
       <form (submit)="onSignUpHD(signUpHDForm)" #signUpHDForm="ngForm">
       <mat-form-field class="example-full-width">
         <input
@@ -11,6 +14,7 @@
           ngModel
           required> <!-- make this read only for their email -->
       </mat-form-field>
+      <br>
       <mat-form-field class="example-full-width">
         <input
           matInput
@@ -23,6 +27,7 @@
           required>
           <mat-error *ngIf="password.invalid">Your password must be 8 characters long</mat-error>
       </mat-form-field>
+      <br>
       <mat-form-field class="example-full-width">
         <input
           matInput
@@ -35,6 +40,7 @@
           #confirmPassword = "ngModel">
           <mat-error *ngIf="password !== confirmPassword">Your passwords must match!</mat-error>
       </mat-form-field>
+      <br>
       <mat-form-field class="example-full-width">
         <input
           matInput
@@ -46,6 +52,7 @@
           required>
           <mat-error>Please enter a valid first name (Alpha only)</mat-error>
       </mat-form-field>
+      <br>
       <mat-form-field class="example-full-width">
         <input
           matInput
@@ -57,6 +64,7 @@
           required>
           <mat-error>Please enter a valid last name (Alpha only)</mat-error>
       </mat-form-field>
+      <br>
         <button
           mat-raised-button
           color="accent"

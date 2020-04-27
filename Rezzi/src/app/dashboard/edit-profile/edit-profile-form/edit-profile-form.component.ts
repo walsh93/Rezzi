@@ -159,7 +159,7 @@ export class EditProfileFormComponent implements OnInit {
         });
       }
     } else{
-      this.thePic = '../../../../../src/assets/images/default_profile.jpg';
+      this.thePic = '../../../../../src/assets/images/logoSmall.png';
     }
   }
   onPictureSelected(event) {
@@ -203,6 +203,7 @@ export class EditProfileFormComponent implements OnInit {
             // location.reload();
             this.duringUpload = false;
             alert(`Your photo has been uploaded...`);
+            window.location.reload();
           } else {
             alert(
               `Something went wrong. Return with a status code ${response.status}: ${response.statusText}`

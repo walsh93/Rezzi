@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { HttpClient } from '@angular/common/http';
 import { ChannelData, BotMessage, AbbreviatedUser } from '../../../../classes.model';
 import { MessagesService } from '../../messages/messages.service';
+import { RezziService } from 'src/app/rezzi.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 // export interface ChannelData {
 //   id: number,
@@ -28,7 +29,7 @@ export class JoinChannelComponent implements OnInit {
   abbrevUser: AbbreviatedUser;
   private userName: string;
 
-  constructor(public dialogRef: MatDialogRef<JoinChannelComponent>, @Inject(MAT_DIALOG_DATA) public data,
+  constructor(private rezziService: RezziService, public dialogRef: MatDialogRef<JoinChannelComponent>, @Inject(MAT_DIALOG_DATA) public data,
               private http: HttpClient, private messagesService: MessagesService) {
 
     this.channels = data.channels;
@@ -60,6 +61,43 @@ export class JoinChannelComponent implements OnInit {
     });
     this.joinChannelEvent.emit(id);
     this.messagesService.addBotMessage(BotMessage.UserHasJoinedChannel, this.userName, this.session.rezzi, id);
+
+    //send notification to everyone in channel
+    //get list of residnets in the channel
+    this.rezziService.getResidentsByChannelNonAdmin(id).then(res => {
+      if (res == null || res === undefined) {
+        return;
+      } else if (res.msg != null && res.msg !== undefined) {
+        console.log(res.msg);
+      } else {
+        const infoList = res.infoList;
+        var emails = []
+        infoList.forEach(user => {
+          emails.push(user.email)
+        });
+        console.log(emails)
+
+        const body = {
+          message: this.userName + " has joined the channel",
+          channel: id,
+          recipients: emails,
+        }
+
+        this.http.post('/send-notifications', body).toPromise().then((response) => {
+          location.reload();
+        }).catch((error) => {
+          const res = error as HttpErrorResponse;
+          if (res.status === 200) {
+            alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+            location.reload();
+          } else {
+            console.log(res.error.text)
+            alert(`There was an error while trying to send notifications. Please try again later.`);
+          }
+        });
+        
+      }
+    })
   }
 
   ngOnInit() {}

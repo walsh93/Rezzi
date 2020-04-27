@@ -130,6 +130,7 @@ export class CalendarPanelComponent implements OnInit {
     console.log("updating events...")
     this.navbarService.getEventsForChannel().subscribe(data => {
       this.events = [];
+      console.log(data);
       data.channels.forEach((channel, i) => {
         this.channel_colors[channel] = colors[i];
       });

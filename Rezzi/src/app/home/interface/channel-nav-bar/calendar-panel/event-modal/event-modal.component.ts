@@ -51,6 +51,7 @@ export class EventModalComponent implements OnInit {
     this.messagesService.respondToEvent(this.user, this.event, response).subscribe(response => {
       console.log(response);
       this.EventResponseEvent.emit(response);
+      this.dialogRef.close();
     },
     error => {
       // server error

@@ -16,7 +16,15 @@ export class CreateEventComponent implements OnInit {
   private description: string;
   @Output() public eventEmitter = new EventEmitter();
 
-  constructor(public dialogRef: MatDialogRef<CreateEventComponent>) { }
+  constructor(public dialogRef: MatDialogRef<CreateEventComponent>) {
+    this.start_date = new Date();
+    this.end_date = new Date();
+    let default_hours = this.start_date.getHours();
+    let default_mins = this.start_date.getMinutes();
+    let time_str = (default_hours > 9 ? default_hours.toString() : '0' + default_hours.toString()) + ':' + (default_mins > 9 ? default_mins.toString() : '0' + default_mins.toString());
+    this.start_time = time_str;
+    this.end_time = time_str;
+  }
 
   ngOnInit() {
   }

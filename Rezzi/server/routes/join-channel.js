@@ -23,6 +23,12 @@ router.get('/', checkCookie, function(request, response) {
     channels: admin.firestore.FieldValue.arrayUnion(channelID)
   });
 
+  // Add Notification document for this channel for user
+  db.collection(keys.users + '/' + email + '/' + 'Notifications').doc(channelID).set({
+    muted: false,
+    notifications: [],
+  })
+
   // Add user to channel's member list
   if (channelID.indexOf("floors") !== -1) {
     const firstDash = channelID.indexOf('-')

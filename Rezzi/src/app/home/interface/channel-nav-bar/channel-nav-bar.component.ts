@@ -4,12 +4,13 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@a
 import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
 import { ChannelData, AbbreviatedUser, BotMessage, Message, SocketChannelMessageData } from 'src/app/classes.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Subscription, Observable, Subject } from 'rxjs';
 import { MemberMuteInfo } from 'src/app/classes.model';
 import { MessagesService } from '../messages/messages.service';
 import { PollingComponent } from './polling/polling.component';
 import * as c from '../interface.constants';
+import { ConstantPool } from '@angular/compiler';
 
 
 export interface DialogData {
@@ -241,8 +242,9 @@ export class LeaveChannelDialog implements OnInit {
   rezzi: string;
   userName: string;
   status: boolean;
+  session: any;
 
-  constructor(public leaveDialogRef: MatDialogRef<LeaveChannelDialog>,
+  constructor(private rezziService: RezziService, public leaveDialogRef: MatDialogRef<LeaveChannelDialog>,
     private channelNavBarService: ChannelNavBarService,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private http: HttpClient,
@@ -255,6 +257,10 @@ export class LeaveChannelDialog implements OnInit {
     this.channelNavBarService.currentChannelUpdateStatus.subscribe(status => {
       this.status = status;
     });
+
+    this.rezziService.getSession().then((session) => {
+      this.session = session;
+    }); 
   }
 
   onCancelClick(): void {
@@ -274,6 +280,45 @@ export class LeaveChannelDialog implements OnInit {
 
     // Send Bot Message
     this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
+
+    //send notification to everyone in channel
+    //get list of residnets in the channel
+    this.rezziService.getResidentsByChannelNonAdmin(channel.id).then(res => {
+      console.log("sending notificaions for leaving channel")
+      if (res == null || res === undefined) {
+        return;
+      } else if (res.msg != null && res.msg !== undefined) {
+        console.log(res.msg);
+      } else {
+        const infoList = res.infoList;
+        var emails = []
+        infoList.forEach(user => {
+          emails.push(user.email)
+        });
+        console.log(emails)
+        console.log("User name: " + this.userName)
+
+        const body = {
+          message: this.userName + " has left the channel",
+          channel: channel.id,
+          recipients: emails,
+        }
+
+        this.http.post('/send-notifications', body).toPromise().then((response) => {
+          location.reload();
+        }).catch((error) => {
+          const res = error as HttpErrorResponse;
+          if (res.status === 200) {
+            alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+            location.reload();
+          } else {
+            console.log(res.error.text)
+            alert(`There was an error while trying to send notifications. Please try again later.`);
+          }
+        });
+        
+      }
+    })
   }
 
 }

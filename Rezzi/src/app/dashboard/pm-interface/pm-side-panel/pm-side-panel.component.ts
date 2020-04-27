@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { PrivateMessageData, Message } from 'src/app/classes.model';
 import { PMSidePanelService } from './pm-side-panel.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +14,8 @@ import { CreatePmComponent } from './create-pm/create-pm.component';
 export class PmSidePanelComponent implements OnInit {
   public non_pm_users = [];
   public private_message_users: PrivateMessageData[];
+  oldUser;
+  @Input() viewing: string;
 
   @Output() pmUsersToSend = new EventEmitter<PrivateMessageData[]>();
   @Output() pmUserToView = new EventEmitter<string>();
@@ -54,6 +56,41 @@ export class PmSidePanelComponent implements OnInit {
       this.pmUsersToSend.emit(this.private_message_users)
 
     });
+
+  }
+
+  openPMDialog(): void {
+    this.non_pm_users.length = 0;
+    console.log(this.non_pm_users);
+    this.privateSidePanelService.getNonPrivateMessageUsers().subscribe(data => {
+      // tslint:disable-next-line: forin
+      for (const index in data) {
+        this.non_pm_users.push(data[index])
+      }
+      console.log(this.non_pm_users);
+      //console.log(this.non_pm_users);
+      const dialogRef = this.dialog.open(CreatePmComponent, {
+        width: '600px',
+        height: 'auto',
+        data: this.non_pm_users,
+      });
+
+      dialogRef.componentInstance.create_pm_event.subscribe((email: string) => {
+        this.private_message_users.push({
+          recipient: email,
+          messages: null
+        });
+      });
+    })
+
+
+
+  }
+
+
+  ngOnInit() {
+    this.oldUser = this.viewing;
+    this.non_pm_users.length = 0;
     this.privateSidePanelService.getNonPrivateMessageUsers().subscribe(data => {
       // tslint:disable-next-line: forin
       for (const index in data) {
@@ -63,27 +100,20 @@ export class PmSidePanelComponent implements OnInit {
     })
   }
 
-  openPMDialog(): void {
-    const dialogRef = this.dialog.open(CreatePmComponent, {
-      width: '600px',
-      height: 'auto',
-      data: this.non_pm_users,
-    });
-
-    dialogRef.componentInstance.create_pm_event.subscribe((email: string) => {
-      this.private_message_users.push({
-        recipient: email,
-        messages: null
-      });
-    });
-
-  }
-
-
-  ngOnInit() {
-  }
-
   viewUser(user: string) {
+    if(this.oldUser==null && this.viewing){
+      this.oldUser = this.viewing
+      document.getElementById(this.oldUser).style.background = document.getElementById(user).style.color
+    }
+    else if(this.oldUser==null && !this.viewing){
+      this.oldUser = user;
+    }
+    else{
+      //get old user by ID and set back to regular
+      document.getElementById(this.oldUser).style.background = document.getElementById(user).style.color
+    }
+    document.getElementById(user).style.background = "#607d8b"
+    this.oldUser = user;
     console.log("Viewing user ", user);
     this.pmUserToView.emit(user);
   }

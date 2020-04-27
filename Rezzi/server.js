@@ -94,6 +94,8 @@ const updateCanPost = require('./server/service/updateCanPost')
 app.use(service.update_canpost, updateCanPost)
 const updateIsMuted = require('./server/service/updateIsMuted')
 app.use(service.update_ismuted, updateIsMuted)
+const getNotifications = require('./server/service/getNotifications')
+app.use(service.getNotifications, getNotifications)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')
@@ -162,6 +164,9 @@ const get_events = require('./server/routes/get-events')
 app.use(url.get_events, get_events)
 const cancel_event = require('./server/routes/cancel-event')
 app.use(url.cancel_event, cancel_event)
+
+const send_notifications = require('./server/routes/send-notifications')
+app.use(url.send_notifications, send_notifications)
 
 const setup_test = require('./server/routes/setup-test')
 app.use(url.setup_test, setup_test)
