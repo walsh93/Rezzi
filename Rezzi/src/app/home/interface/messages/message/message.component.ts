@@ -7,16 +7,17 @@ import {
   SocketChannelMessageData,
   SocketPrivateMessageData,
   HDUser,
+  EventData,
   PollInfo
-} from 'src/app/classes.model';
-import { RezziService } from 'src/app/rezzi.service';
-import { MessagesService } from '../messages.service';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+} from "src/app/classes.model";
+import { RezziService } from "src/app/rezzi.service";
+import { MessagesService } from "../messages.service";
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { MatRadioButton, MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from 'src/app/profile/profile.component';
-
 
 @Component({
   selector: 'app-message',
@@ -66,7 +67,8 @@ export class MessageComponent implements OnInit {
   private pmReportId: string; // syntax: userWhoReportedMessage-messageID
   private ReportId: string;
   private currUserEmail: string;
-  private avatar: string; // The avatar image, extracted from message
+  private avatar: string // The avatar image, extracted from message
+  private event: EventData; // The event in the message, if it has one
   private isPoll: boolean;
   private pollInfo: PollInfo;
   private pollTie: boolean;
@@ -81,13 +83,13 @@ export class MessageComponent implements OnInit {
   pollWinnerCount: number;
   pollWinnerTotal: number;
 
-
   constructor(
     public messagesService: MessagesService,
     private http: HttpClient,
     private rezziService: RezziService,
     private sanitizer: DomSanitizer,
-    public profileDialog: MatDialog,
+    private _snackBar: MatSnackBar,
+    public profileDialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -98,6 +100,7 @@ export class MessageComponent implements OnInit {
     this.time = this.message.time;
     this.reported = this.message.reported;
     this.image = this.message.image;
+    this.event = this.message.event;
     this.content = [];
     this.isPoll = this.message.isPoll;
     this.pollInfo = this.message.pollInfo;
@@ -350,6 +353,18 @@ export class MessageComponent implements OnInit {
       alert('This message has been reported to the hall director!');
       this.updateHallDirector(this.hdEmail, this.user.email);
     }
+  }
+
+  respondToEvent(response) {
+    this.messagesService.respondToEvent(this.viewingUser, this.event, response).subscribe(resp => {
+
+    },
+    error => {
+      // event is probably canceled
+      this._snackBar.open('Event is canceled', 'Dismiss', {
+        duration: 2000,
+      });
+    });
   }
 
   updateHallDirector(hd, user) {

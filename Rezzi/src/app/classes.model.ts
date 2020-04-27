@@ -120,6 +120,21 @@ export interface ReactionData {
   whatshot: string[];
 }
 
+export interface EventData {
+  id: string;
+  owner: User;
+  name: string;
+  description: string;
+  start_time: string;
+  end_time: string;
+  attending: {
+    going: User[];
+    interested: User[];
+    "not going": User[];
+  };
+  canceled: boolean;
+}
+
 export class AbbreviatedUser {
   email: string;
   firstName: string;
@@ -145,6 +160,7 @@ export interface Message {
   reactions: ReactionData;
   reported: boolean;
   image: string;
+  event: EventData;
   isPoll: boolean;
   pollInfo: PollInfo;
 }

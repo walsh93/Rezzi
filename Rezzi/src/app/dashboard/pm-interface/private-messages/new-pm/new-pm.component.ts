@@ -76,6 +76,7 @@ export class NewPmComponent implements OnInit {
       },
       reported: false,
       image: (this.image !== null ? this.image.src : null),
+      event: null,
       isPoll: false,
       pollInfo: null,
     };

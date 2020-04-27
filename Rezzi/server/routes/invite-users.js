@@ -153,7 +153,8 @@ router.get("/", checkCookie, function (request, response) {
         floor: rb.floor,
         rezzi: rezzi,
         channels: rb.channels,
-        lastEmailSent: time
+        lastEmailSent: time,
+        calendar: [],
       });
 
       //create Notifications collection and add documents for channels

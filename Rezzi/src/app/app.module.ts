@@ -27,9 +27,13 @@ import {
   MatDividerModule,
   MatProgressSpinnerModule,
   MatChipsModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatButtonToggleModule,
   MatRadioModule,
   MatStepperModule,
   MatAutocompleteModule,
+  MatPaginatorModule,
  } from '@angular/material';
 
 
@@ -119,8 +123,13 @@ import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MuteMembersComponent } from './home/interface/mute-members/mute-members.component';
+import { CreateEventComponent } from './home/interface/messages/new-message/create-event/create-event.component';
 import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
 import { ViewMembersComponent } from './home/interface/view-members/view-members.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calendar-panel/calendar-panel.component';
+import { EventModalComponent, ConfirmCancelEventDialogComponent } from './home/interface/channel-nav-bar/calendar-panel/event-modal/event-modal.component';
 import { NotificationsComponent } from './dashboard/notifications/notifications.component';
 import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.service';
 
@@ -179,9 +188,13 @@ import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-si
     ProfileComponent,
     AssignPrivilegsComponent,
     MuteMembersComponent,
+    CreateEventComponent,
     MoveUsersComponent,
     PollingComponent,
     ViewMembersComponent,
+    CalendarPanelComponent,
+    EventModalComponent,
+    ConfirmCancelEventDialogComponent,
     NotificationsComponent,
   ],
   imports: [
@@ -219,10 +232,15 @@ import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-si
     MatDividerModule,
     MatProgressSpinnerModule,
     MatChipsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonToggleModule,
+    MatRadioModule,
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
     MatRadioModule,
     MatAutocompleteModule,
     MatStepperModule,
-
+    MatPaginatorModule,
   ],
   entryComponents: [
     JoinChannelComponent,
@@ -230,7 +248,10 @@ import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-si
     LeaveChannelDialog,
     DeleteChannelDialog,
     ImageModalComponent,
-    PollingComponent
+    CreateEventComponent,
+    PollingComponent,
+    EventModalComponent,
+    ConfirmCancelEventDialogComponent
   ],
   providers: [MessagesService, ChannelNavBarService, PMSidePanelService],
   bootstrap: [AppComponent]

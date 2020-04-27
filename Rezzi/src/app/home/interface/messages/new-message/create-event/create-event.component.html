@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>Create Event</h2>
+<div mat-dialog-content>
+  <form class="add-event-form">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name of event" [(ngModel)]="name" name="name">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field>
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="eventStartDate" [(ngModel)]="start_date" name="date">
+      <mat-datepicker-toggle matSuffix [for]="eventStartDate"></mat-datepicker-toggle>
+      <mat-datepicker #eventStartDate></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Start Time</mat-label>
+      <input type="time" matInput [(ngModel)]="start_time" name="time">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field>
+      <mat-label>End Date</mat-label>
+      <input matInput [matDatepicker]="eventEndDate" [(ngModel)]="end_date" name="date">
+      <mat-datepicker-toggle matSuffix [for]="eventEndDate"></mat-datepicker-toggle>
+      <mat-datepicker #eventEndDate></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>End Time</mat-label>
+      <input type="time" matInput [(ngModel)]="end_time" name="time">
+    </mat-form-field>
+    <br>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput placeholder="Description of event..." [(ngModel)]="description" name="description"></textarea>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-flat-button [mat-dialog-close]="true">Close</button>
+  <button mat-flat-button color="primary" (click)="addEvent()">Create</button>
+</div>

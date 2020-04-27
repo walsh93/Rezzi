@@ -162,6 +162,13 @@ app.use(url.get_non_pm_users, get_non_pm_users)
 const create_pm = require('./server/routes/create-pm')
 app.use(url.create_pm, create_pm);
 
+const respond_to_event = require('./server/routes/respond-event')
+app.use(url.respond_to_event, respond_to_event)
+const get_events = require('./server/routes/get-events')
+app.use(url.get_events, get_events)
+const cancel_event = require('./server/routes/cancel-event')
+app.use(url.cancel_event, cancel_event)
+
 const send_notifications = require('./server/routes/send-notifications')
 app.use(url.send_notifications, send_notifications)
 

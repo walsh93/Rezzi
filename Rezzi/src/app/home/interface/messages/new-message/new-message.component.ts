@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Message, User, SocketChannelMessageData, AbbreviatedUser, ReactionData } from '../../../../classes.model';
 import { MessagesService } from '../messages.service';
 import { ImageModalComponent } from './image-modal/image-modal.component';
+import { CreateEventComponent } from './create-event/create-event.component';
 import { NgForm } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 
@@ -15,6 +16,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   tempuser = new User('a@a.com', 'abc123', 'Conley', 'Utz', 21, 'CS', 'Con', 'Hi I\'m Conley', true, 0, '');
   enteredMessage = '';
   image = null;
+  event = null;
 
   isHidden = false;  // By default, want to show channel messages and new-message component
   private isHiddenSubsc: Subscription;
@@ -47,7 +49,7 @@ export class NewMessageComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
 
-  constructor(public messagesService: MessagesService, public dialog: MatDialog) { }
+  constructor(public messagesService: MessagesService, public imageDialog: MatDialog, public eventDialog: MatDialog) { }
 
   ngOnInit() {
     // Listen for whether or not to view this in the interface or some other component
@@ -104,9 +106,9 @@ export class NewMessageComponent implements OnInit, OnDestroy {
       },
       reported: false,
       image: (this.image !== null ? this.image.src : null),
+      event: this.event,
       isPoll: false,
       pollInfo: null,
-
     };
 
     const scmd: SocketChannelMessageData = {
@@ -118,17 +120,31 @@ export class NewMessageComponent implements OnInit, OnDestroy {
     // this.messagesService.addMessage(message);
     this.messagesService.sendMessageThroughSocket(scmd);
     this.image = null;
+    this.event = null;
     form.resetForm();
   }
 
   openImageDialog() {
-    const dialogRef = this.dialog.open(ImageModalComponent, {
+    const dialogRef = this.imageDialog.open(ImageModalComponent, {
       width: '600px',
       height: '400px'
     });
 
     dialogRef.componentInstance.imageRefEmitter.subscribe((image) => {
       this.image = image;
+    });
+  }
+
+  openEventDialog() {
+    const dialogRef = this.eventDialog.open(CreateEventComponent, {
+      width: '800px',
+      height: '600px'
+    });
+
+    dialogRef.componentInstance.eventEmitter.subscribe((event) => {
+      console.log(event);
+      this.event = event;
+      this.event.owner = this.user;
     });
   }
 

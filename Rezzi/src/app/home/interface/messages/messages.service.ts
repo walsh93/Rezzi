@@ -1,4 +1,4 @@
-import { Message, SocketMessageData, BotMessage, SocketChannelMessageData, IMAGE_BASE_URL } from '../../../classes.model';
+import { Message, SocketMessageData, BotMessage, SocketChannelMessageData, IMAGE_BASE_URL, EventData, User } from '../../../classes.model';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -90,6 +90,7 @@ export class MessagesService {
       reactions: null,
       reported: false,
       image: null,
+      event: null,
       isPoll: false,
       pollInfo: null,
     };
@@ -106,6 +107,25 @@ export class MessagesService {
     formData.append('image', image);
 
     return this.http.post<{url: string}>(IMAGE_BASE_URL + '/uploadImage', formData, { observe: "response" });
+  }
+
+  public respondToEvent(user: User, event: EventData, response: string) {
+    console.log(user.email + " is " + response + " " + event.name);
+    const data = {
+      user: user,
+      event: event,
+      response: response
+    };
+    return this.http.post('/respond-event', data);
+  }
+
+  public cancelEvent(event: EventData) {
+    const data = {
+      event: event
+    };
+    return this.http.post('/cancel-event', data).subscribe((data) => {
+      console.log(data);
+    });
   }
 
   /*********************************************************************************************************************************

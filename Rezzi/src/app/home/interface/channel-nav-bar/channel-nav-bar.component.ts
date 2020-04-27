@@ -43,11 +43,11 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   private userName: string;
 
   //view Members
-    private currentChannelID: string;
-    private viewingUpdateSub: Subscription;
-    @Input() viewingObs: Observable<string>;
-    private channelMuteMap = new Map<string, Map<string, MemberMuteInfo>>();
-    members: MatTableDataSource<MemberMuteInfo>;
+  private currentChannelID: string;
+  private viewingUpdateSub: Subscription;
+  @Input() viewingObs: Observable<string>;
+  private channelMuteMap = new Map<string, Map<string, MemberMuteInfo>>();
+  members: MatTableDataSource<MemberMuteInfo>;
 
   // Session data retrieved from interface.component
   session: any;
@@ -189,6 +189,10 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 
   goToChannelMessagesScreen() {
     this.channelNavBarService.updateInterfaceView(c.VIEW_CHANNEL_MESSAGES);
+  }
+
+  goToCalendarScreen() {
+    this.channelNavBarService.updateInterfaceView(c.VIEW_CALENDAR);
   }
 
   openPollDialog(): void {
