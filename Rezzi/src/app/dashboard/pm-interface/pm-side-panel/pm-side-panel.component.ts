@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { PrivateMessageData, Message } from 'src/app/classes.model';
 import { PMSidePanelService } from './pm-side-panel.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ export class PmSidePanelComponent implements OnInit {
   public non_pm_users = [];
   public private_message_users: PrivateMessageData[];
   oldUser;
+  @Input() viewing: string;
 
   @Output() pmUsersToSend = new EventEmitter<PrivateMessageData[]>();
   @Output() pmUserToView = new EventEmitter<string>();
@@ -81,11 +82,15 @@ export class PmSidePanelComponent implements OnInit {
 
 
   ngOnInit() {
-    this.oldUser = null;
+    this.oldUser = this.viewing;
   }
 
   viewUser(user: string) {
-    if(this.oldUser==null){
+    if(this.oldUser==null && this.viewing){
+      this.oldUser = this.viewing
+      document.getElementById(this.oldUser).style.background = document.getElementById(user).style.color
+    }
+    else if(this.oldUser==null && !this.viewing){
       this.oldUser = user;
     }
     else{

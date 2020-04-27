@@ -97,6 +97,9 @@ export class ProfileComponent implements OnInit {
   }
 
   navigatePMs(user: string) {
+    if(this.dialog){
+      this.dialog.close();
+    }
     this.router.navigate(['/dashboard'], {queryParams: {nav: 'pm', user}});
     // TODO pass in user to pm
     // check if user has pm already .getNonPrivateMessageUsers()

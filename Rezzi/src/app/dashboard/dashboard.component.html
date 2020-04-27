@@ -49,7 +49,7 @@
       <app-edit-profile></app-edit-profile>
     </p>
     <p *ngIf="showPM">
-      <app-pm-interface></app-pm-interface>
+      <app-pm-interface [viewing]=viewing></app-pm-interface>
     </p>
     <p *ngIf="showRA">
       <app-ra-admin [email]="email" [rezzi]="rezzi"></app-ra-admin>

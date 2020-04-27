@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit {
   showPostPriv = false;
   showNotify = false;
   accountType: number;
+  viewing = null;
 
   // Data to pass to child elements
   email: string;
@@ -39,6 +40,7 @@ export class DashboardComponent implements OnInit {
         const urlParam = new URLSearchParams(query);
         switch (urlParam.get('nav')) {
           case 'pm': {
+            this.viewing = urlParam.get('user');
             this.showPrivateMessages();
             break;
           }
