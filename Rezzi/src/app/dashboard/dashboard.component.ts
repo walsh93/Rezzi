@@ -36,10 +36,6 @@ export class DashboardComponent implements OnInit {
 
         const query = window.location.search;
         const urlParam = new URLSearchParams(query);
-        if (urlParam.get('nav') === 'pm') {
-          this.showPrivateMessages();
-        }
-
         switch (urlParam.get('nav')) {
           case 'pm': {
             this.showPrivateMessages();
