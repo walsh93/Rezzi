@@ -34,7 +34,11 @@ export class DashboardComponent implements OnInit {
         this.rezzi = response.rezzi;
         this.accountType = response.accountType;
 
-        // query if showPM
+        const query = window.location.search;
+        const urlParam = new URLSearchParams(query);
+        if (urlParam.get('nav') === 'pm') {
+          this.showPrivateMessages();
+        }
 
         if (response.accountType == null || response.accountType === undefined) {
           this.accountType = 2;  // Set as resident by default??

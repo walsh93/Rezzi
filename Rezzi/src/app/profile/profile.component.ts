@@ -96,8 +96,8 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  navigatePMs() {
-    this.router.navigate(['/dashboard']);
+  navigatePMs(user: string) {
+    this.router.navigate(['/dashboard'], {queryParams: {nav: 'pm', user}});
     // TODO pass in user to pm
     // check if user has pm already .getNonPrivateMessageUsers()
     // createPM()
