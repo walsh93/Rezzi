@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
             break;
           }
         }
-
+        window.history.replaceState({}, document.title, "/" + "dashboard");
         if (response.accountType == null || response.accountType === undefined) {
           this.accountType = 2;  // Set as resident by default??
         }

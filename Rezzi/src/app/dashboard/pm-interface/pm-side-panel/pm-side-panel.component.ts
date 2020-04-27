@@ -55,13 +55,7 @@ export class PmSidePanelComponent implements OnInit {
       this.pmUsersToSend.emit(this.private_message_users)
 
     });
-    this.privateSidePanelService.getNonPrivateMessageUsers().subscribe(data => {
-      // tslint:disable-next-line: forin
-      for (const index in data) {
-        this.non_pm_users.push(data[index])
-      }
-      //console.log(this.non_pm_users);
-    })
+
   }
 
   openPMDialog(): void {
@@ -83,6 +77,14 @@ export class PmSidePanelComponent implements OnInit {
 
   ngOnInit() {
     this.oldUser = this.viewing;
+    this.non_pm_users.length = 0;
+    this.privateSidePanelService.getNonPrivateMessageUsers().subscribe(data => {
+      // tslint:disable-next-line: forin
+      for (const index in data) {
+        this.non_pm_users.push(data[index])
+      }
+      //console.log(this.non_pm_users);
+    })
   }
 
   viewUser(user: string) {

@@ -122,6 +122,7 @@ import { MuteMembersComponent } from './home/interface/mute-members/mute-members
 import { PollingComponent } from './home/interface/channel-nav-bar/polling/polling.component';
 import { ViewMembersComponent } from './home/interface/view-members/view-members.component';
 import { NotificationsComponent } from './dashboard/notifications/notifications.component';
+import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.service';
 
 @NgModule({
   declarations: [
@@ -231,7 +232,7 @@ import { NotificationsComponent } from './dashboard/notifications/notifications.
     ImageModalComponent,
     PollingComponent
   ],
-  providers: [MessagesService, ChannelNavBarService],
+  providers: [MessagesService, ChannelNavBarService, PMSidePanelService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
