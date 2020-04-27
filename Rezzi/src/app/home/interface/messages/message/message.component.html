@@ -31,7 +31,7 @@
       </mat-card-content>
       <mat-card-content *ngIf="content.length === 1 && content[0] !== null" [innerHTML]="content[0]"></mat-card-content>
       <mat-card-footer>{{ displayTime }}
-        <button mat-icon-button (click)="reportMessage()">
+        <button *ngIf="pm!=true" mat-icon-button (click)="reportMessage()">
           <mat-icon *ngIf="accountType>=2" id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false"
             aria-label="report" matTooltip="Report Message">flag</mat-icon>
           <mat-icon *ngIf="accountType<2" id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false"
