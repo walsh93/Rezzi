@@ -40,6 +40,29 @@ export class DashboardComponent implements OnInit {
           this.showPrivateMessages();
         }
 
+        switch (urlParam.get('nav')) {
+          case 'pm': {
+            this.showPrivateMessages();
+            break;
+          }
+          case 'ra': {
+            this.showRaAdmin();
+            break;
+          }
+          case 'hd': {
+            this.showHdAdmin();
+            break;
+          }
+          case 'post': {
+            this.showPostingPrivileges();
+            break;
+          }
+          case 'req': {
+            this.showRequestChannel();
+            break;
+          }
+        }
+
         if (response.accountType == null || response.accountType === undefined) {
           this.accountType = 2;  // Set as resident by default??
         }
