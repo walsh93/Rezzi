@@ -21,6 +21,8 @@ module.exports = {
     getResidents: "/getResidents",
     private_messages: "/private-messages",
     get_deletion_requests: "/getDeletionRequests",
+    get_reported_messages: "/get-reported-messages",
+    get_message: "/get-message",
     get_res_by_floor: "/get-residents-by-floor",
     get_res_by_channel: "/get-residents-by-channel",
     get_res_by_channel_non_admin: "/get-residents-by-channel-non-admin",
@@ -39,7 +41,8 @@ module.exports = {
     channels: 'channels',
     rezzis: 'residence-halls',
     private_messages: 'private-messages',
-    members: 'members'
+    members: 'members',
+    messages: 'messages',
   },
 
   // User types

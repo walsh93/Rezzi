@@ -15,6 +15,7 @@ export class HdNotificationsComponent implements OnInit {
   errorMsg: string;
   session: any;
   deletionRequests: Array<string>;
+  reportedMessages: Array<string>;
 
   panelOpenState = false;
 
@@ -28,11 +29,20 @@ export class HdNotificationsComponent implements OnInit {
     });
 
     this.rezziService.getDeletionRequests().then(deletionRequests => {
-      console.log('Deletion request list IS ' + deletionRequests.deletionRequests);
+      // console.log('Deletion request list IS ' + deletionRequests.deletionRequests);
       if (deletionRequests == null) {
         this.deletionRequests = ['there are no requests'];
       } else {
         this.deletionRequests = deletionRequests.deletionRequests;
+      }
+    });
+
+    this.rezziService.getReportedMessages().then(reportedMessages => {
+      console.log('Reported messages to display', reportedMessages.reportedMessages);
+      if (reportedMessages == null) {
+        this.reportedMessages = ['there are no reports'];
+      } else {
+        this.reportedMessages = reportedMessages.reportedMessages;
       }
     });
 
