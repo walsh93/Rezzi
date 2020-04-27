@@ -17,7 +17,7 @@
         [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
         [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"></app-private-messages>
     </div>
-    <div>
+    <div *ngIf="currentName!=null">
       <app-new-pm [sessionUpdateEventAnm]="sessionUpdateSubject.asObservable()"
         [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
         [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"></app-new-pm>
