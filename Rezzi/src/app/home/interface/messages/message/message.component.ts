@@ -15,6 +15,7 @@ import { MessagesService } from "../messages.service";
 import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import { HttpClient } from "@angular/common/http";
 import { MatRadioButton } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -84,7 +85,8 @@ export class MessageComponent implements OnInit {
     public messagesService: MessagesService,
     private http: HttpClient,
     private rezziService: RezziService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -307,7 +309,15 @@ export class MessageComponent implements OnInit {
   }
 
   respondToEvent(response) {
-    this.messagesService.respondToEvent(this.viewingUser, this.event, response);
+    this.messagesService.respondToEvent(this.viewingUser, this.event, response).subscribe(resp => {
+
+    },
+    error => {
+      // event is probably canceled
+      this._snackBar.open('Event is canceled', 'Dismiss', {
+        duration: 2000,
+      });
+    });
   }
 
   updateHallDirector(hd, user) {

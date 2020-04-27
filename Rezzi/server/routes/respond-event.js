@@ -37,24 +37,45 @@ router.post('/', function(request, response) {
 
           db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
             calendar: events,
+          }).then(resp => {
+            // Must also update the user calendar
+            db.collection(keys.users).doc(email).get().then((doc) => {
+              let events = doc.data().calendar;
+              if (req.response === 'going') {
+                if (!events.some(event => event === req.event.id)) {
+                  events.push(req.event.id);
+                }
+              }
+              else {
+                events = events.filter(event => event !== req.event.id);
+              }
+              db.collection(keys.users).doc(email).update({
+                calendar: events
+              }).then(res => {
+                response.status(200).json({success: 'Successfully responded to event!'});
+              });
+            });
           });
         }
-
-        // Must also update the user calendar
-        db.collection(keys.users).doc(email).get().then((doc) => {
-          let events = doc.data().calendar;
-          if (req.response === 'going') {
-            if (!events.some(event => event === req.event.id)) {
-              events.push(req.event.id);
+        else {
+          // Must also update the user calendar
+          db.collection(keys.users).doc(email).get().then((doc) => {
+            let events = doc.data().calendar;
+            if (req.response === 'going') {
+              if (!events.some(event => event === req.event.id)) {
+                events.push(req.event.id);
+              }
             }
-          }
-          else {
-            events = events.filter(event => event !== req.event.id);
-          }
-          db.collection(keys.users).doc(email).update({
-            calendar: events
+            else {
+              events = events.filter(event => event !== req.event.id);
+            }
+            db.collection(keys.users).doc(email).update({
+              calendar: events
+            }).then(res => {
+              response.status(200).json({success: 'Successfully responded to event!'});
+            });
           });
-        });
+        }
       }
       else {
         response.status(500).json({error: 'Event has been canceled!'});

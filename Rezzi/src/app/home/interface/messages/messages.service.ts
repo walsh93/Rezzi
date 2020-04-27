@@ -116,9 +116,7 @@ export class MessagesService {
       event: event,
       response: response
     };
-    return this.http.post('/respond-event', data).subscribe((data) => {
-      console.log(data);
-    });
+    return this.http.post('/respond-event', data);
   }
 
   public cancelEvent(event: EventData) {

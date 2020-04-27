@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { ChannelNavBarService } from '../channel-nav-bar.service';
 import { EventModalComponent } from './event-modal/event-modal.component';
 import { MessagesService } from '../../messages/messages.service';
@@ -93,6 +93,7 @@ export class CalendarPanelComponent implements OnInit {
   activeDayIsOpen: boolean = true;         // Determines whether or not the currently viewed day has the panel open
 
   events: CalendarEventExt[] = [];              // The events in the calendar
+  refresh: Subject<any> = new Subject();
 
   constructor(public dialog: MatDialog,
     private navbarService: ChannelNavBarService,
@@ -126,6 +127,7 @@ export class CalendarPanelComponent implements OnInit {
   }
 
   updateEvents(): void {
+    console.log("updating events...")
     this.navbarService.getEventsForChannel().subscribe(data => {
       this.events = [];
       data.channels.forEach((channel, i) => {
@@ -138,7 +140,7 @@ export class CalendarPanelComponent implements OnInit {
         let to_push: CalendarEventExt = {
           start: parseISO(ev.start_time),
           end: parseISO(ev.end_time),
-          title: ev.name,
+          title: ev.name + ' (attending)',
           color: this.channel_colors[ev.id.substring(0, ev.id.lastIndexOf('-'))],
           data: ev
         }
@@ -151,14 +153,14 @@ export class CalendarPanelComponent implements OnInit {
           start: parseISO(ev.start_time),
           end: parseISO(ev.end_time),
           title: ev.name,
+          color: {primary: this.channel_colors[ev.id.substring(0, ev.id.lastIndexOf('-'))].primary, secondary: '#FFFFFF'},
           data: ev
         }
-        let color = this.channel_colors[ev.id.substring(0, ev.id.lastIndexOf('-'))];
-        color.secondary = '#FFFFFF';
-        to_push.color = color;
 
         this.events.push(to_push);
       });
+
+      this.refresh.next();
     });
   }
 
@@ -184,7 +186,7 @@ export class CalendarPanelComponent implements OnInit {
     }
     else if (action === 'Clicked') {
       const dialogRef = this.dialog.open(EventModalComponent, {
-        width: 'auto',
+        width: '800px',
         height: 'auto',
         data: {
           event: event.data,

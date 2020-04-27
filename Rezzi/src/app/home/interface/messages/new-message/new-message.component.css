@@ -48,3 +48,11 @@
   right: 0px;
   top: 30px;
 }
+
+mat-chip {
+  width: auto;
+}
+
+mat-chip-list {
+  margin-right: 5px;
+}

@@ -48,8 +48,14 @@ export class EventModalComponent implements OnInit {
   }
   
   respondToEvent(response: string) {
-    this.EventResponseEvent.emit(response);
-    this.messagesService.respondToEvent(this.user, this.event, response);
+    this.messagesService.respondToEvent(this.user, this.event, response).subscribe(response => {
+      console.log(response);
+      this.EventResponseEvent.emit(response);
+    },
+    error => {
+      // server error
+      console.log(error);
+    });
   }
   
   cancelEvent() {

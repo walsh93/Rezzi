@@ -1,34 +1,32 @@
 <!-- <p>new-message works!</p> -->
 <div class="bottombar" [hidden]="isHidden">
   <mat-card color="primary" class="box">
-    <div class="box">
-      <mat-chip-list *ngIf="image !== null || event != null" #chipList>
-        <mat-chip *ngIf="image !== null" [removable]="true" (removed)="image = null">
-          <mat-icon>image</mat-icon> {{ image.display_name }}<mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-        <mat-chip *ngIf="event !== null" #chipList [removable]="true" (removed)="event = null">
-          <mat-icon>event</mat-icon> {{ event.name }}<mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
+    <mat-chip-list *ngIf="image !== null || event != null" #chipList>
+      <mat-chip *ngIf="image !== null" [removable]="true" (removed)="image = null">
+        <mat-icon>image</mat-icon> {{ image.display_name }}<mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <mat-chip *ngIf="event !== null" #chipList [removable]="true" (removed)="event = null">
+        <mat-icon>event</mat-icon> {{ event.name }}<mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
 
-      <form (submit)=onAddMessage(textForm) #textForm="ngForm" id="message-form" class="message-box">
-        <mat-form-field class="input-style">
-          <input
-            matInput
-            placeholder="Enter your message..."
-            type="text"
-            name="enteredMessage"
-            pattern=".*[^ ].*"
-            ngModel
-            [disabled]="event !== null">
-          <mat-error>Please enter a valid message</mat-error>
-        </mat-form-field>
-      </form>
+    <form (submit)=onAddMessage(textForm) #textForm="ngForm" id="message-form" class="message-box">
+      <mat-form-field class="input-style">
+        <input
+          matInput
+          placeholder="Enter your message..."
+          type="text"
+          name="enteredMessage"
+          pattern=".*[^ ].*"
+          ngModel
+          [disabled]="event !== null">
+        <mat-error>Please enter a valid message</mat-error>
+      </mat-form-field>
+    </form>
 
-      <button class="add-photo-button" mat-icon-button color="accent" (click)="openImageDialog()" [disabled]="event !== null"><mat-icon>add_a_photo</mat-icon></button>
-      <button class="add-event-button" mat-icon-button color="accent" (click)="openEventDialog()" [disabled]="image !== null"><mat-icon>event</mat-icon></button>
-      <button class="send-button" mat-icon-button color="accent" type="submit" form="message-form"><mat-icon>send</mat-icon></button>
-    </div>
+    <button class="add-photo-button" mat-icon-button color="accent" (click)="openImageDialog()" [disabled]="event !== null"><mat-icon>add_a_photo</mat-icon></button>
+    <button class="add-event-button" mat-icon-button color="accent" (click)="openEventDialog()" [disabled]="image !== null"><mat-icon>event</mat-icon></button>
+    <button class="send-button" mat-icon-button color="accent" type="submit" form="message-form"><mat-icon>send</mat-icon></button>
   </mat-card>
 </div>
 <!-- this is the text box with the "Send" button component -->
