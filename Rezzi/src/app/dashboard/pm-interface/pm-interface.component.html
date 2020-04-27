@@ -1,12 +1,17 @@
 <mat-drawer-container class="example-container">
+  <mat-toolbar>
+    <span *ngIf="currentName!=null">Now chatting with {{ currentName }}</span>
+    <span *ngIf="currentName==null">Select a user to start chatting!</span>
+  </mat-toolbar>
   <mat-drawer #drawer class="example-sidenav" mode="side" disableClose="true" opened="true">
     <!-- Stuff in sidebar -->
-    <p style="padding-top: 45px;">Side Nav</p>
+    <p style="padding-top: 45px;"></p>
     <app-pm-side-panel (pmUsersToSend)="receivedPMUsers($event)" (pmUserToView)="viewingNewPMUser($event)">
     </app-pm-side-panel>
   </mat-drawer>
 
   <div class="example-sidenav-content">
+
     <div style="min-height: 100%;">
       <app-private-messages [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
         [pmUsersUpdateEvent]="pmUsersUpdateSubject.asObservable()"

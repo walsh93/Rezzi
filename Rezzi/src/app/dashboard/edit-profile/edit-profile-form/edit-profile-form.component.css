@@ -19,8 +19,7 @@ mat-form-field {
 }
 .edit-profile-form {
   display: block;
-  margin-left: 20px;
-  margin-right: 20px;
+  
 }
 .container-fluid{
   display: block;
@@ -41,4 +40,32 @@ button {
 display: block;
   margin-left: auto;
   margin-right: auto;
+}
+mat-card {
+  width: 90%;
+  margin: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+mat-form-field{
+  width:75%;
+}
+.file-upload-button{
+  background-color: #607d8b;
+}
+
+#upload_button {
+    display: inline-block;
+}
+#upload_button input[type=file] {
+    display:none;
+}
+#picUpload{
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: auto;
+ 
 }

@@ -1,10 +1,28 @@
 mat-card {
   width: 80%;
   margin: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
-.example-form {
-  min-width: 150px;
-  max-width: 400px;
-  width: 100%;
+mat-form-field{
+  width:75%;
+}
+.file-upload-button{
+  background-color: #607d8b;
+}
+
+#upload_button {
+    display: inline-block;
+}
+#upload_button input[type=file] {
+    display:none;
+}
+#picUpload{
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: auto;
+ 
 }

@@ -11,6 +11,7 @@ import { PrivateMessageData, AbbreviatedUser } from 'src/app/classes.model';
 export class PmInterfaceComponent implements OnInit {
   session: any;
   abbrevUser: AbbreviatedUser;
+  currentName;
 
   // Passing channels and session to child component channel-messages every time they update
   sessionUpdateSubject: Subject<any> = new Subject<any>();
@@ -22,6 +23,7 @@ export class PmInterfaceComponent implements OnInit {
   constructor(private rezziService: RezziService) { }
 
   ngOnInit() {
+    this.currentName = null;
     this.rezziService.getSession().then((session) => {
       this.session = session;
       this.sessionUpdateSubject.next(session);
@@ -40,6 +42,22 @@ export class PmInterfaceComponent implements OnInit {
   }
 
   viewingNewPMUser(userID: string) {
-    this.viewingUpdateSubject.next(userID);
+    this.rezziService.getProfile(userID).then(userProfile => {
+      this.viewingUpdateSubject.next(userID);
+
+      if (
+        userProfile.user.nickName == null ||
+        userProfile.user.nickName === undefined ||
+        userProfile.user.nickName.length === 0
+      ) {
+        this.currentName = `${userProfile.user.firstName} ${userProfile.user.lastName.charAt(
+          0
+        )}.`;
+      } else {
+        this.currentName = userProfile.user.nickName;
+      }
+    }
+      )
+    //this.viewingUpdateSubject.next(userID);
   }
 }

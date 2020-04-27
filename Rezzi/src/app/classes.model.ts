@@ -78,6 +78,40 @@ export class User {
   }
 }
 
+export class Profile {
+  email: string;
+  firstName: string;
+  lastName: string;
+  rezzi: string;
+  floor: string;
+  major: string;
+  nickName: string;
+  bio: string;
+  imageUrl: string;
+
+  constructor(
+    email: string,
+    firstName: string,
+    lastName: string,
+    rezzi: string,
+    floor: string,
+    major: string,
+    nickName: string,
+    bio: string,
+    imageUrl: string,
+  ) {
+    this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.rezzi = rezzi;
+    this.floor = floor;
+    this.major = major;
+    this.nickName = nickName;
+    this.bio = bio;
+    this.imageUrl = imageUrl;
+  }
+}
+
 export interface ReactionData {
   thumb_up: string[];
   thumb_down: string[];

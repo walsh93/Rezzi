@@ -4,7 +4,7 @@
       <mat-card-header>
         <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
         </div>
-        <mat-card-title>{{ displayName }}</mat-card-title>
+        <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
         <span class="reactions">
           <ng-container *ngFor="let reaction of reactions | keyvalue">
             <button mat-icon-button (click)="sendReaction(reaction.key)">
@@ -31,7 +31,7 @@
       </mat-card-content>
       <mat-card-content *ngIf="content.length === 1 && content[0] !== null" [innerHTML]="content[0]"></mat-card-content>
       <mat-card-footer>{{ displayTime }}
-        <button mat-icon-button (click)="reportMessage()">
+        <button *ngIf="pm!=true" mat-icon-button (click)="reportMessage()">
           <mat-icon *ngIf="accountType>=2" id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false"
             aria-label="report" matTooltip="Report Message">flag</mat-icon>
           <mat-icon *ngIf="accountType<2" id="report" [ngStyle]="{'color':'red'}" [inline]="true" aria-hidden="false"
@@ -48,7 +48,7 @@
         <mat-card-header>
           <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
           </div>
-          <mat-card-title>{{ displayName }}</mat-card-title>
+          <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
           <span class="reactions">
             <ng-container *ngFor="let reaction of reactions | keyvalue">
               <button mat-icon-button (click)="sendReaction(reaction.key)">
@@ -70,10 +70,16 @@
         <img *ngIf="image !== null" mat-card-image src="{{ image }}">
         <h2>Final Poll Results:</h2>
         <h3>{{pollInfo.question}}</h3>
-        <h4 *ngIf="pollWinnerCount!=0 && pollTieInfo.length==1">{{pollWinnerName}} has won with {{pollWinnerCount}} out
+        <h4 *ngIf="pollWinnerCount!=0 && pollWinnerTotal!=1 &&pollTieInfo.length==1">{{pollWinnerName}} has won with
+          {{pollWinnerCount}} out
           of the
-          {{pollWinnerTotal}}
+          {{pollWinnerTotal}} total
           votes!</h4>
+        <h4 *ngIf="pollWinnerCount!=0 && pollWinnerTotal==1 &&pollTieInfo.length==1">{{pollWinnerName}} has won with
+          {{pollWinnerCount}} out
+          of the
+          {{pollWinnerTotal}} total
+          vote!</h4>
         <h4 *ngIf="pollWinnerCount!=0 && pollTieInfo.length!=1">
           <span>
             There has been a tie between <div *ngFor="let winner of pollTieInfo; let i = index"
@@ -93,9 +99,12 @@
                 <div *ngIf="i!=pollTieInfo.length-1"> {{ winner }} and&nbsp;</div>
                 <div *ngIf="i==pollTieInfo.length-1"> {{ winner }} </div>
               </div>
-            </div> each having {{pollWinnerCount}} votes out
+            </div> each having {{pollWinnerCount}}
+            <div *ngIf="pollWinnerCount==1" style="display: inline-block;">vote</div>
+            <div *ngIf="pollWinnerCount!=1" style="display: inline-block;">votes</div>
+            out
             of the
-            {{pollWinnerTotal}}
+            {{pollWinnerTotal}} total
             votes!</span></h4>
         <h4 *ngIf="pollWinnerCount==0">No votes were cast, therefore there is no winner!</h4>
         <div *ngFor="let response of pollInfo.responses; let i = index">
@@ -122,7 +131,7 @@
         <mat-card-header>
           <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
           </div>
-          <mat-card-title>{{ displayName }}</mat-card-title>
+          <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
           <span class="reactions">
             <ng-container *ngFor="let reaction of reactions | keyvalue">
               <button mat-icon-button (click)="sendReaction(reaction.key)">
@@ -168,7 +177,7 @@
         <mat-card-header>
           <div mat-card-avatar [ngStyle]="{ 'background-image': 'url(' + avatar + ')', 'background-size': 'cover' }">
           </div>
-          <mat-card-title>{{ displayName }}</mat-card-title>
+          <mat-card-title (click)="openProfileDialog(this.userEmail)">{{ displayName }}</mat-card-title>
           <span class="reactions">
             <ng-container *ngFor="let reaction of reactions | keyvalue">
               <button mat-icon-button (click)="sendReaction(reaction.key)">

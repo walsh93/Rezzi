@@ -1,0 +1,37 @@
+.mat-card-image {
+  max-width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile {
+  display: block;
+}
+
+.bio {
+  text-align: left;
+}
+
+.about {
+  text-align: right;
+}
+
+button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+mat-card {
+  width: 90%;
+  margin: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+mat-card-content {
+  margin-bottom: 20px;
+}

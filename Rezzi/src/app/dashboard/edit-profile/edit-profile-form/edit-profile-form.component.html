@@ -1,4 +1,5 @@
 <div class="edit-profile-form">
+  <br>
   <mat-card color="primary">
     <mat-card-title>My Profile</mat-card-title>
     <mat-card-subtitle> </mat-card-subtitle>
@@ -7,12 +8,30 @@
         <img mat-card-image src="{{this.thePic}}" alt="Profile Image">
       </picture>
       <br>
-      <div class="rowUploadSection">
+      <mat-card-subtitle>Change profile photo</mat-card-subtitle>
+      <div class="rowUploadSection" id="picUpload">
+        <div id="upload_button">
+          <label>
+            <input type="file" (change)="onPictureSelected($event)" accept="image/*">
+            <span class="mat-raised-button" style="background-color: #607d8b;">1. Choose photo</span>
+          </label>
+        </div>
+        <div style="padding-left: 15px;  padding-bottom: 20px;">
+          <button mat-raised-button color="accent" (click)="onUpload('image')"> 2. Upload</button></div>
+        <div *ngIf="duringUpload==true"><img style="max-width: 30px;"
+            src="https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/uploaded-images%2Fgiphy.gif?alt=media&token=49354b47-d75b-4315-ab1e-1a52dd664f53"
+            alt="Image is uploading...">
+        </div>
+      </div>
+      <!-- <div class="rowUploadSection">
         <p class = "up"> Upload new profile photo</p>
         <input class = "up" type="file" accept="image/*" (change)="onPictureSelected($event)">
         <div >
-          <button  class = "up" (click)="onUpload('image')"> Upload</button></div>
-      </div>
+          <button  class = "up" (click)="onUpload('image')"> Upload</button>
+          </div>
+          <div class = "up"> <img *ngIf="duringUpload==true"style="max-width: 30px;" src="https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/uploaded-images%2Fgiphy.gif?alt=media&token=49354b47-d75b-4315-ab1e-1a52dd664f53" alt="Image is uploading..."></div>
+
+      </div> -->
     <form (submit)="onEditProfile(editProfileForm)" #editProfileForm="ngForm">
 
       <mat-form-field class="example-full-width">
@@ -51,7 +70,7 @@
       </mat-form-field>
       <br>
       <br>
-      <button mat-raised-button color="accent" type="submit">Edit Profile</button>
+      <button mat-raised-button color="primary" type="submit">Edit Profile</button>
       <br>
 
 
@@ -69,11 +88,11 @@
           ngModel minlength="8" required #confirmPassword="ngModel">
         <mat-error *ngIf="password !== confirmPassword">Your passwords must match!</mat-error>
       </mat-form-field>
-      <button mat-raised-button color="accent" type="submit">Edit Password</button>
+      <button mat-raised-button color="primary" type="submit">Edit Password</button>
     </form>
     <br>
 
-    <button mat-raised-button color="primary" (click)="ondeletionRequest()">Request to Delete Account</button>
+    <button mat-raised-button color="accent" (click)="ondeletionRequest()">Request to Delete Account</button>
 
   </mat-card>
   <br>

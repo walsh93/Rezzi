@@ -1,17 +1,33 @@
 <div class="container" id="pword-reset-form-container">
+
+  <br>
+  <br>
+  <mat-card color="accent">
     <div id="pword-reset-form">
-        <h1>Enter the email associated with your Rezzi account and we will send you an email with a temporary password</h1>
-      <div class="form-row vspace">
-        <input type="email" class="form-control" id="email" name="email" placeholder="Email address" required>
-      </div>
-      <div class="form-row vspace">
-        <button class="btn btn-primary" (click)="onResetPassword()">Submit</button>
-      </div>
+      <mat-card-title>Enter the email associated with your Rezzi account
+        </mat-card-title>
+        <mat-card-subtitle>
+          We will send you an email with a temporary
+        password
+        </mat-card-subtitle>
+      <mat-form-field class="example-full-width">
+        <input matInput type="email" id="email" name="email" placeholder="Email address" required>
+      </mat-form-field>
+      <br>
+      <br>
+      <!-- <button class="btn btn-primary" (click)="onResetPassword()">Submit</button> -->
+
+      <button mat-raised-button color="primary" (click)="onResetPassword()">Submit</button>
+      <br>
+      <br>
       <div class="form-row">
-        <a href="/sign-in">Remember your password?</a>
+       
+        <a href="/sign-in" style="color: 	#009688;">Remember your password?</a>
       </div>
+      <br>
       <div class="form-row" id="error-msg">
         <p>{{ errorMsg }}</p>
       </div>
     </div>
-  </div>
+  </mat-card>
+</div>

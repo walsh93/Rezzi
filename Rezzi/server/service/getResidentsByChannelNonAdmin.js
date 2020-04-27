@@ -12,7 +12,7 @@ const keys = require('../constants').db_keys
  * GET method expects a parameter. Make sure to pass the channel ID parameter whenever a get request
  * is made to this URL
  */
-router.get('/:channelID', checkCookie, function(request, response) {
+router.get('/:channelID', checkCookie, function (request, response) {
   const channelID = request.params.channelID
 
   // Extract ID data to get channel document reference
@@ -52,7 +52,7 @@ router.get('/:channelID', checkCookie, function(request, response) {
     let promises = [];
 
     // Loop through each resident document and pull data
-    for(let i = 0; i < muteStatuses.length; i++) {
+    for (let i = 0; i < muteStatuses.length; i++) {
       const memberPromise = db.collection(keys.users).doc(muteStatuses[i].email).get().then((memberDoc) => {
         if (!memberDoc.exists) {
           console.log(`Firestore document for ${muteStatuses[i].email} could not be found.`)
@@ -76,14 +76,16 @@ router.get('/:channelID', checkCookie, function(request, response) {
             lastName = memberData.lastName;
           }
 
-          // Add info to info array
-          const info = {
-            email: muteStatuses[i].email,
-            firstName: firstName,
-            lastName: lastName,
-            isMuted: muteStatuses[i].isMuted,
+          if (memberData.verified == true) {
+            // Add info to info array
+            const info = {
+              email: muteStatuses[i].email,
+              firstName: firstName,
+              lastName: lastName,
+              isMuted: muteStatuses[i].isMuted,
+            }
+            memberInfo.push(info)
           }
-          memberInfo.push(info)
         }
       })
       promises.push(memberPromise)

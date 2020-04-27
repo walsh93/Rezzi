@@ -1,20 +1,37 @@
 <div class="container-fluid">
   <div class="example-form">
+    <br>
+    <br>
     <mat-card color="primary">
-
+      <mat-card-title>Enter Profile Information</mat-card-title>
+      <br>
       <!-- <picture>
         <source media='(min-width:0px)' srcset="/Rezzi/images/default_profile.jpg">
         <img  id="profile-picture" mat-card-image src="" alt="Profile Image">
       </picture>
       <img  class="img-fluid mx-auto" src="/Rezzi/images/default_profile.jpg"> -->
 
-
-      <div class="row upload-section">
-        <p style="padding-left: 15px; padding-top: 30px;"> Upload profile photo</p>
+      <mat-card-subtitle>Choose profile photo</mat-card-subtitle>
+      <div class="row upload-section" id="picUpload">
+        <div id="upload_button">
+          <label>
+            <input type="file" (change)="onPictureSelected($event)" accept="image/*">
+            <span class="mat-raised-button" style="background-color: #607d8b;">1. Choose photo</span>
+          </label>
+        </div>
+        <!-- <p style="padding-left: 15px; padding-top: 30px;"> Upload profile photo</p> -->
+        <!-- <div id="hide">
         <input style="padding-left: 15px;" type="file" accept="image/*"
           (change)="onPictureSelected($event)">
-        <div style="padding-left: 15px; padding-top: 10px; padding-bottom: 20px;">
-          <button (click)="onUpload('image')"> Upload</button></div>
+          <label>Upload</label>
+        </div> -->
+
+        <div style="padding-left: 15px;  padding-bottom: 20px;">
+          <button mat-raised-button color="accent" (click)="onUpload('image')"> 2. Upload</button></div>
+        <div *ngIf="duringUpload==true"><img style="max-width: 30px;"
+            src="https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/uploaded-images%2Fgiphy.gif?alt=media&token=49354b47-d75b-4315-ab1e-1a52dd664f53"
+            alt="Image is uploading...">
+        </div>
       </div>
 
       <form (submit)="onSignUp(signUpForm)" #signUpForm="ngForm">
@@ -57,7 +74,9 @@
         </textarea>
           <mat-hint>{{bio.value?.length || 0}}/100</mat-hint>
         </mat-form-field>
-        <button mat-raised-button color="accent" type="submit">Signup</button>
+        <br>
+        <br>
+        <button mat-raised-button color="primary" type="submit">Signup!</button>
       </form>
     </mat-card>
   </div>

@@ -22,6 +22,7 @@ export class EditProfileFormComponent implements OnInit {
   selectedPicture: File = null;
   session: any;
   thePic: any;
+  duringUpload = false;
 
   // @ViewChild('pic', true) pic: ElementRef;
 
@@ -158,7 +159,7 @@ export class EditProfileFormComponent implements OnInit {
         });
       }
     } else{
-      this.thePic = '../../../../../src/assets/images/default_profile.jpg';
+      this.thePic = '../../../../../src/assets/images/logoSmall.png';
     }
   }
   onPictureSelected(event) {
@@ -186,6 +187,7 @@ export class EditProfileFormComponent implements OnInit {
     if (fileToUpload === null) {
       alert("Please upload image file");
     } else {
+      this.duringUpload = true;
       // document.getElementById(`${progressId}progress`).hidden = false;
       // document.getElementById(`${progressId}bar`).hidden = false;
       const formData = new FormData();
@@ -199,7 +201,9 @@ export class EditProfileFormComponent implements OnInit {
         .subscribe(response => {
           if (response.status === 200) {
             // location.reload();
+            this.duringUpload = false;
             alert(`Your photo has been uploaded...`);
+            window.location.reload();
           } else {
             alert(
               `Something went wrong. Return with a status code ${response.status}: ${response.statusText}`

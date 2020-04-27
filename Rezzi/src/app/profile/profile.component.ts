@@ -1,80 +1,106 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { RezziService } from '../rezzi.service';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { User } from '../classes.model';
+import { Profile } from '../classes.model';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
   session: any;
-  currentUser: any;
-  viewingUser: any;
-  picture: any;
-  viewingUserRezzi: any;
-
+  currentUserRezzi: any;
+  profile: Profile;
+  userFound: boolean;
+  sameRezzi: boolean;
+  prof: Profile;
+  profToGet: string;
 
   constructor(private rezziService: RezziService,
               private router: Router,
-              private http: HttpClient) { }
+              @Optional() public dialog: MatDialogRef<ProfileComponent>,
+              @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
+                console.log('data', this.data);
+              }
 
   ngOnInit() {
     this.rezziService.getSession().then((response) => {
 
-      if (response.email == null) {
-        this.router.navigate(['/sign-in']);   // User must be signed in to view other profiles
-      } else if (response.verified === false) {
-        // signed in but not verified
+      if (response.email == null) {             /* User must be signed in to view other profiles */
+        this.router.navigate(['/sign-in']);
+      } else if (response.verified === false) { /* signed in but not verified */
         this.router.navigate(['/sign-up']);
-      } // else signed in and verified
+      }
+
+      this.currentUserRezzi = response.rezzi;   /* used to compare user and profile's Rezzis */
+
+// TODO check if verified
 
       this.rezziService.getSession().then(session => {
         this.session = session;
       });
 
-      // TODO ensure users can't view users outside of their own Rezzi
+      if (this.data === null) {
+        const query = window.location.search;
+        const urlParam = new URLSearchParams(query);
+        this.profToGet = urlParam.get('u');
+      } else {
+        this.profToGet = this.data.p;
+      }
 
-      this.rezziService.getProfile('aaronclynn13@gmail.com').then(data => {
-        console.log(data);
-        // this.theUser.setUser(
-        this.viewingUser = new User (
-          data.user.email,
-          data.user.password,
-          data.user.firstName,
-          data.user.lastName,
-          data.user.age,
-          data.user.major,
-          data.user.nickName,
-          data.user.bio,
-          data.user.verified,
-          data.user.deletionRequest,
-          data.user.image_url,
-        );
-        this.viewingUserRezzi = data.user.rezzi;
-        this.loadProfilePicture();
+      this.rezziService.getProfile(this.profToGet).then(data => {
+        if (data) {
+          this.userFound = true;
+          if (data.user.image_url == null) {
+            this.prof = new Profile (
+              data.user.email,
+              data.user.firstName,
+              data.user.lastName,
+              data.user.rezzi,
+              data.user.floor,
+              data.user.major,
+              data.user.nickName,
+              data.user.bio,
+              '../../../assets/images/default_profile.jpg',
+            );
+          } else {
+            this.prof = new Profile (
+              data.user.email,
+              data.user.firstName,
+              data.user.lastName,
+              data.user.rezzi,
+              data.user.floor,
+              data.user.major,
+              data.user.nickName,
+              data.user.bio,
+              data.user.image_url,
+            );
+          }
+        } else {
+          this.userFound = false;
+        }
+      }).then(prof => {
+        if (this.currentUserRezzi !== this.prof.rezzi) {
+          this.sameRezzi = false;
+        } else {
+          this.sameRezzi = true;
+          this.profile = this.prof;
+        }
       });
     });
   }
 
-  loadProfilePicture() {
-    if (this.viewingUser.image_url) {
-      if (document.readyState !== 'loading') {
-        // console.log('document is already ready');
-        this.viewingUser.setImageUrl(this.viewingUser.image_url);
-        this.picture = this.viewingUser.image_url;
-      } else {
-        document.addEventListener('DOMContentLoaded', function() {
-          // console.log('document was not ready');
-          this.viewingUser.setImageUrl(this.viewingUser.image_url);
-          document.getElementById('profile').setAttribute('src', this.viewingUser.image_url);
-        });
-      }
-    } else {
-      this.picture = 'Rezzi/src/assets/images/default_profile.jpg';
-    }
+  navigateHome() {
+    this.router.navigate(['/home']);
   }
 
+  navigatePMs(user: string) {
+    this.router.navigate(['/dashboard'], {queryParams: {nav: 'pm', user}});
+    // TODO pass in user to pm
+    // check if user has pm already .getNonPrivateMessageUsers()
+    // createPM()
+
+  }
 }

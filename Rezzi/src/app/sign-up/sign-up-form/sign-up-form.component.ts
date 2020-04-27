@@ -12,7 +12,8 @@ import { RezziService } from 'src/app/rezzi.service';
 })
 export class SignUpFormComponent implements OnInit {
   hide = true;
-
+  addedPhoto = false;
+  duringUpload = false;
   session: any;
   selectedPicture: File = null;
 
@@ -51,6 +52,10 @@ export class SignUpFormComponent implements OnInit {
       user.setImageUrl(user.image_url);
       //document.getElementById("profile-picture").setAttribute("src", user.image_url);
     }
+    else if(this.addedPhoto==false){
+      user.setImageUrl("https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/uploaded-images%2Fblank2.jpg?alt=media&token=d40de5df-1825-4140-b851-658296d68eac")
+    }
+
 
     this.addUser(user);
 
@@ -77,6 +82,7 @@ export class SignUpFormComponent implements OnInit {
   }
 
   onUpload(value) {
+
     let fileToUpload: File = null;
     let progressId: string = null;
 
@@ -92,6 +98,7 @@ export class SignUpFormComponent implements OnInit {
     if (fileToUpload === null) {
       alert('Please upload image file');
     } else {
+      this.duringUpload = true;
       // document.getElementById(`${progressId}progress`).hidden = false;
       // document.getElementById(`${progressId}bar`).hidden = false;
       const formData = new FormData();
@@ -103,7 +110,9 @@ export class SignUpFormComponent implements OnInit {
       ).subscribe(response => {
         if (response.status === 200) {
           // location.reload();
+          this.duringUpload = false;
           alert(`Your photo has been uploaded...`);
+          this.addedPhoto = true;
         } else {
           alert(`Something went wrong. Return with a status code ${response.status}: ${response.statusText}`);
         }
