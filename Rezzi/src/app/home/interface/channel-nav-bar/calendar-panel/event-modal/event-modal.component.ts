@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventData, User } from 'src/app/classes.model';
 import { MessagesService } from 'src/app/home/interface/messages/messages.service';
@@ -24,9 +24,12 @@ export class EventModalComponent implements OnInit {
   ds_not_going: MatTableDataSource<{displayname: string, email: string}>;
   @ViewChild(MatPaginator, {static: true}) paginator_ng: MatPaginator;
 
+  @Output() public EventResponseEvent = new EventEmitter();
+
   constructor(public dialogRef: MatDialogRef<EventModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
-    public messagesService: MessagesService) {
+    public messagesService: MessagesService,
+    public cancelDialog: MatDialog) {
     this.event = data.event;
     this.user = data.user;
     this.prettyStart = this.datePrettier(parseISO(this.event.start_time));
@@ -45,11 +48,21 @@ export class EventModalComponent implements OnInit {
   }
   
   respondToEvent(response: string) {
+    this.EventResponseEvent.emit(response);
     this.messagesService.respondToEvent(this.user, this.event, response);
   }
   
   cancelEvent() {
-    // this.messagesService.cancelEvent(this.event);
+    const cdRef = this.cancelDialog.open(ConfirmCancelEventDialogComponent, {
+      width: '350px',
+    });
+
+    cdRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.messagesService.cancelEvent(this.event);
+        this.dialogRef.close('canceled');
+      }
+    });
   }
 
   datePrettier(og: Date): string {
@@ -82,4 +95,20 @@ export class EventModalComponent implements OnInit {
   ngOnInit() {
   }
 
+}
+
+@Component({
+  selector: 'dialog-confirm-cancel-event',
+  template: '<div mat-dialog-content>Are you sure you\'d like to cancel this event?</div>' + 
+    '<div mat-dialog-actions>' +
+      '<button mat-button (click)=onNoClick()>No</button>' + 
+      '<button mat-button [mat-dialog-close]="true" cdkFocusInitial>Yes</button>' +
+    '</div>',
+})
+export class ConfirmCancelEventDialogComponent {
+  constructor(public dialogRef: MatDialogRef<ConfirmCancelEventDialogComponent>) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

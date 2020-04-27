@@ -121,6 +121,15 @@ export class MessagesService {
     });
   }
 
+  public cancelEvent(event: EventData) {
+    const data = {
+      event: event
+    };
+    return this.http.post('/cancel-event', data).subscribe((data) => {
+      console.log(data);
+    });
+  }
+
   /*********************************************************************************************************************************
    * Socket functions
    ********************************************************************************************************************************/

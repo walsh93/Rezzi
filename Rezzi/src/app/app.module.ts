@@ -129,7 +129,7 @@ import { ViewMembersComponent } from './home/interface/view-members/view-members
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calendar-panel/calendar-panel.component';
-import { EventModalComponent } from './home/interface/channel-nav-bar/calendar-panel/event-modal/event-modal.component';
+import { EventModalComponent, ConfirmCancelEventDialogComponent } from './home/interface/channel-nav-bar/calendar-panel/event-modal/event-modal.component';
 
 @NgModule({
   declarations: [
@@ -192,6 +192,7 @@ import { EventModalComponent } from './home/interface/channel-nav-bar/calendar-p
     ViewMembersComponent,
     CalendarPanelComponent,
     EventModalComponent,
+    ConfirmCancelEventDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -246,7 +247,8 @@ import { EventModalComponent } from './home/interface/channel-nav-bar/calendar-p
     ImageModalComponent,
     CreateEventComponent,
     PollingComponent,
-    EventModalComponent
+    EventModalComponent,
+    ConfirmCancelEventDialogComponent
   ],
   providers: [MessagesService, ChannelNavBarService],
   bootstrap: [AppComponent]

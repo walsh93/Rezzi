@@ -98,6 +98,7 @@ export interface EventData {
     interested: User[];
     "not going": User[];
   };
+  canceled: boolean;
 }
 
 export class AbbreviatedUser {

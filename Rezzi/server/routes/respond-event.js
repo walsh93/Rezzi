@@ -23,38 +23,42 @@ router.post('/', function(request, response) {
       let index = req.event.id.split('-').slice(-1)[0];
       let events = doc.data().calendar;
       let event = events[index];
+      if (event.canceled !== true) {
+        // check if the user was previously in the other categories
+        if (!event.attending[req.response].some(responder => responder.email === email)) {  // Do nothing if it's already correct
+          let responses = ['going', 'interested', 'not going'];
+          responses.filter(response => response !== req.response).forEach(response => {  // Must remove from the others if applicable
+            event.attending[response] = event.attending[response].filter(responder => responder.email !== email);
+          });
 
-      // check if the user was previously in the other categories
-      if (!event.attending[req.response].some(responder => responder.email === email)) {  // Do nothing if it's already correct
-        let responses = ['going', 'interested', 'not going'];
-        responses.filter(response => response !== req.response).forEach(response => {  // Must remove from the others if applicable
-          event.attending[response] = event.attending[response].filter(responder => responder.email !== email);
-        });
+          event.attending[req.response].push(req.user);
 
-        event.attending[req.response].push(req.user);
+          events[index] = event;
 
-        events[index] = event;
-
-        db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
-          calendar: events,
-        });
-      }
-    });
-
-    // Must also update the user calendar
-    db.collection(keys.users).doc(email).get().then((doc) => {
-      let events = doc.data().calendar;
-      if (req.response === 'going') {
-        if (!events.some(event => event === req.event.id)) {
-          events.push(req.event.id);
+          db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+            calendar: events,
+          });
         }
+
+        // Must also update the user calendar
+        db.collection(keys.users).doc(email).get().then((doc) => {
+          let events = doc.data().calendar;
+          if (req.response === 'going') {
+            if (!events.some(event => event === req.event.id)) {
+              events.push(req.event.id);
+            }
+          }
+          else {
+            events = events.filter(event => event !== req.event.id);
+          }
+          db.collection(keys.users).doc(email).update({
+            calendar: events
+          });
+        });
       }
       else {
-        events = events.filter(event => event !== req.event.id);
+        response.status(500).json({error: 'Event has been canceled!'});
       }
-      db.collection(keys.users).doc(email).update({
-        calendar: events
-      });
     });
   }
 })

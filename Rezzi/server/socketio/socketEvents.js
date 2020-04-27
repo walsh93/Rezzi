@@ -50,6 +50,7 @@ module.exports.newMessage = function newMessage(socket, data) {
             interested: [],
             'not going': []
           };
+          event.canceled = false
           events.push(event);
 
           messages.push(data.message);

@@ -37,6 +37,26 @@ const colors = [
     primary: '#e3bc08',
     secondary: '#FDF1BA',
   },
+  { // turqoise
+    primary: '#21adad',
+    secondary: '#C9EBEB'
+  },
+  { // green
+    primary: '#21ad21',
+    secondary: '#D2EED2'
+  },
+  { // purple
+    primary: '#8b64bb',
+    secondary: '#DCD0EA'
+  },
+  { // orange
+    primary: '#e59400',
+    secondary: '#F5D9A5'
+  },
+  {  // pink
+    primary: '#f74887',
+    secondary: '#FCC7DB'
+  }
 ];
 
 interface CalendarEventExt extends CalendarEvent {
@@ -120,7 +140,6 @@ export class CalendarPanelComponent implements OnInit {
           end: parseISO(ev.end_time),
           title: ev.name,
           color: this.channel_colors[ev.id.substring(0, ev.id.lastIndexOf('-'))],
-          // cssClass: '', // TODO: add custom css-class for attending events
           data: ev
         }
 
@@ -132,10 +151,11 @@ export class CalendarPanelComponent implements OnInit {
           start: parseISO(ev.start_time),
           end: parseISO(ev.end_time),
           title: ev.name,
-          color: this.channel_colors[ev.id.substring(0, ev.id.lastIndexOf('-'))],
-          // cssClass: '', // TODO: add custom css-class for unattended events
           data: ev
         }
+        let color = this.channel_colors[ev.id.substring(0, ev.id.lastIndexOf('-'))];
+        color.secondary = '#FFFFFF';
+        to_push.color = color;
 
         this.events.push(to_push);
       });
@@ -171,6 +191,16 @@ export class CalendarPanelComponent implements OnInit {
           user: this.user
         },
       });
+
+      dialogRef.componentInstance.EventResponseEvent.subscribe(response => {
+        this.updateEvents();
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result === 'canceled') {
+          this.updateEvents();
+        }
+      })
     }
   }
 

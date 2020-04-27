@@ -65,7 +65,7 @@ router.get('/', checkCookie, function(request, response) {
       db.collection(dbchannel.channelPath).doc(dbchannel.channelName).get().then(doc2 => {
         var available = doc2.data().calendar;
         for (i = 0; i < available.length; i++) {
-          if (!going_to.includes(available[i].id)) {  // check if the user is going to the event already
+          if (available[i].canceled !== true && !going_to.includes(available[i].id)) {  // check if the user is going to the event already
             events.available.push(available[i]);
           }
         }
