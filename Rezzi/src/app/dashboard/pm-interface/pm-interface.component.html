@@ -10,9 +10,8 @@
     </app-pm-side-panel>
   </mat-drawer>
 
-  <div class="example-sidenav-content">
 
-    <div style="min-height: 100%;">
+    <div class="message-area">
       <app-private-messages [sessionUpdateEvent]="sessionUpdateSubject.asObservable()"
         [pmUsersUpdateEvent]="pmUsersUpdateSubject.asObservable()"
         [viewingUpdateEvent]="viewingUpdateSubject.asObservable()"
@@ -23,5 +22,4 @@
         [viewingUpdateEventAnm]="viewingUpdateSubject.asObservable()"
         [abbrevUserUpdateEvent]="abbrevUserUpdateSubject.asObservable()"></app-new-pm>
     </div>
-  </div>
 </mat-drawer-container>
