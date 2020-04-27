@@ -33,6 +33,9 @@ export class DashboardComponent implements OnInit {
         this.email = response.email;
         this.rezzi = response.rezzi;
         this.accountType = response.accountType;
+
+        // query if showPM
+
         if (response.accountType == null || response.accountType === undefined) {
           this.accountType = 2;  // Set as resident by default??
         }

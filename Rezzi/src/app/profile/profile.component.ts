@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private rezziService: RezziService,
               private router: Router,
-              public dialog: MatDialogRef<ProfileComponent>,
+              @Optional() public dialog: MatDialogRef<ProfileComponent>,
               @Optional() @Inject(MAT_DIALOG_DATA) public data?: any) {
                 console.log('data', this.data);
               }
@@ -35,6 +35,8 @@ export class ProfileComponent implements OnInit {
       }
 
       this.currentUserRezzi = response.rezzi;   /* used to compare user and profile's Rezzis */
+
+// TODO check if verified
 
       this.rezziService.getSession().then(session => {
         this.session = session;
@@ -97,5 +99,8 @@ export class ProfileComponent implements OnInit {
   navigatePMs() {
     this.router.navigate(['/dashboard']);
     // TODO pass in user to pm
+    // check if user has pm already .getNonPrivateMessageUsers()
+    // createPM()
+
   }
 }
