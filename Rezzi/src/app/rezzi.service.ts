@@ -195,6 +195,15 @@ export class RezziService {
     });
   }
 
+  getNotifications(): Promise<any> {
+    return this.http.get('/getNotifications').toPromise().then((panelInfo) => {
+      console.log('Panel Info: ', panelInfo);
+      return panelInfo;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
   /*********************************************************************************************************************************
    * Helper functions
    ********************************************************************************************************************************/

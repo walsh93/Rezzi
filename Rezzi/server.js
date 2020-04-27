@@ -98,6 +98,8 @@ const updateCanPost = require('./server/service/updateCanPost')
 app.use(service.update_canpost, updateCanPost)
 const updateIsMuted = require('./server/service/updateIsMuted')
 app.use(service.update_ismuted, updateIsMuted)
+const getNotifications = require('./server/service/getNotifications')
+app.use(service.getNotifications, getNotifications)
 
 // Routers, links to URLs
 const welcome = require('./server/routes/welcome')
@@ -159,6 +161,9 @@ const get_non_pm_users = require('./server/routes/get-non-pm-users')
 app.use(url.get_non_pm_users, get_non_pm_users)
 const create_pm = require('./server/routes/create-pm')
 app.use(url.create_pm, create_pm);
+
+const send_notifications = require('./server/routes/send-notifications')
+app.use(url.send_notifications, send_notifications)
 
 const setup_test = require('./server/routes/setup-test')
 app.use(url.setup_test, setup_test)

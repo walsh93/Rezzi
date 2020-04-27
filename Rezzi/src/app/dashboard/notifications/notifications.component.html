@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <h2 style="text-align: center;">Notifications</h2>
+
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let panel of panelInfo">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{panel.channel}}
+            </mat-panel-title>
+            <mat-panel-description >
+                <button (click)="fakeFuncion()" mat-raised-button> Mute Notificaitons for this Channel </button> 
+              </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-card *ngFor="let notification of panel.notifications"><!-- Looping the deletion requests-->
+
+                {{notification}} <button (click)="fakeFuncion()" mat-raised-button> Dismiss</button>
+
+            </mat-card>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+</div>

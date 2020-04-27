@@ -15,7 +15,9 @@ export class DashboardComponent implements OnInit {
   showHD = false;
   showReqChan = false;
   showPostPriv = false;
+  showNotify = false;
   accountType: number;
+  viewing = null;
 
   // Data to pass to child elements
   email: string;
@@ -38,6 +40,7 @@ export class DashboardComponent implements OnInit {
         const urlParam = new URLSearchParams(query);
         switch (urlParam.get('nav')) {
           case 'pm': {
+            this.viewing = urlParam.get('user');
             this.showPrivateMessages();
             break;
           }
@@ -58,7 +61,7 @@ export class DashboardComponent implements OnInit {
             break;
           }
         }
-
+        window.history.replaceState({}, document.title, "/" + "dashboard");
         if (response.accountType == null || response.accountType === undefined) {
           this.accountType = 2;  // Set as resident by default??
         }
@@ -73,6 +76,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = false;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showPrivateMessages() {
@@ -82,6 +86,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = false;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showRequestChannel() {
@@ -91,6 +96,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = true;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showRaAdmin() {
@@ -100,6 +106,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = false;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showHdAdmin() {
@@ -109,6 +116,7 @@ export class DashboardComponent implements OnInit {
     this.showHD = true;
     this.showReqChan = false;
     this.showPostPriv = false;
+    this.showNotify = false;
   }
 
   showPostingPrivileges() {
@@ -118,6 +126,17 @@ export class DashboardComponent implements OnInit {
     this.showHD = false;
     this.showReqChan = false;
     this.showPostPriv = true;
+    this.showNotify = false;
+  }
+
+  showNotifications() {
+    this.showEdit = false;
+    this.showPM = false;
+    this.showRA = false;
+    this.showHD = false;
+    this.showReqChan = false;
+    this.showPostPriv = false;
+    this.showNotify = true;
   }
 
 }
