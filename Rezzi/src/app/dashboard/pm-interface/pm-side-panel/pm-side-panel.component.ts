@@ -59,18 +59,30 @@ export class PmSidePanelComponent implements OnInit {
   }
 
   openPMDialog(): void {
-    const dialogRef = this.dialog.open(CreatePmComponent, {
-      width: '600px',
-      height: 'auto',
-      data: this.non_pm_users,
-    });
-
-    dialogRef.componentInstance.create_pm_event.subscribe((email: string) => {
-      this.private_message_users.push({
-        recipient: email,
-        messages: null
+    this.non_pm_users.length = 0;
+    console.log(this.non_pm_users);
+    this.privateSidePanelService.getNonPrivateMessageUsers().subscribe(data => {
+      // tslint:disable-next-line: forin
+      for (const index in data) {
+        this.non_pm_users.push(data[index])
+      }
+      console.log(this.non_pm_users);
+      //console.log(this.non_pm_users);
+      const dialogRef = this.dialog.open(CreatePmComponent, {
+        width: '600px',
+        height: 'auto',
+        data: this.non_pm_users,
       });
-    });
+
+      dialogRef.componentInstance.create_pm_event.subscribe((email: string) => {
+        this.private_message_users.push({
+          recipient: email,
+          messages: null
+        });
+      });
+    })
+
+
 
   }
 
