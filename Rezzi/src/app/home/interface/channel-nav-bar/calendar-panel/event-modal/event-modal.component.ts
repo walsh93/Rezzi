@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, Inject, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EventData, User } from 'src/app/classes.model';
+import { EventData, User, BotMessage } from 'src/app/classes.model';
 import { MessagesService } from 'src/app/home/interface/messages/messages.service';
+import { RezziService } from 'src/app/rezzi.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { parseISO } from 'date-fns';
@@ -29,6 +30,7 @@ export class EventModalComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<EventModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     public messagesService: MessagesService,
+    public rezziService: RezziService,
     public cancelDialog: MatDialog) {
     this.event = data.event;
     this.user = data.user;
@@ -66,8 +68,16 @@ export class EventModalComponent implements OnInit {
 
     cdRef.afterClosed().subscribe(result => {
       if (result) {
-        this.messagesService.cancelEvent(this.event);
-        this.dialogRef.close('canceled');
+        this.messagesService.cancelEvent(this.event).subscribe(response => {
+          this.rezziService.getSession().then((session) => {
+            let channel_id = this.event.id.substring(0, this.event.id.lastIndexOf('-'));
+            this.messagesService.addBotMessage(BotMessage.EventHasBeenCanceled, this.event.name, session.rezzi, channel_id);
+            this.dialogRef.close('canceled');
+          });
+        },
+        error => {
+          console.log(error);
+        });
       }
     });
   }
