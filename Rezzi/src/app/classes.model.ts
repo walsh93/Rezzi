@@ -179,6 +179,7 @@ export interface PollResponses {
 export enum BotMessage {
   UserHasJoinedChannel = 0,
   UserHasLeftChannel = 1,
+  EventHasBeenCanceled = 2,
 }
 
 export interface SocketMessageData {

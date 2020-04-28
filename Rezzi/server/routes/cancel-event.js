@@ -27,12 +27,15 @@ router.post('/', function(request, response) {
         canceled: true
       };
 
-      db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
-        calendar: events
-      });
+      let promises = [];
+      promises.push(new Promise((resolve, reject) => {
+          db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+            calendar: events
+          }).then(r => resolve('success')).catch(e => reject(e));
+        })
+      );
 
       // must delete it from every user calendar attending
-      let promises = [];
       event.attending.going.forEach(user => {
         promises.push(new Promise((resolve, reject) => {
           db.collection(keys.users).doc(user.email).get().then((doc2) => {

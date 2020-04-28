@@ -76,6 +76,8 @@ export class MessagesService {
       messageContent = `${userName} has joined the channel`;
     } else if (type === BotMessage.UserHasLeftChannel) {
       messageContent = `${userName} has left the channel`;
+    } else if (type === BotMessage.EventHasBeenCanceled) {
+      messageContent = `${userName} has been canceled`;
     } else {
       alert('Our message Bot got an unexpected request. Please try again later.');
       return;
@@ -123,9 +125,7 @@ export class MessagesService {
     const data = {
       event: event
     };
-    return this.http.post('/cancel-event', data).subscribe((data) => {
-      console.log(data);
-    });
+    return this.http.post('/cancel-event', data);
   }
 
   /*********************************************************************************************************************************
