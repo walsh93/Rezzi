@@ -8,12 +8,17 @@
               {{panel.channel}}
             </mat-panel-title>
             <mat-panel-description >
-                <button (click)="fakeFuncion()" mat-raised-button> Mute Notificaitons for this Channel </button> 
+                <div *ngIf="panel.muted==false">
+                <button (click)="muteNotifications(panel.channel)" mat-raised-button> Mute Notificaitons for this Channel </button> 
+                </div>
+                <div *ngIf="panel.muted==true">
+                    <button (click)="muteNotifications(panel.channel)" mat-raised-button> Un-mute Notificaitons for this Channel </button> 
+                    </div>
               </mat-panel-description>
           </mat-expansion-panel-header>
           <mat-card *ngFor="let notification of panel.notifications"><!-- Looping the deletion requests-->
 
-                {{notification}} <button (click)="fakeFuncion()" mat-raised-button> Dismiss</button>
+                {{notification}} <button (click)="dismissNotification(panel.channel, notification)" mat-raised-button> Dismiss</button>
 
             </mat-card>
         </mat-expansion-panel>
