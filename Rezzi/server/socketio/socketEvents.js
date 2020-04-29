@@ -93,8 +93,8 @@ module.exports.updateMessage = function updateMessage(socket, data) {
     collectionpath = dbchannel.channelPath;
     docpath = dbchannel.channelName;
   }
-  console.log("Collection: " + collectionpath);
-  console.log("Document: " + docpath);
+  // console.log("Collection: " + collectionpath);
+  // console.log("Document: " + docpath);
 
   db.collection(collectionpath).doc(docpath).get().then((doc) => {
     let messages = doc.data().messages;
@@ -113,7 +113,7 @@ module.exports.updateMessage = function updateMessage(socket, data) {
     if(data.message.isPoll){
       messages[id].pollInfo = data.message.pollInfo;
     }
-    console.log('Updated Message: ', messages[id]);
+    // console.log('Updated Message: ', messages[id]);
     db.collection(collectionpath).doc(docpath).update({
       messages: messages
     })

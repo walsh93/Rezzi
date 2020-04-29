@@ -18,8 +18,13 @@ export class MessagesService {
     this.socket = io(this.url);
 
     // Set socket event responders (backend socket will trigger these through .emit() calls)
+
+    /**
+     * added-new-message gets triggered when the channel is first viewed and when a new message comes in
+     * When a channel has been viewed, moved away from, and then viewed again, this is not triggered until someone sends another
+     * message
+     */
     this.socket.on('added-new-message', (updatedMessages) => {
-      console.log('added-new-message has been triggered');
       this.messages = updatedMessages;
       this.messagesUpdated.next([...this.messages]);
     });
@@ -52,7 +57,6 @@ export class MessagesService {
 
   getChannelMessages(channelPath: string, channelName: string) {
     this.http.get<{messages: Message[]}>(`/channel-messages?channelPath=${channelPath}&channelName=${channelName}`).subscribe((data) => {
-      console.log('RETRIEVED messages', data);
       this.messages = data.messages;
       this.messagesUpdated.next([...this.messages]);
     });
@@ -108,22 +112,22 @@ export class MessagesService {
 
     formData.append('image', image);
 
-    return this.http.post<{url: string}>(IMAGE_BASE_URL + '/uploadImage', formData, { observe: "response" });
+    return this.http.post<{url: string}>(IMAGE_BASE_URL + '/uploadImage', formData, { observe: 'response' });
   }
 
   public respondToEvent(user: User, event: EventData, response: string) {
-    console.log(user.email + " is " + response + " " + event.name);
+    console.log(user.email + ' is ' + response + ' ' + event.name);
     const data = {
-      user: user,
-      event: event,
-      response: response
+      user,
+      event,
+      response
     };
     return this.http.post('/respond-event', data);
   }
 
   public cancelEvent(event: EventData) {
     const data = {
-      event: event
+      event
     };
     return this.http.post('/cancel-event', data);
   }
