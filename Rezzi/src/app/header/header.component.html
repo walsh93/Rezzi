@@ -1,8 +1,17 @@
 <mat-toolbar id="header-toolbar" color="primary">
   <!-- Show these buttons if user is logged in -->
   <div *ngIf="userIsLoggedIn">
-    <a class="matbarurl" title="Hompage" routerLink='/home'>Rezzi</a>
-    <a class="matbarurl" title="Dashboard" routerLink='/dashboard'>Dashboard</a>
+    <button mat-button color="primary"> <img src="../../assets/images/logo.png"></button>
+
+    <button mat-button [matMenuTriggerFor]="menu">Dashboard</button>
+    <mat-menu #menu="matMenu">
+    <button mat-menu-item>Edit Profile</button>
+    <button mat-menu-item>Private Messages</button>
+    <button mat-menu-item>Notifications</button>
+    
+  </mat-menu>
+    <!-- <a class="matbarurl" title="Hompage" routerLink='/home'>Rezzi</a>
+    <a class="matbarurl" title="Dashboard" routerLink='/dashboard'>Dashboard</a> -->
   </div>
 
   <div *ngIf="userIsLoggedIn">

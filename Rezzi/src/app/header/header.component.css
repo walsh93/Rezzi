@@ -7,3 +7,9 @@
   margin-right: 25px;
   color:white;
 }
+
+img{
+  background-color: #009688;
+  max-width: 100px;
+  height: auto;
+}
