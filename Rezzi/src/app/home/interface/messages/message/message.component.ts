@@ -7,15 +7,17 @@ import {
   SocketChannelMessageData,
   SocketPrivateMessageData,
   HDUser,
+  EventData,
   PollInfo
-} from 'src/app/classes.model';
-import { RezziService } from 'src/app/rezzi.service';
-import { MessagesService } from '../messages.service';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { HttpClient } from '@angular/common/http';
-import { MatRadioButton } from '@angular/material';
+} from "src/app/classes.model";
+import { RezziService } from "src/app/rezzi.service";
+import { MessagesService } from "../messages.service";
+import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { MatRadioButton, MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
-
+import { ProfileComponent } from 'src/app/profile/profile.component';
 
 @Component({
   selector: 'app-message',
@@ -54,6 +56,7 @@ export class MessageComponent implements OnInit {
 
   private reactions: ReactionData; // Data holding the reaction (extracted from message)
   private user: AbbreviatedUser; // The user who sent the message (extracted from message)
+  userEmail: string;  // Email of user who sent the message (used for profile lookup)
   private time: Date; // When the message was sent (extracted from message)
   private reported: boolean;
   private theHD: HDUser;
@@ -64,7 +67,8 @@ export class MessageComponent implements OnInit {
   private pmReportId: string; // syntax: userWhoReportedMessage-messageID
   private ReportId: string;
   private currUserEmail: string;
-  private avatar: string; // The avatar image, extracted from message
+  private avatar: string // The avatar image, extracted from message
+  private event: EventData; // The event in the message, if it has one
   private isPoll: boolean;
   private pollInfo: PollInfo;
   private pollTie: boolean;
@@ -79,21 +83,24 @@ export class MessageComponent implements OnInit {
   pollWinnerCount: number;
   pollWinnerTotal: number;
 
-
   constructor(
     public messagesService: MessagesService,
     private http: HttpClient,
     private rezziService: RezziService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private _snackBar: MatSnackBar,
+    public profileDialog: MatDialog
   ) { }
 
   ngOnInit() {
     this.reactions = this.message.reactions;
     this.user = this.message.owner;
+    this.userEmail = this.message.owner.email;
     this.avatar = this.message.owner.image_url;
     this.time = this.message.time;
     this.reported = this.message.reported;
     this.image = this.message.image;
+    this.event = this.message.event;
     this.content = [];
     this.isPoll = this.message.isPoll;
     this.pollInfo = this.message.pollInfo;
@@ -229,6 +236,28 @@ export class MessageComponent implements OnInit {
       };
       spmd.message.reactions = this.reactions;
       this.messagesService.updateMessageThroughSocket(spmd);
+
+      //send notification
+      const body = {
+        message: this.viewingUser.email + " reacted to your message",
+        channel: this.viewingUser.email,
+        recipients: [this.pmUser],
+        isPM: true,
+      }
+  
+      this.http.post('/send-notifications', body).toPromise().then((response) => {
+        
+      }).catch((error) => {
+        const res = error as HttpErrorResponse;
+        if (res.status === 200) {
+          alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+          location.reload();
+        } else {
+          console.log(res.error.text)
+          alert(`There was an error while trying to send notifications. Please try again later.`);
+        }
+      });
+
     } else {
       const scmd: SocketChannelMessageData = {
         message: this.message,
@@ -237,6 +266,27 @@ export class MessageComponent implements OnInit {
       };
       scmd.message.reactions = this.reactions;
       this.messagesService.updateMessageThroughSocket(scmd);
+
+      //send notificaiton
+      const body = {
+        message: this.viewingUser.firstName + " reacted to your message",
+        channel: this.channel,
+        recipients: [this.message.owner.email],
+      }
+      console.log("viewing user first name: ", this.message.owner.firstName)
+  
+      this.http.post('/send-notifications', body).toPromise().then((response) => {
+        
+      }).catch((error) => {
+        const res = error as HttpErrorResponse;
+        if (res.status === 200) {
+          alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+          location.reload();
+        } else {
+          console.log(res.error.text)
+          alert(`There was an error while trying to send notifications. Please try again later.`);
+        }
+      });
     }
   }
 
@@ -305,6 +355,18 @@ export class MessageComponent implements OnInit {
     }
   }
 
+  respondToEvent(response) {
+    this.messagesService.respondToEvent(this.viewingUser, this.event, response).subscribe(resp => {
+
+    },
+    error => {
+      // event is probably canceled
+      this._snackBar.open('Event is canceled', 'Dismiss', {
+        duration: 2000,
+      });
+    });
+  }
+
   updateHallDirector(hd, user) {
     this.rezziService.findUserByEmail(hd, user).then(response => {
       this.theHD = new HDUser(
@@ -355,5 +417,16 @@ export class MessageComponent implements OnInit {
       channelID: this.channel
     };
     this.messagesService.updateMessageThroughSocket(scmd);
+  }
+
+  openProfileDialog(profile: string) { // TODO pop up profile dialog
+    console.log('profile dialog', profile);
+    const profileDialogRef = this.profileDialog.open(ProfileComponent, {
+      height: 'auto',
+      width: '500px',
+      data: {
+        p: profile,
+      }
+    });
   }
 }

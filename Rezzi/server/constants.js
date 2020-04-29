@@ -26,6 +26,7 @@ module.exports = {
     get_res_by_channel_non_admin: "/get-residents-by-channel-non-admin",
     update_canpost: "/update-can-post",
     update_ismuted: "/update-is-muted",
+    getNotifications: "/getNotifications",
   },
 
   // Firebase constants
@@ -65,6 +66,9 @@ module.exports = {
     deleteUser: "/deleteUser",
     move_user: "/move-user",
     resend_email: "/resend-email",
+    send_notifications: "/send-notifications",
+    dismiss_notification: "/dismiss-notification",
+    mute_notifications: "/mute-notifications",
     error: {
       page: "/err",
       not_raadmin: "/err/1/unauthorized",
@@ -87,6 +91,9 @@ module.exports = {
     request_channel: "/request-channel",
     channel_requests: "/channel-requests",
     setup_test: "/setup-test",
+    respond_to_event: "/respond-event",
+    get_events: "/get-events",
+    cancel_event: "/cancel-event"
   },
 
   http_status: {

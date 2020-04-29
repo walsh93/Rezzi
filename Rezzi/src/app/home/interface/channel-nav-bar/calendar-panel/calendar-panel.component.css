@@ -1,0 +1,36 @@
+h3 {
+  margin: 0 0 10px;
+}
+
+.navigation {
+
+}
+
+.title {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.view-type {
+
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  width: 98%;
+  align-items: center;
+}
+
+.calendar {
+  flex-grow: 1;
+  width: 98%;
+  height: calc(100vh - 200px);
+  overflow-y: scroll;
+}
+
+.calendar-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

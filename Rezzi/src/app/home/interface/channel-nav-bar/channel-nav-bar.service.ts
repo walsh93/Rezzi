@@ -1,6 +1,7 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
-import { ChannelData } from 'src/app/classes.model';
+import { ChannelData, EventData } from 'src/app/classes.model';
 import { BehaviorSubject, Subject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ChannelNavBarService {
@@ -12,7 +13,7 @@ export class ChannelNavBarService {
   // This will trigger a subscription in interface.component.ts indicating whether to view channel messages or other
   interfaceViewUpdate: Subject<string> = new Subject<string>();
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
 
   @Output() setChannel: EventEmitter<ChannelData> = new EventEmitter();
@@ -34,4 +35,7 @@ export class ChannelNavBarService {
     this.interfaceViewUpdate.next(viewConstant);
   }
 
+  getEventsForChannel() {
+    return this.http.get<{channels: string[], attending: EventData[], available: EventData[]}>(`/get-events?channel=${this.channel.id}`);
+  }
 }

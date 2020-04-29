@@ -10,6 +10,7 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 @import '~@angular/material/theming';
+@import '~angular-calendar/scss/angular-calendar.scss';
 // @import "~theme_variables.scss";
 
 $my-app-primary: mat-palette($mat-teal);
@@ -25,6 +26,7 @@ $primary: mat-color($my-app-primary);
 $accent: mat-color($my-app-accent);
 $secondary: mat-color($my-app-secondary);
 $warn: mat-color($my-app-warn);
+$border-color: rgba(0, 0, 0, 0.6);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $my-app-theme: mat-dark-theme($my-app-primary, $my-app-accent, $my-app-secondary);
@@ -38,3 +40,18 @@ $my-app-theme: mat-dark-theme($my-app-primary, $my-app-accent, $my-app-secondary
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($my-app-theme);
+// Go to https://github.com/mattlewis92/angular-calendar/blob/master/projects/angular-calendar/src/variables.scss
+// to find what the variables mean for theming of the calendar
+@include cal-theme((
+  bg-primary: $primary,
+  bg-secondary: $secondary,
+  weekend-color: indianred,
+  bg-active: $accent,
+  border-color: $border-color,
+  gray: $secondary,
+  today-bg: $secondary,
+  event-color-primary: $secondary,
+));
+.cal-month-view .cal-day-cell.cal-out-month .cal-day-number {
+  opacity: 0.15;
+}

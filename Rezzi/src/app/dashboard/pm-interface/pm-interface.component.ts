@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { RezziService } from 'src/app/rezzi.service';
 import { Subject } from 'rxjs';
 import { PrivateMessageData, AbbreviatedUser } from 'src/app/classes.model';
@@ -12,7 +12,8 @@ export class PmInterfaceComponent implements OnInit {
   session: any;
   abbrevUser: AbbreviatedUser;
   currentName;
-
+  @Input() viewing: string;
+  viewingOutput: string;
   // Passing channels and session to child component channel-messages every time they update
   sessionUpdateSubject: Subject<any> = new Subject<any>();
   abbrevUserUpdateSubject: Subject<AbbreviatedUser> = new Subject<AbbreviatedUser>();
@@ -23,6 +24,7 @@ export class PmInterfaceComponent implements OnInit {
   constructor(private rezziService: RezziService) { }
 
   ngOnInit() {
+    this.viewingOutput = null;
     this.currentName = null;
     this.rezziService.getSession().then((session) => {
       this.session = session;
@@ -32,6 +34,12 @@ export class PmInterfaceComponent implements OnInit {
           this.abbrevUser = new AbbreviatedUser(response.user.email, response.user.firstName,
             response.user.lastName, response.user.nickName, response.user.image_url);
           this.abbrevUserUpdateSubject.next(this.abbrevUser);
+          if(this.viewing!=null){
+            this.viewingOutput = this.viewing;
+            this.viewingNewPMUser(this.viewing);
+            document.getElementById(this.viewing).style.background = "#607d8b"
+
+          }
         });
       }
     });

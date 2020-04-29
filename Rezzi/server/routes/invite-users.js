@@ -140,6 +140,7 @@ router.get("/", checkCookie, function (request, response) {
       }
     })
 
+    //loop through array and create a new user for each email and send email
     for (var i = 0; i < emailarr.length; i++) {
       var tempPword = randomstring.generate();
       var currentEmail = emailarr[i];
@@ -152,8 +153,18 @@ router.get("/", checkCookie, function (request, response) {
         floor: rb.floor,
         rezzi: rezzi,
         channels: rb.channels,
-        lastEmailSent: time
+        lastEmailSent: time,
+        calendar: [],
       });
+
+      //create Notifications collection and add documents for channels
+      rb.channels.forEach(channel => {
+        db.collection(keys.users + '/' + currentEmail.trim() + '/' + 'Notifications').doc(channel).set({
+          muted: false,
+          notifications: [],
+        })
+      });
+      
 
       var smtpTransport = nodemailer.createTransport({
         service: "Gmail",

@@ -3,6 +3,7 @@ const db = admin.firestore()
 const skt = require('../constants').socket
 const createChannelPath = require('../database').createChannelPath
 const createUserPath = require('../database').createUserPath
+const keys = require('../constants').db_keys
 
 // necessary for multimedia
 const got = require('got')
@@ -33,12 +34,39 @@ module.exports.newMessage = function newMessage(socket, data) {
         })
       } else {
         data.message.id = data.channelID + '-' + messages.length;
-        processMessageContent(data).then(response => {
-          messages.push(response.message);
+        if (data.message.event !== null) {
+          let events = doc.data().calendar;
+          data.message.event.id = data.channelID + '-' + events.length;
+
+          // The creator automatically goes to the event
+          db.collection(keys.users).doc(data.message.owner.email).update({
+            calendar: [data.message.event.id]
+          });
+
+          // certain data only needs to go in global calendar, not in user calendar
+          let event = JSON.parse(JSON.stringify(data.message.event));
+          event.attending = {
+            going: [event.owner],
+            interested: [],
+            'not going': []
+          };
+          event.canceled = false
+          events.push(event);
+
+          messages.push(data.message);
           db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+            calendar: events,
             messages: messages
+          });
+        }
+        else {
+          processMessageContent(data).then(response => {
+            messages.push(response.message);
+            db.collection(dbchannel.channelPath).doc(dbchannel.channelName).update({
+              messages: messages
+            })
           })
-        })
+        }
       }
       // triggers a socket event in the front end; moved to firestoreListeners.js
       // socket.emit(skt.new_message_added, messages)

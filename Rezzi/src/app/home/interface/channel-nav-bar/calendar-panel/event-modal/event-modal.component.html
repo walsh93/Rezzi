@@ -1,0 +1,91 @@
+<h1 mat-dialog-title>{{ event.name }}</h1>
+<div mat-dialog-content>
+  <mat-accordion>
+    <mat-expansion-panel (expanded)="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Details
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ startPrettier }} to {{ endPrettier }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      {{ event.description }}
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Going
+        </mat-panel-title>
+        <mat-panel-description>{{ event.attending.going.length }}</mat-panel-description>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="ds_going">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let user">{{ user.displayname }}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['name', 'email']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['name', 'email'];"></tr>
+      </table>
+      <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Interested
+        </mat-panel-title>
+        <mat-panel-description>{{ event.attending.interested.length }}</mat-panel-description>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="ds_interested">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let user">{{ user.displayname }}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['name', 'email']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['name', 'email'];"></tr>
+      </table>
+      <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Not Going</mat-panel-title>
+        <mat-panel-description>{{ event.attending['not going'].length }}</mat-panel-description>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="ds_not_going">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let user">{{ user.displayname }}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['name', 'email']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['name', 'email'];"></tr>
+      </table>
+      <mat-paginator [pageSize]="10" showFirstLastButtons></mat-paginator>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<div mat-dialog-actions>
+  <button *ngIf="user.email === event.owner.email" mat-button color="warn" (click)="cancelEvent()">Cancel</button>
+  <mat-button-toggle-group>
+    <mat-button-toggle value="going" (click)="respondToEvent('going')">Going</mat-button-toggle>
+    <mat-button-toggle value="interested" (click)="respondToEvent('interested')">Interested</mat-button-toggle>
+    <mat-button-toggle value="not going" (click)="respondToEvent('not going')">Not Going</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

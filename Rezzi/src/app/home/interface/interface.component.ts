@@ -29,6 +29,7 @@ export class InterfaceComponent implements OnInit {
   viewChanMesSubj: Subject<boolean> = new Subject<boolean>();
   viewMuteMemSubj: Subject<boolean> = new Subject<boolean>();
   viewViewMemSubj: Subject<boolean> = new Subject<boolean>();
+  viewCalSubj: Subject<boolean> = new Subject<boolean>();
   hideNewMsgSubj: Subject<boolean> = new Subject<boolean>();
 
   constructor(private rezziService: RezziService, private cnbService: ChannelNavBarService) { }
@@ -80,15 +81,24 @@ export class InterfaceComponent implements OnInit {
         this.viewChanMesSubj.next(true);
         this.viewViewMemSubj.next(false);
         this.viewMuteMemSubj.next(false);
+        this.viewCalSubj.next(false);
       } else if (newView === c.VIEW_MUTE_MEMBERS) {
         this.viewChanMesSubj.next(false);
         this.viewMuteMemSubj.next(true);
         this.viewViewMemSubj.next(false);
+        this.viewCalSubj.next(false);
       } else if (newView === c.VIEW_VIEW_MEMBERS) {
         this.viewViewMemSubj.next(true);
         this.viewChanMesSubj.next(false);
         this.viewMuteMemSubj.next(false);
-      } else {
+        this.viewCalSubj.next(false);
+      } else if (newView === c.VIEW_CALENDAR) {
+        this.viewCalSubj.next(true);
+        this.viewChanMesSubj.next(false);
+        this.viewMuteMemSubj.next(false);
+        this.viewViewMemSubj.next(false);
+      }
+      else {
         console.log('The app could not render this view. It has either not been implemented or there is an incorrect reference.');
       }
     });

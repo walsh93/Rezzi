@@ -7,8 +7,9 @@
 
     <mat-menu #channelMenu="matMenu" xPosition="before">
       <button mat-menu-item (click)="goToViewMembersScreen()">View Members</button>
-        <button mat-menu-item (click)="goToChannelMessagesScreen()">View Channel</button>
-              <div *ngIf="!muteButtonDisabled">
+      <button mat-menu-item (click)="goToChannelMessagesScreen()">View Channel</button>
+      <button mat-menu-item (click)="goToCalendarScreen()">View Calendar</button>
+      <div *ngIf="!muteButtonDisabled">
         <button mat-menu-item (click)="goToMuteMembersScreen()">Mute Members</button>
         <mat-divider></mat-divider>
       </div>

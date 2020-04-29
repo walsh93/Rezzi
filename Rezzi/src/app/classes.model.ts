@@ -78,12 +78,61 @@ export class User {
   }
 }
 
+export class Profile {
+  email: string;
+  firstName: string;
+  lastName: string;
+  rezzi: string;
+  floor: string;
+  major: string;
+  nickName: string;
+  bio: string;
+  imageUrl: string;
+
+  constructor(
+    email: string,
+    firstName: string,
+    lastName: string,
+    rezzi: string,
+    floor: string,
+    major: string,
+    nickName: string,
+    bio: string,
+    imageUrl: string,
+  ) {
+    this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.rezzi = rezzi;
+    this.floor = floor;
+    this.major = major;
+    this.nickName = nickName;
+    this.bio = bio;
+    this.imageUrl = imageUrl;
+  }
+}
+
 export interface ReactionData {
   thumb_up: string[];
   thumb_down: string[];
   sentiment_very_satisfied: string[];
   sentiment_dissatisfied: string[];
   whatshot: string[];
+}
+
+export interface EventData {
+  id: string;
+  owner: User;
+  name: string;
+  description: string;
+  start_time: string;
+  end_time: string;
+  attending: {
+    going: User[];
+    interested: User[];
+    "not going": User[];
+  };
+  canceled: boolean;
 }
 
 export class AbbreviatedUser {
@@ -111,6 +160,7 @@ export interface Message {
   reactions: ReactionData;
   reported: boolean;
   image: string;
+  event: EventData;
   isPoll: boolean;
   pollInfo: PollInfo;
 }
@@ -129,6 +179,7 @@ export interface PollResponses {
 export enum BotMessage {
   UserHasJoinedChannel = 0,
   UserHasLeftChannel = 1,
+  EventHasBeenCanceled = 2,
 }
 
 export interface SocketMessageData {
