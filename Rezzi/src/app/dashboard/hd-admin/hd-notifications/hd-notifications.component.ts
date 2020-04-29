@@ -3,6 +3,7 @@ import { RezziService } from '../../../rezzi.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NgForm, FormControl, Validators } from '@angular/forms';
+import { Message } from 'src/app/classes.model';
 
 @Component({
   selector: 'app-hd-notifications',
@@ -15,7 +16,9 @@ export class HdNotificationsComponent implements OnInit {
   errorMsg: string;
   session: any;
   deletionRequests: Array<string>;
-  reportedMessages: Array<string>;
+  reportedMessageIDs: Array<string>;
+  reportedMessages: Array<Message> = [];
+  msg: Message;
 
   panelOpenState = false;
 
@@ -37,12 +40,18 @@ export class HdNotificationsComponent implements OnInit {
       }
     });
 
-    this.rezziService.getReportedMessages().then(reportedMessages => {
-      console.log('Reported messages to display', reportedMessages.reportedMessages);
-      if (reportedMessages == null) {
-        this.reportedMessages = ['there are no reports'];
+    this.rezziService.getReportedMessages().then(async reportedMessageIDs => {
+      if (reportedMessageIDs == null) {
+        this.reportedMessageIDs = ['there are no reports'];
       } else {
-        this.reportedMessages = reportedMessages.reportedMessages;
+        this.reportedMessageIDs = reportedMessageIDs.reportedMessages;
+
+        for (const message of this.reportedMessageIDs) {
+          this.msg = await this.rezziService.getMessage(message);
+          // console.log('this.msg', this.msg);
+          this.reportedMessages.push(this.msg);
+        }
+        console.log(this.reportedMessages);
       }
     });
 

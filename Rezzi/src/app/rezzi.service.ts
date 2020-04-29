@@ -169,7 +169,7 @@ export class RezziService {
 
   getDeletionRequests(): Promise<any> {
     return this.http.get('/getDeletionRequests').toPromise().then((deletionList) => {
-      console.log('Deletion List: ', deletionList);
+      // console.log('Deletion List: ', deletionList);
       return deletionList;
    }).catch((error) => {
       console.log(error);
@@ -178,8 +178,7 @@ export class RezziService {
 
   getReportedMessages(): Promise<any> {
     return this.http.get('/get-reported-messages').toPromise().then((reportedList) => {
-      console.log('Reported Message IDs', reportedList);
-      // TODO turn into array of the actual messages here
+      // console.log('Reported List:', reportedList);
       return reportedList;
     }).catch((error) => {
       console.log(error);
@@ -188,7 +187,7 @@ export class RezziService {
 
   getMessage(messageId: string): Promise<any> {
     return this.http.get(`/get-message?messageId=${messageId}`).toPromise().then((message) => {
-      console.log('Message data', message);
+      // console.log('Message data', message);
       return message;
     }).catch((error) => {
       console.log(error);
