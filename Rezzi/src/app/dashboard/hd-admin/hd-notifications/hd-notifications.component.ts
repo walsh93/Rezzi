@@ -40,15 +40,16 @@ export class HdNotificationsComponent implements OnInit {
       }
     });
 
-    this.rezziService.getReportedMessages().then(async reportedMessageIDs => {
+    this.rezziService.getReportedMessages().then(reportedMessageIDs => {
       if (reportedMessageIDs == null) {
         this.reportedMessageIDs = ['there are no reports'];
       } else {
         this.reportedMessageIDs = reportedMessageIDs.reportedMessages;
 
         for (const message of this.reportedMessageIDs) {
-          this.msg = await this.rezziService.getMessage(message);
-          // console.log('this.msg', this.msg);
+          this.msg = this.rezziService.getMessage(message); // TODO fix this
+          console.log('this.msg', this.msg);
+          console.log('this.msg.content', this.msg.content);
           this.reportedMessages.push(this.msg);
         }
         console.log(this.reportedMessages);
