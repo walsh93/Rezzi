@@ -29,7 +29,7 @@ $warn: mat-color($my-app-warn);
 $border-color: rgba(0, 0, 0, 0.6);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$my-app-theme: mat-dark-theme($my-app-primary, $my-app-accent, $my-app-secondary);
+$my-app-theme: mat-dark-theme($my-app-primary, $my-app-accent, $my-app-warn);
 
 // Insert custom background color
 // $background: map-get($my-app-theme, background);
