@@ -40,7 +40,7 @@
         <mat-card-content>
           <h3>{{ event.name }}</h3>
           <b>What is it?</b> {{ event.description }}<br>
-          <b>When is it?</b> {{ event.date }} at {{ event.time }}<br>
+          <b>When is it?</b> {{ eventDisplayTime }}<br>
           <mat-button-toggle-group>
             <mat-button-toggle value="going" (click)="respondToEvent('going')">Going</mat-button-toggle>
             <mat-button-toggle value="interested" (click)="respondToEvent('interested')">Interested</mat-button-toggle>
