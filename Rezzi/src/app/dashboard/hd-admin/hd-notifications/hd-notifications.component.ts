@@ -29,7 +29,6 @@ export class HdNotificationsComponent implements OnInit {
   rezzi: string;
   channelId: string;
   HDemail: string;
-  deleteStatus: number;
 
   panelOpenState = false;
 
@@ -77,31 +76,21 @@ export class HdNotificationsComponent implements OnInit {
   }
 
   deleteUser(email: string) {
-    // const confirmedDelete = confirm(`Are you sure you would like to approve the deletion of the account ${email}?`);
-
-    this.deleteStatus = 0;
     const hdDialogRef = this.hdNotificationsDialog.open(HdNotificationsDialog, {
       width: '450px',
       height: '200px',
       data: {
-        deleteStatus: this.deleteStatus,
         action: 'delete this user',
       }
     });
 
     hdDialogRef.afterClosed().subscribe(deleteStatus => {
-      console.log('deleteStatus', deleteStatus);
-
-      this.deleteStatus = deleteStatus;
-
-      console.log('this.deleteStatus', this.deleteStatus);
-
-      switch (this.deleteStatus) {
+      switch (deleteStatus) {
         case 0:   // user cancelled
           return;
 
         case 2:   // user confirmed
-          console.log('Email to be deleted: ' + email);
+          // console.log('Email to be deleted: ' + email);
           const body = {
             email,
             hdemail: this.session.email,
@@ -109,12 +98,10 @@ export class HdNotificationsComponent implements OnInit {
           };
 
           this.http.post('/deleteUser', body).toPromise().then((response) => {
-            //location.reload();
           }).catch((error) => {
             const res = error as HttpErrorResponse;
             if (res.status === 200) {
-              alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
-              //location.reload();
+              this.snackBar.open(res.error.text);
             } else {
               this.snackBar.open(`There was an error while trying to delete this user (${res.status}). Please try again later.`);
             }
@@ -127,66 +114,67 @@ export class HdNotificationsComponent implements OnInit {
           if (index !== -1) {
             this.deletionRequests.splice(index, 1);
           }
+          if (deleteStatus === 1) {
+            this.snackBar.open('The user\'s delete request has been denied.');
+          }
       }
     });
-
-
-    // if (this.deleteStatus === 0) {  // user cancelled
-    //   return;
-    // }
-
-
-
-
-
-
-
   }
 
   removeMessage(msg: Message) {
-    const retVal = confirm('Are you sure you want to remove this message? This cannot be undone');
-
-    // TODO add ability to deny request in Dialog box, remove from requests but not from database
-
-    if (retVal !== true) { // retVal != true if they hit cancel.
-      return;
-    }
-    if (!msg.id.includes('floors') && !msg.id.includes('hallwide') && !msg.id.includes('RA')) { // is PM
-      const spmd: SocketPrivateMessageData = {
-        message: msg,
-        sender: msg.owner.email,      // I *think*
-        recipient: this.session.email // I *also think*
-      };
-      spmd.message.visible = false;
-      this.messagesService.updateMessageThroughSocket(spmd);
-    } else {
-
-      if (msg.id.includes('floors')) {
-        this.channelId = msg.id.split('-')[0] + '-' + msg.id.split('-')[1] + '-' + msg.id.split('-')[2];
-      } else {
-        this.channelId = msg.id.split('-')[0] + '-' + msg.id.split('-')[1];
+    const hdDialogRef = this.hdNotificationsDialog.open(HdNotificationsDialog, {
+      width: '450px',
+      height: '200px',
+      data: {
+        action: 'remove this message',
       }
+    });
 
-      const scmd: SocketChannelMessageData = {
-        message: msg,
-        rezzi: this.rezzi,
-        channelID: this.channelId
-      };
-      scmd.message.visible = false;
-      this.messagesService.updateMessageThroughSocket(scmd);
-    }
+    hdDialogRef.afterClosed().subscribe(deleteStatus => {
+      switch (deleteStatus) {
+        case 0:   // user cancelled
+          return;
 
-    const index = this.reportedMessages.indexOf(msg);
-    if (index !== -1) {
-      this.reportedMessages.splice(index, 1);
-    }
+        case 2:   // user confirmed
+          if (!msg.id.includes('floors') && !msg.id.includes('hallwide') && !msg.id.includes('RA')) { // is PM
+            const spmd: SocketPrivateMessageData = {
+              message: msg,
+              sender: msg.owner.email,      // I *think*
+              recipient: this.session.email // I *also think*
+            };
+            spmd.message.visible = false;
+            this.messagesService.updateMessageThroughSocket(spmd);
+          } else {  // not PM
 
-    this.rezziService.deleteReportedMessage(msg.id, this.HDemail);
+            if (msg.id.includes('floors')) {  // floor channel
+              this.channelId = msg.id.split('-')[0] + '-' + msg.id.split('-')[1] + '-' + msg.id.split('-')[2];
+            } else {  // not floor channel
+              this.channelId = msg.id.split('-')[0] + '-' + msg.id.split('-')[1];
+            }
 
-    this.snackBar.open('The message has been removed.');
-    // alert('The message has been removed.');
+            const scmd: SocketChannelMessageData = {
+              message: msg,
+              rezzi: this.rezzi,
+              channelID: this.channelId
+            };
+            scmd.message.visible = false;
+            this.messagesService.updateMessageThroughSocket(scmd);
+          }
+          this.rezziService.deleteReportedMessage(msg.id, this.HDemail);
+
+          this.snackBar.open('The message has been removed.');
+          /* falls through */
+        case 1:   // user denied (doesn't need to stay in requests any longer)
+          const index = this.reportedMessages.indexOf(msg);
+          if (index !== -1) {
+            this.reportedMessages.splice(index, 1);
+          }
+          if (deleteStatus === 1){
+            this.snackBar.open('The message report has been denied.');
+          }
+      }
+    });
   }
-
 }
 
 /* HD Notifications Dialog Component */
@@ -196,13 +184,11 @@ export class HdNotificationsComponent implements OnInit {
 })
 // tslint:disable-next-line: component-class-suffix
 export class HdNotificationsDialog implements OnInit {
-  deleteStatus: number;
   action: string;
 
   constructor(public hdDialogRef: MatDialogRef<HdNotificationsDialog>,
               @Inject(MAT_DIALOG_DATA) public status: ConfirmStatus,
   ) {
-    this.deleteStatus = status.confirmStatus;
     this.action = status.action;
   }
 
@@ -211,22 +197,17 @@ export class HdNotificationsDialog implements OnInit {
 
   onCancelClick(): void {
     console.log('cancel');
-    this.status.confirmStatus = 0;
-    this.hdDialogRef.close();
+    this.hdDialogRef.close(0);
   }
 
   onDenyClick(): void {
     console.log('deny');
-    this.status.confirmStatus = 1;
-    this.deleteStatus = 1;
-    this.hdDialogRef.close();
+    this.hdDialogRef.close(1);
   }
 
   onConfirmClick(): void {
     console.log('confirm');
-    this.status.confirmStatus = 2;
-    this.deleteStatus = 2;
-    this.hdDialogRef.close();
+    this.hdDialogRef.close(2);
   }
 
 }
