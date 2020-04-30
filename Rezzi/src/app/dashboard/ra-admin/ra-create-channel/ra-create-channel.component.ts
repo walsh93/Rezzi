@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 
   // Pass data to child via data binding (replaces templateUrl and the HTML file)
   template: `
-    <div class="container">
+    <div style="color:white" class="container">
       <h1 style="
       margin: auto;
       display: block;

@@ -1,6 +1,6 @@
 
 <div class="container-fluid">
-  <h2 style="text-align: center;">Notifications</h2>
+  <h2>Notifications</h2>
 
   <mat-accordion>
     <mat-expansion-panel>
@@ -11,7 +11,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <mat-card *ngFor="let deletionRequest of deletionRequests" (click)='deleteUser(deletionRequest)'><!-- Looping the deletion requests-->
+      <mat-card *ngFor="let deletionRequest of deletionRequests" (click)='deleteUser(deletionRequest)' matTooltip="Delete User"><!-- Looping the deletion requests-->
         {{ deletionRequest }}
       </mat-card>
 
@@ -25,7 +25,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <mat-card *ngFor="let reportedMessage of this.reportedMessages" (click)='removeMessage(reportedMessage)'>
+      <mat-card *ngFor="let reportedMessage of this.reportedMessages" (click)='removeMessage(reportedMessage)'matTooltip="Remove Message">
         {{ reportedMessage.content }}
       </mat-card>
     </mat-expansion-panel>

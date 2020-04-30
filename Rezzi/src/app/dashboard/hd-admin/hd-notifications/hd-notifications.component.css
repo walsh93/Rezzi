@@ -1,3 +1,9 @@
 .mat-form-field + .mat-form-field {
     margin-left: 8px;
   }
+
+  h2{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 15px;
+  }

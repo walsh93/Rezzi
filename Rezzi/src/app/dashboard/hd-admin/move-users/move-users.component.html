@@ -1,9 +1,9 @@
 <div id="tableContainer">
-  <h1>{{ title }}</h1>
+  <h2>{{ title }}</h2>
   <p>{{ message }}</p>
-
+<mat-divider></mat-divider>
   <div id="tableContainer2" *ngFor="let tableDataByFloor of matTableDataMap | keyvalue">
-    <h2>Residents on floor: {{ tableDataByFloor.key }}</h2>
+    <h3>Residents on floor: {{ tableDataByFloor.key }}</h3>
     <table class="residentTable mat-elevation-z8" mat-table [dataSource]="tableDataByFloor.value">
       <!-- First Name column-->
       <ng-container matColumnDef="fnameCol">
