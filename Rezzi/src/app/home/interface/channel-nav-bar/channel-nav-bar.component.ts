@@ -62,11 +62,11 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
   @Input('abbrevUserUpdateEvent') userObs: Observable<AbbreviatedUser>;
 
   constructor(private rezziService: RezziService,
-    private router: Router,
-    private channelNavBarService: ChannelNavBarService,
-    public dialog: MatDialog,
-    public dialog2: MatDialog,
-    public messagesService: MessagesService,
+              private router: Router,
+              private channelNavBarService: ChannelNavBarService,
+              public dialog: MatDialog,
+              public dialog2: MatDialog,
+              public messagesService: MessagesService,
   ) { }
 
   checkPermissions() {
@@ -244,13 +244,14 @@ export class LeaveChannelDialog implements OnInit {
   status: boolean;
   session: any;
 
-  constructor(private rezziService: RezziService, public leaveDialogRef: MatDialogRef<LeaveChannelDialog>,
-    private channelNavBarService: ChannelNavBarService,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private http: HttpClient,
-    private messagesService: MessagesService) {
-    this.rezzi = data.rezzi;
-    this.userName = data.userName;
+  constructor(private rezziService: RezziService,
+              public leaveDialogRef: MatDialogRef<LeaveChannelDialog>,
+              private channelNavBarService: ChannelNavBarService,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private http: HttpClient,
+              private messagesService: MessagesService) {
+              this.rezzi = data.rezzi;
+              this.userName = data.userName;
   }
 
   ngOnInit() {
@@ -260,7 +261,7 @@ export class LeaveChannelDialog implements OnInit {
 
     this.rezziService.getSession().then((session) => {
       this.session = session;
-    }); 
+    });
   }
 
   onCancelClick(): void {
@@ -281,10 +282,10 @@ export class LeaveChannelDialog implements OnInit {
     // Send Bot Message
     this.messagesService.addBotMessage(BotMessage.UserHasLeftChannel, this.userName, this.rezzi, channel.id);
 
-    //send notification to everyone in channel
-    //get list of residnets in the channel
+    // send notification to everyone in channel
+    // get list of residnets in the channel
     this.rezziService.getResidentsByChannelNonAdmin(channel.id).then(res => {
-      console.log("sending notificaions for leaving channel")
+      console.log('sending notificaions for leaving channel')
       if (res == null || res === undefined) {
         return;
       } else if (res.msg != null && res.msg !== undefined) {
@@ -295,14 +296,14 @@ export class LeaveChannelDialog implements OnInit {
         infoList.forEach(user => {
           emails.push(user.email)
         });
-        console.log(emails)
-        console.log("User name: " + this.userName)
+        // console.log(emails)
+        // console.log("User name: " + this.userName)
 
         const body = {
           message: this.userName + " has left the channel",
           channel: channel.id,
           recipients: emails,
-        }
+        };
 
         this.http.post('/send-notifications', body).toPromise().then((response) => {
           location.reload();
@@ -316,9 +317,9 @@ export class LeaveChannelDialog implements OnInit {
             alert(`There was an error while trying to send notifications. Please try again later.`);
           }
         });
-        
+
       }
-    })
+    });
   }
 
 }
@@ -335,10 +336,10 @@ export class DeleteChannelDialog implements OnInit {
   status: boolean;
 
   constructor(public deleteDialogRef: MatDialogRef<DeleteChannelDialog>,
-    private channelNavBarService: ChannelNavBarService,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private http: HttpClient,
-    private messagesService: MessagesService) {
+              private channelNavBarService: ChannelNavBarService,
+              @Inject(MAT_DIALOG_DATA) public data: DialogData,
+              private http: HttpClient,
+              private messagesService: MessagesService) {
     this.rezzi = data.rezzi;
     this.userName = data.userName;
   }
@@ -354,8 +355,8 @@ export class DeleteChannelDialog implements OnInit {
   }
 
   onConfirmClick(channel: ChannelData): void {
-    console.log('user wants to delete ' + channel.channel);
-    console.log('deleting channel id ' + channel.id);
+    // console.log('user wants to delete ' + channel.channel);
+    // console.log('deleting channel id ' + channel.id);
     const level = channel.id.split('-')[0];
     this.http.post<{ notification: string }>('/delete-channel', { channel, channel_level: level }).subscribe(responseData => {
       console.log(responseData.notification);

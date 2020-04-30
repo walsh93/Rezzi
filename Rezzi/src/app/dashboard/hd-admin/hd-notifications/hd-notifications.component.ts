@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { RezziService } from '../../../rezzi.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NgForm, FormControl, Validators } from '@angular/forms';
-import { Message, SocketPrivateMessageData, SocketChannelMessageData } from 'src/app/classes.model';
+import { Message, SocketPrivateMessageData, SocketChannelMessageData, ChannelData } from 'src/app/classes.model';
 import { MessagesService } from 'src/app/home/interface/messages/messages.service';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
+
+export interface ConfirmStatus {
+  confirmStatus: number;
+  action: string;
+}
 
 @Component({
   selector: 'app-hd-notifications',
@@ -23,14 +29,16 @@ export class HdNotificationsComponent implements OnInit {
   rezzi: string;
   channelId: string;
   HDemail: string;
-
+  deleteStatus: number;
 
   panelOpenState = false;
 
   constructor(private rezziService: RezziService,
               private router: Router,
               private http: HttpClient,
-              private messagesService: MessagesService) { }
+              private messagesService: MessagesService,
+              public hdNotificationsDialog: MatDialog,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.errorMsg = '';
@@ -69,32 +77,69 @@ export class HdNotificationsComponent implements OnInit {
   }
 
   deleteUser(email: string) {
-    const confirmedDelete = confirm(`Are you sure you would like to approve the deletion of the account ${email}?`);
+    // const confirmedDelete = confirm(`Are you sure you would like to approve the deletion of the account ${email}?`);
 
-    // TODO add ability to deny request in Dialog box, remove from requests but not from database
-
-    if (!confirmedDelete) {
-      return;
-    }
-
-    console.log('Email to be deleted: ' + email);
-    const body = {
-      email,
-      hdemail: this.session.email,
-      rezzi: this.session.rezzi
-    };
-
-    this.http.post('/deleteUser', body).toPromise().then((response) => {
-      location.reload();
-    }).catch((error) => {
-      const res = error as HttpErrorResponse;
-      if (res.status === 200) {
-        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
-        location.reload();
-      } else {
-        alert(`There was an error while trying to delete this user (${res.status}). Please try again later.`);
+    this.deleteStatus = 0;
+    const hdDialogRef = this.hdNotificationsDialog.open(HdNotificationsDialog, {
+      width: '450px',
+      height: '200px',
+      data: {
+        deleteStatus: this.deleteStatus,
+        action: 'delete this user',
       }
     });
+
+    hdDialogRef.afterClosed().subscribe(deleteStatus => {
+      console.log('deleteStatus', deleteStatus);
+
+      this.deleteStatus = deleteStatus;
+
+      console.log('this.deleteStatus', this.deleteStatus);
+
+      switch (this.deleteStatus) {
+        case 0:   // user cancelled
+          return;
+
+        case 2:   // user confirmed
+          console.log('Email to be deleted: ' + email);
+          const body = {
+            email,
+            hdemail: this.session.email,
+            rezzi: this.session.rezzi
+          };
+
+          this.http.post('/deleteUser', body).toPromise().then((response) => {
+            //location.reload();
+          }).catch((error) => {
+            const res = error as HttpErrorResponse;
+            if (res.status === 200) {
+              alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+              //location.reload();
+            } else {
+              this.snackBar.open(`There was an error while trying to delete this user (${res.status}). Please try again later.`);
+            }
+          });
+
+          this.snackBar.open('The user has been removed.');
+          /* falls through */
+        case 1:   // user denied (doesn't need to stay in requests any longer)
+          const index = this.deletionRequests.indexOf(email);
+          if (index !== -1) {
+            this.deletionRequests.splice(index, 1);
+          }
+      }
+    });
+
+
+    // if (this.deleteStatus === 0) {  // user cancelled
+    //   return;
+    // }
+
+
+
+
+
+
 
   }
 
@@ -138,7 +183,50 @@ export class HdNotificationsComponent implements OnInit {
 
     this.rezziService.deleteReportedMessage(msg.id, this.HDemail);
 
-    alert('The message has been removed.');
+    this.snackBar.open('The message has been removed.');
+    // alert('The message has been removed.');
+  }
+
+}
+
+/* HD Notifications Dialog Component */
+@Component({
+  selector: 'app-hd-notifications-dialog',
+  templateUrl: 'hd-notifications-dialog.html',
+})
+// tslint:disable-next-line: component-class-suffix
+export class HdNotificationsDialog implements OnInit {
+  deleteStatus: number;
+  action: string;
+
+  constructor(public hdDialogRef: MatDialogRef<HdNotificationsDialog>,
+              @Inject(MAT_DIALOG_DATA) public status: ConfirmStatus,
+  ) {
+    this.deleteStatus = status.confirmStatus;
+    this.action = status.action;
+  }
+
+  ngOnInit(): void {
+  }
+
+  onCancelClick(): void {
+    console.log('cancel');
+    this.status.confirmStatus = 0;
+    this.hdDialogRef.close();
+  }
+
+  onDenyClick(): void {
+    console.log('deny');
+    this.status.confirmStatus = 1;
+    this.deleteStatus = 1;
+    this.hdDialogRef.close();
+  }
+
+  onConfirmClick(): void {
+    console.log('confirm');
+    this.status.confirmStatus = 2;
+    this.deleteStatus = 2;
+    this.hdDialogRef.close();
   }
 
 }
