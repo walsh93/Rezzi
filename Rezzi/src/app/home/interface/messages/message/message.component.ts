@@ -18,6 +18,7 @@ import { MatRadioButton, MatDialog } from '@angular/material';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from 'src/app/profile/profile.component';
+import { parseISO } from 'date-fns';
 
 @Component({
   selector: 'app-message',
@@ -69,6 +70,7 @@ export class MessageComponent implements OnInit {
   private currUserEmail: string;
   private avatar: string; // The avatar image, extracted from message
   private event: EventData; // The event in the message, if it has one
+  private eventDisplayTime: string;
   private isPoll: boolean;
   private pollInfo: PollInfo;
   private pollTie: boolean;
@@ -101,6 +103,10 @@ export class MessageComponent implements OnInit {
     this.reported = this.message.reported;
     this.image = this.message.image;
     this.event = this.message.event;
+    if (this.event !== null) {
+      let event_date = parseISO(this.event.start_time);
+      this.eventDisplayTime = this.formatTime(event_date);
+    }
     this.content = [];
     this.isPoll = this.message.isPoll;
     this.pollInfo = this.message.pollInfo;
@@ -117,28 +123,12 @@ export class MessageComponent implements OnInit {
       );
     }
     const dateAgain = new Date(this.time);
-    const day = this.dayNames[dateAgain.getDay()];
-    const month = this.monthNames[dateAgain.getMonth()];
-    const date = dateAgain.getDate();
-    const hr = dateAgain.getHours();
-    const hours = hr > 12 ? `${hr - 12}` : `${hr}`;
-    const min = dateAgain.getMinutes();
-    const minutes = min < 10 ? `0${min}` : `${min}`;
-    const apm = hr > 11 ? 'PM' : 'AM';
-    this.displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
+    this.displayTime = this.formatTime(dateAgain);
     this.currentTime = new Date().getTime();
     this.formSubmissionTime = new Date(this.message.time).getTime(); // .getTime();
     this.pollExpireTime = new Date(this.message.time);
     this.pollExpireTime.setDate(this.pollExpireTime.getDate() + 1);
-    const day2 = this.dayNames[this.pollExpireTime.getDay()];
-    const month2 = this.monthNames[this.pollExpireTime.getMonth()];
-    const date2 = this.pollExpireTime.getDate();
-    const hr2 = this.pollExpireTime.getHours();
-    const hours2 = hr2 > 12 ? `${hr2 - 12}` : `${hr2}`;
-    const min2 = this.pollExpireTime.getMinutes();
-    const minutes2 = min2 < 10 ? `0${min2}` : `${min2}`;
-    const apm2 = hr > 11 ? 'PM' : 'AM';
-    this.displayPollExpiration = `${day2}, ${month2} ${date2} at ${hours2}:${minutes2} ${apm2}`;
+    this.displayPollExpiration = this.formatTime(this.pollExpireTime);
     if (this.isPoll === true && (this.currentTime - this.formSubmissionTime > 86400000)) {
       let tempcount = 0;
       this.pollWinnerTotal = 0;
@@ -212,6 +202,18 @@ export class MessageComponent implements OnInit {
     this.rezziService.getSession().then(session => {
       this.accountType = session.accountType;
     });
+  }
+
+  formatTime(d: Date) {
+    const day = this.dayNames[d.getDay()];
+    const month = this.monthNames[d.getMonth()];
+    const date = d.getDate();
+    const hr = d.getHours();
+    const hours = hr > 12 ? `${hr - 12}` : `${hr}`;
+    const min = d.getMinutes();
+    const minutes = min < 10 ? `0${min}` : `${min}`;
+    const apm = hr > 11 ? 'PM' : 'AM';
+    return `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
   }
 
   sendReaction(reaction) {

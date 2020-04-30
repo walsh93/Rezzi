@@ -14,8 +14,15 @@
   width: -webkit-fill-available;
 }
 
-h1, h2 {
-  margin: 25px 0;
+h2 {
+  margin: 25px 0 5px 0;
+  text-align: center;
+  
+}
+h3{
+  margin: 15px 0 10px 0;
+  text-align: center;
+
 }
 
 #filterButtonContainer {

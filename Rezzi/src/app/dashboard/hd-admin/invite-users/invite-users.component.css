@@ -1,3 +1,30 @@
 .example-full-width{
   width: 90%;
 }
+.center{
+  width: 100%;
+  margin: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+mat-card {
+  margin: 20px;
+  text-align: center;
+}
+h2{
+  text-align: center;
+  padding-top: 20px;
+}
+#emails{
+  padding-bottom: 50px;
+}
+.row{
+  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  display: inline-block;
+}
+
