@@ -200,10 +200,11 @@ export class EditProfileFormComponent implements OnInit {
         )
         .subscribe(response => {
           if (response.status === 200) {
-            // location.reload();
             this.duringUpload = false;
+            const picUrl = this.thePic;
+            this.thePic = picUrl + '&refresh=' + new Date();  // Gotta love Stack Overflow
+            (document.getElementById('profilePic') as HTMLImageElement).src = this.thePic;
             this._snackBar.open(`Your photo has been uploaded...`);
-            window.location.reload();
           } else {
             this._snackBar.open(
               `Something went wrong. Return with a status code ${response.status}: ${response.statusText}`
