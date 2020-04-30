@@ -6,7 +6,7 @@
     <mat-panel-description>
       Add channels to the floor
     </mat-panel-description>
-    <button mat-icon-button aria-label="Delete Channel" (click)="deleteFloor()">
+    <button mat-icon-button aria-label="Delete Floor" matTooltip="Delete floor" (click)="deleteFloor()">
       <mat-icon>delete</mat-icon>
     </button>
   </mat-expansion-panel-header>
@@ -19,7 +19,7 @@
     (default_emitter)="onChange($event)"
     (delete_emitter)="deleteChannel($event)">
   </app-channel-panel>
-  <button mat-icon-button aria-label="Add Channel" (click)="addChannel()">
-    <mat-icon>control_point</mat-icon>
+  <button mat-icon-button aria-label="Add Channel" matTooltip="Add Channel"(click)="addChannel()">
+    <mat-icon>control_point</mat-icon> Add Channel
   </button>
 </mat-expansion-panel>

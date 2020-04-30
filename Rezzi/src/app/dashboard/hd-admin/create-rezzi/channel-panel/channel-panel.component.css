@@ -1,7 +1,15 @@
-.left-side {
-	/*left: 10px;*/
-}
 
-.right-side {
-	/*right: 10px;*/
+mat-card{
+	/* background-color: #607d8b; */
+	margin: 20px;
 }
+.row{
+	margin: auto;
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: right;
+}
+/* input{
+	width: 100%;
+} */

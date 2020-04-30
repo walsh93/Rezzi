@@ -50,7 +50,7 @@
       <ng-template matStepLabel>Name your Rezzi</ng-template>
       <mat-form-field>
         <mat-label>Rezzi Name</mat-label>
-        <input matInput id="rezzi-name" pattern='^[^\-]+$' value="">
+        <input matInput id="rezzi-name" ngModel pattern='^[^\-]+$' value="">
       </mat-form-field>
       <div>
         <button mat-button color="primary" matStepperNext>Next</button>
@@ -63,32 +63,35 @@
       <mat-tab-group>
         <!-- Floor Panel -->
         <mat-tab label="Floors">
+          <br>
           <mat-accordion>
             <app-floor-drawer *ngFor="let floor of floors" [floor]="floor" (delete_emitter)="deleteFloor(floor.id)">
             </app-floor-drawer>
           </mat-accordion>
-          <button mat-icon-button aria-label="Add Floor" (click)="addFloor()">
-            <mat-icon>control_point</mat-icon>
+          <button mat-icon-button aria-label="Add Floor" matTooltip="Add floor"(click)="addFloor()">
+            <mat-icon>control_point</mat-icon> Add Floor
           </button>
         </mat-tab>
 
         <!-- Hallwide Panel -->
         <mat-tab label="Hallwide">
+          <br>
           <app-channel-panel *ngFor="let channel of hallwide_channels" [channel]="channel"
             (delete_emitter)="deleteChannel('hallwide', channel.id)">
           </app-channel-panel>
-          <button mat-icon-button aria-label="Add Floor" (click)="addChannel('hallwide')">
-            <mat-icon>control_point</mat-icon>
+          <button mat-icon-button aria-label="Add Hallwide Channel" matTooltip="Add Hallwide Channel" (click)="addChannel('hallwide')">
+            <mat-icon>control_point</mat-icon> Add Hallwide Channel
           </button>
         </mat-tab>
 
         <!-- RA Panel -->
         <mat-tab label="RA">
+          <br>
           <app-channel-panel *ngFor="let channel of ra_channels" [channel]="channel"
             (delete_emitter)="deleteChannel('ra', channel.id)">
           </app-channel-panel>
-          <button mat-icon-button aria-label="Add Floor" (click)="addChannel('ra')">
-            <mat-icon>control_point</mat-icon>
+          <button mat-icon-button aria-label="Add RA Channel" matTooltip="Add RA Channel" (click)="addChannel('ra')">
+            <mat-icon>control_point</mat-icon> Add RA Channel
           </button>
         </mat-tab>
       </mat-tab-group>
@@ -106,11 +109,11 @@
   <mat-step>
     <ng-template matStepLabel>Done creating your Rezzi?</ng-template>
     <div class="row">
-      <div class="col-2"></div>
+      <div class="col-3"></div>
       <div class="col-4">
         <button mat-button color="accent" matStepperPrevious>Back</button>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <button mat-button color="primary" aria-label="Create Rezzi" (click)="createRezzi()">Yes, Create
           Rezzi!</button></div>
 

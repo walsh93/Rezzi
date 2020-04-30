@@ -1,21 +1,24 @@
-form {
+/* form {
     width: 80%;
     margin: auto;
     display: block;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-  }
+  } */
   mat-label{
       padding-top: 20px;
   }
-  #center{
+  /* #center{
     margin: auto;
     display: block;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-  }
+  } */
   mat-form-field{
       width: 95%;
+  }
+  mat-vertical-stepper{
+      background-color: #303030;
   }
