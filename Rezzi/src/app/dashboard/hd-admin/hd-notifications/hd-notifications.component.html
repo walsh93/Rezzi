@@ -1,30 +1,34 @@
 
 <div class="container-fluid">
-    <h2 style="text-align: center;">Notifications</h2>
+  <h2 style="text-align: center;">Notifications</h2>
 
-    <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Account Deletion Requests
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-card *ngFor="let deletionRequest of deletionRequests" (click)='deleteUser(deletionRequest)'><!-- Looping the deletion requests-->
+  <mat-accordion>
+    <mat-expansion-panel>
 
-                {{ deletionRequest }}
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Account Deletion Requests
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-            </mat-card>
+      <mat-card *ngFor="let deletionRequest of deletionRequests" (click)='deleteUser(deletionRequest)'><!-- Looping the deletion requests-->
+        {{ deletionRequest }}
+      </mat-card>
 
+    </mat-expansion-panel>
 
-        </mat-expansion-panel>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Reported Messages (coming soon)
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <p>Functionality coming Sprint 3!</p>
-        </mat-expansion-panel>
-      </mat-accordion>
+    <mat-expansion-panel>
+
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Reported Messages
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-card *ngFor="let reportedMessage of this.reportedMessages" (click)='removeMessage(reportedMessage)'>
+        {{ reportedMessage.content }}
+      </mat-card>
+    </mat-expansion-panel>
+  </mat-accordion>
 
 </div>

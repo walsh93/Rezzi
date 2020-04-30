@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Message } from './classes.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RezziService {
+
+  constructor(private http: HttpClient) {}
 
   private getSessionUrl = '/get-session';
   private getUser = '/get-user';
@@ -16,7 +19,7 @@ export class RezziService {
   channelRequestNames = new Map<string, number>();
   chanReqNameSubj = new Subject<Map<string, number>>();
 
-  constructor(private http: HttpClient) {}
+  reportedMessages: Array<Message>;
 
 
   /*********************************************************************************************************************************
@@ -166,16 +169,42 @@ export class RezziService {
 
   getDeletionRequests(): Promise<any> {
     return this.http.get('/getDeletionRequests').toPromise().then((deletionList) => {
-      console.log("Deletion List: ", deletionList);
+      // console.log('Deletion List: ', deletionList);
       return deletionList;
    }).catch((error) => {
-     console.log(error);
+      console.log(error);
    });
+  }
+
+  getReportedMessages(): Promise<any> {
+    return this.http.get('/get-reported-messages').toPromise().then((reportedList) => {
+      // console.log('Reported List:', reportedList);
+      return reportedList;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  deleteReportedMessage(messageId: string, HDemail: string) {
+    return this.http.get(`/delete-reported-message?messageId=${messageId}&HD=${HDemail}`).toPromise().then((message) => {
+      return message;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  getMessage(messageId: string): Promise<any> {
+    return this.http.get(`/get-message?messageId=${messageId}`).toPromise().then((message) => {
+      // console.log('Message data', message);
+      return message;
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   getNotifications(): Promise<any> {
     return this.http.get('/getNotifications').toPromise().then((panelInfo) => {
-      console.log("Panel Info: ", panelInfo)
+      console.log('Panel Info: ', panelInfo);
       return panelInfo;
     }).catch((error) => {
       console.log(error);
