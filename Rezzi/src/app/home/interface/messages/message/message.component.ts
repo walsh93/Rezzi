@@ -9,11 +9,11 @@ import {
   HDUser,
   EventData,
   PollInfo
-} from "src/app/classes.model";
-import { RezziService } from "src/app/rezzi.service";
-import { MessagesService } from "../messages.service";
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+} from 'src/app/classes.model';
+import { RezziService } from 'src/app/rezzi.service';
+import { MessagesService } from '../messages.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatRadioButton, MatDialog } from '@angular/material';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
@@ -67,7 +67,7 @@ export class MessageComponent implements OnInit {
   private pmReportId: string; // syntax: userWhoReportedMessage-messageID
   private ReportId: string;
   private currUserEmail: string;
-  private avatar: string // The avatar image, extracted from message
+  private avatar: string; // The avatar image, extracted from message
   private event: EventData; // The event in the message, if it has one
   private isPoll: boolean;
   private pollInfo: PollInfo;
@@ -105,7 +105,7 @@ export class MessageComponent implements OnInit {
     this.isPoll = this.message.isPoll;
     this.pollInfo = this.message.pollInfo;
     this.pollTieInfo = [];
-    if (this.message.content === null && this.message.isPoll == false) {
+    if (this.message.content === null && this.message.isPoll === false) {
       this.content.push(null);
     } else if (this.message.content.includes('=====================')) {
       this.message.content.split('=====================').forEach(section => {
@@ -139,28 +139,27 @@ export class MessageComponent implements OnInit {
     const minutes2 = min2 < 10 ? `0${min2}` : `${min2}`;
     const apm2 = hr > 11 ? 'PM' : 'AM';
     this.displayPollExpiration = `${day2}, ${month2} ${date2} at ${hours2}:${minutes2} ${apm2}`;
-    if (this.isPoll == true && (this.currentTime - this.formSubmissionTime > 86400000)) {
+    if (this.isPoll === true && (this.currentTime - this.formSubmissionTime > 86400000)) {
       let tempcount = 0;
       this.pollWinnerTotal = 0;
       this.message.pollInfo.responses.forEach(element => {
-        if (element.count >= tempcount){
-          if(element.count==tempcount){
-            //push into array
+        if (element.count >= tempcount) {
+          if (element.count === tempcount) {
+            // push into array
             this.pollTieInfo.push(element.content);
-          }
-          else{
-            //clear array
+          } else {
+            // clear array
             this.pollTieInfo.length = 0;
             this.pollTieInfo.push(element.content);
           }
-          tempcount = element.count
+          tempcount = element.count;
           this.pollWinnerName = element.content;
           this.pollWinnerCount = element.count;
         }
         this.pollWinnerTotal += element.count;
       });
-      if (this.pollWinnerTotal == 0) {
-        this.pollWinnerName = "Nothing";
+      if (this.pollWinnerTotal === 0) {
+        this.pollWinnerName = 'Nothing';
         this.pollWinnerCount = 0;
       }
     }
@@ -212,7 +211,7 @@ export class MessageComponent implements OnInit {
 
     this.rezziService.getSession().then(session => {
       this.accountType = session.accountType;
-    })
+    });
   }
 
   sendReaction(reaction) {
@@ -237,23 +236,23 @@ export class MessageComponent implements OnInit {
       spmd.message.reactions = this.reactions;
       this.messagesService.updateMessageThroughSocket(spmd);
 
-      //send notification
+      // send notification
       const body = {
-        message: this.viewingUser.email + " reacted to your message",
+        message: this.viewingUser.email + ' reacted to your message',
         channel: this.viewingUser.email,
         recipients: [this.pmUser],
         isPM: true,
-      }
-  
+      };
+
       this.http.post('/send-notifications', body).toPromise().then((response) => {
-        
+
       }).catch((error) => {
         const res = error as HttpErrorResponse;
         if (res.status === 200) {
           alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
           location.reload();
         } else {
-          console.log(res.error.text)
+          console.log(res.error.text);
           alert(`There was an error while trying to send notifications. Please try again later.`);
         }
       });
@@ -267,23 +266,23 @@ export class MessageComponent implements OnInit {
       scmd.message.reactions = this.reactions;
       this.messagesService.updateMessageThroughSocket(scmd);
 
-      //send notificaiton
+      // send notificaiton
       const body = {
-        message: this.viewingUser.firstName + " reacted to your message",
+        message: this.viewingUser.firstName + ' reacted to your message',
         channel: this.channel,
         recipients: [this.message.owner.email],
-      }
-      console.log("viewing user first name: ", this.message.owner.firstName)
-  
+      };
+      console.log('viewing user first name: ', this.message.owner.firstName);
+
       this.http.post('/send-notifications', body).toPromise().then((response) => {
-        
+
       }).catch((error) => {
         const res = error as HttpErrorResponse;
         if (res.status === 200) {
           alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
           location.reload();
         } else {
-          console.log(res.error.text)
+          console.log(res.error.text);
           alert(`There was an error while trying to send notifications. Please try again later.`);
         }
       });
@@ -296,8 +295,8 @@ export class MessageComponent implements OnInit {
 
   reportMessage() {
     if (this.accountType < 2) {
-      var retVal = confirm("Are you sure you want to remove this message? This cannot be undone");
-      if(retVal!=true){ // retVal != true if they hit cancel.
+      const retVal = confirm('Are you sure you want to remove this message? This cannot be undone');
+      if (retVal !== true) { // retVal != true if they hit cancel.
         return;
       }
       if (this.pm) {
@@ -317,15 +316,14 @@ export class MessageComponent implements OnInit {
         scmd.message.visible = false;
         this.messagesService.updateMessageThroughSocket(scmd);
       }
-      alert("The message has been removed.");
-    }
-    else {
-      if(this.message.reported){
-        alert("This message has already been reported!");
+      alert('The message has been removed.');
+    } else {
+      if (this.message.reported) {
+        alert('This message has already been reported!');
         return;
       }
-      var retVal = confirm("Are you sure you want to report this message? This cannot be undone");
-      if(retVal!=true){
+      const retVal = confirm('Are you sure you want to report this message? This cannot be undone');
+      if (retVal !== true) {
         return;
       }
       this.message.reported = true;
@@ -406,7 +404,7 @@ export class MessageComponent implements OnInit {
   formResponse(index) {
     this.currentTime = new Date().getTime();
     if (this.currentTime - this.formSubmissionTime > 86400000) {
-      alert("Form has expired!");
+      alert('Form has expired!');
       return;
     }
     this.message.pollInfo.users.push(this.user.email);

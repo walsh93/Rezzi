@@ -35,4 +35,47 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
-}
+  dismissNotification(channel: string, toDismiss: string) {
+    
+
+    console.log('Notification to be dismissed: ' + toDismiss);
+    const body = {
+      toDismiss: toDismiss,
+      channel: channel
+    };
+
+    this.http.post('/dismiss-notification', body).toPromise().then((response) => {
+      location.reload();
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status === 200) {
+        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        location.reload();
+      } else {
+        alert(`There was an error while trying to dismiss notification. Please try again later.`);
+      }
+    });
+  }
+
+  muteNotifications(channel: string) {
+    
+
+    console.log('Channel to be muted: ' + channel);
+    const body = {
+      channel: channel
+    };
+
+    this.http.post('/mute-notifications', body).toPromise().then((response) => {
+      location.reload();
+    }).catch((error) => {
+      const res = error as HttpErrorResponse;
+      if (res.status === 200) {
+        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        location.reload();
+      } else {
+        alert(`There was an error while trying to mute channel. Please try again later.`);
+      }
+    });
+  }
+
+  }
