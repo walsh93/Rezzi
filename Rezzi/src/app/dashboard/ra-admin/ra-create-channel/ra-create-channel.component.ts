@@ -9,7 +9,12 @@ import { Router } from '@angular/router';
   // Pass data to child via data binding (replaces templateUrl and the HTML file)
   template: `
     <div class="container">
-      <h1>Let's create a new channel!</h1>
+      <h1 style="
+      margin: auto;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;">Let's create a new channel!</h1>
       <app-create-channel-form [owner]="owner"></app-create-channel-form>
     </div>
   `

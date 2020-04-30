@@ -1,6 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { RezziService } from '../rezzi.service';
+import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,8 @@ import { RezziService } from '../rezzi.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
+  @ViewChild(MatMenuTrigger, {static: true}) trigger: MatMenuTrigger;
+  // @ViewChild('childMenu') public childMenu: any;
   userIsLoggedInSubsc: Subscription;
   userIsLoggedInObs: Observable<boolean>;
   userIsLoggedIn: boolean;
@@ -32,6 +34,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.userIsLoggedInSubsc.unsubscribe();
+  }
+
+  someMethod() {
+    this.trigger.openMenu();
   }
 
 }

@@ -1,21 +1,33 @@
 <mat-card>
-	<!-- <mat-card-header> -->
-    <div *ngIf="channel.name !== 'General'">
-      <mat-form-field class="left-side">
-        <mat-label>Channel Name</mat-label>
-        <input matInput value="{{channel.name}}" ngModel pattern='^[^\-]+$' (blur)="onNameChange($event.target.value)">
-      </mat-form-field>
+  <!-- <mat-card-header> -->
+  <div class=row>
+  <div class=col-7>
+  <div *ngIf="channel.name !== 'General'">
+    <mat-card-content>
+    <mat-form-field>
+      <mat-label>Channel Name</mat-label>
+      <input matInput value="{{channel.name}}" ngModel pattern='^[^\-]+$' (blur)="onNameChange($event.target.value)">
+    </mat-form-field></mat-card-content>
+  </div>
+  </div>
+
+  <div *ngIf="channel.name === 'General'">
+    General
+  </div>
+  <div class=col-5>
+  <div *ngIf="channel.name !== 'General'">
+    <mat-card-subtitle>
+
+    <button mat-icon-button aria-label="Delete Channel" matTooltip="Delete channel"  (click)="onDelete()">
+      <mat-icon >delete</mat-icon>
+    </button>
+  </mat-card-subtitle>
+
     </div>
-    <div *ngIf="channel.name === 'General'">
-      General
-    </div>
-    <div *ngIf="channel.name !== 'General'">
-      <button mat-icon-button aria-label="Delete Channel" (click)="onDelete()" class="right-side">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
+  </div>
+  </div>
   <!-- </mat-card-header> -->
-<!--   <mat-card-actions>
+  <!--   <mat-card-actions>
     <mat-slide-toggle [checked]="channel.default" (change)="onToggleChange($event)">
       Default
     </mat-slide-toggle>

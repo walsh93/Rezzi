@@ -6,7 +6,7 @@
 
 .example-sidenav-content {
   display: block;
-  height: calc(100%-64px);
+  /* height: calc(100%-64px); */
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -22,4 +22,7 @@
     margin-right: auto;
     width: 95%;
 
+  }
+  mat-toolbar{
+    background-color: #424242;
   }

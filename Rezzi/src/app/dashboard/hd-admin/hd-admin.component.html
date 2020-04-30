@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <button (click)="showCreateRezziComponent()" mat-raised-button>Create Rezzi</button>
   <button (click)="showInviteUsersComponent()" mat-raised-button>Invite Users</button>
   <button (click)="showNotificationsComponent()" mat-raised-button>Notifications</button>
@@ -7,9 +7,48 @@
 </div>
 <br>
 <div>
-  <p *ngIf="showCreateRezzi"><app-create-rezzi></app-create-rezzi></p>
-  <p *ngIf="showInviteUsers"><app-invite-users></app-invite-users></p>
-  <p *ngIf="showhdNotifications"><app-hd-notifications></app-hd-notifications></p>
-  <p *ngIf="showUserManagement"><app-user-management></app-user-management></p>
-  <p *ngIf="showMoveUsers"><app-move-users></app-move-users></p>
-</div>
+  <p *ngIf="showCreateRezzi">
+    <app-create-rezzi></app-create-rezzi>
+  </p>
+  <p *ngIf="showInviteUsers">
+    <app-invite-users></app-invite-users>
+  </p>
+  <p *ngIf="showhdNotifications">
+    <app-hd-notifications></app-hd-notifications>
+  </p>
+  <p *ngIf="showUserManagement">
+    <app-user-management></app-user-management>
+  </p>
+  <p *ngIf="showMoveUsers">
+    <app-move-users></app-move-users>
+  </p>
+</div> -->
+
+
+<mat-tab-group>
+  <mat-tab label="Create Rezzi">
+    <div class="stuff">
+      <app-create-rezzi></app-create-rezzi>
+    </div>
+  </mat-tab>
+  <mat-tab label="Invite Users">
+    <div class="stuff">
+      <app-invite-users></app-invite-users>
+    </div>
+  </mat-tab>
+  <mat-tab label="Notifications">
+    <div class="stuff">
+      <app-hd-notifications></app-hd-notifications>
+    </div>
+  </mat-tab>
+  <mat-tab label="User Management">
+    <div class="stuff">
+      <app-user-management></app-user-management>
+    </div>
+  </mat-tab>
+  <mat-tab label="Move Residents">
+    <div class="stuff">
+      <app-move-users></app-move-users>
+    </div>
+  </mat-tab>
+</mat-tab-group>

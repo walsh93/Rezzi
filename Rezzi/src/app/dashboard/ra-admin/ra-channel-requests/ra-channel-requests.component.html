@@ -1,6 +1,6 @@
 <ng-container id="outer-component" class="container">
   <div class="row">
-    <div class="col-6 component-column">
+    <div class="col-sm-3 component-column">
       <!-- Wait for asynchronous calls to complete -->
       <div *ngIf="nameObservable | async as chanReqNames; else loading">
         <ng-container *ngIf="chanReqNames.size > 0; else nonames">
@@ -14,7 +14,7 @@
         </ng-container>
         <ng-template #nonames>
           <div class="row btnrow">
-            <p>You do not currently have any channel requests</p>
+            <p>You do not have any channel requests</p>
           </div>
         </ng-template>
       </div>
@@ -24,21 +24,22 @@
         </div>
       </ng-template>
     </div>
+    <mat-divider [vertical]="true"></mat-divider>
 
     <!-- Information block -->
-    <div id="channel-info" class="col-6 component-column">
-      <h1 *ngIf="!channelIsBeingViewed">Select a channel request to view</h1>
+    <div id="channel-info" class="col-sm component-column">
+      <mat-card-title *ngIf="!channelIsBeingViewed">Select a channel request to view</mat-card-title>
       <mat-card *ngIf="channelIsBeingViewed">
         <h1>{{ channelDataBeingViewed.title }}</h1>
         <br>
-        <mat-card-content>Owner: {{ channelDataBeingViewed.owner }}</mat-card-content>
-        <mat-card-content>Rezzi: {{ rezzi }} - {{ channelDataBeingViewed.level }} channel</mat-card-content>
+        <mat-card-content><strong>Owner:</strong> {{ channelDataBeingViewed.owner }}</mat-card-content>
+        <mat-card-content><strong>Rezzi:</strong> {{ rezzi }} - {{ channelDataBeingViewed.level }} channel</mat-card-content>
         <br>
-        <p>Description: {{ channelDataBeingViewed.description }}</p>
+        <p><strong>Description:</strong> (optional) {{ channelDataBeingViewed.description }}</p>
         <br>
         <div id="adbtns" class="row">
           <button class="adbtn" (click)="approveRequest()" color="primary" mat-raised-button>Approve</button>
-          <button class="adbtn" (click)="denyRequest()" color="warning" mat-raised-button>Deny</button>
+          <button class="adbtn" (click)="denyRequest()" color="warn" mat-raised-button>Deny</button>
         </div>
       </mat-card>
     </div>

@@ -21,7 +21,7 @@
 
 .example-container {
   width: 100%;
-  height: calc(100% - 160px);  /* mat-tool-bar is 64 px */
+  height: calc(100% - 64px);  /* mat-tool-bar is 64 px */
   position: absolute;
 }
 
@@ -39,4 +39,8 @@
 
 .channelnavbar {
   position: relative;
+}
+
+.message-area{
+  height: calc(100% - 500px);
 }
