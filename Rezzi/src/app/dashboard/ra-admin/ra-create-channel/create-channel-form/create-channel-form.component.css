@@ -33,7 +33,7 @@ mat-card {
   margin-right: auto;
   text-align: center;
 }
-button{
+button, h3 {
   margin: auto;
   display: block;
   margin-left: auto;

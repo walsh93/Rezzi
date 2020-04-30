@@ -23,3 +23,6 @@
     width: 95%;
 
   }
+  mat-toolbar{
+    background-color: #424242;
+  }
