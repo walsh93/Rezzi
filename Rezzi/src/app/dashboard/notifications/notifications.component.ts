@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RezziService } from '../../rezzi.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-notifications',
@@ -16,7 +17,10 @@ export class NotificationsComponent implements OnInit {
   panelOpenState = false;
   panelInfo: Array<any>;
 
-  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private http: HttpClient,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.errorMsg = '';
@@ -27,7 +31,7 @@ export class NotificationsComponent implements OnInit {
 
     this.rezziService.getNotifications().then(panelInfo => {
       if (panelInfo == null) {
-        console.log("Panel info does not exist");
+        // console.log('Panel info does not exist');
         return;
       } else {
         this.panelInfo = panelInfo.panelInfo;
@@ -36,12 +40,11 @@ export class NotificationsComponent implements OnInit {
   }
 
   dismissNotification(channel: string, toDismiss: string) {
-    
 
-    console.log('Notification to be dismissed: ' + toDismiss);
+    // console.log('Notification to be dismissed: ' + toDismiss);
     const body = {
-      toDismiss: toDismiss,
-      channel: channel
+      toDismiss,
+      channel
     };
 
     this.http.post('/dismiss-notification', body).toPromise().then((response) => {
@@ -49,20 +52,19 @@ export class NotificationsComponent implements OnInit {
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
-        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        this.snackBar.open(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
         location.reload();
       } else {
-        alert(`There was an error while trying to dismiss notification. Please try again later.`);
+        this.snackBar.open(`There was an error while trying to dismiss notification. Please try again later.`);
       }
     });
   }
 
   muteNotifications(channel: string) {
-    
 
-    console.log('Channel to be muted: ' + channel);
+    // console.log('Channel to be muted: ' + channel);
     const body = {
-      channel: channel
+      channel
     };
 
     this.http.post('/mute-notifications', body).toPromise().then((response) => {
@@ -70,10 +72,10 @@ export class NotificationsComponent implements OnInit {
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
-        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        this.snackBar.open(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
         location.reload();
       } else {
-        alert(`There was an error while trying to mute channel. Please try again later.`);
+        this.snackBar.open(`There was an error while trying to mute channel. Please try again later.`);
       }
     });
   }

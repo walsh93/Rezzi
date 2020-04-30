@@ -1,18 +1,18 @@
-import { Component, OnInit, ElementRef, ViewChild } from "@angular/core";
-import { User, HDUser } from "src/app/classes.model";
-import { RezziService } from "../../../rezzi.service";
-import { Router } from "@angular/router";
-import { NgForm } from "@angular/forms";
-import { firestore } from "firebase";
-import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { Inject } from "@angular/core";
-import { DOCUMENT } from "@angular/common";
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { User, HDUser } from 'src/app/classes.model';
+import { RezziService } from '../../../rezzi.service';
+import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { firestore } from 'firebase';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
-  selector: "app-edit-profile-form",
-  templateUrl: "./edit-profile-form.component.html",
-  styleUrls: ["./edit-profile-form.component.css"]
+  selector: 'app-edit-profile-form',
+  templateUrl: './edit-profile-form.component.html',
+  styleUrls: ['./edit-profile-form.component.css']
 })
 export class EditProfileFormComponent implements OnInit {
   theUser: User;
@@ -33,10 +33,10 @@ export class EditProfileFormComponent implements OnInit {
       return;
     }
 
-    let userInfo = {
+    const userInfo = {
       firstName: form.value.firstName,
       lastName: form.value.lastName,
-      //password: form.value.password,
+      // password: form.value.password,
       age: form.value.age,
       major: form.value.major,
       nickName: form.value.nickName,
@@ -48,7 +48,7 @@ export class EditProfileFormComponent implements OnInit {
     this.theUser.major = userInfo.major;
     this.theUser.nickName = userInfo.nickName;
     this.theUser.bio = userInfo.bio;
-    //this.theUser.password = userInfo.password;
+    // this.theUser.password = userInfo.password;
 
     this.editUser(userInfo);
   }
@@ -57,7 +57,7 @@ export class EditProfileFormComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    let pw = {
+    const pw = {
       password: form.value.password
     };
     this.theUser.password = pw.password;
@@ -75,13 +75,13 @@ export class EditProfileFormComponent implements OnInit {
   editUser(data) {
     this.http
       .post<{ notification: string }>(
-        "http://localhost:4100/dashboard/api/edit-profile",
+        'http://localhost:4100/dashboard/api/edit-profile',
         data
       )
       .subscribe(responseData => {
-        console.log(responseData.notification);
+        // console.log(responseData.notification);
       });
-    alert("Your profile has been edited!");
+    this._snackBar.open('Your profile has been edited!');
   }
   ondeletionRequest() {
     this.checkUser();
@@ -91,7 +91,7 @@ export class EditProfileFormComponent implements OnInit {
     this.rezziService.getSession().then(session => {
       if (session.accountType === 0) {
         // not a resident
-        alert("Only non-hall director accounts can request deletion!");
+        this._snackBar.open('Only non-hall director accounts can request deletion!');
       } else {
         this.theUser.deletionRequest = 1;
         this.deletionRequest(this.theUser);
@@ -102,11 +102,11 @@ export class EditProfileFormComponent implements OnInit {
   deletionRequest(data) {
     this.http
       .post<{ notification: string }>(
-        "http://localhost:4100/dashboard/api/edit-profile/deletion",
+        'http://localhost:4100/dashboard/api/edit-profile/deletion',
         data
       )
       .subscribe(responseData => {
-        console.log(responseData.notification);
+        // console.log(responseData.notification);
       });
   }
   updateHallDirector(hd, user) {
@@ -140,33 +140,33 @@ export class EditProfileFormComponent implements OnInit {
         hd
       )
       .subscribe(responseData => {
-        console.log(responseData.notification);
+        // console.log(responseData.notification);
       });
-    alert("You have requested to delete your account!");
+    this._snackBar.open('You have requested to delete your account.');
   }
 
   loadProfilePicture(user) {
-    if(this.theUser.image_url){
-      if (document.readyState !== "loading") {
-        console.log("document is already ready");
+    if (this.theUser.image_url) {
+      if (document.readyState !== 'loading') {
+        // console.log('document is already ready');
         this.theUser.setImageUrl(this.theUser.image_url);
         this.thePic = this.theUser.image_url;
       } else {
-        document.addEventListener("DOMContentLoaded", function() {
-          console.log("document was not ready");
+        document.addEventListener('DOMContentLoaded', function() {
+          // console.log('document was not ready');
           this.theUser.setImageUrl(this.theUser.image_url);
-          document.getElementById("profile").setAttribute("src", user.image_url);
+          document.getElementById('profile').setAttribute('src', user.image_url);
         });
       }
-    } else{
+    } else {
       this.thePic = '../../../../../src/assets/images/logoSmall.png';
     }
   }
   onPictureSelected(event) {
     const file = event.target.files[0] as File;
-    if (!file.type.startsWith("image")) {
+    if (!file.type.startsWith('image')) {
       this.selectedPicture = null;
-      alert("Please upload an image file");
+      this._snackBar.open('Please upload an image file');
     } else {
       this.selectedPicture = file;
     }
@@ -176,16 +176,16 @@ export class EditProfileFormComponent implements OnInit {
     let progressId: string = null;
 
     // Set constants based on which file the user is uploading
-    if (value === "image") {
+    if (value === 'image') {
       fileToUpload = this.selectedPicture;
-      progressId = "pic_";
+      progressId = 'pic_';
     } else {
-      alert("Something went wrong while uploading; please try again later.");
+      this._snackBar.open('Something went wrong while uploading; please try again later.');
       return;
     }
 
     if (fileToUpload === null) {
-      alert("Please upload image file");
+      this._snackBar.open('Please upload image file');
     } else {
       this.duringUpload = true;
       // document.getElementById(`${progressId}progress`).hidden = false;
@@ -196,16 +196,16 @@ export class EditProfileFormComponent implements OnInit {
         .post(
           `https://us-central1-rezzi-33137.cloudfunctions.net/uploadFile?docId=${this.session.email}`,
           formData,
-          { observe: "response" }
+          { observe: 'response' }
         )
         .subscribe(response => {
           if (response.status === 200) {
             // location.reload();
             this.duringUpload = false;
-            alert(`Your photo has been uploaded...`);
+            this._snackBar.open(`Your photo has been uploaded...`);
             window.location.reload();
           } else {
-            alert(
+            this._snackBar.open(
               `Something went wrong. Return with a status code ${response.status}: ${response.statusText}`
             );
           }
@@ -230,10 +230,10 @@ export class EditProfileFormComponent implements OnInit {
     this.rezziService.getSession().then(response => {
       if (response.email == null) {
         // not signed in
-        this.router.navigate(["/sign-in"]);
+        this.router.navigate(['/sign-in']);
       } else if (response.verified === false) {
         // signed in but not verified
-        this.router.navigate(["/sign-up"]);
+        this.router.navigate(['/sign-up']);
       } // else signed in and verified
       this.rezziService.getSession().then(session => {
         this.session = session;
@@ -259,7 +259,7 @@ export class EditProfileFormComponent implements OnInit {
       this.rezziService.getHDEmail().then(response => {
         this.hd = response.hd;
         if ((this.theUser.deletionRequest = 1)) { // @Katarina: is this supposed to be ==?
-          // console.log("it is 1!!");
+          // console.log('it is 1!!');
         }
       });
     });

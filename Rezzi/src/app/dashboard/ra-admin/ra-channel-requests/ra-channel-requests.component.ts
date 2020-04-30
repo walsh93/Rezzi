@@ -3,6 +3,7 @@ import { RezziService } from '../../../rezzi.service';
 import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-ra-channel-requests',
@@ -29,7 +30,10 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
   @Input() email: string;
   @Input() rezzi: string;
 
-  constructor(private rezziService: RezziService, private http: HttpClient, private router: Router) { }
+  constructor(private rezziService: RezziService,
+              private http: HttpClient,
+              private router: Router,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.channelRequestDetails = new Map<string, any>();
@@ -37,15 +41,15 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
     // Use this for real life
     const listeners = this.rezziService.getChannelRequestListeners();
     this.idSubscription = listeners.chanReqIdSubj.subscribe((updatedIds) => {
-      console.log('IDs are updating...');
+      // console.log('IDs are updating...');
       this.channelRequestIds = updatedIds;
-      console.log(this.channelRequestIds);
+      // console.log(this.channelRequestIds);
     });
     this.nameObservable = listeners.chanReqNameSubj;
     this.nameSubscription = this.nameObservable.subscribe((updatedNames) => {
-      console.log('Names are updating...');
+      // console.log('Names are updating...');
       this.channelRequestNames = updatedNames;
-      console.log(this.channelRequestNames);
+      // console.log(this.channelRequestNames);
     });
     this.rezziService.getChannelRequests();
   }
@@ -93,7 +97,7 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
   }
 
   viewingFailure() {
-    alert('The channel request you are trying to view could not be retrieved');
+    this.snackBar.open('The channel request you are trying to view could not be retrieved');
     this.rezziService.getChannelRequests();
   }
 
@@ -111,7 +115,7 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
   approveRequest() {
     const approved = confirm('Are you sure you would like to approve this channel request?');
     if (approved) {
-      console.log('Change tag, remove from array of requests, create-channel.js, and reload this page');
+      // console.log('Change tag, remove from array of requests, create-channel.js, and reload this page');
       this.respondToChannelRequest(true);
     }
   }
@@ -121,7 +125,7 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
     const p2 = 'If you confirm, this request will no longer appear on your dashboard.';
     const denied = confirm(`${p1} ${p2}`);
     if (denied) {
-      console.log('Remove from array of requests in the database and reload this page');
+      // console.log('Remove from array of requests in the database and reload this page');
       this.respondToChannelRequest(false);
     }
   }
@@ -138,16 +142,16 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
 
     this.http.post('/channel-requests', body).toPromise().then((response) => {
       this.rezziService.getChannelRequests();
-      alert((response as any).msg);
+      this.snackBar.open((response as any).msg);
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
         this.rezziService.getChannelRequests();
-        alert((res as any).msg);
+        this.snackBar.open((res as any).msg);
       } else {
         console.log('Channel request response rejected');
         console.log((error as any).reject);
-        alert((error as any).msg);
+        this.snackBar.open((error as any).msg);
       }
     });
   }

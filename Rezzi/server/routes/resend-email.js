@@ -16,12 +16,12 @@ const nodemailer = require("nodemailer");
 router.get("/", checkCookie, function(request, response) {
   response.sendFile(indexFile);
 }).post("/", function(request, response) {
-    //data from frontend 
+    //data from frontend
     const rb = request.body
     const email = rb.email
-    const rezzi = rb.rezzi 
+    const rezzi = rb.rezzi
     var time = Date().toString()
-    
+
 
     db.collection(keys.users).doc(email).get().then((doc) => {
         const data = doc.data()
@@ -38,7 +38,7 @@ router.get("/", checkCookie, function(request, response) {
               pass: "cs407Project!"
             }
           });
-    
+
           var mailOptions = {
             to: email,
             from: rezzi + " Rezzi <rezzi407@gmail.com>",
@@ -49,12 +49,12 @@ router.get("/", checkCookie, function(request, response) {
               "email: " + email + "\npassword: " + password + "\n\nYou will be directed to set up your profile and change your password\n\n" +
               "Have fun connecting with your friends in " + rezzi + " this year!"
           };
-    
+
           smtpTransport.sendMail(mailOptions, function(error, res) {
             if (error) {
               console.log(`There was an error sending email to ${email}`)
             } else {
-              console.log(`I think we successfully sent an email to ${email}...???!!!`)
+              // console.log(`I think we successfully sent an email to ${email}...???!!!`)
             }
           });
     })

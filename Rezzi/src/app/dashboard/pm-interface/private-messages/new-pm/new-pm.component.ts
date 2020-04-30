@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Message, SocketPrivateMessageData, AbbreviatedUser } from 'src/app/classes.model';
 import { ImageModalComponent } from 'src/app/home/interface/messages/new-message/image-modal/image-modal.component';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-new-pm',
@@ -35,7 +36,10 @@ export class NewPmComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('viewingUpdateEventAnm') viewingObs: Observable<string>;
 
-  constructor(private http: HttpClient, public messagesService: MessagesService, public dialog: MatDialog) { }
+  constructor(private http: HttpClient,
+              public messagesService: MessagesService,
+              public dialog: MatDialog,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     // Listen for session updates
@@ -87,13 +91,13 @@ export class NewPmComponent implements OnInit {
       sender: this.session.email
     };
 
-    console.log("new-pm.comp.ts", scmd);
+    console.log('new-pm.comp.ts', scmd);
     // this.messagesService.addMessage(message);
     this.messagesService.sendPrivateMessageThroughSocket(scmd);
     this.image = null;
 
     const dayNames = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
-   const monthNames = [
+    const monthNames = [
     'Jan.',
     'Feb.',
     'Mar.',
@@ -107,7 +111,7 @@ export class NewPmComponent implements OnInit {
     'Nov.',
     'Dec.'
   ];
-  var displayTime;
+    var displayTime;
     const dateAgain = new Date();
     const day = dayNames[dateAgain.getDay()];
     const month = monthNames[dateAgain.getMonth()];
@@ -120,28 +124,27 @@ export class NewPmComponent implements OnInit {
     displayTime = `${day}, ${month} ${date} at ${hours}:${minutes} ${apm}`;
 
     const body = {
-      message: "You have been sent a new private message at " + displayTime,
+      message: 'You have been sent a new private message at ' + displayTime,
       channel: this.session.email,
       recipients: [this.currentPMUser],
       isPM: true,
-    }
+    };
 
     this.http.post('/send-notifications', body).toPromise().then((response) => {
-      
+
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
-        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        this.snackBar.open(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
         location.reload();
       } else {
-        console.log(res.error.text)
-        alert(`There was an error while trying to send notifications. Please try again later.`);
+        console.log(res.error.text);
+        this.snackBar.open(`There was an error while trying to send notifications. Please try again later.`);
       }
     });
 
     form.resetForm();
 
-    
   }
 
   openImageDialog() {

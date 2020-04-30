@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { RezziService } from 'src/app/rezzi.service';
 import { ResidentPrivilegeInfo } from 'src/app/classes.model';
@@ -22,7 +22,10 @@ export class AssignPrivilegsComponent implements OnInit {
   residents: MatTableDataSource<ResidentPrivilegeInfo>;
   columnsToDisplay: string[] = ['fnameCol', 'lnameCol', 'emailCol', 'actTypeCol', 'buttonCol'];
 
-  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private http: HttpClient,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.rezziService.getSession().then((session) => {
@@ -75,7 +78,8 @@ export class AssignPrivilegsComponent implements OnInit {
         this.resPrivInfoMap.set(email, privInfo);
         this.filterByFloor(this.currentFloorFilter);
       } else {
-        console.log('update unsuccessful');  // TODO change to mat-dialog
+        // console.log('update unsuccessful');  // TODO change to mat-dialog
+        this.snackBar.open('Update unsuccessful');
       }
     }).catch((error) => {
       const res = error as HttpErrorResponse;

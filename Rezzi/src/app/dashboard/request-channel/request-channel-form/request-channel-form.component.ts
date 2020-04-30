@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { RezziService } from '../../../rezzi.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-request-channel-form',
@@ -20,7 +21,10 @@ export class RequestChannelFormComponent implements OnInit {
   floor: string;
   respectiveRa: string = null;
 
-  constructor(private rezziService: RezziService, private http: HttpClient, private router: Router) { }
+  constructor(private rezziService: RezziService,
+              private http: HttpClient,
+              private router: Router,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     // Initialize class variables
@@ -35,7 +39,7 @@ export class RequestChannelFormComponent implements OnInit {
         this.router.navigate(['/sign-in']);
       } else {
         if (session.accountType !== 2) {  // not a resident
-          alert('Typically only a resident should access this page...');
+          console.log('Typically only a resident should access this page...');
         }
 
         this.rezziService.getUserProfile().then((response) => {
@@ -97,13 +101,13 @@ export class RequestChannelFormComponent implements OnInit {
      * NOTE: Anything returned from request-channel.js will be accessible in res.error
      */
     this.http.post(`/request-channel?rezzi=${this.rezzi}&floor=${this.floor}`, body).toPromise().then((response) => {
-      alert((response as any).msg);
+      this.snackBar.open((response as any).msg);
       this.router.navigate(['/home']);  // TODO change this to route to channel?
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
-        console.log("Res information: " + res + "\n request-channel-form")
-        alert((res as any).msg);
+        console.log('Res information: ' + res + '\n request-channel-form');
+        this.snackBar.open((res as any).msg);
         this.router.navigate(['/home']);  // TODO change this to route to channel?
       } else {
         document.getElementById('error-msg').hidden = false;

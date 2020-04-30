@@ -253,7 +253,7 @@ export class MessageComponent implements OnInit {
           location.reload();
         } else {
           console.log(res.error.text);
-          alert(`There was an error while trying to send notifications. Please try again later.`);
+          this._snackBar.open(`There was an error while trying to send notifications. Please try again later.`);
         }
       });
 
@@ -283,7 +283,7 @@ export class MessageComponent implements OnInit {
           location.reload();
         } else {
           console.log(res.error.text);
-          alert(`There was an error while trying to send notifications. Please try again later.`);
+          this._snackBar.open(`There was an error while trying to send notifications. Please try again later.`);
         }
       });
     }
@@ -316,10 +316,10 @@ export class MessageComponent implements OnInit {
         scmd.message.visible = false;
         this.messagesService.updateMessageThroughSocket(scmd);
       }
-      alert('The message has been removed.');
+      this._snackBar.open('The message has been removed.');
     } else {
       if (this.message.reported) {
-        alert('This message has already been reported!');
+        this._snackBar.open('This message has already been reported.');
         return;
       }
       const retVal = confirm('Are you sure you want to report this message? This cannot be undone');
@@ -348,7 +348,7 @@ export class MessageComponent implements OnInit {
         this.messagesService.updateMessageThroughSocket(scmd);
         this.ReportId = this.message.id;
       }
-      alert('This message has been reported to the hall director!');
+      this._snackBar.open('This message has been reported to the hall director.');
       this.updateHallDirector(this.hdEmail, this.user.email);
     }
   }
@@ -404,7 +404,7 @@ export class MessageComponent implements OnInit {
   formResponse(index) {
     this.currentTime = new Date().getTime();
     if (this.currentTime - this.formSubmissionTime > 86400000) {
-      alert('Form has expired!');
+      this._snackBar.open('Form has expired!');
       return;
     }
     this.message.pollInfo.users.push(this.user.email);

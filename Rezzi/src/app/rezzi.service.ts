@@ -70,7 +70,7 @@ export class RezziService {
   }
 
   findUserByEmail(hd: string, user: string): Promise<any> {
-    console.log('Find user by email: ' + hd);
+    // console.log('Find user by email: ' + hd);
     return this.http.get(`/update-hd?hd=${hd}&user=${user}`).toPromise().then(response => {
       return response;
     }).catch(error => {
@@ -204,7 +204,7 @@ export class RezziService {
 
   getNotifications(): Promise<any> {
     return this.http.get('/getNotifications').toPromise().then((panelInfo) => {
-      console.log('Panel Info: ', panelInfo);
+      // console.log('Panel Info: ', panelInfo);
       return panelInfo;
     }).catch((error) => {
       console.log(error);

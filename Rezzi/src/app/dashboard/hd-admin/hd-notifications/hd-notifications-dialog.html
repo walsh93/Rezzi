@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Rezzi Management</h1>
+<div mat-dialog-content>
+  <p>Are you sure you want to {{ action }}? This change will be permanent.</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)='onCancelClick()'>Cancel</button>
+  <div class='actionButtons' style="float:right;">
+    <button mat-raised-button color='primary' (click)='onDenyClick()'>Deny</button>
+    <button mat-raised-button color='warn' (click)='onConfirmClick()'>Confirm</button>
+  </div>
+</div>

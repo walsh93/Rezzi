@@ -34,6 +34,7 @@ import {
   MatStepperModule,
   MatAutocompleteModule,
   MatPaginatorModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
  } from '@angular/material';
 
 
@@ -118,7 +119,8 @@ import { PwordresetChangeComponent } from './pwordreset/pwordreset-change/pwordr
 import { MemberInputComponent } from './dashboard/ra-admin/ra-create-channel/create-channel-form/member-input/member-input.component';
 
 import { ChannelNavBarService } from './home/interface/channel-nav-bar/channel-nav-bar.service';
-import { HdNotificationsComponent } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
+import { HdNotificationsComponent,
+  HdNotificationsDialog } from './dashboard/hd-admin/hd-notifications/hd-notifications.component';
 import { CreatePmComponent } from './dashboard/pm-interface/pm-side-panel/create-pm/create-pm.component';
 import { BotMessageComponent } from './home/interface/messages/bot-message/bot-message.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -129,7 +131,8 @@ import { ViewMembersComponent } from './home/interface/view-members/view-members
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CalendarPanelComponent } from './home/interface/channel-nav-bar/calendar-panel/calendar-panel.component';
-import { EventModalComponent, ConfirmCancelEventDialogComponent } from './home/interface/channel-nav-bar/calendar-panel/event-modal/event-modal.component';
+import { EventModalComponent,
+  ConfirmCancelEventDialogComponent } from './home/interface/channel-nav-bar/calendar-panel/event-modal/event-modal.component';
 import { NotificationsComponent } from './dashboard/notifications/notifications.component';
 import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-side-panel.service';
 
@@ -183,6 +186,7 @@ import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-si
     RaChannelRequestsComponent,
     LeaveChannelDialog,
     DeleteChannelDialog,
+    HdNotificationsDialog,
     ImageModalComponent,
     BotMessageComponent,
     ProfileComponent,
@@ -247,13 +251,19 @@ import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-si
     CreatePmComponent,
     LeaveChannelDialog,
     DeleteChannelDialog,
+    HdNotificationsDialog,
     ImageModalComponent,
     CreateEventComponent,
     PollingComponent,
     EventModalComponent,
     ConfirmCancelEventDialogComponent
   ],
-  providers: [MessagesService, ChannelNavBarService, PMSidePanelService],
+  providers: [
+    MessagesService,
+    ChannelNavBarService,
+    PMSidePanelService,
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

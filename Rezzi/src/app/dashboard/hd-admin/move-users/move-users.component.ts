@@ -3,7 +3,7 @@ import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ResidentPrivilegeInfo } from 'src/app/classes.model';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-move-users',
@@ -26,7 +26,10 @@ export class MoveUsersComponent implements OnInit {
   matTableDataMap = new Map<string, MatTableDataSource<ResidentPrivilegeInfo>>();  // floor --> array of users on floor
   columnsToDisplay: string[] = ['fnameCol', 'lnameCol', 'emailCol', 'actTypeCol', 'floorMenuCol', 'buttonCol'];
 
-  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private http: HttpClient,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.rezziService.getSession().then((session) => {
@@ -89,7 +92,8 @@ export class MoveUsersComponent implements OnInit {
       if ((response as any).status >= 200 && (response as any).status < 300) {
         this.updateMapsAfterMove(email, floor);
       } else {
-        console.log('update unsuccessful');  // TODO change to mat-dialog
+        // console.log('update unsuccessful');  // TODO change to mat-dialog
+        this.snackBar.open('Update unsuccessful.');
         console.log(response);
       }
     }).catch((error) => {
