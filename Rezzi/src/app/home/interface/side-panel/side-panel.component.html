@@ -1,26 +1,27 @@
 <!-- This component shows the floors/channels the user is in -->
-<mat-accordion *ngIf="channels.length > 0" multi="true" class="rezzi"> <!-- TODO make sure expanded channels don't appear over 'Join' button -->
-  <ng-container *ngFor="let channel of channels"> <!-- looping the floor channels -->
-    <mat-expansion-panel *ngIf="channel.belongs">
-      <mat-expansion-panel-header>
-        <!-- <mat-panel-title (click)='viewChannel(channel, null)' routerLink='/home'> TODO merge general channel here -->
-        <mat-panel-title routerLink='/home'>
-          {{ channel.channel }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
+<div class='channelList'> <!-- TODO make sure expanded channels don't appear over 'Join' button -->
+  <mat-accordion *ngIf="channels.length > 0" multi="true" class="rezzi">
+    <ng-container *ngFor="let channel of channels"> <!-- looping the floor channels -->
+      <mat-expansion-panel *ngIf="channel.belongs">
+        <mat-expansion-panel-header>
+          <mat-panel-title routerLink='/home'>
+            {{ channel.channel }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
 
-      <ng-container *ngFor="let interest of channel.subchannels"> <!-- Looping the interest channels-->
-        <mat-card *ngIf="interest.belongs">
-          <mat-card-content (click)='viewChannel(interest, channel.channel)' routerLink='/home'>
-            {{ interest.channel }}
-          </mat-card-content>
-        </mat-card>
-      </ng-container>
+        <ng-container *ngFor="let interest of channel.subchannels"> <!-- Looping the interest channels-->
+          <mat-card *ngIf="interest.belongs">
+            <mat-card-content (click)='viewChannel(interest, channel.channel)' routerLink='/home'>
+              {{ interest.channel }}
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
 
-      <button mat-stroked-button class="add-channel-button" routerLink='/create-channel'>Create Channel</button>
-    </mat-expansion-panel>
-  </ng-container>
-</mat-accordion>
+        <button mat-stroked-button class="add-channel-button" routerLink='/create-channel'>Create Channel</button>
+      </mat-expansion-panel>
+    </ng-container>
+  </mat-accordion>
+</div>
 
 <p class="no-rezzi" *ngIf="channels.length == 0">You are currently not a member of any Rezzi channels.</p>
 

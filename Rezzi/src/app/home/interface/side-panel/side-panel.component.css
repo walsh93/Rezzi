@@ -43,3 +43,11 @@
   right: 0px;
   padding: 5px;
 }
+
+.channelList {
+  /* margin-bottom: 50px; */
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  right: 0px;
+}
