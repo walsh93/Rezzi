@@ -34,6 +34,7 @@ import {
   MatStepperModule,
   MatAutocompleteModule,
   MatPaginatorModule,
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
  } from '@angular/material';
 
 
@@ -257,7 +258,12 @@ import { PMSidePanelService } from './dashboard/pm-interface/pm-side-panel/pm-si
     EventModalComponent,
     ConfirmCancelEventDialogComponent
   ],
-  providers: [MessagesService, ChannelNavBarService, PMSidePanelService],
+  providers: [
+    MessagesService,
+    ChannelNavBarService,
+    PMSidePanelService,
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

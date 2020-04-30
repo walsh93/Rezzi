@@ -164,7 +164,7 @@ router.get("/", checkCookie, function (request, response) {
           notifications: [],
         })
       });
-      
+
 
       var smtpTransport = nodemailer.createTransport({
         service: "Gmail",
@@ -189,12 +189,12 @@ router.get("/", checkCookie, function (request, response) {
         if (error) {
           console.log(`There was an error sending email to ${currentEmail}`)
         } else {
-          console.log(`I think we successfully sent an email to ${currentEmail}...???!!!`)
+          // console.log(`I think we successfully sent an email to ${currentEmail}...???!!!`)
         }
       });
     }
 
-    response.status(http.ok).send("Your email list is currently being processed and will be sent our shortly.")
+    response.status(http.ok).send("Your email list is currently being processed and will be sent out shortly.")
   })
 });
 
