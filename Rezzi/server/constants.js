@@ -21,6 +21,7 @@ module.exports = {
     getResidents: "/getResidents",
     private_messages: "/private-messages",
     get_deletion_requests: "/getDeletionRequests",
+    delete_reported_message: "/delete-reported-message",
     get_reported_messages: "/get-reported-messages",
     get_message: "/get-message",
     get_res_by_floor: "/get-residents-by-floor",

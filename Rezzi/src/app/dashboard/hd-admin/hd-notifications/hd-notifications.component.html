@@ -25,7 +25,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <mat-card *ngFor="let reportedMessage of this.reportedMessages">
+      <mat-card *ngFor="let reportedMessage of this.reportedMessages" (click)='removeMessage(reportedMessage)'>
         {{ reportedMessage.content }}
       </mat-card>
     </mat-expansion-panel>

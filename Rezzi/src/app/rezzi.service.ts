@@ -185,6 +185,14 @@ export class RezziService {
     });
   }
 
+  deleteReportedMessage(messageId: string, HDemail: string) {
+    return this.http.get(`/delete-reported-message?messageId=${messageId}&HD=${HDemail}`).toPromise().then((message) => {
+      return message;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
   getMessage(messageId: string): Promise<any> {
     return this.http.get(`/get-message?messageId=${messageId}`).toPromise().then((message) => {
       // console.log('Message data', message);

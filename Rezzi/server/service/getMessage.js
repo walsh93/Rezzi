@@ -57,7 +57,7 @@ router.get('/', checkCookie, function (request, response) {
 
     }).catch((error) => {
       console.log('Error getting message', error)
-      response.status.http.conflict.json(null)
+      response.status(http.conflict).json(null)
     })
   }
 });
