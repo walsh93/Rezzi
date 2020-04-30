@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-create-rezzi',
@@ -9,6 +10,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./create-rezzi.component.css']
 })
 export class CreateRezziComponent implements OnInit {
+  isLinear = true;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
   floors = [
     {
       id: 0,
@@ -42,7 +46,7 @@ export class CreateRezziComponent implements OnInit {
   private ra_empty_ids: number[];
   private hallwide_empty_ids: number[];
 
-  constructor(private http: HttpClient, private router: Router, private _snackBar: MatSnackBar) {
+  constructor(private http: HttpClient, private _formBuilder: FormBuilder, private router: Router, private _snackBar: MatSnackBar) {
     this.floor_empty_ids = [];
     this.ra_empty_ids = [];
     this.hallwide_empty_ids = [];
@@ -170,6 +174,12 @@ export class CreateRezziComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
   }
 
 }

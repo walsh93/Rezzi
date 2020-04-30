@@ -1,12 +1,12 @@
-<form class="create-rezzi-form">
+<!-- <form class="create-rezzi-form">
   <mat-form-field>
     <mat-label>Rezzi Name</mat-label>
     <input matInput id="rezzi-name" ngModel pattern='^[^\-]+$' value="">
   </mat-form-field>
 </form>
-<mat-tab-group>
-  <!-- Floor Panel -->
-  <mat-tab label="Floors">
+<mat-tab-group> -->
+<!-- Floor Panel -->
+<!-- <mat-tab label="Floors">
     <mat-accordion>
       <app-floor-drawer *ngFor="let floor of floors"
         [floor]="floor"
@@ -16,10 +16,10 @@
     <button mat-icon-button aria-label="Add Floor" (click)="addFloor()">
       <mat-icon>control_point</mat-icon>
     </button>
-  </mat-tab>
+  </mat-tab> -->
 
-  <!-- Hallwide Panel -->
-  <mat-tab label="Hallwide">
+<!-- Hallwide Panel -->
+<!-- <mat-tab label="Hallwide">
     <app-channel-panel *ngFor="let channel of hallwide_channels"
       [channel]="channel"
       (delete_emitter)="deleteChannel('hallwide', channel.id)">
@@ -27,10 +27,10 @@
     <button mat-icon-button aria-label="Add Floor" (click)="addChannel('hallwide')">
       <mat-icon>control_point</mat-icon>
     </button>
-  </mat-tab>
+  </mat-tab> -->
 
-  <!-- RA Panel -->
-  <mat-tab label="RA">
+<!-- RA Panel -->
+<!-- <mat-tab label="RA">
     <app-channel-panel *ngFor="let channel of ra_channels"
       [channel]="channel"
       (delete_emitter)="deleteChannel('ra', channel.id)">
@@ -40,4 +40,80 @@
     </button>
   </mat-tab>
 </mat-tab-group>
-<button mat-button aria-label="Create Rezzi" (click)="createRezzi()">Create Rezzi!</button>
+<button mat-button aria-label="Create Rezzi" (click)="createRezzi()">Create Rezzi!</button> -->
+
+
+
+<mat-vertical-stepper #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Name your Rezzi</ng-template>
+      <mat-form-field>
+        <mat-label>Rezzi Name</mat-label>
+        <input matInput id="rezzi-name" pattern='^[^\-]+$' value="">
+      </mat-form-field>
+      <div>
+        <button mat-button color="primary" matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Adding Floors and Channels</ng-template>
+      <mat-tab-group>
+        <!-- Floor Panel -->
+        <mat-tab label="Floors">
+          <mat-accordion>
+            <app-floor-drawer *ngFor="let floor of floors" [floor]="floor" (delete_emitter)="deleteFloor(floor.id)">
+            </app-floor-drawer>
+          </mat-accordion>
+          <button mat-icon-button aria-label="Add Floor" (click)="addFloor()">
+            <mat-icon>control_point</mat-icon>
+          </button>
+        </mat-tab>
+
+        <!-- Hallwide Panel -->
+        <mat-tab label="Hallwide">
+          <app-channel-panel *ngFor="let channel of hallwide_channels" [channel]="channel"
+            (delete_emitter)="deleteChannel('hallwide', channel.id)">
+          </app-channel-panel>
+          <button mat-icon-button aria-label="Add Floor" (click)="addChannel('hallwide')">
+            <mat-icon>control_point</mat-icon>
+          </button>
+        </mat-tab>
+
+        <!-- RA Panel -->
+        <mat-tab label="RA">
+          <app-channel-panel *ngFor="let channel of ra_channels" [channel]="channel"
+            (delete_emitter)="deleteChannel('ra', channel.id)">
+          </app-channel-panel>
+          <button mat-icon-button aria-label="Add Floor" (click)="addChannel('ra')">
+            <mat-icon>control_point</mat-icon>
+          </button>
+        </mat-tab>
+      </mat-tab-group>
+      <br>
+      <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4"> <button mat-button color="accent" matStepperPrevious>Back</button>
+        </div>
+        <div class="col-4"> <button mat-button color="primary" matStepperNext>Next</button>
+        </div>
+
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done creating your Rezzi?</ng-template>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-4">
+        <button mat-button color="accent" matStepperPrevious>Back</button>
+      </div>
+      <div class="col-4">
+        <button mat-button color="primary" aria-label="Create Rezzi" (click)="createRezzi()">Yes, Create
+          Rezzi!</button></div>
+
+    </div>
+  </mat-step>
+</mat-vertical-stepper>
