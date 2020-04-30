@@ -3,42 +3,42 @@
     <button mat-icon-button (click)="drawer.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <h1 class="example-app-name">Dashboard</h1>
+    <h1 id="dash" class="example-app-name">Dashboard</h1>
   </mat-toolbar>
   <mat-drawer #drawer class="example-sidenav" mode="side" opened>
     <div>
       <br>
-      <button (click)="showEditProfile()" mat-raised-button>Edit Profile</button>
+      <button id="editProfileBtn" (click)="showEditProfile()" mat-raised-button>Edit Profile</button>
     </div>
     <br>
     <br>
     <div>
-      <button (click)="showPrivateMessages()" mat-raised-button>Private Messages</button>
+      <button id="pmBtn" (click)="showPrivateMessages()" mat-raised-button>Private Messages</button>
     </div>
     <br>
     <br>
     <div>
-      <button (click)="showNotifications()" mat-raised-button>Notifications</button>
+      <button id="notiBtn" (click)="showNotifications()" mat-raised-button>Notifications</button>
     </div>
     <br>
     <br>
     <div *ngIf="accountType==2">
-      <button (click)="showRequestChannel()" mat-raised-button>Request Channel</button>
+      <button id="reqBtn" (click)="showRequestChannel()" mat-raised-button>Request Channel</button>
       <br>
       <br>
     </div>
     <div *ngIf="accountType==0||accountType==1">
-      <button (click)="showRaAdmin()" mat-raised-button>RA Admin</button>
+      <button id="raBtn" (click)="showRaAdmin()" mat-raised-button>RA Admin</button>
       <br>
       <br>
     </div>
     <div *ngIf="accountType==0">
-      <button (click)="showHdAdmin()" mat-raised-button>HD Admin</button>
+      <button id="hdBtn" (click)="showHdAdmin()" mat-raised-button>HD Admin</button>
       <br>
       <br>
     </div>
     <div *ngIf="accountType==0||accountType==1">
-      <button (click)="showPostingPrivileges()" mat-raised-button>Posting Privileges</button>
+      <button id="postBtn" (click)="showPostingPrivileges()" mat-raised-button>Posting Privileges</button>
       <br>
       <br>
     </div>
@@ -46,6 +46,7 @@
 
   <div class="example-sidenav-content">
     <p *ngIf="showEdit">
+      <script>document.getElementById('dash').textContent="Edit Profile"</script>
       <app-edit-profile></app-edit-profile>
     </p>
     <p *ngIf="showPM">

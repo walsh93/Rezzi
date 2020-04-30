@@ -69,7 +69,26 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  //all
   showEditProfile() {
+    document.getElementById('editProfileBtn').style.backgroundColor = "#607d8b";
+    document.getElementById('pmBtn').style.backgroundColor = "#424242";
+    document.getElementById('notiBtn').style.backgroundColor = "#424242";
+
+    if (document.getElementById('reqBtn') !== null) {
+      document.getElementById('reqBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('raBtn') !== null) {
+      document.getElementById('raBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('hdBtn') !== null) {
+      document.getElementById('hdBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('postBtn') !== null) {
+      document.getElementById('postBtn').style.backgroundColor = "#424242";
+    }
+    document.getElementById('dash').innerText = "Edit Profile";
+
     this.showEdit = true;
     this.showPM = false;
     this.showRA = false;
@@ -79,7 +98,26 @@ export class DashboardComponent implements OnInit {
     this.showNotify = false;
   }
 
+  //all
   showPrivateMessages() {
+    document.getElementById('editProfileBtn').style.backgroundColor = "#424242";
+    document.getElementById('pmBtn').style.backgroundColor = "#607d8b";
+    document.getElementById('notiBtn').style.backgroundColor = "#424242";
+
+    if (document.getElementById('reqBtn') !== null) {
+      document.getElementById('reqBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('raBtn') !== null) {
+      document.getElementById('raBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('hdBtn') !== null) {
+      document.getElementById('hdBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('postBtn') !== null) {
+      document.getElementById('postBtn').style.backgroundColor = "#424242";
+    }
+    document.getElementById('dash').innerText = "Private Messages";
+
     this.showEdit = false;
     this.showPM = true;
     this.showRA = false;
@@ -89,7 +127,26 @@ export class DashboardComponent implements OnInit {
     this.showNotify = false;
   }
 
+  //only residents
   showRequestChannel() {
+    document.getElementById('editProfileBtn').style.backgroundColor = "#424242";
+    document.getElementById('pmBtn').style.backgroundColor = "#424242";
+    document.getElementById('notiBtn').style.backgroundColor = "#424242";
+
+    if (document.getElementById('reqBtn') !== null) {
+      document.getElementById('reqBtn').style.backgroundColor = "#607d8b";
+    }
+    if (document.getElementById('raBtn') !== null) {
+      document.getElementById('raBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('hdBtn') !== null) {
+      document.getElementById('hdBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('postBtn') !== null) {
+      document.getElementById('postBtn').style.backgroundColor = "#424242";
+    }
+    document.getElementById('dash').innerText = "Request Channel";
+
     this.showEdit = false;
     this.showPM = false;
     this.showRA = false;
@@ -99,7 +156,25 @@ export class DashboardComponent implements OnInit {
     this.showNotify = false;
   }
 
+  //hd or ra
   showRaAdmin() {
+    document.getElementById('editProfileBtn').style.backgroundColor = "#424242";
+    document.getElementById('pmBtn').style.backgroundColor = "#424242";
+    document.getElementById('notiBtn').style.backgroundColor = "#424242";
+
+    if (document.getElementById('reqBtn') !== null) {
+      document.getElementById('reqBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('raBtn') !== null) {
+      document.getElementById('raBtn').style.backgroundColor = "#607d8b";
+    }
+    if (document.getElementById('hdBtn') !== null) {
+      document.getElementById('hdBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('postBtn') !== null) {
+      document.getElementById('postBtn').style.backgroundColor = "#424242";
+    }
+    document.getElementById('dash').innerText = "RA Admin";
     this.showEdit = false;
     this.showPM = false;
     this.showRA = true;
@@ -109,7 +184,25 @@ export class DashboardComponent implements OnInit {
     this.showNotify = false;
   }
 
+  //hd
   showHdAdmin() {
+    document.getElementById('editProfileBtn').style.backgroundColor = "#424242";
+    document.getElementById('pmBtn').style.backgroundColor = "#424242";
+    document.getElementById('notiBtn').style.backgroundColor = "#424242";
+
+    if (document.getElementById('reqBtn') !== null) {
+      document.getElementById('reqBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('raBtn') !== null) {
+      document.getElementById('raBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('hdBtn') !== null) {
+      document.getElementById('hdBtn').style.backgroundColor = "#607d8b";
+    }
+    if (document.getElementById('postBtn') !== null) {
+      document.getElementById('postBtn').style.backgroundColor = "#424242";
+    }
+    document.getElementById('dash').innerText = "HD Admin";
     this.showEdit = false;
     this.showPM = false;
     this.showRA = false;
@@ -119,7 +212,26 @@ export class DashboardComponent implements OnInit {
     this.showNotify = false;
   }
 
+  //hd or ra
   showPostingPrivileges() {
+    document.getElementById('editProfileBtn').style.backgroundColor = "#424242";
+    document.getElementById('pmBtn').style.backgroundColor = "#424242";
+    document.getElementById('notiBtn').style.backgroundColor = "#424242";
+
+    if (document.getElementById('reqBtn') !== null) {
+      document.getElementById('reqBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('raBtn') !== null) {
+      document.getElementById('raBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('hdBtn') !== null) {
+      document.getElementById('hdBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('postBtn') !== null) {
+      document.getElementById('postBtn').style.backgroundColor = "#607d8b";
+    }
+    document.getElementById('dash').innerText = "Posting Privileges";
+
     this.showEdit = false;
     this.showPM = false;
     this.showRA = false;
@@ -127,9 +239,29 @@ export class DashboardComponent implements OnInit {
     this.showReqChan = false;
     this.showPostPriv = true;
     this.showNotify = false;
+
   }
 
   showNotifications() {
+    document.getElementById('editProfileBtn').style.backgroundColor = "#424242";
+    document.getElementById('pmBtn').style.backgroundColor = "#424242";
+    document.getElementById('notiBtn').style.backgroundColor = "#607d8b";
+
+    if (document.getElementById('reqBtn') !== null) {
+      document.getElementById('reqBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('raBtn') !== null) {
+      document.getElementById('raBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('hdBtn') !== null) {
+      document.getElementById('hdBtn').style.backgroundColor = "#424242";
+    }
+    if (document.getElementById('postBtn') !== null) {
+      document.getElementById('postBtn').style.backgroundColor = "#424242";
+    }
+    document.getElementById('dash').innerText = "Notifications";
+
+
     this.showEdit = false;
     this.showPM = false;
     this.showRA = false;
