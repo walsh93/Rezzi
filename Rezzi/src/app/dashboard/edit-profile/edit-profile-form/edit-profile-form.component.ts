@@ -33,7 +33,7 @@ export class EditProfileFormComponent implements OnInit {
       return;
     }
 
-    let userInfo = {
+    const userInfo = {
       firstName: form.value.firstName,
       lastName: form.value.lastName,
       // password: form.value.password,
@@ -57,7 +57,7 @@ export class EditProfileFormComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    let pw = {
+    const pw = {
       password: form.value.password
     };
     this.theUser.password = pw.password;
@@ -79,7 +79,7 @@ export class EditProfileFormComponent implements OnInit {
         data
       )
       .subscribe(responseData => {
-        console.log(responseData.notification);
+        // console.log(responseData.notification);
       });
     this._snackBar.open('Your profile has been edited!');
   }
@@ -106,7 +106,7 @@ export class EditProfileFormComponent implements OnInit {
         data
       )
       .subscribe(responseData => {
-        console.log(responseData.notification);
+        // console.log(responseData.notification);
       });
   }
   updateHallDirector(hd, user) {
@@ -140,25 +140,25 @@ export class EditProfileFormComponent implements OnInit {
         hd
       )
       .subscribe(responseData => {
-        console.log(responseData.notification);
+        // console.log(responseData.notification);
       });
-    this._snackBar.open('You have requested to delete your account!');
+    this._snackBar.open('You have requested to delete your account.');
   }
 
   loadProfilePicture(user) {
-    if(this.theUser.image_url){
+    if (this.theUser.image_url) {
       if (document.readyState !== 'loading') {
-        console.log('document is already ready');
+        // console.log('document is already ready');
         this.theUser.setImageUrl(this.theUser.image_url);
         this.thePic = this.theUser.image_url;
       } else {
         document.addEventListener('DOMContentLoaded', function() {
-          console.log('document was not ready');
+          // console.log('document was not ready');
           this.theUser.setImageUrl(this.theUser.image_url);
           document.getElementById('profile').setAttribute('src', user.image_url);
         });
       }
-    } else{
+    } else {
       this.thePic = '../../../../../src/assets/images/logoSmall.png';
     }
   }

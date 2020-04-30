@@ -57,7 +57,7 @@ module.exports.addUser = function addUser(data) {
         data.oldpassword = data.password; //TODOCONLEY REMOVE THIS ON LIVE ENVIRONMENT
         data.password = pass.generateHash(data.password);
         dbstore.collection('users').doc(data.email).set(data)
-        console.log("Potential error when creating account (unless during sign-up-hd)")
+        // console.log("Potential error when creating account (unless during sign-up-hd)")
         resolve(201)
       }
     }).catch(err => {

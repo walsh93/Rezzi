@@ -87,7 +87,7 @@ export class CreateChannelFormComponent implements OnInit {
         members.push(memberEmail);  // Validation happens on the form itself
       }
     });
-    console.log('create-channel-form.component.ts Members: '+ members);
+    // console.log('create-channel-form.component.ts Members: ' + members);
 
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)

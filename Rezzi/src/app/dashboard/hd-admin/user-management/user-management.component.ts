@@ -37,40 +37,40 @@ export class UserManagementComponent implements OnInit {
 
   refresh(): void {
     this.rezziService.getResidents().then((residentList) => {
-      console.log('pulling the resident list');
-      console.log(`Resident list is ${residentList[1]}`);
+      // console.log('pulling the resident list');
+      // console.log(`Resident list is ${residentList[1]}`);
       this.residents = new MatTableDataSource(residentList.residentInfo);
     });
 
     this.rezziService.getRAs().then((RAList) => {
-      console.log('pulling the RA list');
-      console.log(`RA List IS ${RAList.RAInfo[1]}`);
+      // console.log('pulling the RA list');
+      // console.log(`RA List IS ${RAList.RAInfo[1]}`);
       this.RAs = new MatTableDataSource(RAList.RAInfo);
     });
   }
 
   updateAccountType(email: string, accountType: number) {
-    console.log('email ' + email + 'accountType ' + accountType);
+    // console.log('email ' + email + 'accountType ' + accountType);
     if (accountType === 1) {
-      console.log('Changing accountType from 1 to 2');
+      // console.log('Changing accountType from 1 to 2');
       accountType = 2;
     } else if (accountType === 2) {
-      console.log('Changing accountType from 2 to 1');
+      // console.log('Changing accountType from 2 to 1');
       accountType = 1;
     } else if (accountType === 0) {
-      console.log('Cannot change admin rights of HD');
+      // console.log('Cannot change admin rights of HD');
     }
 
     this.http.get<{notification: string}>(`/update-account-type?user=${email}&accountType=${accountType}`)
       .subscribe((data) => {
-        console.log('User update data', data);
+        // console.log('User update data', data);
       });
 
     this.refresh();
   }
 
   resendEmail(email: string) {
-    console.log('Resend email: ' + email);
+    // console.log('Resend email: ' + email);
 
     const body = {
       email,

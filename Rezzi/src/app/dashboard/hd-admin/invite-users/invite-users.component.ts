@@ -40,7 +40,7 @@ export class InviteUsersComponent implements OnInit {
     });
 
     this.rezziService.getFloors().then((floorList) => {
-      console.log(`FLOOR LIST IS ${floorList}`);
+      // console.log(`FLOOR LIST IS ${floorList}`);
       if (floorList == null) {
         this.errorMsg = 'Failed to retrieve floors.';
       } else {
@@ -59,7 +59,7 @@ export class InviteUsersComponent implements OnInit {
       return;
     }
     const emailList = form.value.RAEmails;
-    console.log('List of RAs invited on ' + this.selectedRaFloor + ' ', emailList, );
+    // console.log('List of RAs invited on ' + this.selectedRaFloor + ' ', emailList, );
 
     // make array of channels that user will be added to
     const channelList = ['hallwide-General', 'floors-' + this.selectedRaFloor + '-General', 'RA-General'];

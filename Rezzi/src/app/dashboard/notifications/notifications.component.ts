@@ -31,7 +31,7 @@ export class NotificationsComponent implements OnInit {
 
     this.rezziService.getNotifications().then(panelInfo => {
       if (panelInfo == null) {
-        console.log('Panel info does not exist');
+        // console.log('Panel info does not exist');
         return;
       } else {
         this.panelInfo = panelInfo.panelInfo;
@@ -41,8 +41,7 @@ export class NotificationsComponent implements OnInit {
 
   dismissNotification(channel: string, toDismiss: string) {
 
-
-    console.log('Notification to be dismissed: ' + toDismiss);
+    // console.log('Notification to be dismissed: ' + toDismiss);
     const body = {
       toDismiss,
       channel
@@ -63,8 +62,7 @@ export class NotificationsComponent implements OnInit {
 
   muteNotifications(channel: string) {
 
-
-    console.log('Channel to be muted: ' + channel);
+    // console.log('Channel to be muted: ' + channel);
     const body = {
       channel
     };

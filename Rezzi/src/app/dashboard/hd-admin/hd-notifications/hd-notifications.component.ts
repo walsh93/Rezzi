@@ -196,17 +196,14 @@ export class HdNotificationsDialog implements OnInit {
   }
 
   onCancelClick(): void {
-    console.log('cancel');
     this.hdDialogRef.close(0);
   }
 
   onDenyClick(): void {
-    console.log('deny');
     this.hdDialogRef.close(1);
   }
 
   onConfirmClick(): void {
-    console.log('confirm');
     this.hdDialogRef.close(2);
   }
 

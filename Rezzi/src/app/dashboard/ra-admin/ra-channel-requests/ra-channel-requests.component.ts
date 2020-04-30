@@ -41,15 +41,15 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
     // Use this for real life
     const listeners = this.rezziService.getChannelRequestListeners();
     this.idSubscription = listeners.chanReqIdSubj.subscribe((updatedIds) => {
-      console.log('IDs are updating...');
+      // console.log('IDs are updating...');
       this.channelRequestIds = updatedIds;
-      console.log(this.channelRequestIds);
+      // console.log(this.channelRequestIds);
     });
     this.nameObservable = listeners.chanReqNameSubj;
     this.nameSubscription = this.nameObservable.subscribe((updatedNames) => {
-      console.log('Names are updating...');
+      // console.log('Names are updating...');
       this.channelRequestNames = updatedNames;
-      console.log(this.channelRequestNames);
+      // console.log(this.channelRequestNames);
     });
     this.rezziService.getChannelRequests();
   }
@@ -115,7 +115,7 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
   approveRequest() {
     const approved = confirm('Are you sure you would like to approve this channel request?');
     if (approved) {
-      console.log('Change tag, remove from array of requests, create-channel.js, and reload this page');
+      // console.log('Change tag, remove from array of requests, create-channel.js, and reload this page');
       this.respondToChannelRequest(true);
     }
   }
@@ -125,7 +125,7 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
     const p2 = 'If you confirm, this request will no longer appear on your dashboard.';
     const denied = confirm(`${p1} ${p2}`);
     if (denied) {
-      console.log('Remove from array of requests in the database and reload this page');
+      // console.log('Remove from array of requests in the database and reload this page');
       this.respondToChannelRequest(false);
     }
   }
