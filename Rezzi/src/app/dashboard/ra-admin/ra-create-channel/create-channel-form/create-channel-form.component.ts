@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-create-channel-form',
@@ -20,7 +21,7 @@ export class CreateChannelFormComponent implements OnInit {
   // Parent variables
   @Input() owner: string;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     // Initialize class variables
@@ -41,7 +42,7 @@ export class CreateChannelFormComponent implements OnInit {
 
   plus() {
     if (this.numMembers > 19) {
-      alert('You can add a maximum of 20 members to start');
+      this.snackBar.open('You can add a maximum of 20 members to start');
     } else {
       (document.getElementsByClassName('member-label')[this.numMembers] as HTMLElement).hidden = false;
       (document.getElementsByClassName('member-input-column')[this.numMembers] as HTMLElement).hidden = false;
@@ -86,7 +87,7 @@ export class CreateChannelFormComponent implements OnInit {
         members.push(memberEmail);  // Validation happens on the form itself
       }
     });
-    console.log("create-channel-form.component.ts Members: "+ members);
+    console.log('create-channel-form.component.ts Members: '+ members);
 
 
     // Body of the HTTP request (param names MUST match input field form names expected in login.js)

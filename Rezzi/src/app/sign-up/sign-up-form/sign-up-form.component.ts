@@ -4,6 +4,7 @@ import { User } from 'src/app/classes.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { RezziService } from 'src/app/rezzi.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-sign-up-form',
@@ -19,7 +20,10 @@ export class SignUpFormComponent implements OnInit {
 
   profilePic: string;
 
-  constructor(private rezziService: RezziService, private http: HttpClient, private router: Router) {}
+  constructor(private rezziService: RezziService,
+              private http: HttpClient,
+              private router: Router,
+              private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     // Initialize class variables
@@ -50,10 +54,9 @@ export class SignUpFormComponent implements OnInit {
     );
     if (user.image_url) {
       user.setImageUrl(user.image_url);
-      //document.getElementById("profile-picture").setAttribute("src", user.image_url);
-    }
-    else if(this.addedPhoto==false){
-      user.setImageUrl("https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/uploaded-images%2Fblank2.jpg?alt=media&token=d40de5df-1825-4140-b851-658296d68eac")
+      // document.getElementById("profile-picture").setAttribute("src", user.image_url);
+    } else if (this.addedPhoto === false) {
+      user.setImageUrl('https://firebasestorage.googleapis.com/v0/b/rezzi-33137.appspot.com/o/uploaded-images%2Fblank2.jpg?alt=media&token=d40de5df-1825-4140-b851-658296d68eac');
     }
 
 
@@ -64,7 +67,7 @@ export class SignUpFormComponent implements OnInit {
 
   addUser(user: User) {
     this.http.post<{ status: number, notification: string }>('/sign-up/api/sign-up', user).toPromise().then(response => {
-      alert(response.notification); // conley-edit-here
+      // alert(response.notification); // conley-edit-here
       if (response.status === 201) {
         this.router.navigate(['/home']);
       }
@@ -75,7 +78,7 @@ export class SignUpFormComponent implements OnInit {
     const file = event.target.files[0] as File;
     if (!file.type.startsWith('image')) {
       this.selectedPicture = null;
-      alert('Please upload an image file');
+      this.snackBar.open('Please upload an image file');
     } else {
       this.selectedPicture = file;
     }
@@ -91,12 +94,12 @@ export class SignUpFormComponent implements OnInit {
       fileToUpload = this.selectedPicture;
       progressId = 'pic_';
     } else {
-      alert('Something went wrong while uploading; please try again later.');
+      this.snackBar.open('Something went wrong while uploading; please try again later.');
       return;
     }
 
     if (fileToUpload === null) {
-      alert('Please upload image file');
+      this.snackBar.open('Please upload image file');
     } else {
       this.duringUpload = true;
       // document.getElementById(`${progressId}progress`).hidden = false;
@@ -111,10 +114,10 @@ export class SignUpFormComponent implements OnInit {
         if (response.status === 200) {
           // location.reload();
           this.duringUpload = false;
-          alert(`Your photo has been uploaded...`);
+          this.snackBar.open(`Your photo has been uploaded...`);
           this.addedPhoto = true;
         } else {
-          alert(`Something went wrong. Return with a status code ${response.status}: ${response.statusText}`);
+          this.snackBar.open(`Something went wrong. Return with a status code ${response.status}: ${response.statusText}`);
         }
       });
     }

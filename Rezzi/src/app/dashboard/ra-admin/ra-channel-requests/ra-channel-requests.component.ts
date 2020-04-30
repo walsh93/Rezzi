@@ -3,6 +3,7 @@ import { RezziService } from '../../../rezzi.service';
 import { Observable, Subscription } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-ra-channel-requests',
@@ -29,7 +30,10 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
   @Input() email: string;
   @Input() rezzi: string;
 
-  constructor(private rezziService: RezziService, private http: HttpClient, private router: Router) { }
+  constructor(private rezziService: RezziService,
+              private http: HttpClient,
+              private router: Router,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.channelRequestDetails = new Map<string, any>();
@@ -93,7 +97,7 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
   }
 
   viewingFailure() {
-    alert('The channel request you are trying to view could not be retrieved');
+    this.snackBar.open('The channel request you are trying to view could not be retrieved');
     this.rezziService.getChannelRequests();
   }
 
@@ -138,16 +142,16 @@ export class RaChannelRequestsComponent implements OnInit, OnDestroy {
 
     this.http.post('/channel-requests', body).toPromise().then((response) => {
       this.rezziService.getChannelRequests();
-      alert((response as any).msg);
+      this.snackBar.open((response as any).msg);
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
         this.rezziService.getChannelRequests();
-        alert((res as any).msg);
+        this.snackBar.open((res as any).msg);
       } else {
         console.log('Channel request response rejected');
         console.log((error as any).reject);
-        alert((error as any).msg);
+        this.snackBar.open((error as any).msg);
       }
     });
   }

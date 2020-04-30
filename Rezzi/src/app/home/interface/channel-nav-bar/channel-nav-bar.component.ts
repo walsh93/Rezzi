@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, HostBinding, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { ChannelNavBarService } from './channel-nav-bar.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatSnackBar } from '@angular/material';
 import { RezziService } from 'src/app/rezzi.service';
 import { Router } from '@angular/router';
 import { ChannelData, AbbreviatedUser, BotMessage, Message, SocketChannelMessageData } from 'src/app/classes.model';
@@ -42,7 +42,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 
   private userName: string;
 
-  //view Members
+  // view Members
   private currentChannelID: string;
   private viewingUpdateSub: Subscription;
   @Input() viewingObs: Observable<string>;
@@ -67,6 +67,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
               public dialog: MatDialog,
               public dialog2: MatDialog,
               public messagesService: MessagesService,
+              private snackBar: MatSnackBar,
   ) { }
 
   checkPermissions() {
@@ -88,10 +89,9 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     if (this.accountType === 0 || this.accountType === 1) {       // Must be admin to mute members in a channel
       this.muteButtonDisabled = false;
     }
-    if(this.navChannel.isMuted){
+    if (this.navChannel.isMuted) {
       this.pollButtonDisabled = true;
-    }
-    else{
+    } else {
       this.pollButtonDisabled = false;
     }
   }
@@ -197,7 +197,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
 
   openPollDialog(): void {
     if (this.navTitle === 'Rezzi') {
-      alert("You must select a channel to create a poll!");
+      this.snackBar.open('You must select a channel to create a poll!');
       console.error('No channel selected');
       return;
     }
@@ -213,7 +213,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.componentInstance.create_poll.subscribe((message: Message) => {
-      console.log("made it here in cnb.ts");
+      console.log('made it here in cnb.ts');
       message.owner = this.abbrevUser;
       console.log(message);
       console.log(this.navChannel.id);
@@ -222,7 +222,7 @@ export class ChannelNavBarComponent implements OnInit, OnDestroy {
         message,
         rezzi: this.session.rezzi,
         channelID: this.navChannel.id
-      }
+      };
       this.messagesService.sendMessageThroughSocket(scmd);
     });
 
@@ -285,22 +285,22 @@ export class LeaveChannelDialog implements OnInit {
     // send notification to everyone in channel
     // get list of residnets in the channel
     this.rezziService.getResidentsByChannelNonAdmin(channel.id).then(res => {
-      console.log('sending notificaions for leaving channel')
+      // console.log('sending notificaions for leaving channel');
       if (res == null || res === undefined) {
         return;
       } else if (res.msg != null && res.msg !== undefined) {
         console.log(res.msg);
       } else {
         const infoList = res.infoList;
-        var emails = []
+        let emails = [];
         infoList.forEach(user => {
-          emails.push(user.email)
+          emails.push(user.email);
         });
         // console.log(emails)
         // console.log("User name: " + this.userName)
 
         const body = {
-          message: this.userName + " has left the channel",
+          message: this.userName + ' has left the channel',
           channel: channel.id,
           recipients: emails,
         };
@@ -313,7 +313,7 @@ export class LeaveChannelDialog implements OnInit {
             alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
             location.reload();
           } else {
-            console.log(res.error.text)
+            console.log(res.error.text);
             alert(`There was an error while trying to send notifications. Please try again later.`);
           }
         });

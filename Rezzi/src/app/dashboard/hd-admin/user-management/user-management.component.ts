@@ -3,7 +3,7 @@ import { RezziService } from '../../../rezzi.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NgForm, FormControl, Validators } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-user-management',
@@ -21,7 +21,8 @@ export class UserManagementComponent implements OnInit {
 
   constructor(private rezziService: RezziService,
               private router: Router,
-              private http: HttpClient) { }
+              private http: HttpClient,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     // Initialize class variables
@@ -81,10 +82,10 @@ export class UserManagementComponent implements OnInit {
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
-        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        this.snackBar.open(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
         location.reload();
       } else {
-        alert(`There was an error while trying to resend an email to (${res.status}). Please try again later.`);
+        this.snackBar.open(`There was an error while trying to resend an email to (${res.status}). Please try again later.`);
       }
     });
   }

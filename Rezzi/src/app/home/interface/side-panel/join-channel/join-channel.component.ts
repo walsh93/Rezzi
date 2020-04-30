@@ -5,6 +5,7 @@ import { ChannelData, BotMessage, AbbreviatedUser } from '../../../../classes.mo
 import { MessagesService } from '../../messages/messages.service';
 import { RezziService } from 'src/app/rezzi.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material';
 
 // export interface ChannelData {
 //   id: number,
@@ -29,8 +30,12 @@ export class JoinChannelComponent implements OnInit {
   abbrevUser: AbbreviatedUser;
   private userName: string;
 
-  constructor(private rezziService: RezziService, public dialogRef: MatDialogRef<JoinChannelComponent>, @Inject(MAT_DIALOG_DATA) public data,
-              private http: HttpClient, private messagesService: MessagesService) {
+  constructor(private rezziService: RezziService,
+              public dialogRef: MatDialogRef<JoinChannelComponent>,
+              @Inject(MAT_DIALOG_DATA) public data,
+              private http: HttpClient,
+              private messagesService: MessagesService,
+              private snackBar: MatSnackBar) {
 
     this.channels = data.channels;
     this.session = data.session;
@@ -62,8 +67,8 @@ export class JoinChannelComponent implements OnInit {
     this.joinChannelEvent.emit(id);
     this.messagesService.addBotMessage(BotMessage.UserHasJoinedChannel, this.userName, this.session.rezzi, id);
 
-    //send notification to everyone in channel
-    //get list of residnets in the channel
+    // send notification to everyone in channel
+    // get list of residnets in the channel
     this.rezziService.getResidentsByChannelNonAdmin(id).then(res => {
       if (res == null || res === undefined) {
         return;
@@ -71,17 +76,17 @@ export class JoinChannelComponent implements OnInit {
         console.log(res.msg);
       } else {
         const infoList = res.infoList;
-        var emails = []
+        let emails = [];
         infoList.forEach(user => {
-          emails.push(user.email)
+          emails.push(user.email);
         });
-        console.log(emails)
+        console.log(emails);
 
         const body = {
-          message: this.userName + " has joined the channel",
+          message: this.userName + ' has joined the channel',
           channel: id,
           recipients: emails,
-        }
+        };
 
         this.http.post('/send-notifications', body).toPromise().then((response) => {
           location.reload();
@@ -91,13 +96,13 @@ export class JoinChannelComponent implements OnInit {
             alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
             location.reload();
           } else {
-            console.log(res.error.text)
-            alert(`There was an error while trying to send notifications. Please try again later.`);
+            console.log(res.error.text);
+            this.snackBar.open(`There was an error while trying to send notifications. Please try again later.`);
           }
         });
-        
+
       }
-    })
+    });
   }
 
   ngOnInit() {}

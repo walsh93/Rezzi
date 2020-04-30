@@ -3,6 +3,7 @@ import { RezziService } from '../../../rezzi.service';
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NgForm, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-invite-users',
@@ -23,7 +24,10 @@ export class InviteUsersComponent implements OnInit {
   selectedResFloor: string;
   resFloorControl = new FormControl('', Validators.required);
 
-  constructor(private rezziService: RezziService, private router: Router, private http: HttpClient) { }
+  constructor(private rezziService: RezziService,
+              private router: Router,
+              private http: HttpClient,
+              private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     // Initialize class variables
@@ -55,7 +59,7 @@ export class InviteUsersComponent implements OnInit {
       return;
     }
     const emailList = form.value.RAEmails;
-    console.log("List of RAs invited on " + this.selectedRaFloor + " ", emailList,)
+    console.log('List of RAs invited on ' + this.selectedRaFloor + ' ', emailList, );
 
     // make array of channels that user will be added to
     const channelList = ['hallwide-General', 'floors-' + this.selectedRaFloor + '-General', 'RA-General'];
@@ -101,15 +105,15 @@ export class InviteUsersComponent implements OnInit {
    */
   addInvite(list) {
     this.http.post('/invite-users', list).toPromise().then((response) => {
-      alert('Your emails are being processed and sent');
+      this.snackBar.open('Your emails are being processed and sent');
       location.reload();
     }).catch((error) => {
       const res = error as HttpErrorResponse;
       if (res.status === 200) {
-        alert(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
+        this.snackBar.open(res.error.text);  // an alert is blocking, so the subsequent code will only run once alert closed
         location.reload();
       } else {
-        alert('There was an error when sending the emails. Please try again later.');
+        this.snackBar.open('There was an error when sending the emails. Please try again later.');
       }
     });
   }
