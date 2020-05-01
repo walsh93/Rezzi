@@ -6,6 +6,7 @@ import { NgForm, FormControl, Validators } from '@angular/forms';
 import { Message, SocketPrivateMessageData, SocketChannelMessageData, ChannelData } from 'src/app/classes.model';
 import { MessagesService } from 'src/app/home/interface/messages/messages.service';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 export interface ConfirmStatus {
   confirmStatus: number;
@@ -37,7 +38,9 @@ export class HdNotificationsComponent implements OnInit {
               private http: HttpClient,
               private messagesService: MessagesService,
               public hdNotificationsDialog: MatDialog,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar,
+              protected sanitizer: DomSanitizer,
+              ) { }
 
   ngOnInit() {
     this.errorMsg = '';
@@ -169,7 +172,7 @@ export class HdNotificationsComponent implements OnInit {
           if (index !== -1) {
             this.reportedMessages.splice(index, 1);
           }
-          if (deleteStatus === 1){
+          if (deleteStatus === 1) {
             this.snackBar.open('The message report has been denied.');
           }
       }
